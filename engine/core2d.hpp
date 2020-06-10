@@ -6,8 +6,8 @@ namespace cnn
 {
   namespace engine
   {
-    template <typename T, size_t W, size_t H, typename F = StandardActivator<T>>
-    class Core2D : private Core<T, W * H, F>
+    template <typename T, size_t W, size_t H>
+    class Core2D : private Core<T, W * H>
     {
       static_assert(std::is_floating_point<T>::value);
 
@@ -32,8 +32,8 @@ namespace cnn
 
     };
 
-    template<typename T, size_t W, size_t H, typename F>
-    size_t Core2D<T, W, H, F>::ToIndex(const size_t x, const size_t y) const
+    template<typename T, size_t W, size_t H>
+    size_t Core2D<T, W, H>::ToIndex(const size_t x, const size_t y) const
     {
       if (x >= W)
       {
@@ -46,8 +46,8 @@ namespace cnn
       return x + y * W;
     }
 
-    template<typename T, size_t W, size_t H, typename F>
-    T Core2D<T, W, H, F>::GetInput(const size_t x, const size_t y) const
+    template<typename T, size_t W, size_t H>
+    T Core2D<T, W, H>::GetInput(const size_t x, const size_t y) const
     {
       if (x >= W)
       {
@@ -57,11 +57,11 @@ namespace cnn
       {
         throw std::range_error("cnn::engine::Core2D::GetInput(), y >= H.");
       }
-      return Core<T, W * H, F>::GetInput(ToIndex(x, y));
+      return Core<T, W * H>::GetInput(ToIndex(x, y));
     }
 
-    template<typename T, size_t W, size_t H, typename F>
-    void Core2D<T, W, H, F>::SetInput(const size_t x, const size_t y, const T value)
+    template<typename T, size_t W, size_t H>
+    void Core2D<T, W, H>::SetInput(const size_t x, const size_t y, const T value)
     {
       if (x >= W)
       {
@@ -71,11 +71,11 @@ namespace cnn
       {
         throw std::range_error("cnn::engine::Core2D::SetInput(), y >= H.");
       }
-      return Core<T, W * H, F>::GetInput(ToIndex(x, y));
+      return Core<T, W * H>::GetInput(ToIndex(x, y));
     }
 
-    template<typename T, size_t W, size_t H, typename F>
-    T Core2D<T, W, H, F>::GetWeight(const size_t x, const size_t y) const
+    template<typename T, size_t W, size_t H>
+    T Core2D<T, W, H>::GetWeight(const size_t x, const size_t y) const
     {
       if (x >= W)
       {
@@ -85,11 +85,11 @@ namespace cnn
       {
         throw std::range_error("cnn::engine::Core2D::GetWeight(), y >= H.");
       }
-      return Core<T, W * H, F>::GetWeight(ToIndex(x, y));
+      return Core<T, W * H>::GetWeight(ToIndex(x, y));
     }
 
-    template<typename T, size_t W, size_t H, typename F>
-    void Core2D<T, W, H, F>::SetWeight(const size_t x, const size_t y, const T value)
+    template<typename T, size_t W, size_t H>
+    void Core2D<T, W, H>::SetWeight(const size_t x, const size_t y, const T value)
     {
       if (x >= W)
       {
@@ -99,17 +99,17 @@ namespace cnn
       {
         throw std::range_error("cnn::engine::Core2D::SetWeight(), y >= H.");
       }
-      Core<T, W * H, F>::SetWeight(ToIndex(x, y), value);
+      Core<T, W * H>::SetWeight(ToIndex(x, y), value);
     }
 
-    template<typename T, size_t W, size_t H, typename F>
-    size_t Core2D<T, W, H, F>::GetWidth() const
+    template<typename T, size_t W, size_t H>
+    size_t Core2D<T, W, H>::GetWidth() const
     {
       return W;
     }
 
-    template<typename T, size_t W, size_t H, typename F>
-    size_t Core2D<T, W, H, F>::GetHeight() const
+    template<typename T, size_t W, size_t H>
+    size_t Core2D<T, W, H>::GetHeight() const
     {
       return H;
     }

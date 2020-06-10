@@ -11,7 +11,7 @@ namespace cnn
 {
   namespace engine
   {
-    template <typename T, size_t C, typename F = StandardActivator<T>>
+    template <typename T, size_t C>
     class Core
     {
 
@@ -41,8 +41,8 @@ namespace cnn
 
     };
 
-    template <typename T, size_t C, typename F>
-    Core<T, C, F>::Core()
+    template <typename T, size_t C>
+    Core<T, C>::Core()
       :
       Inputs{},
       Weights{},
@@ -50,8 +50,8 @@ namespace cnn
     {
     }
 
-    template <typename T, size_t C, typename F>
-    T Core<T, C, F>::GetInput(const size_t index) const
+    template <typename T, size_t C>
+    T Core<T, C>::GetInput(const size_t index) const
     {
       if (index >= C)
       {
@@ -60,8 +60,8 @@ namespace cnn
       return Inputs[index];
     }
 
-    template <typename T, size_t C, typename F>
-    void Core<T, C, F>::SetInput(const size_t index, const T value)
+    template <typename T, size_t C>
+    void Core<T, C>::SetInput(const size_t index, const T value)
     {
       if (index >= C)
       {
@@ -70,8 +70,8 @@ namespace cnn
       Inputs[index] = value;
     }
 
-    template <typename T, size_t C, typename F>
-    T Core<T, C, F>::GetWeight(const size_t index) const
+    template <typename T, size_t C>
+    T Core<T, C>::GetWeight(const size_t index) const
     {
       if (index >= C)
       {
@@ -80,8 +80,8 @@ namespace cnn
       return Weights[index];
     }
 
-    template <typename T, size_t C, typename F>
-    void Core<T, C, F>::SetWeight(const size_t index, const T value)
+    template <typename T, size_t C>
+    void Core<T, C>::SetWeight(const size_t index, const T value)
     {
       if (index >= C)
       {
@@ -90,25 +90,25 @@ namespace cnn
       Weights[index] = value;
     }
 
-    template <typename T, size_t C, typename F>
-    T Core<T, C, F>::GetOutput() const
+    template <typename T, size_t C>
+    T Core<T, C>::GetOutput() const
     {
       return Output;
     }
 
-    template <typename T, size_t C, typename F>
-    void Core<T, C, F>::GenerateOutput()
+    template <typename T, size_t C>
+    void Core<T, C>::GenerateOutput()
     {
       T result{};
       for (size_t i = 0; i < C; ++i)
       {
-        result += F::Handle(Inputs[i] * Weights[i]);
+        result += Inputs[i] * Weights[i];
       }
       return result;
     }
 
-    template<typename T, size_t C, typename F>
-    size_t Core<T, C, F>::GetInputCount() const
+    template<typename T, size_t C>
+    size_t Core<T, C>::GetInputCount() const
     {
       return C;
     }

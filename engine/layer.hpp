@@ -50,6 +50,7 @@ namespace cnn
     template<typename T, size_t C>
     void Layer<T, C>::SetValue(const size_t index, const T value)
     {
+      // TODO: What about controlling of NaN and etc?
       if (index >= C)
       {
         throw std::range_error("cnn::engine::Layer::SetValue(), index >= C.");
