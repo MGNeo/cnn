@@ -9,7 +9,7 @@ namespace cnn
     template <typename T, size_t W, size_t H, typename F = StandardActivator<T>>
     class Core2D : private Core<T, W * H, F>
     {
-      static_assert(std::is_arithmetic<T>::value);
+      static_assert(std::is_floating_point<T>::value);
 
       static_assert(W > 0);
       static_assert(H > 0);
@@ -43,7 +43,7 @@ namespace cnn
       {
         throw std::range_error("cnn::engine::Core2D::ToIndex(), y >= H.");
       }
-      return (x % H) + W * (x / H);
+      return x + y * W;
     }
 
     template<typename T, size_t W, size_t H, typename F>

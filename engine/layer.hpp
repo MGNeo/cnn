@@ -12,7 +12,7 @@ namespace cnn
     class Layer
     {
 
-      static_assert(std::is_arithmetic<T>::value);
+      static_assert(std::is_floating_point<T>::value);
       static_assert(C > 0);
 
     public:

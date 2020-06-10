@@ -15,8 +15,7 @@ namespace cnn
     class Core
     {
 
-      static_assert(std::is_arithmetic <T>::value);
-      static_assert(C > 0);
+      static_assert(std::is_floating_point<T>::value);
 
     public:
 
