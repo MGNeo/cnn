@@ -23,6 +23,9 @@ int main(int argc, char** argv)
       std::cout << core_2d->GetWidth() << std::endl;
     }
 
+    // TODO: Layer, ILayer2D, Layer2D.
+    // TODO: Network.
+
   }
   catch (const std::exception& e)
   {
