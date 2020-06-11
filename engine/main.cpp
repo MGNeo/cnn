@@ -1,25 +1,27 @@
 #include <iostream>
+#include <vector>
+#include <random>
 
-#include "core.hpp"
-#include "core2d.hpp"
-#include "layer.hpp"
-#include "layer2d.hpp"
+#include "core_2d.hpp"
 
 int main(int argc, char** argv)
 {
   try
   {
-    const cnn::engine::Core<float, 10> core;
-    core.GetInput(0);
+    std::default_random_engine e;
+    std::uniform_int_distribution<size_t> d{ 1, 10 };
 
-    cnn::engine::Core2D<double, 5, 20> core2d;
-    core2d.SetWeight(3, 3, 3);
+    std::vector<cnn::ICore2D<float>::Uptr> cores_2d;
 
-    cnn::engine::Layer<float, 10> layer;
-    layer.SetValue(1, 1);
+    for (size_t i = 0; i < 10; ++i)
+    {
+      cores_2d.emplace_back(std::make_unique<cnn::Core2D<float>>(d(e), d(e)));
+    }
 
-    cnn::engine::Layer2D<long double, 10, 10> layer2d;
-    layer2d.SetValue(3, 3, 100);
+    for (auto& core_2d : cores_2d)
+    {
+      std::cout << core_2d->GetWidth() << std::endl;
+    }
 
   }
   catch (const std::exception& e)

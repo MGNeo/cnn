@@ -18,16 +18,16 @@
     <ClInclude Include="core.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="standard_activator.hpp">
+    <ClInclude Include="i_activator.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core2d.hpp">
+    <ClInclude Include="activator.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="layer.hpp">
+    <ClInclude Include="i_core_2d.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="layer2d.hpp">
+    <ClInclude Include="core_2d.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
