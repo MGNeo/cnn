@@ -8,6 +8,9 @@ namespace cnn
   template <typename T>
   class Core2D : public ICore2D<T>
   {
+
+    static_assert(std::is_floating_point<T>::value);
+
   public:
 
     Core2D(const size_t width, const size_t height);
@@ -45,7 +48,7 @@ namespace cnn
     const size_t m = Width * Height;
     if ((Width != 0) && (Height != 0) && ((m / Width) != Height))
     {
-      throw std::invalid_argument("cnn::Core2D::Core2D(), m was overflowed.");
+      throw std::overflow_error("cnn::Core2D::Core2D(), m was overflowed.");
     }
   }
 

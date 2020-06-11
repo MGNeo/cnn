@@ -3,11 +3,15 @@
 #include <random>
 
 #include "core_2d.hpp"
+#include "layer_2d.hpp"
 
 int main(int argc, char** argv)
 {
   try
   {
+    cnn::ILayer2D<float>::Uptr layer = std::make_unique<cnn::Layer2D<float>>(10, 10);
+    layer->SetCell(4, 5, 5.f);
+
     std::default_random_engine e;
     std::uniform_int_distribution<size_t> d{ 1, 10 };
 
@@ -23,7 +27,6 @@ int main(int argc, char** argv)
       std::cout << core_2d->GetWidth() << std::endl;
     }
 
-    // TODO: Layer, ILayer2D, Layer2D.
     // TODO: Network.
 
   }

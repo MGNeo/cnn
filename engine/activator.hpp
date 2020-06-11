@@ -5,9 +5,11 @@
 namespace cnn
 {
   template <typename T>
-  class Activator : public IActivator<T> // This is Sovetsky Vertuhan.
-
+  class Activator : public IActivator<T>
   {
+
+    static_assert(std::is_floating_point<T>::value);
+
   public:
 
     T Handle(const T value) override
