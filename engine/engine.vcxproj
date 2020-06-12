@@ -131,6 +131,7 @@
     <ClInclude Include="core.hpp" />
     <ClInclude Include="core_2d.hpp" />
     <ClInclude Include="filter_2d.hpp" />
+    <ClInclude Include="layer_2d.hpp" />
     <ClInclude Include="i_core.hpp" />
     <ClInclude Include="i_filter_2d.hpp" />
     <ClInclude Include="i_layer_2d.hpp" />

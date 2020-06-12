@@ -2,21 +2,13 @@
 #include <vector>
 #include <random>
 
-#include "core_2d.hpp"
-#include "map_2d.hpp"
-#include "filter_2d.hpp"
+#include "layer_2d.hpp"
 
 int main(int argc, char** argv)
 {
   try
   {
-
-    /*
-    // TODO: Map->Map
-    // TODO: Filter (Cores[])
-
-    // TODO: Network
-    */
+    cnn::ILayer2D<float>::Uptr layer_2d = std::make_unique<cnn::Layer2D<float>>(1, 10, 10, 10, 3, 3);
   }
   catch (const std::exception& e)
   {

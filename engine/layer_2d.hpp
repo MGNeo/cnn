@@ -1,0 +1,262 @@
+#pragma once
+
+#include <stdexcept>
+
+#include "i_layer_2d.hpp"
+#include "map_2d.hpp"
+#include "filter_2d.hpp"
+
+namespace cnn
+{
+  template <typename T>
+  class Layer2D : public ILayer2D<T>
+  {
+
+    static_assert(std::is_floating_point<T>::value);
+
+  public:
+
+    Layer2D(const size_t inputCount,
+            const size_t inputWidth,
+            const size_t inputHeight,
+            
+            const size_t filterCount,
+            const size_t filterWidth,
+            const size_t filterHeight);
+
+    size_t GetInputCount() const override;
+    size_t GetInputWidth() const override;
+    size_t GetInputHeight() const override;
+
+    size_t GetFilterCount() const override;
+    size_t GetFilterWidth() const override;
+    size_t GetFilterHeight() const override;
+
+    size_t GetOutputCount() const override;
+    size_t GetOutputWidth() const override;
+    size_t GetOutputHeight() const override;
+
+    const IMap2D<T>& GetInput(const size_t index) const override;
+    IMap2D<T>& GetInput(const size_t index) override;
+
+    const IFilter2D<T>& GetFilter(const size_t index) const override;
+    IFilter2D<T>& GetFilter(const size_t index) override;
+
+    const IMap2D<T>& GetOutput(const size_t index) const override;
+    IMap2D<T>& GetOutput(const size_t index) override;
+
+    void Process() const override;
+
+  private:
+
+    const size_t InputCount;
+    const size_t InputWidth;
+    const size_t InputHeight;
+    std::unique_ptr<typename Map2D<T>::Uptr[]> Inputs;
+
+    const size_t FilterCount;
+    const size_t FilterWidth;
+    const size_t FilterHeight;
+    std::unique_ptr<typename Filter2D<T>::Uptr[]> Filters;
+
+    const size_t OutputCount;
+    const size_t OutputWidth;
+    const size_t OutputHeight;
+    std::unique_ptr<typename Map2D<T>::Uptr[]> Outputs;
+
+  };
+
+  template <typename T>
+  Layer2D<T>::Layer2D(const size_t inputCount,
+                      const size_t inputWidth,
+                      const size_t inputHeight,
+                     
+                      const size_t filterCount,
+                      const size_t filterWidth,
+                      const size_t filterHeight)
+    :
+    InputCount{ inputCount },
+    InputWidth{ inputWidth },
+    InputHeight{ inputHeight },
+    Inputs{ std::make_unique<typename Map2D<T>::Uptr[]>(InputCount) },
+
+    FilterCount{ filterCount },
+    FilterWidth{ filterWidth },
+    FilterHeight{ filterHeight },
+    Filters{ std::make_unique<typename Filter2D<T>::Uptr[]>(FilterCount) },
+
+    OutputCount{ filterCount },
+    OutputWidth{ InputWidth - FilterWidth + 1 },
+    OutputHeight{ InputHeight - FilterHeight + 1 },
+    Outputs{ std::make_unique<typename Map2D<T>::Uptr[]>(OutputCount) }
+  {
+    if (InputCount == 0)
+    {
+      throw std::invalid_argument("cnn::Layer2D::Layer2D(), InputCount == 0.");
+    }
+    if (InputWidth == 0)
+    {
+      throw std::invalid_argument("cnn::Layer2D::Layer2D(), InputWidth == 0.");
+    }
+    if (InputHeight == 0)
+    {
+      throw std::invalid_argument("cnn::Layer2D::Layer2D(), InputHeight == 0.");
+    }
+
+    if (FilterCount == 0)
+    {
+      throw std::invalid_argument("cnn::Layer2D::Layer2D(), FilterCount == 0.");
+    }
+    if (FilterWidth == 0)
+    {
+      throw std::invalid_argument("cnn::Layer2D::Layer2D(), FilterWidth == 0.");
+    }
+    if (FilterHeight == 0)
+    {
+      throw std::invalid_argument("cnn::Layer2D::Layer2D(), FilterHeight == 0.");
+    }
+    if (FilterWidth > InputWidth)
+    {
+      throw std::invalid_argument("cnn::Layer2D::Layer2D(), FilterWidth > InputWIdth.");
+    }
+    if (FilterHeight > InputHeight)
+    {
+      throw std::invalid_argument("cnn::Layer2D::Layer2D(), FilterHeight > InputHeight.");
+    }
+
+    for (size_t i = 0; i < InputCount; ++i)
+    {
+      Inputs[i] = std::make_unique<Map2D<T>>(InputWidth, InputHeight);
+    }
+
+    for (size_t i = 0; i < FilterCount; ++i)
+    {
+      Filters[i] = std::make_unique<Filter2D<T>>(FilterCount, FilterWidth, FilterHeight);
+    }
+
+    for (size_t i = 0; i < OutputCount; ++i)
+    {
+      Outputs[i] = std::make_unique<Map2D<T>>(OutputWidth, OutputHeight);
+    }
+  }
+
+  template <typename T>
+  size_t Layer2D<T>::GetInputCount() const
+  {
+    return InputCount;
+  }
+
+  template <typename T>
+  size_t Layer2D<T>::GetInputWidth() const
+  {
+    return InputWidth;
+  }
+
+  template <typename T>
+  size_t Layer2D<T>::GetInputHeight() const
+  {
+    return InputHeight;
+  }
+
+  template <typename T>
+  size_t Layer2D<T>::GetFilterCount() const
+  {
+    return FilterCount;
+  }
+
+  template <typename T>
+  size_t Layer2D<T>::GetFilterWidth() const
+  {
+    return FilterWidth;
+  }
+
+  template <typename T>
+  size_t Layer2D<T>::GetFilterHeight() const
+  {
+    return FilterHeight;
+  }
+
+  template <typename T>
+  size_t Layer2D<T>::GetOutputCount() const
+  {
+    return OutputCount;
+  }
+
+  template <typename T>
+  size_t Layer2D<T>::GetOutputWidth() const
+  {
+    return OutputWidth;
+  }
+
+  template <typename T>
+  size_t Layer2D<T>::GetOutputHeight() const
+  {
+    return OutputHeight;
+  }
+
+  template <typename T>
+  const IMap2D<T>& Layer2D<T>::GetInput(const size_t index) const
+  {
+    if (index >= InputCount)
+    {
+      throw std::range_error("cnn::Layer2D::GetInput() const, index >= InputCount.");
+    }
+    return *(Inputs[index]);
+  }
+
+  template <typename T>
+  IMap2D<T>& Layer2D<T>::GetInput(const size_t index)
+  {
+    if (index >= InputCount)
+    {
+      throw std::range_error("cnn::Layer2D::GetInput(), index >= InputCount.");
+    }
+    return *(Inputs[index]);
+  }
+
+  template <typename T>
+  const IFilter2D<T>& Layer2D<T>::GetFilter(const size_t index) const
+  {
+    if (index >= FilterCount)
+    {
+      throw std::range_error("cnn::Layer2D::GetFilter() const, index >= FilterCount.");
+    }
+    return *(Filters[index]);
+  }
+
+  template <typename T>
+  IFilter2D<T>& Layer2D<T>::GetFilter(const size_t index)
+  {
+    if (index >= FilterCount)
+    {
+      throw std::range_error("cnn::Layer2D::GetFilter(), index >= FilterCount.");
+    }
+    return *(Filters[index]);
+  }
+
+  template <typename T>
+  const IMap2D<T>& Layer2D<T>::GetOutput(const size_t index) const
+  {
+    if (index >= OutputCount)
+    {
+      throw std::range_error("cnn::Layer2D::GetOutput() const, index >= OutputCOunt.");
+    }
+    return *(Outputs[index]);
+  }
+
+  template <typename T>
+  IMap2D<T>& Layer2D<T>::GetOutput(const size_t index)
+  {
+    if (index >= OutputCount)
+    {
+      throw std::range_error("cnn::Layer2D::GetOutput(), index >= OutputCount.");
+    }
+    return *(Outputs[index]);
+  }
+
+  template <typename T>
+  void Layer2D<T>::Process() const
+  {
+    // TODO.
+  }
+}

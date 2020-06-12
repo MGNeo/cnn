@@ -21,7 +21,7 @@ namespace cnn
     virtual size_t GetWidth() const = 0;
     virtual size_t GetHeight() const = 0;
 
-    virtual const ICore2D<T>& GetCore(const size_t index) = 0;
+    virtual const ICore2D<T>& GetCore(const size_t index) const = 0;
     virtual ICore2D<T>& GetCore(const size_t index) = 0;
 
     virtual ~IFilter2D() {};
