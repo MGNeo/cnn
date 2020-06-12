@@ -130,11 +130,11 @@
     <ClInclude Include="activator.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="core_2d.hpp" />
-    <ClInclude Include="i_layer_2d.hpp" />
+    <ClInclude Include="i_matrix_2d.hpp" />
     <ClInclude Include="i_activator.hpp" />
     <ClInclude Include="i_core_2d.hpp" />
-    <ClInclude Include="layer.hpp" />
-    <ClInclude Include="layer_2d.hpp" />
+    <ClInclude Include="matrix.hpp" />
+    <ClInclude Include="matrix_2d.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
