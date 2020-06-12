@@ -124,6 +124,19 @@ namespace cnn
       throw std::invalid_argument("cnn::Layer2D::Layer2D(), FilterHeight > InputHeight.");
     }
 
+    if (OutputCount == 0)
+    {
+      throw std::invalid_argument("cnn::Layer2D::Layer2D(), OutputCount == 0.");
+    }
+    if (OutputWidth == 0)
+    {
+      throw std::invalid_argument("cnn""Layer2D::Layer2D(), OutputWidth == 0.");
+    }
+    if (OutputHeight == 0)
+    {
+      throw std::invalid_argument("cnn::Layer2D::Layer2D(), OutputHeight == 0.");
+    }
+
     for (size_t i = 0; i < InputCount; ++i)
     {
       Inputs[i] = std::make_unique<Map2D<T>>(InputWidth, InputHeight);
