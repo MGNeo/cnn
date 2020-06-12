@@ -3,15 +3,15 @@
 #include <random>
 
 #include "core_2d.hpp"
-#include "matrix_2d.hpp"
+#include "map_2d.hpp"
 
 int main(int argc, char** argv)
 {
   try
   {
     /*
-    cnn::IMatrix2D<float>::Uptr matrix = std::make_unique<cnn::Matrix2D<float>>(10, 10);
-    matrix->SetCell(4, 5, 5.f);
+    cnn::IMap2D<float>::Uptr Map = std::make_unique<cnn::Map2D<float>>(10, 10);
+    Map->SetCell(4, 5, 5.f);
 
     std::default_random_engine e;
     std::uniform_int_distribution<size_t> d{ 1, 10 };
@@ -28,8 +28,10 @@ int main(int argc, char** argv)
       std::cout << core_2d->GetWidth() << std::endl;
     }
 
-    // TODO: Layer.
-    // TODO: Network.
+    // TODO: Map->Map
+    // TODO: Filter (Cores[])
+
+    // TODO: Network
     */
   }
   catch (const std::exception& e)

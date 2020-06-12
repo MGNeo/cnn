@@ -3,19 +3,19 @@
 #include <memory>
 #include <stdexcept>
 
-#include "i_matrix.hpp"
+#include "i_map.hpp"
 
 namespace cnn
 {
   template <typename T>
-  class Matrix : public IMatrix<T>
+  class Map : public IMap<T>
   {
 
     static_assert(std::is_floating_point<T>::value);
 
   public:
 
-    Matrix(const size_t count);
+    Map(const size_t count);
 
     size_t GetCount() const;
 
@@ -30,40 +30,40 @@ namespace cnn
   };
 
   template <typename T>
-  Matrix<T>::Matrix(const size_t count)
+  Map<T>::Map(const size_t count)
     :
     Count{ count },
     Cells{ std::make_unique<T[]>(Count) }
   {
     if (Count == 0)
     {
-      throw std::invalid_argument("cnn::Matrix::Matrix(), Count == 0.");
+      throw std::invalid_argument("cnn::Map::Map(), Count == 0.");
     }
     memset(Cells.get(), 0, Count * sizeof(T));
   }
 
   template <typename T>
-  size_t Matrix<T>::GetCount() const
+  size_t Map<T>::GetCount() const
   {
     return Count;
   }
 
   template <typename T>
-  T Matrix<T>::GetCell(const size_t index) const
+  T Map<T>::GetCell(const size_t index) const
   {
     if (index >= Count)
     {
-      throw std::range_error("cnn::Matrix::GetCell(), index >= Count.");
+      throw std::range_error("cnn::Map::GetCell(), index >= Count.");
     }
     return Cells[index];
   }
 
   template <typename T>
-  void Matrix<T>::SetCell(const size_t index, const T value)
+  void Map<T>::SetCell(const size_t index, const T value)
   {
     if (index >= Count)
     {
-      throw std::range_error("cnn::Matrix::SetCell(), index >= Count.");
+      throw std::range_error("cnn::Map::SetCell(), index >= Count.");
     }
     Cells[index] = value;
   }

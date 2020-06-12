@@ -131,12 +131,13 @@
     <ClInclude Include="core.hpp" />
     <ClInclude Include="core_2d.hpp" />
     <ClInclude Include="i_core.hpp" />
-    <ClInclude Include="i_matrix.hpp" />
-    <ClInclude Include="i_matrix_2d.hpp" />
+    <ClInclude Include="i_layer_2d.hpp" />
+    <ClInclude Include="i_map.hpp" />
+    <ClInclude Include="i_map_2d.hpp" />
     <ClInclude Include="i_activator.hpp" />
     <ClInclude Include="i_core_2d.hpp" />
-    <ClInclude Include="matrix.hpp" />
-    <ClInclude Include="matrix_2d.hpp" />
+    <ClInclude Include="map.hpp" />
+    <ClInclude Include="map_2d.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

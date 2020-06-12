@@ -1,7 +1,6 @@
 #pragma once
 
 #include "i_core_2d.hpp"
-#include "i_core.hpp"
 #include "core.hpp"
 
 namespace cnn
