@@ -25,7 +25,7 @@ namespace cnn
 
     const size_t Width;
     const size_t Height;
-    Matrix<T> Matrix_;
+    typename IMatrix<T> Matrix_;
 
     size_t ToIndex(const size_t x, const size_t y) const;
 
@@ -36,7 +36,7 @@ namespace cnn
     :
     Width{ width },
     Height{ height },
-    Matrix_{ Width * Height }
+    Matrix_{ std::make_unique<Matrix<T>>(Width * Height) }
   {
     const size_t m = Width * Height;
     if ((Width > 0) && (Height > 0) && ((m / Width) != Height))

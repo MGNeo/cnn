@@ -9,6 +9,7 @@ int main(int argc, char** argv)
 {
   try
   {
+    /*
     cnn::IMatrix2D<float>::Uptr matrix = std::make_unique<cnn::Matrix2D<float>>(10, 10);
     matrix->SetCell(4, 5, 5.f);
 
@@ -29,11 +30,11 @@ int main(int argc, char** argv)
 
     // TODO: Layer.
     // TODO: Network.
-
+    */
   }
   catch (const std::exception& e)
   {
-    std::cout << e.what() << std::endl;
+    std::cout << "Standard exception was caught: " << e.what() << std::endl;
   }
   catch (...)
   {

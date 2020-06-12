@@ -3,10 +3,12 @@
 #include <memory>
 #include <stdexcept>
 
+#include "i_matrix.hpp"
+
 namespace cnn
 {
   template <typename T>
-  class Matrix
+  class Matrix : public IMatrix<T>
   {
 
     static_assert(std::is_floating_point<T>::value);

@@ -4,10 +4,12 @@
 #include <cstddef>
 #include <stdexcept>
 
+#include "i_core.hpp"
+
 namespace cnn
 {
   template <typename T>
-  class Core
+  class Core : public ICore<T>
   {
 
     static_assert(std::is_floating_point<T>::value);
@@ -16,17 +18,17 @@ namespace cnn
 
     Core(const size_t count);
 
-    size_t GetCount() const;
+    size_t GetCount() const override;
 
-    T GetInput(const size_t index) const;
-    void SetInput(const size_t index, const T value);
+    T GetInput(const size_t index) const override;
+    void SetInput(const size_t index, const T value) override;
 
-    T GetWeight(const size_t index) const;
-    void SetWeight(const size_t index, const T value);
+    T GetWeight(const size_t index) const override;
+    void SetWeight(const size_t index, const T value) override;
 
-    void GenerateOutput();
+    void GenerateOutput() override;
 
-    T GetOutput() const;
+    T GetOutput() const override;
 
   private:
 

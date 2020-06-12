@@ -1,6 +1,7 @@
 #pragma once
 
 #include "i_core_2d.hpp"
+#include "i_core.hpp"
 #include "core.hpp"
 
 namespace cnn
@@ -31,8 +32,8 @@ namespace cnn
   private:
 
     const size_t Width;
-    const size_t Height;
-    Core<T> Core_;
+    const size_t Height;    
+    typename ICore<T>::Uptr Core_;
 
     size_t ToIndex(const size_t x, const size_t y) const;
 
@@ -43,7 +44,7 @@ namespace cnn
     :
     Width{ width },
     Height{ height },
-    Core_{ Width * Height }
+    Core_{ std::make_unique<Core<T>>(Width * Height) }
   {
     const size_t m = Width * Height;
     if ((Width != 0) && (Height != 0) && ((m / Width) != Height))
@@ -75,7 +76,7 @@ namespace cnn
     {
       throw std::range_error("cnn::Core2D::GetInput(), y >= Height.");
     }
-    return Core_.GetInput(ToIndex(x, y));
+    return Core_->GetInput(ToIndex(x, y));
   };
 
   template <typename T>
@@ -89,7 +90,7 @@ namespace cnn
     {
       throw std::range_error("cnn::Core2D::SetInput(), y >= Height.");
     }
-    Core_.SetInput(ToIndex(x, y), value);
+    Core_->SetInput(ToIndex(x, y), value);
   };
 
   template <typename T>
@@ -103,7 +104,7 @@ namespace cnn
     {
       throw std::range_error("cnn::Core2D::GetWeight(), y >= Height.");
     }
-    return Core_.GetWeight(ToIndex(x, y));
+    return Core_->GetWeight(ToIndex(x, y));
   }
 
   template <typename T>
@@ -117,19 +118,19 @@ namespace cnn
     {
       throw std::range_error("cnn::Core2D::setWeight(), y >= Height.");
     }
-    Core_.SetWeight(ToIndex(x, y), value);
+    Core_->SetWeight(ToIndex(x, y), value);
   }
 
   template <typename T>
   void Core2D<T>::GenerateOutput()
   {
-    Core_.GenerateOutput();
+    Core_->GenerateOutput();
   }
 
   template <typename T>
   T Core2D<T>::GetOutput() const
   {
-    return Core_.GetOutput();
+    return Core_->GetOutput();
   }
 
   template <typename T>
