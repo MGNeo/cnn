@@ -1,15 +1,22 @@
 #include <iostream>
-#include <vector>
-#include <random>
+#include <time.h>
 
-#include "layer_2d.hpp"
+#include "network_2d.hpp"
 
 int main(int argc, char** argv)
 {
   try
   {
-    cnn::ILayer2D<float>::Uptr layer_2d = std::make_unique<cnn::Layer2D<float>>(1, 10, 10, 10, 3, 3);
-    layer_2d->Process();
+    const time_t t1 = clock();
+    
+    cnn::INetwork2D<float>::Uptr network_2d = std::make_unique<cnn::Network2D<float>>(3, 100, 100);
+
+    network_2d->PushLayer(5, 5, 5);
+    network_2d->PushLayer(10, 4, 4);
+    network_2d->PushLayer(25, 3, 3);
+
+    const float dt = (clock() - t1) / (float)CLOCKS_PER_SEC;
+    std::cout << dt << std::endl;
   }
   catch (const std::exception& e)
   {
