@@ -270,6 +270,35 @@ namespace cnn
   template <typename T>
   void Layer2D<T>::Process() const
   {
-    // TODO.
+    // Perhaps, we need to use a GPU instead of a CPU...
+    for (size_t f = 0; f < FilterCount; ++f)
+    {
+      auto& filter = Filters[f];
+      auto& output = Outputs[f];
+      output->Clear();
+      for (size_t i = 0; i < InputCount; ++i)
+      {
+        auto& input = Inputs[i];
+        auto& core = filter->GetCore(i);
+        for (size_t ox = 0; ox < OutputWidth; ++ox)
+        {
+          for (size_t oy = 0; oy < OutputHeight; ++oy)
+          {
+            for (size_t fx = 0; fx < FilterWidth; ++fx)
+            {
+              for (size_t fy = 0; fy < FilterHeight; ++fy)
+              {
+                // Yes, Standard allows us to do it.
+                const T& value = input->GetValue(ox + fx, oy + fy);
+                core.SetInput(fx, fy, value);
+              }
+            }
+            core.GenerateOutput();
+            const T value = output->GetValue(ox, oy) + core.GetOutput();
+            output->SetValue(ox, oy, value);
+          }
+        }
+      }
+    }
   }
 }

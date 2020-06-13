@@ -9,6 +9,7 @@ int main(int argc, char** argv)
   try
   {
     cnn::ILayer2D<float>::Uptr layer_2d = std::make_unique<cnn::Layer2D<float>>(1, 10, 10, 10, 3, 3);
+    layer_2d->Process();
   }
   catch (const std::exception& e)
   {

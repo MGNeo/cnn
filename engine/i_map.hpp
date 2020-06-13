@@ -16,8 +16,10 @@ namespace cnn
 
     virtual size_t GetCount() const = 0;
 
-    virtual T GetCell(const size_t index) const = 0;
-    virtual void SetCell(const size_t index, const T value) = 0;
+    virtual T GetValue(const size_t index) const = 0;
+    virtual void SetValue(const size_t index, const T value) = 0;
+
+    virtual void Clear() = 0;
 
     virtual ~IMap() {};
 

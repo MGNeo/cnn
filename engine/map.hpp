@@ -17,15 +17,17 @@ namespace cnn
 
     Map(const size_t count);
 
-    size_t GetCount() const;
+    size_t GetCount() const override;
 
-    T GetCell(const size_t index) const;
-    void SetCell(const size_t index, const T value);
+    T GetValue(const size_t index) const override;
+    void SetValue(const size_t index, const T value) override;
+
+    void Clear() override;
 
   private:
 
     const size_t Count;
-    std::unique_ptr<T[]> Cells;
+    std::unique_ptr<T[]> Values;
 
   };
 
@@ -33,13 +35,13 @@ namespace cnn
   Map<T>::Map(const size_t count)
     :
     Count{ count },
-    Cells{ std::make_unique<T[]>(Count) }
+    Values{ std::make_unique<T[]>(Count) }
   {
     if (Count == 0)
     {
       throw std::invalid_argument("cnn::Map::Map(), Count == 0.");
     }
-    memset(Cells.get(), 0, Count * sizeof(T));
+    memset(Values.get(), 0, Count * sizeof(T));
   }
 
   template <typename T>
@@ -49,22 +51,31 @@ namespace cnn
   }
 
   template <typename T>
-  T Map<T>::GetCell(const size_t index) const
+  T Map<T>::GetValue(const size_t index) const
   {
     if (index >= Count)
     {
-      throw std::range_error("cnn::Map::GetCell(), index >= Count.");
+      throw std::range_error("cnn::Map::GetValue(), index >= Count.");
     }
-    return Cells[index];
+    return Values[index];
   }
 
   template <typename T>
-  void Map<T>::SetCell(const size_t index, const T value)
+  void Map<T>::SetValue(const size_t index, const T value)
   {
     if (index >= Count)
     {
-      throw std::range_error("cnn::Map::SetCell(), index >= Count.");
+      throw std::range_error("cnn::Map::SetValue(), index >= Count.");
     }
-    Cells[index] = value;
+    Values[index] = value;
+  }
+
+  template <typename T>
+  void Map<T>::Clear()
+  {
+    for (size_t i = 0; i < Count; ++i)
+    {
+      Values[i] = 0;
+    }
   }
 }

@@ -18,8 +18,10 @@ namespace cnn
     size_t GetWidth() const override;
     size_t GetHeight() const override;
 
-    T GetCell(const size_t x, const size_t y) const override;
-    void SetCell(const size_t x, const size_t y, const T value) override;
+    T GetValue(const size_t x, const size_t y) const override;
+    void SetValue(const size_t x, const size_t y, const T value) override;
+
+    void Clear() override;
 
   private:
 
@@ -58,31 +60,31 @@ namespace cnn
   }
 
   template <typename T>
-  T Map2D<T>::GetCell(const size_t x, const size_t y) const
+  T Map2D<T>::GetValue(const size_t x, const size_t y) const
   {
     if (x >= Width)
     {
-      throw std::range_error("cnn::Map2D::GetCell(), x >= Width.");
+      throw std::range_error("cnn::Map2D::GetValue(), x >= Width.");
     }
     if (y >= Height)
     {
-      throw std::range_error("cnn::Map2D::GetCell(), y >= Height.");
+      throw std::range_error("cnn::Map2D::GetValue(), y >= Height.");
     }
-    return Map_->GetCell(ToIndex(x, y));
+    return Map_->GetValue(ToIndex(x, y));
   }
 
   template <typename T>
-  void Map2D<T>::SetCell(const size_t x, const size_t y, const T value)
+  void Map2D<T>::SetValue(const size_t x, const size_t y, const T value)
   {
     if (x >= Width)
     {
-      throw std::range_error("cnn::Map2D::SetCell(), x >= Width.");
+      throw std::range_error("cnn::Map2D::SetValue(), x >= Width.");
     }
     if (y >= Height)
     {
-      throw std::range_error("cnn::Map2D::SetCell(), y >= Height.");
+      throw std::range_error("cnn::Map2D::SetValue(), y >= Height.");
     }
-    Map_->SetCell(ToIndex(x, y), value);
+    Map_->SetValue(ToIndex(x, y), value);
   }
 
   template <typename T>
@@ -97,5 +99,11 @@ namespace cnn
       throw std::range_error("cnn::Map2D::ToIndex(), y >= Height.");
     }
     return x + y * Width;
+  }
+
+  template <typename T>
+  void Map2D<T>::Clear()
+  {
+    Map_->Clear();
   }
 }

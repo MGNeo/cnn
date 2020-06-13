@@ -17,8 +17,10 @@ namespace cnn
     virtual size_t GetWidth() const = 0;
     virtual size_t GetHeight() const = 0;
 
-    virtual T GetCell(const size_t x, const size_t y) const = 0;
-    virtual void SetCell(const size_t x, const size_t y, const T value) = 0;
+    virtual T GetValue(const size_t x, const size_t y) const = 0;
+    virtual void SetValue(const size_t x, const size_t y, const T value) = 0;
+
+    virtual void Clear() = 0;
 
     virtual ~IMap2D() {};
 
