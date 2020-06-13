@@ -23,6 +23,10 @@ namespace cnn
 
     void Clear() override;
 
+    void Copy(const IMap2D<T>& map) override;
+
+    const IMap<T>& GetMap() const override;
+
   private:
 
     const size_t Width;
@@ -106,4 +110,25 @@ namespace cnn
   {
     Map_->Clear();
   }
+
+  template <typename T>
+  void Map2D<T>::Copy(const IMap2D<T>& map)
+  {
+    if (Width != map.GetWidth())
+    {
+      throw std::invalid_argument("cnn::Map2D<T>::Copy(), Width != map.GetWidth().");
+    }
+    if (Height != map.GetHeight())
+    {
+      throw std::invalid_argument("cnn::Map2D<T>::Copy(), Height != map.GetHeight().");
+    }
+    Map_->Copy(map.GetMap());
+  }
+
+  template <typename T>
+  const IMap<T>& Map2D<T>::GetMap() const
+  {
+    return *(Map_);
+  }
+
 }

@@ -21,6 +21,8 @@ namespace cnn
 
     virtual void Clear() = 0;
 
+    virtual void Copy(const IMap<T>& map) = 0;
+
     virtual ~IMap() {};
 
   };

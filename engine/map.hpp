@@ -24,6 +24,8 @@ namespace cnn
 
     void Clear() override;
 
+    void Copy(const IMap<T>& map) override;
+
   private:
 
     const size_t Count;
@@ -41,7 +43,7 @@ namespace cnn
     {
       throw std::invalid_argument("cnn::Map::Map(), Count == 0.");
     }
-    memset(Values.get(), 0, Count * sizeof(T));
+    Clear();
   }
 
   template <typename T>
@@ -78,4 +80,18 @@ namespace cnn
       Values[i] = 0;
     }
   }
+
+  template <typename T>
+  void Map<T>::Copy(const IMap<T>& map)
+  {
+    if (Count != map.GetCount())
+    {
+      throw std::invalid_argument("cnn::Map<T>::Copy(), Count != map.GetCount()");
+    }
+    for (size_t i = 0; i < Count; ++i)
+    {
+      Values[i] = map.GetValue(i);
+    }
+  }
+
 }

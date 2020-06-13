@@ -32,6 +32,8 @@ namespace cnn
                            const size_t filterWidth,
                            const size_t filterHeight) = 0;
 
+    virtual void Process() = 0;
+
     virtual ~INetwork2D() {};
 
   };

@@ -35,6 +35,8 @@ namespace cnn
                    const size_t filterWidth,
                    const size_t filterHeight) override;
 
+    void Process() override;
+
   private:
 
     const size_t InputCount;
@@ -201,4 +203,31 @@ namespace cnn
     Layers.push_back(std::move(layer_2d));
   }
 
+
+  template <typename T>
+  void Network2D<T>::Process()
+  {
+    if (Layers.size() == 0)
+    {
+      return;
+    }
+    for (size_t i = 0; i < InputCount; ++i)
+    {
+      const auto& prev = *(Inputs[i]);
+      auto& current = Layers.front()->GetInput(i);
+      current.Copy(prev);
+    }
+    Layers.front()->Process();
+    for (size_t l = 1; l < Layers.size(); ++l)
+    {
+      for (size_t i = 0; i < Layers[l]->GetInputCount(); ++i)
+      {
+        const auto& prev = Layers[l - 1]->GetOutput(i);
+        auto& current = Layers[l]->GetInput(i);
+        current.Copy(prev);
+        // TODO: Use activation function.
+      }
+      Layers[l]->Process();
+    }
+  }
 }

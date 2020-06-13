@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "i_map.hpp"
+
 namespace cnn
 {
   template <typename T>
@@ -21,6 +23,10 @@ namespace cnn
     virtual void SetValue(const size_t x, const size_t y, const T value) = 0;
 
     virtual void Clear() = 0;
+
+    virtual void Copy(const IMap2D<T>& map) = 0;
+
+    virtual const IMap<T>& GetMap() const = 0;
 
     virtual ~IMap2D() {};
 
