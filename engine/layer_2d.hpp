@@ -52,17 +52,17 @@ namespace cnn
     const size_t InputCount;
     const size_t InputWidth;
     const size_t InputHeight;
-    std::unique_ptr<typename Map2D<T>::Uptr[]> Inputs;
+    std::unique_ptr<typename IMap2D<T>::Uptr[]> Inputs;
 
     const size_t FilterCount;
     const size_t FilterWidth;
     const size_t FilterHeight;
-    std::unique_ptr<typename Filter2D<T>::Uptr[]> Filters;
+    std::unique_ptr<typename IFilter2D<T>::Uptr[]> Filters;
 
     const size_t OutputCount;
     const size_t OutputWidth;
     const size_t OutputHeight;
-    std::unique_ptr<typename Map2D<T>::Uptr[]> Outputs;
+    std::unique_ptr<typename IMap2D<T>::Uptr[]> Outputs;
 
   };
 
@@ -78,17 +78,17 @@ namespace cnn
     InputCount{ inputCount },
     InputWidth{ inputWidth },
     InputHeight{ inputHeight },
-    Inputs{ std::make_unique<typename Map2D<T>::Uptr[]>(InputCount) },
+    Inputs{ std::make_unique<typename IMap2D<T>::Uptr[]>(InputCount) },
 
     FilterCount{ filterCount },
     FilterWidth{ filterWidth },
     FilterHeight{ filterHeight },
-    Filters{ std::make_unique<typename Filter2D<T>::Uptr[]>(FilterCount) },
+    Filters{ std::make_unique<typename IFilter2D<T>::Uptr[]>(FilterCount) },
 
     OutputCount{ filterCount },
     OutputWidth{ InputWidth - FilterWidth + 1 },
     OutputHeight{ InputHeight - FilterHeight + 1 },
-    Outputs{ std::make_unique<typename Map2D<T>::Uptr[]>(OutputCount) }
+    Outputs{ std::make_unique<typename IMap2D<T>::Uptr[]>(OutputCount) }
   {
     if (InputCount == 0)
     {
