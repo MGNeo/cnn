@@ -14,6 +14,8 @@ int main(int argc, char** argv)
     network_2d->PushLayer(5, 5, 5);
     network_2d->PushLayer(10, 4, 4);
     network_2d->PushLayer(25, 3, 3);
+    
+    network_2d->Process();
 
     const float dt = (clock() - t1) / (float)CLOCKS_PER_SEC;
     std::cout << dt << std::endl;
