@@ -29,6 +29,8 @@ namespace cnn
     virtual size_t GetOutputWidth() const = 0;
     virtual size_t GetOutputHeight() const = 0;
 
+    // TODO: const IActivator<T>& GetActivator() const = 0;
+
     virtual const IMap2D<T>& GetInput(const size_t index) const = 0;
     virtual IMap2D<T>& GetInput(const size_t index) = 0;
 

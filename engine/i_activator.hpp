@@ -14,7 +14,7 @@ namespace cnn
 
     using Uptr = std::unique_ptr<IActivator<T>>;
 
-    virtual T Handle(const T value) = 0;
+    virtual T Handle(const T value) const = 0;
 
     virtual ~IActivator<T>() {};
 

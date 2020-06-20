@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "i_layer_2d.hpp"
+#include "activator.hpp"
 
 namespace cnn
 {
@@ -30,7 +31,8 @@ namespace cnn
 
     virtual void PushLayer(const size_t filterCount,
                            const size_t filterWidth,
-                           const size_t filterHeight) = 0;
+                           const size_t filterHeight,
+                           typename const IActivator<T>& activator) = 0;
 
     virtual void Process() = 0;
 

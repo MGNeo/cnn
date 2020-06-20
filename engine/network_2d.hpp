@@ -4,6 +4,7 @@
 
 #include "i_network_2d.hpp"
 #include "layer_2d.hpp"
+#include "activator.hpp"
 
 namespace cnn
 {
@@ -33,7 +34,8 @@ namespace cnn
 
     void PushLayer(const size_t filterCount,
                    const size_t filterWidth,
-                   const size_t filterHeight) override;
+                   const size_t filterHeight,
+                   typename const IActivator<T>& activator) override;
 
     void Process() override;
 
@@ -144,7 +146,8 @@ namespace cnn
   template <typename T>
   void Network2D<T>::PushLayer(const size_t filterCount,
                                const size_t filterWidth,
-                               const size_t filterHeight)
+                               const size_t filterHeight,
+                               typename const IActivator<T>& activator)
   {
     if (filterCount == 0)
     {
@@ -199,10 +202,10 @@ namespace cnn
                                                                        inputHeight,
                                                                        filterCount,
                                                                        filterWidth,
-                                                                       filterHeight);
+                                                                       filterHeight,
+                                                                       activator);
     Layers.push_back(std::move(layer_2d));
   }
-
 
   template <typename T>
   void Network2D<T>::Process()
@@ -225,7 +228,6 @@ namespace cnn
         const auto& prev = Layers[l - 1]->GetOutput(i);
         auto& current = Layers[l]->GetInput(i);
         current.Copy(prev);
-        // TODO: Use activation function.
       }
       Layers[l]->Process();
     }

@@ -19,10 +19,12 @@ namespace cnn
     Layer2D(const size_t inputCount,
             const size_t inputWidth,
             const size_t inputHeight,
-            
+
             const size_t filterCount,
             const size_t filterWidth,
-            const size_t filterHeight);
+            const size_t filterHeight,
+      
+            typename const IActivator<T>& activator);
 
     size_t GetInputCount() const override;
     size_t GetInputWidth() const override;
@@ -35,6 +37,8 @@ namespace cnn
     size_t GetOutputCount() const override;
     size_t GetOutputWidth() const override;
     size_t GetOutputHeight() const override;
+
+    // TODO: const IActivator<T>& GetActivator() const override;
 
     const IMap2D<T>& GetInput(const size_t index) const override;
     IMap2D<T>& GetInput(const size_t index) override;
@@ -64,16 +68,20 @@ namespace cnn
     const size_t OutputHeight;
     std::unique_ptr<typename IMap2D<T>::Uptr[]> Outputs;
 
+    typename const IActivator<T>& Activator;
+
   };
 
   template <typename T>
   Layer2D<T>::Layer2D(const size_t inputCount,
                       const size_t inputWidth,
                       const size_t inputHeight,
-                     
+
                       const size_t filterCount,
                       const size_t filterWidth,
-                      const size_t filterHeight)
+                      const size_t filterHeight,
+    
+                      typename const IActivator<T>& activator)
     :
     InputCount{ inputCount },
     InputWidth{ inputWidth },
@@ -88,7 +96,9 @@ namespace cnn
     OutputCount{ filterCount },
     OutputWidth{ InputWidth - FilterWidth + 1 },
     OutputHeight{ InputHeight - FilterHeight + 1 },
-    Outputs{ std::make_unique<typename IMap2D<T>::Uptr[]>(OutputCount) }
+    Outputs{ std::make_unique<typename IMap2D<T>::Uptr[]>(OutputCount) },
+
+    Activator{ activator }
   {
     if (InputCount == 0)
     {
@@ -122,6 +132,14 @@ namespace cnn
     if (FilterHeight > InputHeight)
     {
       throw std::invalid_argument("cnn::Layer2D::Layer2D(), FilterHeight > InputHeight.");
+    }
+    if (FilterWidth % 2 == 0)
+    {
+      throw std::invalid_argument("cnn::Layer2D::Layer2D(), FilterWidth % 2 == 0.");
+    }
+    if (FilterHeight % 2 == 0)
+    {
+      throw std::invalid_argument("cnn::Layer2D::Layer2D(), FilterHeight % 2 == 0.");
     }
 
     if (OutputCount == 0)
@@ -275,6 +293,7 @@ namespace cnn
     {
       auto& filter = Filters[f];
       auto& output = Outputs[f];
+      // TODO: First of all (ALL!), we must clear all outputs (for exception safety).
       output->Clear();
       for (size_t i = 0; i < InputCount; ++i)
       {
@@ -297,6 +316,14 @@ namespace cnn
             const T value = output->GetValue(ox, oy) + core.GetOutput();
             output->SetValue(ox, oy, value);
           }
+        }
+      }
+      for (size_t ox = 0; ox < OutputWidth; ++ox)
+      {
+        for (size_t oy = 0; oy < OutputHeight; ++oy)
+        {
+          const T value = Activator.Handle(output->GetValue(ox, oy));
+          output->SetValue(ox, oy, value);
         }
       }
     }

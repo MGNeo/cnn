@@ -12,7 +12,7 @@ namespace cnn
 
   public:
 
-    T Handle(const T value) override
+    T Handle(const T value) const override
     {
       return 1 / (1 + exp(-value));
     }
