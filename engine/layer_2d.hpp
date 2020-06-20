@@ -16,6 +16,7 @@ namespace cnn
 
   public:
 
+    // TODO: Add special flag (UsePadding).
     Layer2D(const size_t inputCount,
             const size_t inputWidth,
             const size_t inputHeight,
