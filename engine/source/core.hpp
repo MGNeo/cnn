@@ -33,8 +33,8 @@ namespace cnn
   private:
 
     const size_t Count;
-    std::unique_ptr<T[]> Inputs;
-    std::unique_ptr<T[]> Weights;
+    const std::unique_ptr<T[]> Inputs;
+    const std::unique_ptr<T[]> Weights;
     T Output;
 
   };

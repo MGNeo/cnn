@@ -57,17 +57,17 @@ namespace cnn
     const size_t InputCount;
     const size_t InputWidth;
     const size_t InputHeight;
-    std::unique_ptr<typename IMap2D<T>::Uptr[]> Inputs;
+    const std::unique_ptr<typename IMap2D<T>::Uptr[]> Inputs;
 
     const size_t FilterCount;
     const size_t FilterWidth;
     const size_t FilterHeight;
-    std::unique_ptr<typename IFilter2D<T>::Uptr[]> Filters;
+    const std::unique_ptr<typename IFilter2D<T>::Uptr[]> Filters;
 
     const size_t OutputCount;
     const size_t OutputWidth;
     const size_t OutputHeight;
-    std::unique_ptr<typename IMap2D<T>::Uptr[]> Outputs;
+    const std::unique_ptr<typename IMap2D<T>::Uptr[]> Outputs;
 
     typename const IActivator<T>& Activator;
 
@@ -133,14 +133,6 @@ namespace cnn
     if (FilterHeight > InputHeight)
     {
       throw std::invalid_argument("cnn::Layer2D::Layer2D(), FilterHeight > InputHeight.");
-    }
-    if (FilterWidth % 2 == 0)
-    {
-      throw std::invalid_argument("cnn::Layer2D::Layer2D(), FilterWidth % 2 == 0.");
-    }
-    if (FilterHeight % 2 == 0)
-    {
-      throw std::invalid_argument("cnn::Layer2D::Layer2D(), FilterHeight % 2 == 0.");
     }
 
     if (OutputCount == 0)

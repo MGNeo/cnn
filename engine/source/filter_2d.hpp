@@ -30,7 +30,7 @@ namespace cnn
     const size_t Count;
     const size_t Width;
     const size_t Height;
-    std::unique_ptr<typename ICore2D<T>::Uptr[]> Cores;
+    const std::unique_ptr<typename ICore2D<T>::Uptr[]> Cores;
 
   };
 

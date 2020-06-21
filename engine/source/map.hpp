@@ -29,7 +29,7 @@ namespace cnn
   private:
 
     const size_t Count;
-    std::unique_ptr<T[]> Values;
+    const std::unique_ptr<T[]> Values;
 
   };
 

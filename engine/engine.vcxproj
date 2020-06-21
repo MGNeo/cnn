@@ -18,6 +18,31 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\activator.hpp" />
+    <ClInclude Include="source\core.hpp" />
+    <ClInclude Include="source\core_2d.hpp" />
+    <ClInclude Include="source\filter_2d.hpp" />
+    <ClInclude Include="source\i_activator.hpp" />
+    <ClInclude Include="source\i_core.hpp" />
+    <ClInclude Include="source\i_core_2d.hpp" />
+    <ClInclude Include="source\i_filter_2d.hpp" />
+    <ClInclude Include="source\i_layer_2d.hpp" />
+    <ClInclude Include="source\i_lesson.hpp" />
+    <ClInclude Include="source\i_lesson_2d.hpp" />
+    <ClInclude Include="source\i_map.hpp" />
+    <ClInclude Include="source\i_map_2d.hpp" />
+    <ClInclude Include="source\i_network_2d.hpp" />
+    <ClInclude Include="source\layer_2d.hpp" />
+    <ClInclude Include="source\lesson.hpp" />
+    <ClInclude Include="source\lesson_2d.hpp" />
+    <ClInclude Include="source\map.hpp" />
+    <ClInclude Include="source\map_2d.hpp" />
+    <ClInclude Include="source\network_2d.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{59472396-6CF8-4312-AA4E-71B27929E3AC}</ProjectGuid>
@@ -103,6 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\MGNeo\Desktop\cnn\engine\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,6 +145,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\MGNeo\Desktop\cnn\engine\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,27 +153,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="activator.hpp" />
-    <ClInclude Include="core.hpp" />
-    <ClInclude Include="core_2d.hpp" />
-    <ClInclude Include="filter_2d.hpp" />
-    <ClInclude Include="i_network_2d.hpp" />
-    <ClInclude Include="layer_2d.hpp" />
-    <ClInclude Include="i_core.hpp" />
-    <ClInclude Include="i_filter_2d.hpp" />
-    <ClInclude Include="i_layer_2d.hpp" />
-    <ClInclude Include="i_map.hpp" />
-    <ClInclude Include="i_map_2d.hpp" />
-    <ClInclude Include="i_activator.hpp" />
-    <ClInclude Include="i_core_2d.hpp" />
-    <ClInclude Include="map.hpp" />
-    <ClInclude Include="map_2d.hpp" />
-    <ClInclude Include="network_2d.hpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

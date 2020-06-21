@@ -32,7 +32,7 @@ namespace cnn
 
     const size_t Width;
     const size_t Height;    
-    typename ICore<T>::Uptr Core_;
+    const typename ICore<T>::Uptr Core_;
 
     size_t ToIndex(const size_t x, const size_t y) const;
 
@@ -45,8 +45,16 @@ namespace cnn
     Height{ height },
     Core_{ std::make_unique<Core<T>>(Width * Height) }
   {
+    if (Width == 0)
+    {
+      throw std::invalid_argument("cnn::Core2D::Core2D(), Width == 0.");
+    }
+    if (Height == 0)
+    {
+      throw std::invalid_argument("cnn::Core2D::Core2D(), Height == 0.");
+    }
     const size_t m = Width * Height;
-    if ((Width != 0) && (Height != 0) && ((m / Width) != Height))
+    if ((m / Width) != Height)
     {
       throw std::overflow_error("cnn::Core2D::Core2D(), m was overflowed.");
     }

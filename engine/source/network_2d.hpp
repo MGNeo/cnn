@@ -44,7 +44,7 @@ namespace cnn
     const size_t InputCount;
     const size_t InputWidth;
     const size_t InputHeight;
-    std::unique_ptr<typename IMap2D<T>::Uptr[]> Inputs;
+    const std::unique_ptr<typename IMap2D<T>::Uptr[]> Inputs;
 
     std::vector<typename ILayer2D<T>::Uptr> Layers;
 
