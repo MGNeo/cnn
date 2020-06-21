@@ -4,7 +4,7 @@
 #include "network_2d.hpp"
 #include "lesson_2d.hpp"
 
-// This experimental convolution neural network does not have fully connected layer (by design).
+// This experimental convolutional neural network does not have fully connected layer (by design).
 
 int main(int argc, char** argv)
 {
