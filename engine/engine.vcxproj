@@ -27,12 +27,15 @@
     <ClInclude Include="source\i_core.hpp" />
     <ClInclude Include="source\i_core_2d.hpp" />
     <ClInclude Include="source\i_filter_2d.hpp" />
+    <ClInclude Include="source\i_layer.hpp" />
     <ClInclude Include="source\i_layer_2d.hpp" />
     <ClInclude Include="source\i_lesson.hpp" />
     <ClInclude Include="source\i_lesson_2d.hpp" />
     <ClInclude Include="source\i_map.hpp" />
     <ClInclude Include="source\i_map_2d.hpp" />
     <ClInclude Include="source\i_network_2d.hpp" />
+    <ClInclude Include="source\i_perceptron.hpp" />
+    <ClInclude Include="source\layer.hpp" />
     <ClInclude Include="source\layer_2d.hpp" />
     <ClInclude Include="source\lesson.hpp" />
     <ClInclude Include="source\lesson_2d.hpp" />

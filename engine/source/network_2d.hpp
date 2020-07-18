@@ -8,6 +8,7 @@
 
 namespace cnn
 {
+  // TODO: High level type must have default type argument (float).
   template <typename T>
   class Network2D : public INetwork2D<T>
   {
