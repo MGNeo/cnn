@@ -6,9 +6,8 @@
 
 namespace cnn
 {
-  // TODO: Use ILayer and Layer in ILayer2D and Layer2D.
   template <typename T>
-  class Layer
+  class Layer : ILayer<T>
   {
 
     static_assert(std::is_floating_point<T>::value);

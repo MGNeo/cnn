@@ -34,6 +34,7 @@
     <ClInclude Include="source\i_map.hpp" />
     <ClInclude Include="source\i_map_2d.hpp" />
     <ClInclude Include="source\i_network_2d.hpp" />
+    <ClInclude Include="source\i_neuron.hpp" />
     <ClInclude Include="source\i_perceptron.hpp" />
     <ClInclude Include="source\layer.hpp" />
     <ClInclude Include="source\layer_2d.hpp" />
@@ -42,6 +43,8 @@
     <ClInclude Include="source\map.hpp" />
     <ClInclude Include="source\map_2d.hpp" />
     <ClInclude Include="source\network_2d.hpp" />
+    <ClInclude Include="source\neuron.hpp" />
+    <ClInclude Include="source\perceptron.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp" />

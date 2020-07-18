@@ -2,7 +2,7 @@
 
 #include <memory>
 
-//#include "i_layer.hpp"
+#include "i_layer.hpp"
 
 namespace cnn
 {
@@ -18,7 +18,14 @@ namespace cnn
 
     virtual size_t GetLayerCount() const = 0;
 
-    virtual 
+    virtual const ILayer<T>& GetLayer(const size_t index) const = 0;
+    virtual ILayer<T>& GetLayer(const size_t index) = 0;
+
+    virtual void PushLayer(const size_t count) = 0;
+
+    virtual void Process() = 0;
+
+    virtual ~IPerceptron() {};
 
   };
 }
