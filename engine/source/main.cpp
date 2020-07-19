@@ -45,7 +45,7 @@ int main(int argc, char** argv)
 
     // TODO: Create ComplexNetwork.
     // TODO: Create ComplexLesson.
-    // TODO: Create genetic algorithm gpt ComplexNetwork.
+    // TODO: Create genetic algorithm for ComplexNetwork.
 
     // TODO (Extended): Create lesson for Network2D.
     // TODO (Extended): Create genetic algorithm for Network2D.
