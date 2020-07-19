@@ -15,9 +15,9 @@ namespace cnn
 
   public:
 
-    Filter2D(const size_t count, const size_t width, const size_t height);
+    Filter2D(const size_t coreCount, const size_t width, const size_t height);
 
-    size_t GetCount() const override;
+    size_t GetCoreCount() const override;
 
     size_t GetWidth() const override;
     size_t GetHeight() const override;
@@ -27,7 +27,7 @@ namespace cnn
 
   private:
 
-    const size_t Count;
+    const size_t CoreCount;
     const size_t Width;
     const size_t Height;
     const std::unique_ptr<typename ICore2D<T>::Uptr[]> Cores;
@@ -35,16 +35,16 @@ namespace cnn
   };
 
   template <typename T>
-  Filter2D<T>::Filter2D(const size_t count, const size_t width, const size_t height)
+  Filter2D<T>::Filter2D(const size_t coreCount, const size_t width, const size_t height)
     :
-    Count{ count },
+    CoreCount{ coreCount },
     Width{ width },
     Height{ height },
-    Cores{ std::make_unique<typename Core2D<T>::Uptr[]>(Count) }
+    Cores{ std::make_unique<typename Core2D<T>::Uptr[]>(CoreCount) }
   {
-    if (Count == 0)
+    if (CoreCount == 0)
     {
-      throw std::invalid_argument("cnn::Filter2D::Filter2D(), Count == 0.");
+      throw std::invalid_argument("cnn::Filter2D::Filter2D(), CoreCount == 0.");
     }
     if (Width == 0)
     {
@@ -54,16 +54,16 @@ namespace cnn
     {
       throw std::invalid_argument("cnn::Filter2D::Filter2D(), Height == 0.");
     }
-    for (size_t i = 0; i < Count; ++i)
+    for (size_t i = 0; i < CoreCount; ++i)
     {
       Cores[i] = std::make_unique<Core2D<T>>(Width, Height);
     }
   }
 
   template <typename T>
-  size_t Filter2D<T>::GetCount() const
+  size_t Filter2D<T>::GetCoreCount() const
   {
-    return Count;
+    return CoreCount;
   }
 
   template <typename T>
@@ -81,9 +81,9 @@ namespace cnn
   template <typename T>
   const ICore2D<T>& Filter2D<T>::GetCore(const size_t index) const
   {
-    if (index >= Count)
+    if (index >= CoreCount)
     {
-      throw std::range_error("cnn::Filter2D::GetCore() const, index >= Count.");
+      throw std::range_error("cnn::Filter2D::GetCore() const, index >= CoreCount.");
     }
     return *(Cores[index]);
   }
@@ -91,9 +91,9 @@ namespace cnn
   template <typename T>
   ICore2D<T>& Filter2D<T>::GetCore(const size_t index)
   {
-    if (index >= Count)
+    if (index >= CoreCount)
     {
-      throw std::range_error("cnn::Filter2D::GetCore(), index >= Count.");
+      throw std::range_error("cnn::Filter2D::GetCore(), index >= CoreCount.");
     }
     return *(Cores[index]);
   }

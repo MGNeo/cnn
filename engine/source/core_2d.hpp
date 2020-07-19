@@ -25,7 +25,6 @@ namespace cnn
     void SetWeight(const size_t x, const size_t y, const T value) override;
 
     void GenerateOutput() override;
-
     T GetOutput() const override;
 
   private:

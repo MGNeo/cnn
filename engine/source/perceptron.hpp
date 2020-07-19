@@ -19,6 +19,9 @@ namespace cnn
 
     size_t GetInputCount() const override;
 
+    T GetInput(const size_t index) const override;
+    void SetInput(const size_t index, const T value) override;
+
     size_t GetLayerCount() const override;
 
     const ILayer<T>& GetLayer(const size_t index) const override;
@@ -31,6 +34,7 @@ namespace cnn
   private:
 
     const size_t InputCount;
+    const std::unique_ptr<T[]> Inputs;
     std::vector<typename ILayer<T>::Uptr> Layers;
 
   };
@@ -38,18 +42,40 @@ namespace cnn
   template <typename T>
   Perceptron<T>::Perceptron(const size_t inputCount)
     :
-    InputCount{ inputCount }
+    InputCount{ inputCount },
+    Inputs{ std::make_unique<T[]>(InputCount) }
   {
     if (InputCount == 0)
     {
       throw std::invalid_argument("cnn::Perceptron::Perceptron(), InputCount == 0.");
     }
+    memset(Inputs.get(), 0, sizeof(T) * InputCount);
   }
 
   template <typename T>
   size_t Perceptron<T>::GetInputCount() const
   {
     return InputCount;
+  }
+
+  template <typename T>
+  T Perceptron<T>::GetInput(const size_t index) const
+  {
+    if (index >= InputCount)
+    {
+      throw std::range_error("cnn::Perceptron::GetInput(), index >= InputCount.");
+    }
+    return Inputs[index];
+  }
+
+  template <typename T>
+  void Perceptron<T>::SetInput(const size_t index, const T value)
+  {
+    if (index >= InputCount)
+    {
+      throw std::range_error("cnn::Perceptron::SetInput(), index >= InputCount.");
+    }
+    Inputs[index] = value;
   }
 
   template <typename T>
@@ -61,7 +87,7 @@ namespace cnn
   template <typename T>
   const ILayer<T>& Perceptron<T>::GetLayer(const size_t index) const
   {
-    if (index >= GetLayerCout())
+    if (index >= GetLayerCount())
     {
       throw std::range_error("cnn::Perceptron::GetLayer(), index >= GetLayerCount().");
     }
@@ -85,12 +111,12 @@ namespace cnn
     {
       throw std::invalid_argument("cnn::Perceptron::PushLayer(), neuronCount == 0.");
     }
-    ILayer<T>::Uptr layer{};
+    typename ILayer<T>::Uptr layer{};
     if (GetLayerCount() == 0)
     {
-      layer = std::make_unique<Layer<T>>(neuronCount, InputCount)
+      layer = std::make_unique<Layer<T>>(neuronCount, InputCount);
     } else {
-      auto inputCount = GetLayer(GetLayerCount() - 1);
+      const size_t inputCount = GetLayer(GetLayerCount() - 1).GetNeuronCount();
       layer = std::make_unique<Layer<T>>(neuronCount, inputCount);
     }
     Layers.push_back(std::move(layer));
@@ -99,25 +125,41 @@ namespace cnn
   template <typename T>
   void Perceptron<T>::Process()
   {
-    /*
-    // TODO: We need to reset all layers (inputs and outputs of neurons) if exception was generated.
-    for (size_t l = 0; l < GetLayerCount(); ++l)
+    if (Layers.size() == 0)
     {
-      auto& layer = Layers[l];
-      if (l == 0)
-      {
-        for (size_t n = 0; n < layer->GetNeuronCount(); ++n)
-        {
-          auto& neuron = layer->GetNeuron(n);
-          for (size_t i = 0; i < neuron.GetInputCount(); ++i)
-          {
-            neuron.SetInput(Input)
-          }
-        }
-      } else {
+      return;
+    }
+    // TODO: We need to reset all layers (inputs and outputs of neurons) if exception was generated.
 
+    // Process first layer.
+    {
+      auto& layer = Layers[0];
+      for (size_t n = 0; n < layer->GetNeuronCount(); ++n)
+      {
+        auto& neuron = layer->GetNeuron(n);
+        for (size_t i = 0; i < neuron.GetInputCount(); ++i)
+        {
+          neuron.SetInput(i, Inputs[i]);
+        }
+        neuron.GenerateOutput();
       }
     }
-    */
+
+    // Process other layers.
+    for (size_t l = 1; l < GetLayerCount(); ++l)
+    {
+      auto& previousLayer = Layers[l - 1];
+      auto& currentLayer = Layers[l];
+      for (size_t n = 0; n < currentLayer->GetNeuronCount(); ++n)
+      {
+        auto& currentNeuron = currentLayer->GetNeuron(n);
+        for (size_t i = 0; i < currentNeuron.GetInputCount(); ++i)
+        {
+          auto& previousNeuron = previousLayer->GetNeuron(i);
+          currentNeuron.SetInput(i, previousNeuron.GetOutput());
+        }
+        currentNeuron.GenerateOutput();
+      }
+    }
   }
 }

@@ -18,6 +18,9 @@ namespace cnn
 
     virtual size_t GetInputCount() const = 0;
 
+    virtual T GetInput(const size_t index) const = 0;
+    virtual void SetInput(const size_t index, const T value) = 0;
+
     virtual size_t GetLayerCount() const = 0;
 
     virtual const ILayer<T>& GetLayer(const size_t index) const = 0;

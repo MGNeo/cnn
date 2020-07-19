@@ -24,7 +24,6 @@ namespace cnn
     virtual void SetWeight(const size_t x, const size_t y, const T value) = 0;
 
     virtual void GenerateOutput() = 0;
-
     virtual T GetOutput() const = 0;
 
     virtual ~ICore2D() {};

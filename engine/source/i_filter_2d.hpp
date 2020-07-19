@@ -16,7 +16,7 @@ namespace cnn
 
     using Uptr = std::unique_ptr<IFilter2D<T>>;
 
-    virtual size_t GetCount() const = 0;
+    virtual size_t GetCoreCount() const = 0;
 
     virtual size_t GetWidth() const = 0;
     virtual size_t GetHeight() const = 0;

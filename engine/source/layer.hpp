@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 #include "i_layer.hpp"
+#include "neuron.hpp"
 
 namespace cnn
 {
