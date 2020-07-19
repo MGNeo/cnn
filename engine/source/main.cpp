@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 
     // Perceptron using.
     {
-      Perceptron<float>::Uptr perceptron = std::make_unique<Perceptron<float>>(10);
+      IPerceptron<float>::Uptr perceptron = std::make_unique<Perceptron<float>>(10);
       perceptron->PushLayer(15);
       perceptron->PushLayer(25);
       perceptron->PushLayer(3);
