@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "i_neuron.hpp"
+
 namespace cnn
 {
   template <typename T>
@@ -14,13 +16,10 @@ namespace cnn
 
     using Uptr = std::unique_ptr<ILayer<T>>;
 
-    virtual size_t GetCount() const = 0;
+    virtual size_t GetNeuronCount() const = 0;
     
-    virtual T GetInput(const size_t index) const = 0;
-    virtual void SetInput(const size_t index, const T value) = 0;
-
-    virtual T GetWeight(const size_t index) const = 0;
-    virtual void SetWeight(const size_t index, const T value) = 0;
+    virtual const INeuron<T>& GetNeuron(const size_t index) const = 0;
+    virtual INeuron<T>& GetNeuron(const size_t index) = 0;
 
     virtual ~ILayer() {}
 

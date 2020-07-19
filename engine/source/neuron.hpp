@@ -14,9 +14,9 @@ namespace cnn
 
   public:
 
-    Neuron(const size_t count);
+    Neuron(const size_t inputCount);
 
-    size_t GetCount() const override;
+    size_t GetInputCount() const override;
 
     T GetInput(const size_t index) const override;
     void SetInput(const size_t index, const T value) override;
@@ -24,13 +24,13 @@ namespace cnn
     T GetWeight(const size_t index) const override;
     void SetWeight(const size_t index, const T value) override;
 
-    T GetOutput() const override;
+    void GenerateOutput() override;
 
-    void Process() override;
+    T GetOutput() const override;
 
   private:
 
-    const size_t Count;
+    const size_t InputCount;
     std::unique_ptr<T[]> Inputs;
     std::unique_ptr<T[]> Weights;
     T Output;
@@ -38,31 +38,33 @@ namespace cnn
   };
 
   template <typename T>
-  Neuron<T>::Neuron(const size_t count)
+  Neuron<T>::Neuron(const size_t inputCount)
     :
-    Count{ count },
-    Inputs{ std::make_unique<T[]>(Count) },
-    Outputs{ std::make_unique<T[]>(Count) },
+    InputCount{ inputCount },
+    Inputs{ std::make_unique<T[]>(InputCount) },
+    Weights{ std::make_unique<T[]>(InputCount) },
     Output{}
   {
-    if (Count == 0)
+    if (InputCount == 0)
     {
-      throw std::invalid_argument("cnn::Neuron::Neorun(), Count == 0.");
+      throw std::invalid_argument("cnn::Neuron::Neorun(), InputCount == 0.");
     }
+    memset(Inputs.get(), 0, sizeof(T) * InputCount);
+    memset(Weights.get(), 0, sizeof(T) * InputCount);
   }
 
   template <typename T>
-  size_t Neuron<T>::GetCount() const
+  size_t Neuron<T>::GetInputCount() const
   {
-    return Count;
+    return InputCount;
   }
 
   template <typename T>
   T Neuron<T>::GetInput(const size_t index) const
   {
-    if (index >= Count)
+    if (index >= InputCount)
     {
-      throw std::invalid_argument("cnn::Neuron::GetInput(), index >= Count.");
+      throw std::range_error("cnn::Neuron::GetInput() const, index >= InputCount.");
     }
     return Inputs[index];
   }
@@ -70,9 +72,9 @@ namespace cnn
   template <typename T>
   void Neuron<T>::SetInput(const size_t index, const T value)
   {
-    if (index >= Count)
+    if (index >= InputCount)
     {
-      throw std::invalid_argument("cnn::Neuron::SetInput(), index >= Count.");
+      throw std::range_error("cnn::Neuron::SetInput(), index >= InputCount.");
     }
     Inputs[index] = value;
   }
@@ -80,9 +82,9 @@ namespace cnn
   template <typename T>
   T Neuron<T>::GetWeight(const size_t index) const
   {
-    if (index >= Count)
+    if (index >= InputCount)
     {
-      throw std::invalid_argument("cnn::Neuron::GetWeight(), index >= Count.");
+      throw std::range_error("cnn::Neuron::GetWeight() const, index >= InputCount.");
     }
     return Weights[index];
   }
@@ -90,27 +92,27 @@ namespace cnn
   template <typename T>
   void Neuron<T>::SetWeight(const size_t index, const T value)
   {
-    if (index >= Count)
+    if (index >= InputCount)
     {
-      throw std::invalid_argument]("cnn::Neuron::SetWeight(), index >= Count.");
+      throw std::range_error("cnn::Neuron::SetWeight(), index >= InputCount.");
     }
     Weights[index] = value;
+  }
+
+  template <typename T>
+  void Neuron<T>::GenerateOutput()
+  {
+    Output = 0;
+    for (size_t i = 0; i < InputCount; ++i)
+    {
+      Output += Inputs[i] * Weights[i];
+    }
+    // TODO: Use activate function.
   }
 
   template <typename T>
   T Neuron<T>::GetOutput() const
   {
     return Output;
-  }
-
-  template <typename T>
-  void Neuron<T>::Process()
-  {
-    Output = 0;
-    for (size_t i = 0; i < Count; ++i)
-    {
-      Output += Inputs[i] * Weights[i];
-    }
-    // TODO: Use activate function.
   }
 }

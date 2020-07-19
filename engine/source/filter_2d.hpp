@@ -15,7 +15,7 @@ namespace cnn
 
   public:
 
-    Filter2D(const size_t c, const size_t w, const size_t h);
+    Filter2D(const size_t count, const size_t width, const size_t height);
 
     size_t GetCount() const override;
 
@@ -35,11 +35,11 @@ namespace cnn
   };
 
   template <typename T>
-  Filter2D<T>::Filter2D(const size_t c, const size_t w, const size_t h)
+  Filter2D<T>::Filter2D(const size_t count, const size_t width, const size_t height)
     :
-    Count{ c },
-    Width{ w },
-    Height{ h },
+    Count{ count },
+    Width{ width },
+    Height{ height },
     Cores{ std::make_unique<typename Core2D<T>::Uptr[]>(Count) }
   {
     if (Count == 0)
@@ -56,7 +56,7 @@ namespace cnn
     }
     for (size_t i = 0; i < Count; ++i)
     {
-      Cores[i] = std::make_unique<Core2D<T>>(w, h);
+      Cores[i] = std::make_unique<Core2D<T>>(Width, Height);
     }
   }
 

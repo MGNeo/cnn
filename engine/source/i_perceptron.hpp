@@ -16,12 +16,14 @@ namespace cnn
 
     using Uptr = std::unique_ptr<IPerceptron<T>>;
 
+    virtual size_t GetInputCount() const = 0;
+
     virtual size_t GetLayerCount() const = 0;
 
     virtual const ILayer<T>& GetLayer(const size_t index) const = 0;
     virtual ILayer<T>& GetLayer(const size_t index) = 0;
 
-    virtual void PushLayer(const size_t count) = 0;
+    virtual void PushLayer(const size_t neuronCount) = 0;
 
     virtual void Process() = 0;
 

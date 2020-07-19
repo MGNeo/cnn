@@ -7,87 +7,70 @@
 namespace cnn
 {
   template <typename T>
-  class Layer : ILayer<T>
+  class Layer : public ILayer<T>
   {
 
     static_assert(std::is_floating_point<T>::value);
 
   public:
 
-    Layer(const size_t count);
+    Layer(const size_t neuronCount, const size_t inputCount);
 
-    size_t GetCount() const override;
+    size_t GetNeuronCount() const override;
 
-    T GetInput(const size_t index) const override;
-    void SetInput(const size_t index, const T value) override;
-
-    T GetWeight(const size_t index) const override;
-    void SetWeight(const size_t index, const T value) override;
+    const INeuron<T>& GetNeuron(const size_t index) const override;
+    INeuron<T>& GetNeuron(const size_t index) override;
 
   private:
 
-    const size_t Count;
-    const std::unique_ptr<T[]> Inputs;
-    const std::unique_ptr<T[]> Weights;
+    const size_t NeuronCount;
+    const std::unique_ptr<typename INeuron<T>::Uptr[]> Neurons;
 
   };
 
   template <typename T>
-  Layer<T>::Layer(const size_t count)
+  Layer<T>::Layer(const size_t neuronCount, const size_t inputCount)
     :
-    Count{ count },
-    Inputs{ std::make_unique<T[]>(Count) },
-    Weights{ std::make_unique<T[]>(Count) }
+    NeuronCount{ neuronCount },
+    Neurons{ std::make_unique<typename Neuron<T>::Uptr[]>(NeuronCount) }
   {
-    if (Count == 0)
+    if (NeuronCount == 0)
     {
-      throw std::invalid_argument("cnn::Layer::Layer(), Count == 0.");
+      throw std::invalid_argument("cnn::Layer::Layer(), NeuronCount == 0.");
+    }
+    if (inputCount == 0)
+    {
+      throw std::invalid_argument("cnn::Layer::Layer(), inputCount == 0.");
+    }
+    for (size_t i = 0; i < NeuronCount; ++i)
+    {
+      Neurons[i] = std::make_unique<Neuron<T>>(inputCount);
     }
   }
 
   template <typename T>
-  size_t Layer<T>::GetCount() const
+  size_t Layer<T>::GetNeuronCount() const
   {
-    return Count;
+    return NeuronCount;
   }
 
   template <typename T>
-  T Layer<T>::GetInput(const size_t index) const
+  const INeuron<T>& Layer<T>::GetNeuron(const size_t index) const
   {
-    if (index >= Count)
+    if (index >= NeuronCount)
     {
-      throw std::invalid_argument("cnn::Layer::GetInput(), index >= Count.");
+      throw std::range_error("cnn::Layer::GetNeuron() const, index >= NeuronCount.");
     }
-    return Inputs[index];
+    return *(Neurons[index]);
   }
 
   template <typename T>
-  void Layer<T>::SetInput(const size_t index, const T value)
+  INeuron<T>& Layer<T>::GetNeuron(const size_t index)
   {
-    if (index >= Count)
+    if (index >= NeuronCount)
     {
-      throw std::invalid_argument("cnn::Layer::SetInput(), index >= Count.");
+      throw std::range_error("cnn::Layer::GetNeuron(), index >= NeuronCount.");
     }
-    Inputs[index] = value;
-  }
-
-  template <typename T>
-  T Layer<T>::GetWeight(const size_t index) const
-  {
-    if (index >= Count)
-    {
-      throw std::invalid_argument("cnn::Layer::GetWeight(), index >= Count.");
-    }
-    return Weights[index];
-  }
-
-  template <typename T>
-  void Layer<T>::SetWeight(const size_t index, const T value)
-  {
-    if (index >= Count)
-    {
-      throw std::invalid_argument("cnn::Layer::SetWeight(), index >= Count.");
-    }
-    Weights[index] = value;
+    return *(Neurons[index]);
   }
 }

@@ -12,7 +12,9 @@ namespace cnn
 
   public:
 
-    virtual size_t GetCount() const = 0;
+    using Uptr = std::unique_ptr<INeuron<T>>;
+
+    virtual size_t GetInputCount() const = 0;
 
     virtual T GetInput(const size_t index) const = 0;
     virtual void SetInput(const size_t index, const T value) = 0;
@@ -22,7 +24,7 @@ namespace cnn
 
     virtual T GetOutput() const = 0;
 
-    virtual void Process() = 0;
+    virtual void GenerateOutput() = 0;
 
     virtual ~INeuron() {}
 

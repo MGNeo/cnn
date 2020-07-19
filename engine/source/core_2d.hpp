@@ -1,7 +1,7 @@
 #pragma once
 
 #include "i_core_2d.hpp"
-#include "core.hpp"
+#include "neuron.hpp"
 
 namespace cnn
 {
@@ -32,7 +32,7 @@ namespace cnn
 
     const size_t Width;
     const size_t Height;    
-    const typename ICore<T>::Uptr Core_;
+    const typename INeuron<T>::Uptr Neuron_;
 
     size_t ToIndex(const size_t x, const size_t y) const;
 
@@ -43,7 +43,7 @@ namespace cnn
     :
     Width{ width },
     Height{ height },
-    Core_{ std::make_unique<Core<T>>(Width * Height) }
+    Neuron_{ std::make_unique<Neuron<T>>(Width * Height) }
   {
     if (Width == 0)
     {
@@ -83,7 +83,7 @@ namespace cnn
     {
       throw std::range_error("cnn::Core2D::GetInput(), y >= Height.");
     }
-    return Core_->GetInput(ToIndex(x, y));
+    return Neuron_->GetInput(ToIndex(x, y));
   };
 
   template <typename T>
@@ -97,7 +97,7 @@ namespace cnn
     {
       throw std::range_error("cnn::Core2D::SetInput(), y >= Height.");
     }
-    Core_->SetInput(ToIndex(x, y), value);
+    Neuron_->SetInput(ToIndex(x, y), value);
   };
 
   template <typename T>
@@ -111,7 +111,7 @@ namespace cnn
     {
       throw std::range_error("cnn::Core2D::GetWeight(), y >= Height.");
     }
-    return Core_->GetWeight(ToIndex(x, y));
+    return Neuron_->GetWeight(ToIndex(x, y));
   }
 
   template <typename T>
@@ -125,19 +125,19 @@ namespace cnn
     {
       throw std::range_error("cnn::Core2D::setWeight(), y >= Height.");
     }
-    Core_->SetWeight(ToIndex(x, y), value);
+    Neuron_->SetWeight(ToIndex(x, y), value);
   }
 
   template <typename T>
   void Core2D<T>::GenerateOutput()
   {
-    Core_->GenerateOutput();
+    Neuron_->GenerateOutput();
   }
 
   template <typename T>
   T Core2D<T>::GetOutput() const
   {
-    return Core_->GetOutput();
+    return Neuron_->GetOutput();
   }
 
   template <typename T>
