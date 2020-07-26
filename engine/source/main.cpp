@@ -4,6 +4,7 @@
 #include "perceptron.hpp"
 #include "network_2d.hpp"
 #include "lesson_2d.hpp"
+#include "complex_network.hpp"
 
 using namespace cnn;
 
@@ -15,33 +16,27 @@ int main(int argc, char** argv)
     const time_t t1 = clock();
     IActivator<float>::Uptr activator = std::make_unique<Activator<float>>();
 
-    // Lesson using.
+    // Network2D.
+    INetwork2D<float>::Uptr network2D = std::make_unique<Network2D<float>>(3, 32, 32);
+    for (size_t i = 0; i < 15; ++i)
     {
-      ILesson2D<float>::Uptr lesson_2d = std::make_unique<Lesson2D<float>>(10, 10, 10, 10);
-      lesson_2d->GetInput(5, 5);
-      lesson_2d->SetInput(5, 5, 1.f);
-      lesson_2d->GetOutput(5, 5);
-      lesson_2d->SetOutput(5, 5, 1.f);
+      network2D->PushLayer(10, 3, 3, *activator);
     }
 
-    // Network_2d using.
-    {
-      INetwork2D<float>::Uptr network_2d = std::make_unique<Network2D<float>>(3, 32, 32);
-      for (size_t i = 0; i < 15; ++i)
-      {
-        network_2d->PushLayer(10, 3, 3, *activator);
-      }
-      network_2d->Process();
-    }
+    // Perceptron.
+    const auto& layer = network2D->GetLastLayer();
+    const size_t count = layer.GetOutputCount() * layer.GetOutputWidth() * layer.GetOutputHeight();// Unsafe multiplication.
 
-    // Perceptron using.
-    {
-      IPerceptron<float>::Uptr perceptron = std::make_unique<Perceptron<float>>(10);
-      perceptron->PushLayer(15);
-      perceptron->PushLayer(25);
-      perceptron->PushLayer(3);
-      perceptron->Process();
-    }
+    IPerceptron<float>::Uptr perceptron = std::make_unique<Perceptron<float>>(count);
+    perceptron->PushLayer(15);
+    perceptron->PushLayer(25);
+    perceptron->PushLayer(3);
+
+    // Complex network.
+    IComplexNetwork<float>::Uptr complexNetwork = std::make_unique<ComplexNetwork<float>>();
+    complexNetwork->SetNetwork2D(std::move(network2D));
+    complexNetwork->SetPerceptron(std::move(perceptron));
+    complexNetwork->Process();
 
     // TODO: Create ComplexNetwork.
     // TODO: Create ComplexLesson.

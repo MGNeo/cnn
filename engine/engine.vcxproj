@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\activator.hpp" />
+    <ClInclude Include="source\complex_network.hpp" />
     <ClInclude Include="source\core_2d.hpp" />
     <ClInclude Include="source\filter_2d.hpp" />
     <ClInclude Include="source\i_activator.hpp" />
+    <ClInclude Include="source\i_complex_network.hpp" />
     <ClInclude Include="source\i_core_2d.hpp" />
     <ClInclude Include="source\i_filter_2d.hpp" />
     <ClInclude Include="source\i_layer.hpp" />
