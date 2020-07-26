@@ -27,6 +27,9 @@ namespace cnn
     const ILayer<T>& GetLayer(const size_t index) const override;
     ILayer<T>& GetLayer(const size_t index) override;
 
+    const ILayer<T>& GetLastLayer() const override;
+    ILayer<T>& GetLastLayer() override;
+
     void PushLayer(const size_t count) override;
 
     void Process() override;
@@ -102,6 +105,26 @@ namespace cnn
       throw std::range_error("cnn::Perceptron::GetLayer(), index >= GetLayerCount().");
     }
     return *(Layers[index]);
+  }
+
+  template <typename T>
+  const ILayer<T>& Perceptron<T>::GetLastLayer() const
+  {
+    if (Layers.size() == 0)
+    {
+      throw std::logic_error("cnn::Perceptron::GetLastLayer() const, Layers.size() == 0.");
+    }
+    return *(Layers.back());
+  }
+
+  template <typename T>
+  ILayer<T>& Perceptron<T>::GetLastLayer()
+  {
+    if (Layers.size() == 0)
+    {
+      throw std::logic_error("cnn::Perceptron::GetLastLayer(), Layers.size() == 0.");
+    }
+    return *(Layers.back());
   }
 
   template <typename T>

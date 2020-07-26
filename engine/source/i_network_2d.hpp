@@ -29,6 +29,9 @@ namespace cnn
     virtual const ILayer2D<T>& GetLayer(const size_t index) const = 0;
     virtual ILayer2D<T>& GetLayer(const size_t index) = 0;
 
+    virtual const ILayer2D<T>& GetLastLayer() const = 0;
+    virtual ILayer2D<T>& GetLastLayer() = 0;
+
     virtual void PushLayer(const size_t filterCount,
                            const size_t filterWidth,
                            const size_t filterHeight,

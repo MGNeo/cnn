@@ -33,6 +33,9 @@ namespace cnn
     const ILayer2D<T>& GetLayer(const size_t index) const override;
     ILayer2D<T>& GetLayer(const size_t index) override;
 
+    const ILayer2D<T>& GetLastLayer() const override;
+    ILayer2D<T>& GetLastLayer() override;
+
     void PushLayer(const size_t filterCount,
                    const size_t filterWidth,
                    const size_t filterHeight,
@@ -142,6 +145,26 @@ namespace cnn
       throw std::range_error("cnn::Network2D::GetLayer(), index >= Layers.size().");
     }
     return *(Layers[index]);
+  }
+
+  template <typename T>
+  const ILayer2D<T>& Network2D<T>::GetLastLayer() const
+  {
+    if (Layers.size() == 0)
+    {
+      throw std::logic_error("cnn::Network2D::GetLastLayer() const, Layers.size() == 0.");
+    }
+    return *(Layers.back());
+  }
+
+  template <typename T>
+  ILayer2D<T>& Network2D<T>::GetLastLayer()
+  {
+    if (Layers.size() == 0)
+    {
+      throw std::logic_error("cnn::Network2D::GetLastLayer(), Layers.size() == 0.");
+    }
+    return *(Layers.back());
   }
 
   template <typename T>
