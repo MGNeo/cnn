@@ -32,6 +32,8 @@ namespace cnn
 
         T GetOutput() const override;
 
+        void Clear() override;
+
       private:
 
         size_t Width;
@@ -62,6 +64,7 @@ namespace cnn
           throw std::overflow_error("cnn::engine::convolution::Core2D::Core2D(), inputCount was overflowed.");
         }
         Neuron_ = std::make_unique<common::Neuron<T>>(inputCount);
+        Clear();
       }
 
       template <typename T>
@@ -115,6 +118,15 @@ namespace cnn
         }
         return x * y;
       }
+
+      template <typename T>
+      void Core2D<T>::Clear()
+      {
+        Neuron_->ClearInputs();
+        Neuron_->ClearWeight();
+        Neuron_->ClearOutput();
+      }
+
     }
   }
 }

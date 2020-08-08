@@ -29,6 +29,8 @@ namespace cnn
         T GetValue(const size_t x, const size_t y) const override;
         void SetValue(const size_t x, const size_t y, const T value) override;
 
+        void Clear() override;
+
       private:
 
         size_t Width;
@@ -99,6 +101,12 @@ namespace cnn
           throw std::range_error("cnn::engine::convolution::Map2D::ToIndex(), y >= Height.");
         }
         return x * y;
+      }
+
+      template <typename T>
+      void Map2D<T>::Clear()
+      {
+        Map_->Clear();
       }
 
     }

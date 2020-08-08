@@ -31,7 +31,9 @@ namespace cnn
 
         virtual T GetOutput() const = 0;
 
-        virtual void Clear() = 0;
+        virtual void ClearInputs() = 0;
+        virtual void ClearWeight() = 0;
+        virtual void ClearOutput() = 0;
 
         virtual ~INeuron() {};
 

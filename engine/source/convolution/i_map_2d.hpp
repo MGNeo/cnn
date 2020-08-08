@@ -25,6 +25,8 @@ namespace cnn
         virtual T GetValue(const size_t x, const size_t y) const = 0;
         virtual void SetValue(const size_t x, const size_t y, const T value) = 0;
 
+        virtual void Clear() = 0;
+
         virtual ~IMap2D() {}
 
       };

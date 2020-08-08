@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include "i_filter_2d.hpp"
+#include "core_2d.hpp"
 
 namespace cnn
 {
@@ -29,6 +30,8 @@ namespace cnn
 
         ICore2D<T>& GetCore(const size_t index) override;
         const ICore2D<T>& GetCore(const size_t index) const override;
+
+        void Clear() override;
 
       private:
 
@@ -63,6 +66,7 @@ namespace cnn
         {
           Cores[i] = std::make_unique<Core2D<T>>(Width, Height);
         }
+        Clear();
       }
 
       template <typename T>
@@ -102,6 +106,16 @@ namespace cnn
         }
         return *(Cores[index]);
       }
+
+      template <typename T>
+      void Filter2D<T>::Clear()
+      {
+        for (size_t c = 0; c < CoreCount; ++c)
+        {
+          Cores[c]->Clear();
+        }
+      }
+
     }
   }
 }

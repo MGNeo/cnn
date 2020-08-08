@@ -34,7 +34,9 @@ namespace cnn
 
         T GetOutput() const override;
 
-        void Clear() override;;
+        void ClearInputs() override;
+        void ClearWeight() override;
+        void ClearOutput() override;
 
       public:
 
@@ -56,9 +58,11 @@ namespace cnn
         {
           throw std::invalid_argument("cnn::engine::common::Neuron::Neuron(), InputCount == 0.");
         }
-        Inputs = std::unique_ptr<T[]>(InputCount);
-        Weights = std::unique_ptr<T[]>(InputCount);
-        Clear();
+        Inputs = std::make_unique<T[]>(InputCount);
+        Weights = std::make_unique<T[]>(InputCount);
+        ClearInputs();
+        ClearWeight();
+        ClearOutput();
       }
 
       template <typename T>
@@ -124,13 +128,27 @@ namespace cnn
       }
 
       template <typename T>
-      void Neuron<T>::Clear()
+      void Neuron<T>::ClearInputs()
       {
         for (size_t i = 0; i < InputCount; ++i)
         {
           Inputs[i] = 0;
-          Weights[i] = 0;
         }
+      }
+
+      template <typename T>
+      void Neuron<T>::ClearWeight()
+      {
+        for (size_t w = 0; w < InputCount; ++w)
+        {
+          Weights[w] = 0;
+        }
+      }
+
+      template <typename T>
+      void Neuron<T>::ClearOutput()
+      {
+        Output = 0;
       }
     }
   }
