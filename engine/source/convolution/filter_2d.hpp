@@ -32,6 +32,9 @@ namespace cnn
         const ICore2D<T>& GetCore(const size_t index) const override;
 
         void Clear() override;
+        void ClearInputs() override;
+        void ClearWeight() override;
+        void ClearOutput() override;
 
       private:
 
@@ -112,7 +115,36 @@ namespace cnn
       {
         for (size_t c = 0; c < CoreCount; ++c)
         {
-          Cores[c]->Clear();
+          Cores[c]->ClearInputs();
+          Cores[c]->ClearWeights();
+          Cores[c]->ClearOutput();
+        }
+      }
+
+      template <typename T>
+      void Filter2D<T>::ClearInputs()
+      {
+        for (size_t c = 0; c < CoreCount; ++c)
+        {
+          Cores[c]->ClearInputs();
+        }
+      }
+
+      template <typename T>
+      void Filter2D<T>::ClearWeight()
+      {
+        for (size_t c = 0; c < CoreCount; ++c)
+        {
+          Cores[c]->ClearWeights();
+        }
+      }
+
+      template <typename T>
+      void Filter2D<T>::ClearOutput()
+      {
+        for (size_t c = 0; c < CoreCount; ++c)
+        {
+          Cores[c]->ClearOutput();
         }
       }
 

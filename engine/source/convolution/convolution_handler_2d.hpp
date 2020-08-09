@@ -276,34 +276,33 @@ namespace cnn
       void ConvolutionHandler2D<T>::Process()
       {
         // TODO: Think about rollback when exception is thrown.
-        for (size_t i = 0; i < InputCount; ++i)
+        for (size_t f = 0; f < FilterCount; ++f)
         {
-          const auto& input = *(Inputs[i]);
-          for (size_t f = 0; f < FilterCount; ++f)
+          auto& filter = *(Filters[f]);
+          auto& output = *(Outputs[f]);
+          output.Clear();
+          for (size_t i = 0; i < InputCount; ++i)
           {
-            auto& filter = *(Filters[f]);
-            auto& output = *(Outputs[f]);
-            for (size_t c = 0; c < filter.GetCoreCount(); ++c)
+            const auto& input = *(Inputs[i]);
+            auto& core = filter.GetCore(i);
+            core.ClearInputs();
+            for (size_t ox = 0; ox < OutputWidth; ++ox)
             {
-              auto& core = filter.GetCore(c);
-              for (size_t ox = 0; ox < OutputWidth; ++ox)
+              for (size_t oy = 0; oy < OutputHeight; ++oy)
               {
-                for (size_t oy = 0; oy < OutputHeight; ++oy)
+                for (size_t cx = 0; cx < FilterWidth; ++cx)
                 {
-                  for (size_t cx = 0; cx < FilterWidth; ++cx)
+                  for (size_t cy = 0; cy < FilterHeight; ++cy)
                   {
-                    for (size_t cy = 0; cy < FilterHeight; ++cy)
-                    {
-                      const auto ix = ox + cx;
-                      const auto iy = oy + cy;
-                      const auto value = input.GetValue(ix, iy);
-                      core.SetInput(cx, cy, value);
-                    }
+                    const auto ix = ox + cx;
+                    const auto iy = oy + cy;
+                    const auto value = input.GetValue(ix, iy);
+                    core.SetInput(cx, cy, value);
                   }
-                  core.Process();
-                  const auto value = output.GetValue(ox, oy) + core.GetOutput();
-                  output.SetValue(ox, oy, value);
                 }
+                core.Process();
+                const auto value = output.GetValue(ox, oy) + core.GetOutput();
+                output.SetValue(ox, oy, value);
               }
             }
           }

@@ -3,8 +3,8 @@
 #include <memory>
 #include <type_traits>
 
-#include "i_map_2d.hpp"
-#include "i_filter_2d.hpp"
+#include "i_pooling_handler_2d.hpp"
+#include "i_convolution_handler_2d.hpp"
 
 namespace cnn
 {
@@ -22,23 +22,13 @@ namespace cnn
 
         using Uptr = std::unique_ptr<ILayer2D<T>>;
 
-        // virtual size_t GetInputCount() const = 0;
-        // virtual size_t GetInputWidth() const = 0;
-        // virtual size_t GetInputHeight() const = 0;
-        // virtual IMap2D<T>& GetInput(const size_t index) = 0;
-        // virtual const IMap2D<T>& GetInput(const size_t index) const = 0;
-        
-        // virtual IPoolingHandler2D<T>& GetPoolingHandler() = 0;
-        // virtual const IPoolingHandler2D<T>& GetPoolingHandler() const = 0;
+        virtual IPoolingHandler2D<T>& GetPoolingHandler() = 0;
+        virtual const IPoolingHandler2D<T>& GetPoolingHandler() const = 0;
 
-        // virtual IConvolutionHandler2D<T>& GetConvolutionHandler() = 0;
-        // virtual const IConvolutionHandler2D<T>& GetConvolutionHandler() const = 0;
+        virtual IConvolutionHandler2D<T>& GetConvolutionHandler() = 0;
+        virtual const IConvolutionHandler2D<T>& GetConvolutionHandler() const = 0;
 
-        // virtual size_t GetOutputCount() const = 0;
-        // virtual size_t GetOutputWidth() const = 0;
-        // virtual size_t GetOutputHeight() const = 0;
-        // virtual IMap2D<T>& GetOutput(const index size_t) = 0;
-        // virtual IMap2D<T>& GetOutput(const size_t index) const = 0;
+        virtual void Process() = 0;
 
         virtual ~ILayer2D() {}
 

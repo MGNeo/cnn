@@ -24,11 +24,16 @@ namespace cnn
         virtual T GetInput(const size_t x, const size_t y) const = 0;
         virtual void SetInput(const size_t x, const size_t y, const T value) = 0;
 
+        virtual T GetWeight(const size_t x, const size_t y) const = 0;
+        virtual void SetWeight(const size_t x, const size_t y, const T value) = 0;
+
         virtual void Process() = 0;
 
         virtual T GetOutput() const = 0;
 
-        virtual void Clear() = 0;
+        virtual void ClearInputs() = 0;
+        virtual void ClearWeights() = 0;
+        virtual void ClearOutput() = 0;
 
         virtual ~ICore2D() {}
 

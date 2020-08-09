@@ -19,7 +19,10 @@ namespace cnn
 
       public:
 
-        PoolingHandler2D(const size_t inputWidth, const size_t inputHeight, const size_t stepSize, const size_t channelCount);
+        PoolingHandler2D(const size_t inputWidth,
+                         const size_t inputHeight,
+                         const size_t stepSize,
+                         const size_t channelCount);
 
         size_t GetInputWidth() const override;
         size_t GetInputHeight() const override;
@@ -59,7 +62,10 @@ namespace cnn
       };
 
       template <typename T>
-      PoolingHandler2D<T>::PoolingHandler2D(const size_t width, const size_t height, const size_t stepSize, const size_t channelCount)
+      PoolingHandler2D<T>::PoolingHandler2D(const size_t width,
+                                            const size_t height,
+                                            const size_t stepSize,
+                                            const size_t channelCount)
         :
         InputWidth{ inputWidth },
         InputHeight{ inputHeight },

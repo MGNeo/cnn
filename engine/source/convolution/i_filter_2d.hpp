@@ -30,6 +30,9 @@ namespace cnn
         virtual const ICore2D<T>& GetCore(const size_t index) const = 0;
 
         virtual void Clear() = 0;
+        virtual void ClearInputs() = 0;
+        virtual void ClearWeight() = 0;
+        virtual void ClearOutput() = 0;
 
         virtual ~IFilter2D() {}
 

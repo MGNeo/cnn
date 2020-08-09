@@ -28,12 +28,16 @@ namespace cnn
         T GetInput(const size_t x, const size_t y) const override;
         void SetInput(const size_t x, const size_t y, const T value) override;
 
+        T GetWeight(const size_t x, const size_t y) const override;
+        void SetWeight(const size_t x, const size_t y, const T value) override;
+
         void Process() override;
 
         T GetOutput() const override;
 
-        void Clear() override;
-
+        void ClearInputs() override;
+        void ClearWeights() override;
+        void ClearOutput() override;
       private:
 
         size_t Width;
@@ -64,7 +68,9 @@ namespace cnn
           throw std::overflow_error("cnn::engine::convolution::Core2D::Core2D(), inputCount was overflowed.");
         }
         Neuron_ = std::make_unique<common::Neuron<T>>(inputCount);
-        Clear();
+        ClearInputs();
+        ClearWeights();
+        ClearOutput();
       }
 
       template <typename T>
@@ -94,6 +100,20 @@ namespace cnn
       }
 
       template <typename T>
+      T Core2D<T>::GetWeight(const size_t x, const size_t y) const
+      {
+        const size_t index = ToIndex(x, y);
+        return Neuron_->GetWeight(index);
+      }
+
+      template <typename T>
+      void Core2D<T>::SetWeight(const size_t x, const size_t y, const T value)
+      {
+        const size_t index = ToIndex(x, y);
+        Neuron_->SetWeight(index, value);
+      }
+
+      template <typename T>
       void Core2D<T>::Process()
       {
         Neuron_->Process();
@@ -120,13 +140,22 @@ namespace cnn
       }
 
       template <typename T>
-      void Core2D<T>::Clear()
+      void Core2D<T>::ClearInputs()
       {
         Neuron_->ClearInputs();
-        Neuron_->ClearWeight();
-        Neuron_->ClearOutput();
       }
 
+      template <typename T>
+      void Core2D<T>::ClearWeights()
+      {
+        Neuron_->ClearWeight();
+      }
+
+      template <typename T>
+      void Core2D<T>::ClearOutput()
+      {
+        Neuron_->ClearOutput();
+      }
     }
   }
 }
