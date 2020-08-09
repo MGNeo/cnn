@@ -136,7 +136,7 @@ namespace cnn
         {
           throw std::range_error("cnn::engine::convolution::Core2D::ToIndex(), y >= Height.");
         }
-        return x * y;
+        return x + y * Width;;
       }
 
       template <typename T>

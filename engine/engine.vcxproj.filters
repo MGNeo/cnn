@@ -15,7 +15,6 @@
     <ClInclude Include="source\convolution\filter_2d.hpp" />
     <ClInclude Include="source\convolution\i_core_2d.hpp" />
     <ClInclude Include="source\convolution\i_filter_2d.hpp" />
-    <ClInclude Include="source\convolution\i_layer.hpp" />
     <ClInclude Include="source\convolution\i_map_2d.hpp" />
     <ClInclude Include="source\convolution\i_network_2d.hpp" />
     <ClInclude Include="source\convolution\i_pooling_handler_2d.hpp" />
@@ -28,6 +27,7 @@
     <ClInclude Include="source\convolution\i_convolution_handler_2d.hpp" />
     <ClInclude Include="source\convolution\convolution_handler_2d.hpp" />
     <ClInclude Include="source\convolution\layer_2d.hpp" />
+    <ClInclude Include="source\convolution\i_layer_2d.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">

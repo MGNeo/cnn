@@ -1,6 +1,6 @@
 #pragma once
 
-#include "i_convolution_handler_2d.hpp"
+#include "i_layer_2d.hpp"
 #include "pooling_handler_2d.hpp"
 #include "convolution_handler_2d.hpp"
 
@@ -61,6 +61,7 @@ namespace cnn
 
         ConvolutionHandler = std::make_unique<ConvolutionHandler2D<T>>(PoolingHandler->GetOutputWidth(),
                                                                        PoolingHandler->GetOutputHeight(),
+                                                                       PoolingHandler->GetChannelCount(),
                                                                        convolutionFilterWidth,
                                                                        convolutionFilterHeight,
                                                                        convolutionFilterCount);

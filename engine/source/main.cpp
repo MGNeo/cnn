@@ -1,10 +1,11 @@
 #include <iostream>
 
-#include "convolution/convolution_handler_2d.hpp"
+#include "convolution/layer_2d.hpp"
 
 int main()
 {
-  cnn::engine::convolution::ConvolutionHandler2D<float> ch2d(1, 1, 1, 1, 1, 1);
+  cnn::engine::convolution::Layer2D<float> layer2d{ 10, 10, 3, 3, 3, 3, 20 };
+  layer2d.Process();
   std::cout << "Hello World!\n";
 }
 

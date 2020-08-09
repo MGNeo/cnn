@@ -62,14 +62,14 @@ namespace cnn
       };
 
       template <typename T>
-      PoolingHandler2D<T>::PoolingHandler2D(const size_t width,
-                                            const size_t height,
-                                            const size_t stepSize,
+      PoolingHandler2D<T>::PoolingHandler2D(const size_t inputWidth,
+                                            const size_t inputHeight,
+                                            const size_t stepSize,// TODO: Change order of this and next value.
                                             const size_t channelCount)
         :
         InputWidth{ inputWidth },
         InputHeight{ inputHeight },
-        StepSize{ stepSize },
+        StepSize{ stepSize },// TODO: Change order of this and next value.
         ChannelCount{ channelCount }
       {
         if (InputWidth == 0)
@@ -80,9 +80,9 @@ namespace cnn
         {
           throw std::invalid_argument("cnn::engine::convolution::PoolingHandler2D::PoolingHandler2D(), InputHeight == 0.");
         }
-        if (StepSize == 0)
+        if (StepSize <= 1)
         {
-          throw std::invalid_argument("cnn::engine::convolution::PoolingHandler2D::PoolingHandler2D(), StepSize == 0.");
+          throw std::invalid_argument("cnn::engine::convolution::PoolingHandler2D::PoolingHandler2D(), StepSize <= 1.");
         }
         if (StepSize > InputWidth)
         {
@@ -97,27 +97,37 @@ namespace cnn
           throw std::invalid_argument("cnn::engine::convolution::PoolingHandler2D::PoolingHandler2D(), ChannelCount == 0.");
         }
 
-        OutputWidth = InputWidth - StepSize + 1;
-        if (OutputWidth == 0)
+        if (InputWidth % StepSize)
         {
-          throw std::overflow_error("cnn::engine::convolution::PoolingHandler2D::PoolingHandler2D(), OutputWidth was overflowed.");
+          OutputWidth = InputWidth / StepSize + 1;
+          if (OutputWidth == 0)
+          {
+            throw std::overflow_error("cnn::engine::convolution::PoolingHandler2D::PollingHandler2D(), OutputWidth was overflowed.");
+          }
+        } else {
+          OutputWidth = InputWidth / StepSize;
         }
-
-        OutputHeight = InputHeight - StepSize + 1;
-        if (OutputHeight == 0)
+        
+        if (InputHeight % StepSize)
         {
-          throw std::overflow_error("cnn::engine::convolution::PoolingHandler2D::PoolingHandler2D(), OutputHeight was overflowed.");
+          OutputHeight = InputHeight / StepSize + 1;
+          if (OutputHeight == 0)
+          {
+            throw std::overflow_error("cnn::engine::convolution::PoolingHandler2D::PollingHandler2D(), OutputHeight was overflowed.");
+          }
+        } else {
+          OutputHeight = InputHeight / StepSize;
         }
 
         Inputs = std::make_unique<typename Map2D<T>::Uptr[]>(ChannelCount);
         for (size_t i = 0; i < ChannelCount; ++i)
         {
-          Inputs[i] = std::make_unique<Map2D<T>>(Width, Height);
+          Inputs[i] = std::make_unique<Map2D<T>>(InputWidth, InputHeight);
         }
         Outputs = std::make_unique<typename Map2D<T>::Uptr[]>(ChannelCount);
         for (size_t i = 0; i < ChannelCount; ++i)
         {
-          Outputs[i] = std::make_unique<Map2D<T>>(Width, Height);
+          Outputs[i] = std::make_unique<Map2D<T>>(OutputWidth, OutputHeight);
         }
       }
 
@@ -200,27 +210,31 @@ namespace cnn
       template <typename T>
       void PoolingHandler2D<T>::Process()
       {
-        for (size_t i = 0; i < ChannelCount; ++i)
+        for (size_t c = 0; c < ChannelCount; ++c)
         {
-          auto& input = *(Inputs[i]);
-          auto& output = *(Outputs[i]);
-          for (size_t x = 0; x < InputWidth; x += StepSize)
+          auto& input = *(Inputs[c]);
+          auto& output = *(Outputs[c]);
+
+          for (size_t ox = 0; ox < OutputWidth; ++ox)
           {
-            for (size_t y = 0; y < InputHeight; y += StepSize)
+            for (size_t oy = 0; oy < OutputHeight; ++oy)
             {
-              const T maxValue = std::numeric_limits<float>::min();// What about it?
-              
-              const size_t fromX = x;
-              const size_t toX = ((x + StepSize) <= InputWidth) ? (x + StepSize) : InpuwWidth;
+              T maxValue = std::numeric_limits<float>::min();// What about it?
 
-              const size_t fromY = y;
-              const size_t toY = ((y + StepSize) <= InputHeight) ? (y + StepSize) : InputHeight;
+              // TODO: Handle possible overflow (overflow is possible!).
+              // Perhaps, we need check overflows in the constructor.
 
-              for (size_t localX = fromX; localX < toX; ++localX)
+              const size_t ixBegin = ox * StepSize;
+              const size_t ixEnd = ((ixBegin + StepSize) < InputWidth) ? (ixBegin + StepSize) : (InputWidth);
+
+              const size_t iyBegin = oy * StepSize;
+              const size_t iyEnd = ((iyBegin + StepSize) < InputHeight) ? (iyBegin + StepSize) : (InputHeight);
+
+              for (size_t ix = ixBegin; ix < ixEnd; ++ix)
               {
-                for (size_t localY = fromY; localY < toY; ++localY)
+                for (size_t ix = iyBegin; ix < iyEnd; ++ix)
                 {
-                  const T value = input.GetValue(localX, localY);
+                  const T value = input.GetValue(ix, ix);
                   if (value > maxValue)
                   {
                     maxValue = value;
@@ -228,7 +242,7 @@ namespace cnn
                 }
               }
 
-              output.SetValue(x, y, maxValue);
+              output.SetValue(ox, oy, maxValue);
             }
           }
         }
