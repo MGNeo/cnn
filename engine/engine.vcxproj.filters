@@ -26,8 +26,8 @@
     <ClInclude Include="source\common\neuron.hpp" />
     <ClInclude Include="source\convolution\i_convolution_handler_2d.hpp" />
     <ClInclude Include="source\convolution\convolution_handler_2d.hpp" />
-    <ClInclude Include="source\convolution\layer_2d.hpp" />
     <ClInclude Include="source\convolution\i_layer_2d.hpp" />
+    <ClInclude Include="source\convolution\pooling_layer_2d.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">

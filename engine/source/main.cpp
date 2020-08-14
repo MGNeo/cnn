@@ -1,11 +1,13 @@
 #include <iostream>
 
-#include "convolution/layer_2d.hpp"
+#include "convolution/pooling_layer_2d.hpp"
+
+using namespace cnn::engine::convolution;
 
 int main()
 {
-  cnn::engine::convolution::Layer2D<float> layer2d{ 10, 10, 3, 3, 3, 3, 20 };
-  layer2d.Process();
+  ILayer2D<float>::Uptr layer = std::make_unique<PoolingLayer2D<float>>(10, 10, 3, 3);
+
   std::cout << "Hello World!\n";
 }
 
