@@ -3,8 +3,6 @@
 #include "i_layer_2d.hpp"
 #include "pooling_handler_2d.hpp"
 
-#include <stdexcept>
-
 namespace cnn
 {
   namespace engine
