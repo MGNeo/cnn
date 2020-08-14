@@ -33,7 +33,7 @@ namespace cnn
                            const size_t filterCount);
 
         size_t GetInputWidth() const override;
-        size_t GetIntputHeight() const override;
+        size_t GetInputHeight() const override;
         size_t GetInputCount() const override;
 
         const IMap2D<T>& GetInput(const size_t index) const override;
@@ -78,9 +78,9 @@ namespace cnn
                                                 const size_t filterHeight,
                                                 const size_t filterCount)
       {
-        ConvolutionHandler = std::make_unique<ConvolutionHandler2D<T>>(prevLayer->GetOutputWidth(),
-                                                                       prevLayer->GetOutputHeight(),
-                                                                       prevLayer->GetOutputCount(),
+        ConvolutionHandler = std::make_unique<ConvolutionHandler2D<T>>(prevLayer.GetOutputWidth(),
+                                                                       prevLayer.GetOutputHeight(),
+                                                                       prevLayer.GetOutputCount(),
           
                                                                        filterWidth,
                                                                        filterHeight,
@@ -94,7 +94,7 @@ namespace cnn
       }
 
       template <typename T>
-      size_t ConvolutionLayer2D<T>::GetIntputHeight() const
+      size_t ConvolutionLayer2D<T>::GetInputHeight() const
       {
         return ConvolutionHandler->GetInputHeight();
       }

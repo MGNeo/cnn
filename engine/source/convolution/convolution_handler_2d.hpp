@@ -146,7 +146,7 @@ namespace cnn
         Filters = std::make_unique<typename IFilter2D<T>::Uptr[]>(FilterCount);
         for (size_t f = 0; f < FilterCount; ++f)
         {
-          Filters[f] = std::make_unique<Filter2D<T>>(FilterWidth, FilterHeight, FilterCount);
+          Filters[f] = std::make_unique<Filter2D<T>>(FilterWidth, FilterHeight, InputCount);
         }
         ClearFilters();
 

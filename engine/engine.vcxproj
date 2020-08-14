@@ -33,8 +33,10 @@
     <ClInclude Include="source\convolution\i_layer_2d.hpp" />
     <ClInclude Include="source\convolution\i_map_2d.hpp" />
     <ClInclude Include="source\convolution\i_network_2d.hpp" />
+    <ClInclude Include="source\convolution\i_neuron.hpp" />
     <ClInclude Include="source\convolution\i_pooling_handler_2d.hpp" />
     <ClInclude Include="source\convolution\map_2d.hpp" />
+    <ClInclude Include="source\convolution\network_2d.hpp" />
     <ClInclude Include="source\convolution\pooling_handler_2d.hpp" />
     <ClInclude Include="source\convolution\pooling_layer_2d.hpp" />
   </ItemGroup>

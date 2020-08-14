@@ -28,7 +28,7 @@ namespace cnn
                        const size_t stepSize);
 
         size_t GetInputWidth() const override;
-        size_t GetIntputHeight() const override;
+        size_t GetInputHeight() const override;
         size_t GetInputCount() const override;
 
         const IMap2D<T>& GetInput(const size_t index) const override;
@@ -65,10 +65,10 @@ namespace cnn
       PoolingLayer2D<T>::PoolingLayer2D(const ILayer2D<T>& prevLayer,
                                         const size_t stepSize)
       {
-        PoolingHandler = std::make_unique<PoolingHandler2D<T>>(prevLayer->GetOutputWidth(),
-                                                               prevLayer->GetOutputHeight(),
+        PoolingHandler = std::make_unique<PoolingHandler2D<T>>(prevLayer.GetOutputWidth(),
+                                                               prevLayer.GetOutputHeight(),
                                                                stepSize,
-                                                               prevLayer->GetOutputCount());
+                                                               prevLayer.GetOutputCount());
       }
 
       template <typename T>
@@ -78,7 +78,7 @@ namespace cnn
       }
 
       template <typename T>
-      size_t PoolingLayer2D<T>::GetIntputHeight() const
+      size_t PoolingLayer2D<T>::GetInputHeight() const
       {
         return PoolingHandler->GetInputHeight();
       }

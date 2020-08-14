@@ -22,7 +22,7 @@ namespace cnn
         using Uptr = std::unique_ptr<ILayer2D<T>>;
 
         virtual size_t GetInputWidth() const = 0;
-        virtual size_t GetIntputHeight() const = 0;
+        virtual size_t GetInputHeight() const = 0;
         virtual size_t GetInputCount() const = 0;
 
         virtual const IMap2D<T>& GetInput(const size_t index) const = 0;
