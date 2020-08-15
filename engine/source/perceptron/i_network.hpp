@@ -1,0 +1,40 @@
+#pragma once
+
+#include <type_traits>
+#include <memory>
+
+#include "i_layer.hpp"
+
+namespace cnn
+{
+  namespace engine
+  {
+    namespace perceptron
+    {
+      template <typename T>
+      class INetwork
+      {
+
+        static_assert(std::is_floating_point<T>::value);
+
+      public:
+
+        using Uptr = std::unique_ptr<INetwork<T>>;
+
+        virtual void PushBack(const size_t outputSize) = 0;
+
+        virtual size_t GetLayerCount() const = 0;
+
+        virtual const ILayer<T>& GetLayer(const size_t index) const = 0;
+        virtual ILayer<T>& GetLayer(const size_t index) = 0;
+        
+        virtual void Process() = 0;
+
+        // TODO: Clear() family methods.
+
+        virtual ~INetwork() {}
+
+      };
+    }
+  }
+}

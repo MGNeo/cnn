@@ -110,15 +110,17 @@ namespace cnn
           auto& layer = *(Layers[l]);
           if (l != 0)
           {
-            auto& prevLayer = *(Layers[l - 1]);
+            const auto& prevLayer = *(Layers[l - 1]);
             for (size_t i = 0; i < layer.GetInputCount(); ++i)
             {
+              const auto& prevOutput = prevLayer.GetOutput(i);
+              auto& input = layer.GetInput(i);
               for (size_t x = 0; x < layer.GetInputWidth(); ++x)
               {
                 for (size_t y = 0; y < layer.GetInputHeight(); ++y)
                 {
-                  const auto& value = prevLayer.GetOutput(i).GetValue(x, y);
-                  layer.GetInput(i).SetValue(x, y, value);
+                  const auto& value = prevOutput.GetValue(x, y);
+                  input.SetValue(x, y, value);
                 }
               }
             }
