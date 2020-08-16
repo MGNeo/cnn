@@ -43,6 +43,8 @@ namespace cnn
 
         void Process() override;
 
+        size_t GetStepSize() const;
+
       private:
 
         size_t InputWidth;
@@ -54,7 +56,6 @@ namespace cnn
         size_t OutputHeight;
 
         size_t StepSize;
-
 
         std::unique_ptr<typename IMap2D<T>::Uptr[]> Inputs;
         std::unique_ptr<typename IMap2D<T>::Uptr[]> Outputs;
@@ -260,6 +261,12 @@ namespace cnn
             }
           }
         }
+      }
+
+      template <typename T>
+      size_t PoolingLayer2D<T>::GetStepSize() const
+      {
+        return StepSize;
       }
 
       template <typename T>

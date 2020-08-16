@@ -37,6 +37,11 @@ namespace cnn
 
         void Process() override;
 
+        size_t GetNeuronCount() const;
+
+        const common::INeuron<T>& GetNeuron(const size_t index) const;
+        common::INeuron<T>& GetNeuron(const size_t index);
+
       private:
 
         size_t InputSize;
@@ -46,7 +51,7 @@ namespace cnn
         std::unique_ptr<typename common::INeuron<T>::Uptr[]> Neurons;
 
         size_t OutputSize;
-       typename common::IMap<T>::Uptr Output;
+        typename common::IMap<T>::Uptr Output;
 
         // TODO: Clear() family functions.
 
@@ -123,7 +128,6 @@ namespace cnn
       template <typename T>
       void Layer<T>::Process()
       {
-        /*
         // TODO: Think about exception safety.
         for (size_t n = 0; n < NeuronCount; ++n)
         {
@@ -138,7 +142,32 @@ namespace cnn
           Output->SetValue(n, value);
           
         }
-        */
+      }
+
+      template <typename T>
+      size_t Layer<T>::GetNeuronCount() const
+      {
+        return NeuronCount;
+      }
+
+      template <typename T>
+      const common::INeuron<T>& Layer<T>::GetNeuron(const size_t index) const
+      {
+        if (index >= NeuronCount)
+        {
+          throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron() const, index >= NeuronCount.");
+        }
+        return *(Neurons[index]);
+      }
+
+      template <typename T>
+      common::INeuron<T>& Layer<T>::GetNeuron(const size_t index)
+      {
+        if (index >= NeuronCount)
+        {
+          throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron(), index >= NeuronCount.");
+        }
+        return *(Neurons[index]);
       }
     }
   }
