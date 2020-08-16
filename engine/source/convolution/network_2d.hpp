@@ -23,24 +23,25 @@ namespace cnn
 
         Network2D(typename ILayer2D<T>::Uptr&& firstLayer);
 
-        void PushBack(const size_t stepSize) override;
+        void PushBack(const size_t stepSize);
 
         void PushBack(const size_t filterWidth,
                       const size_t filterHeight,
-                      const size_t filterCount) override;
+                      const size_t filterCount);
 
         size_t GetLayerCount() const override;
 
         const ILayer2D<T>& GetLayer(const size_t index) const override;
         ILayer2D<T>& GetLayer(const size_t index) override;
 
+        const ILayer2D<T>& GetLastLayer() const override;
+        ILayer2D<T>& GetLastLayer() override;
+
         void Process() override;
 
       private:
 
         std::vector<typename ILayer2D<T>::Uptr> Layers;
-
-        const ILayer2D<T>& GetLastLayer() const;
 
       };
 
@@ -103,6 +104,26 @@ namespace cnn
       }
 
       template <typename T>
+      const ILayer2D<T>& Network2D<T>::GetLastLayer() const
+      {
+        if (Layers.size() == 0)
+        {
+          throw std::logic_error("cnn::engine::convolution::Network2D::GetLastLayer() const, Layers.size() == 0.");
+        }
+        return *(Layers.back());
+      }
+
+      template <typename T>
+      ILayer2D<T>& Network2D<T>::GetLastLayer()
+      {
+        if (Layers.size() == 0)
+        {
+          throw std::logic_error("cnn::engine::convolution::Network2D::GetLastLayer(), Layers.size() == 0.");
+        }
+        return *(Layers.back());
+      }
+
+      template <typename T>
       void Network2D<T>::Process()
       {
         for (size_t l = 0; l < Layers.size(); ++l)
@@ -127,16 +148,6 @@ namespace cnn
           }
           layer.Process();
         }
-      }
-
-      template <typename T>
-      const ILayer2D<T>& Network2D<T>::GetLastLayer() const
-      {
-        if (Layers.size() == 0)
-        {
-          throw std::logic_error("cnn::engine::convolution::Network2D::GetLastLayer() const, Layers.size() == 0.");
-        }
-        return *(Layers.back());
       }
     }
   }

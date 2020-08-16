@@ -23,6 +23,8 @@
     <ClInclude Include="source\common\i_neuron.hpp" />
     <ClInclude Include="source\common\map.hpp" />
     <ClInclude Include="source\common\neuron.hpp" />
+    <ClInclude Include="source\complex\i_network_2d.hpp" />
+    <ClInclude Include="source\complex\network_2d.hpp" />
     <ClInclude Include="source\convolution\convolution_layer_2d.hpp" />
     <ClInclude Include="source\convolution\core_2d.hpp" />
     <ClInclude Include="source\convolution\filter_2d.hpp" />

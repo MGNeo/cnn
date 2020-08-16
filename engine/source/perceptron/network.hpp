@@ -22,20 +22,21 @@ namespace cnn
 
         Network(typename ILayer<T>::Uptr&& firstLayer);
         
-        void PushBack(const size_t outputSize) override;
+        void PushBack(const size_t outputSize);
 
         size_t GetLayerCount() const override;
 
         const ILayer<T>& GetLayer(const size_t index) const override;
         ILayer<T>& GetLayer(const size_t index) override;
 
+        const ILayer<T>& GetLastLayer() const override;
+        ILayer<T>& GetLastLayer() override;;
+
         void Process() override;
 
       private:
 
         std::vector<typename ILayer<T>::Uptr> Layers;
-
-        const ILayer<T>& GetLastLayer() const;
 
       };
 
@@ -84,6 +85,26 @@ namespace cnn
       }
 
       template <typename T>
+      const ILayer<T>& Network<T>::GetLastLayer() const
+      {
+        if (Layers.size() == 0)
+        {
+          throw std::logic_error("cnn::engine::perceptron::Network::GetLastLayer() const, Layers.size() == 0.");
+        }
+        return *(Layers.back());
+      }
+
+      template <typename T>
+      ILayer<T>& Network<T>::GetLastLayer()
+      {
+        if (Layers.size() == 0)
+        {
+          throw std::logic_error("cnn::engine::perceptron::Network::GetLastLayer(), Layers.size() == 0.");
+        }
+        return *(Layers.back());
+      }
+
+      template <typename T>
       void Network<T>::Process()
       {
         for (size_t l = 0; l < Layers.size(); ++l)
@@ -102,16 +123,6 @@ namespace cnn
           }
           layer.Process();
         }
-      }
-
-      template <typename T>
-      const ILayer<T>& Network<T>::GetLastLayer() const
-      {
-        if (Layers.size() == 0)
-        {
-          throw std::logic_error("cnn::engine::perceptron::Network::GetLastLayer(), Layers.size() == 0.");
-        }
-        return *(Layers.back());
       }
     }
   }

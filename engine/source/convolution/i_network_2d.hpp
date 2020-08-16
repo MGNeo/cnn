@@ -20,17 +20,14 @@ namespace cnn
       public:
 
         using Uptr = std::unique_ptr<INetwork2D<T>>;
-
-        virtual void PushBack(const size_t stepSize) = 0;
-
-        virtual void PushBack(const size_t filterWidth,
-                              const size_t filterHeight,
-                              const size_t filterCount) = 0;
         
         virtual size_t GetLayerCount() const = 0;
 
         virtual const ILayer2D<T>& GetLayer(const size_t index) const = 0;
         virtual ILayer2D<T>& GetLayer(const size_t index) = 0;
+
+        virtual const ILayer2D<T>& GetLastLayer() const = 0;
+        virtual ILayer2D<T>& GetLastLayer() = 0;
 
         virtual void Process() = 0;
 

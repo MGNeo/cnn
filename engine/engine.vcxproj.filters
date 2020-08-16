@@ -31,6 +31,8 @@
     <ClInclude Include="source\perceptron\layer.hpp" />
     <ClInclude Include="source\perceptron\i_network.hpp" />
     <ClInclude Include="source\perceptron\network.hpp" />
+    <ClInclude Include="source\complex\i_network_2d.hpp" />
+    <ClInclude Include="source\complex\network_2d.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
