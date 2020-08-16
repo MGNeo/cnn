@@ -80,6 +80,7 @@ namespace cnn
         {
           throw std::range_error("cnn::engine::perceptron::Network::GetLayer(), index >= Layers.size().");
         }
+        return *(Layers[index]);
       }
 
       template <typename T>

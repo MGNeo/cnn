@@ -1,7 +1,7 @@
 #pragma once
 
 #include "i_layer_2d.hpp"
-#include "pooling_handler_2d.hpp"
+#include "map_2d.hpp"
 
 namespace cnn
 {
@@ -45,7 +45,21 @@ namespace cnn
 
       private:
 
-        typename IPoolingHandler2D<T>::Uptr PoolingHandler;
+        size_t InputWidth;
+        size_t InputHeight;
+
+        size_t ChannelCount;
+
+        size_t OutputWidth;
+        size_t OutputHeight;
+
+        size_t StepSize;
+
+
+        std::unique_ptr<typename IMap2D<T>::Uptr[]> Inputs;
+        std::unique_ptr<typename IMap2D<T>::Uptr[]> Outputs;
+
+        void CheckExtendedOverflows() const;
 
       };
 
@@ -54,87 +68,230 @@ namespace cnn
                                         const size_t inputHeight,
                                         const size_t channelCount,
                                         const size_t stepSize)
+        :
+          InputWidth{ inputWidth },
+          InputHeight{ inputHeight },
+          ChannelCount{ channelCount },
+          StepSize{ stepSize }
       {
-        PoolingHandler = std::make_unique<PoolingHandler2D<T>>(inputWidth,
-                                                               inputHeight,
-                                                               stepSize,
-                                                               channelCount);
+        if (InputWidth == 0)
+        {
+          throw std::invalid_argument("cnn::engine::convolution::PoolingLayer2D::PoolingLayer2D(), InputWidth == 0.");
+        }
+        if (InputHeight == 0)
+        {
+          throw std::invalid_argument("cnn::engine::convolution::PoolingLayer2D::PoolingLayer2D(), InputHeight == 0.");
+        }
+        if (StepSize <= 1)
+        {
+          throw std::invalid_argument("cnn::engine::convolution::PoolingLayer2D::PoolingLayer2D(), StepSize <= 1.");
+        }
+        if (StepSize > InputWidth)
+        {
+          throw std::invalid_argument("cnn::engine::convolution::PoolingLayer2D::PoolingLayer2D(), StepSize > InputWidth.");
+        }
+        if (StepSize > InputHeight)
+        {
+          throw std::invalid_argument("cnn::engine::convolution::PoolingLayer2D::PoolingLayer2D(), StepSize > InputHeight.");
+        }
+        if (ChannelCount == 0)
+        {
+          throw std::invalid_argument("cnn::engine::convolution::PoolingLayer2D::PoolingLayer2D(), ChannelCount == 0.");
+        }
+
+        if (InputWidth % StepSize)
+        {
+          OutputWidth = InputWidth / StepSize + 1;
+          if (OutputWidth == 0)
+          {
+            throw std::overflow_error("cnn::engine::convolution::PoolingLayer2D::PoolingLayer2D(), OutputWidth was overflowed.");
+          }
+        } else {
+          OutputWidth = InputWidth / StepSize;
+        }
+
+        if (InputHeight % StepSize)
+        {
+          OutputHeight = InputHeight / StepSize + 1;
+          if (OutputHeight == 0)
+          {
+            throw std::overflow_error("cnn::engine::convolution::PoolingLayer2D::PoolingLayer2D(), OutputHeight was overflowed.");
+          }
+        } else {
+          OutputHeight = InputHeight / StepSize;
+        }
+
+        CheckExtendedOverflows();
+
+        Inputs = std::make_unique<typename Map2D<T>::Uptr[]>(ChannelCount);
+        for (size_t i = 0; i < ChannelCount; ++i)
+        {
+          Inputs[i] = std::make_unique<Map2D<T>>(InputWidth, InputHeight);
+        }
+        Outputs = std::make_unique<typename Map2D<T>::Uptr[]>(ChannelCount);
+        for (size_t i = 0; i < ChannelCount; ++i)
+        {
+          Outputs[i] = std::make_unique<Map2D<T>>(OutputWidth, OutputHeight);
+        }
       }
 
       template <typename T>
       PoolingLayer2D<T>::PoolingLayer2D(const ILayer2D<T>& prevLayer,
                                         const size_t stepSize)
+        :
+        PoolingLayer2D{ prevLayer.GetOutputWidth(),
+                        prevLayer.GetOutputHeight(),
+                        prevLayer.GetOutputCount(),
+                        stepSize }
       {
-        PoolingHandler = std::make_unique<PoolingHandler2D<T>>(prevLayer.GetOutputWidth(),
-                                                               prevLayer.GetOutputHeight(),
-                                                               stepSize,
-                                                               prevLayer.GetOutputCount());
       }
 
       template <typename T>
       size_t PoolingLayer2D<T>::GetInputWidth() const
       {
-        return PoolingHandler->GetInputWidth();
+        return InputWidth;
       }
 
       template <typename T>
       size_t PoolingLayer2D<T>::GetInputHeight() const
       {
-        return PoolingHandler->GetInputHeight();
+        return InputHeight;
       }
 
       template <typename T>
       size_t PoolingLayer2D<T>::GetInputCount() const
       {
-        return PoolingHandler->GetChannelCount();
+        return ChannelCount;
       }
 
       template <typename T>
       const IMap2D<T>& PoolingLayer2D<T>::GetInput(const size_t index) const
       {
-        return PoolingHandler->GetInput(index);
+        if (index >= ChannelCount)
+        {
+          throw std::range_error("cnn::engine::convolution::PoolingLayer2D::GetInput() const, index >= ChannelCount.");
+        }
+        return *(Inputs[index]);
       }
 
       template <typename T>
       IMap2D<T>& PoolingLayer2D<T>::GetInput(const size_t index)
       {
-        return PoolingHandler->GetInput(index);
+        if (index >= ChannelCount)
+        {
+          throw std::range_error("cnn::engine::convolution::PoolingLayer2D::GetInput(), index >= ChannelCount.");
+        }
+        return *(Inputs[index]);
       }
 
       template <typename T>
       size_t PoolingLayer2D<T>::GetOutputWidth() const
       {
-        return PoolingHandler->GetOutputWidth();
+        return OutputWidth;
       }
 
       template <typename T>
       size_t PoolingLayer2D<T>::GetOutputHeight() const
       {
-        return PoolingHandler->GetOutputHeight();
+        return OutputHeight;
       }
 
       template <typename T>
       size_t PoolingLayer2D<T>::GetOutputCount() const
       {
-        return PoolingHandler->GetChannelCount();
+        return ChannelCount;
       }
 
       template <typename T>
       const IMap2D<T>& PoolingLayer2D<T>::GetOutput(const size_t index) const
       {
-        return PoolingHandler->GetOutput(index);
+        if (index >= ChannelCount)
+        {
+          throw std::range_error("cnn::engine::convolution::PoolingLayer2D::GetOutput() const, index >= ChannelCount.");
+        }
+        return *(Outputs[index]);
       }
 
       template <typename T>
       IMap2D<T>& PoolingLayer2D<T>::GetOutput(const size_t index)
       {
-        return PoolingHandler->GetOutput(index);
+        if (index >= ChannelCount)
+        {
+          throw std::range_error("cnn::engine::convolution::PoolingLayer2D::GetOutput(), index >= ChannelCount.");
+        }
+        return *(Outputs[index]);
       }
 
       template <typename T>
       void PoolingLayer2D<T>::Process()
       {
-        PoolingHandler->Process();
+        {
+          for (size_t c = 0; c < ChannelCount; ++c)
+          {
+            auto& input = *(Inputs[c]);
+            auto& output = *(Outputs[c]);
+
+            for (size_t ox = 0; ox < OutputWidth; ++ox)
+            {
+              for (size_t oy = 0; oy < OutputHeight; ++oy)
+              {
+                T maxValue = std::numeric_limits<float>::min();
+
+                const size_t ixBegin = ox * StepSize;
+                const size_t ixEnd = ((ixBegin + StepSize) < InputWidth) ? (ixBegin + StepSize) : (InputWidth);
+
+                const size_t iyBegin = oy * StepSize;
+                const size_t iyEnd = ((iyBegin + StepSize) < InputHeight) ? (iyBegin + StepSize) : (InputHeight);
+
+                for (size_t ix = ixBegin; ix < ixEnd; ++ix)
+                {
+                  for (size_t ix = iyBegin; ix < iyEnd; ++ix)
+                  {
+                    const T value = input.GetValue(ix, ix);
+                    if (value > maxValue)
+                    {
+                      maxValue = value;
+                    }
+                  }
+                }
+
+                output.SetValue(ox, oy, maxValue);
+              }
+            }
+          }
+        }
+      }
+
+      template <typename T>
+      void PoolingLayer2D<T>::CheckExtendedOverflows() const
+      {
+        {
+          const size_t ixBegin = OutputWidth * StepSize;
+          if ((ixBegin / OutputWidth) != StepSize)
+          {
+            throw std::overflow_error("cnn::engine::convolution::PoolingLayer2D::CheckExtendedOverflows(), ixBegin was overflowed.");
+          }
+
+          const size_t ixEnd = ixBegin + StepSize;
+          if (ixEnd < ixBegin)
+          {
+            throw std::overflow_error("cnn::engine::convolution::PoolingLayer2D::CheckExtendedOverflows(), ixEnd was overflowed.");
+          }
+        }
+
+        {
+          const size_t iyBegin = OutputHeight * StepSize;
+          if ((iyBegin / OutputHeight) != StepSize)
+          {
+            throw std::overflow_error("cnn::engine::convolution::PoolingLayer2D::CheckExtendedOverflows(), iyBegin was overflowed.");
+          }
+
+          const size_t iyEnd = iyBegin + StepSize;
+          if (iyEnd < iyBegin)
+          {
+            throw std::overflow_error("cnn::engine::convolution::PoolingLayer2D::CheckExtendedOverflows(), iyEnd was overflowed.");
+          }
+        }
       }
     }
   }
