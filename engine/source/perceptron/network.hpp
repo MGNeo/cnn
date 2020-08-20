@@ -20,9 +20,13 @@ namespace cnn
 
       public:
 
+        using Uptr = std::unique_ptr<Network<T>>;
+
         Network(const size_t inputCountInFirstLayer,
                 const size_t outputCountInFirstLayer);
-        
+
+        void PushBack(const size_t outputCountInNewLayer);
+
         size_t GetLayerCount() const override;
 
         const ILayer<T>& GetLayer(const size_t index) const override;
@@ -32,11 +36,6 @@ namespace cnn
         ILayer<T>& GetLastLayer() override;;
 
         void Process() override;
-
-      protected:
-
-        // For using by ExtensibleNetwork only.
-        void PushBack(const size_t outputCountInNewLayer);
 
       private:
 

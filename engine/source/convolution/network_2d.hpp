@@ -30,6 +30,12 @@ namespace cnn
                   const size_t filterWidthInFirstLayer,
                   const size_t filterHeightInFirstLayer,
                   const size_t filterCountInFirstLayer);
+        
+        void PushBack(const size_t stepSizeInNewLayer);
+
+        void PushBack(const size_t filterWidthInNewLayer,
+                      const size_t filterHeightInNewLayer,
+                      const size_t filterCountInNewLayer);
 
         size_t GetLayerCount() const override;
 
@@ -42,15 +48,6 @@ namespace cnn
         size_t GetOutputValueCount() const override;
 
         void Process() override;
-
-      protected:
-
-        // For using by ExtensibleNetwork2D.
-        void PushBack(const size_t stepSizeInNewLayer);
-
-        void PushBack(const size_t filterWidthInNewLayer,
-                      const size_t filterHeightInNewLayer,
-                      const size_t filterCountInNewLayer);
 
       private:
 
