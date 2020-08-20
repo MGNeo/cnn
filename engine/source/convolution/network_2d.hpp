@@ -1,6 +1,8 @@
 #pragma once
 
 #include "i_network_2d.hpp"
+#include "convolution_layer_2d.hpp"
+#include "pooling_layer_2d.hpp"
 
 #include <vector>
 #include <stdexcept>
@@ -21,13 +23,13 @@ namespace cnn
 
         using Uptr = std::unique_ptr<Network2D<T>>;
 
-        Network2D(typename ILayer2D<T>::Uptr&& firstLayer);
+        Network2D(const size_t inputWidthInFirstLayer,
+                  const size_t inputHeightInFirstLayer,
+                  const size_t inputCountInFirstLayer,
 
-        void PushBack(const size_t stepSize);
-
-        void PushBack(const size_t filterWidth,
-                      const size_t filterHeight,
-                      const size_t filterCount);
+                  const size_t filterWidthInFirstLayer,
+                  const size_t filterHeightInFirstLayer,
+                  const size_t filterCountInFirstLayer);
 
         size_t GetLayerCount() const override;
 
@@ -37,7 +39,18 @@ namespace cnn
         const ILayer2D<T>& GetLastLayer() const override;
         ILayer2D<T>& GetLastLayer() override;
 
+        size_t GetOutputValueCount() const override;
+
         void Process() override;
+
+      protected:
+
+        // For using by ExtensibleNetwork2D.
+        void PushBack(const size_t stepSizeInNewLayer);
+
+        void PushBack(const size_t filterWidthInNewLayer,
+                      const size_t filterHeightInNewLayer,
+                      const size_t filterCountInNewLayer);
 
       private:
 
@@ -46,34 +59,43 @@ namespace cnn
       };
 
       template <typename T>
-      Network2D<T>::Network2D(typename ILayer2D<T>::Uptr&& firstLayer)
+      Network2D<T>::Network2D(const size_t inputWidthInFirstLayer,
+                              const size_t inputHeightInFirstLayer,
+                              const size_t inputCountInFirstLayer,
+
+                              const size_t filterWidthInFirstLayer,
+                              const size_t filterHeightInFirstLayer,
+                              const size_t filterCountInFirstLayer)
       {
-        if (firstLayer == nullptr)
-        {
-          throw std::invalid_argument("cnn::engine::convolution::Network2D::Network2D(), firstLayer == nullptr.");
-        }
+        typename ILayer2D<T>::Uptr firstLayer = std::make_unique<ConvolutionLayer2D<T>>(inputWidthInFirstLayer,
+                                                                                        inputHeightInFirstLayer,
+                                                                                        inputCountInFirstLayer,
+
+                                                                                        filterWidthInFirstLayer,
+                                                                                        filterHeightInFirstLayer,
+                                                                                        filterCountInFirstLayer);
         Layers.push_back(std::move(firstLayer));
       }
 
       template <typename T>
-      void Network2D<T>::PushBack(const size_t stepSize)
+      void Network2D<T>::PushBack(const size_t stepSizeInNewLayer)
       {
         const auto& prevLayer = GetLastLayer();
         typename ILayer2D<T>::Uptr layer = std::make_unique<PoolingLayer2D<T>>(prevLayer,
-                                                                               stepSize);
+                                                                               stepSizeInNewLayer);
         Layers.push_back(std::move(layer));
       }
 
       template <typename T>
-      void Network2D<T>::PushBack(const size_t filterWidth,
-                                  const size_t filterHeight,
-                                  const size_t filterCount)
+      void Network2D<T>::PushBack(const size_t filterWidthInNewLayer,
+                                  const size_t filterHeightInNewLayer,
+                                  const size_t filterCountInNewLayer)
       {
         const auto& prevLayer = GetLastLayer();
         typename ILayer2D<T>::Uptr layer = std::make_unique<ConvolutionLayer2D<T>>(prevLayer,
-                                                                                   filterWidth,
-                                                                                   filterHeight,
-                                                                                   filterCount);
+                                                                                   filterWidthInNewLayer,
+                                                                                   filterHeightInNewLayer,
+                                                                                   filterCountInNewLayer);
         Layers.push_back(std::move(layer));
       }
 
@@ -121,6 +143,30 @@ namespace cnn
           throw std::logic_error("cnn::engine::convolution::Network2D::GetLastLayer(), Layers.size() == 0.");
         }
         return *(Layers.back());
+      }
+
+      template <typename T>
+      size_t Network2D<T>::GetOutputValueCount() const
+      {
+        const auto& lastLayer = GetLastLayer();
+
+        const size_t outputWidth = lastLayer.GetOutputWidth();
+        const size_t outputHeight = lastLayer.GetOutputHeight();
+        const size_t outputCount = lastLayer.GetOutputCount();
+
+        const size_t m1 = outputWidth * outputHeight;
+        if ((m1 / outputWidth) != outputHeight)
+        {
+          throw std::overflow_error("cnn::engine::convolution::Network2D::GetOutputValueCount(), m1 was overflowed.");
+        }
+
+        const size_t m2 = m1 * outputCount;
+        if ((m2 / m1) != outputCount)
+        {
+          throw std::overflow_error("cnn::engine::convolution::Network2D::GetOutputValueCount(), m2 was overflowed.");
+        }
+
+        return m2;
       }
 
       template <typename T>

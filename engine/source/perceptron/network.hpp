@@ -20,10 +20,9 @@ namespace cnn
 
       public:
 
-        Network(typename ILayer<T>::Uptr&& firstLayer);
+        Network(const size_t inputCountInFirstLayer,
+                const size_t outputCountInFirstLayer);
         
-        void PushBack(const size_t outputSize);
-
         size_t GetLayerCount() const override;
 
         const ILayer<T>& GetLayer(const size_t index) const override;
@@ -34,6 +33,11 @@ namespace cnn
 
         void Process() override;
 
+      protected:
+
+        // For using by ExtensibleNetwork only.
+        void PushBack(const size_t outputCountInNewLayer);
+
       private:
 
         std::vector<typename ILayer<T>::Uptr> Layers;
@@ -41,21 +45,20 @@ namespace cnn
       };
 
       template <typename T>
-      Network<T>::Network(typename ILayer<T>::Uptr&& firstLayer)
+      Network<T>::Network(const size_t inputCountInFirstLayer,
+                          const size_t outputCountInFirstLayer)
       {
-        if (firstLayer == nullptr)
-        {
-          throw std::invalid_argument("cnn::engine::perceptron::Network::Network(), firstLayer == nullptr.");
-        }
+        typename ILayer<T>::Uptr firstLayer = std::make_unique<Layer<T>>(inputCountInFirstLayer,
+                                                                         outputCountInFirstLayer);
         Layers.push_back(std::move(firstLayer));
       }
 
       template <typename T>
-      void Network<T>::PushBack(const size_t outputSize)
+      void Network<T>::PushBack(const size_t outputCountInNewLayer)
       {
-        typename ILayer<T>::Uptr layer = std::make_unique<Layer<T>>(GetLastLayer().GetOutputSize(),
-                                                                    outputSize);
-        Layers.push_back(std::move(layer));
+        typename ILayer<T>::Uptr newLayer = std::make_unique<Layer<T>>(GetLastLayer().GetOutputSize(),
+                                                                       outputCountInNewLayer);
+        Layers.push_back(std::move(newLayer));
       }
 
       template <typename T>

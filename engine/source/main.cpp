@@ -1,50 +1,44 @@
 #include <iostream>
 
-#include "convolution/pooling_layer_2d.hpp"
-#include "convolution/convolution_layer_2d.hpp"
-#include "convolution/network_2d.hpp"
-
-#include "perceptron/layer.hpp"
-#include "perceptron/network.hpp"
-
+#include "convolution/extensible_network_2d.hpp"
+#include "perceptron/extensible_network.hpp"
 #include "complex/network_2d.hpp"
 
 int main()
 {
-  {
-    using namespace cnn::engine::convolution;
+  // Create new extensible 2D convolution network.
+  // First layer of the network is convolution layer.
+  cnn::engine::convolution::ExtensibleNetwork2D<float>::Uptr eNetwork2D = std::make_unique<cnn::engine::convolution::ExtensibleNetwork2D<float>>(32, 32, 3, 5, 5, 25);
+  
+  // Second layer of the network is pooling layer.
+  eNetwork2D->PushBack(2);
 
-    auto layer2d = std::make_unique<ConvolutionLayer2D<float>>(32, 32, 1, 4, 4, 16);
+  // Third layer of the network is convolution layer too.
+  eNetwork2D->PushBack(8, 8, 150);
 
-    // TODO: Think about more clear constructor.
-    auto network2d = std::make_unique<Network2D<float>>(std::move(layer2d));
+  // ---------------------------------------------------------------------------------
 
-    network2d->PushBack(2);// TODO: Exclude this methods.
-    network2d->PushBack(7, 7, 64);
-    network2d->PushBack(3);
-    network2d->PushBack(3, 3, 256);
+  // Create new extensible perceptron network.
+  // First layer of the network has 4 neurons.
+  const size_t inputCount = eNetwork2D->GetOutputValueCount();
+  cnn::engine::perceptron::ExtensibleNetwork<float>::Uptr eNetwork = std::make_unique<cnn::engine::perceptron::ExtensibleNetwork<float>>(inputCount, 4);
 
-    network2d->Process();
-  }
+  // Second layer of the network has 8 neurons.
+  eNetwork->PushBack(8);
 
-  {
-    using namespace cnn::engine::perceptron;
-    auto layer = std::make_unique<Layer<float>>(10, 5);
+  // Third layer of the network has 3 neurons.
+  eNetwork->PushBack(3);
 
-    // TODO: Think about more clear constructor.
-    auto network = std::make_unique<Network<float>>(std::move(layer));
+  // ---------------------------------------------------------------------------------
 
-    network->PushBack(8);
-    network->PushBack(11);
-    network->PushBack(3);
+  // Create new complex network.
+  cnn::engine::complex::INetwork2D<float>::Uptr network2D = std::make_unique<cnn::engine::complex::Network2D<float>>(std::move(eNetwork2D), std::move(eNetwork));
 
-    network->Process();
-  }
-
-  {
-    using namespace cnn::engine::complex;
-    // Try to use complex::INetwork for test.
-  }
+  // TODO: Write example of using.
+  // ...
+  network2D->Process();
+  
+  std::cout << network2D->GetConvolutionNetwork2D().GetOutputValueCount() << std::endl;
 
   std::cout << "Hello World!\n";
 }

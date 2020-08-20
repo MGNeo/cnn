@@ -136,6 +136,7 @@ namespace cnn
         }
       }
 
+      // TODO: Change the signature to (6x size_t).
       template <typename T>
       PoolingLayer2D<T>::PoolingLayer2D(const ILayer2D<T>& prevLayer,
                                         const size_t stepSize)

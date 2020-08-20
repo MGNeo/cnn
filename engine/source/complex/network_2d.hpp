@@ -31,7 +31,7 @@ namespace cnn
 
         void Process() override;
 
-      public:
+      private:
 
         typename convolution::INetwork2D<T>::Uptr ConvolutionNetwork2D;
         typename perceptron::INetwork<T>::Uptr PerceptronNetwork;
@@ -51,26 +51,7 @@ namespace cnn
           throw std::invalid_argument("cnn::engine::complex::Network2D::Network2D(), perceptronNetwork == nullptr.");
         }
 
-        const size_t cOutputWidth = convolutionNetwork2D->GetLastLayer().GetOutputWidth();
-        const size_t cOutputHeight = convolutionNetwork2D->GetLastLayer().GetOutputHeight();
-        const size_t cOutputCount = convolutionNetwork2D->GetLastLayer().GetOutputCount();
-
-        const size_t m1 = cOutputWidth * cOutputHeight;
-        if ((m1 / cOutputWidth) != cOutputHeight)
-        {
-          throw std::overflow_error("cnn::engine::complex::Network2D::Netowrk2D(), m1 was overflowed.");
-        }
-
-        const size_t cTotalOutputCount = m1 * cOutputCount;
-        if ((cTotalOutputCount / m1) != cOutputCount)
-        {
-          throw std::overflow_error("cnn::engine::complex::Network2D::Network2D(), cTotalOutputCount was overflowed.");
-        }
-
-        if (cTotalOutputCount != perceptronNetwork->GetLastLayer().GetInputSize())
-        {
-          throw std::logic_error("cnn::engine::complex::Network2D::Network2D(), cTotalOutputCount != perceptronNetwork->GetLastLayer().GetInputSize().");
-        }
+        (void)convolutionNetwork2D->GetOutputValueCount();
 
         ConvolutionNetwork2D = std::move(convolutionNetwork2D);
         PerceptronNetwork = std::move(perceptronNetwork);
@@ -115,7 +96,7 @@ namespace cnn
             size_t i{};
             for (size_t x = 0; x < cLastLayer.GetOutputWidth(); ++x)
             {
-              for (size_t y = 0; y < cLastLayer.GetOutputHeight; ++y)
+              for (size_t y = 0; y < cLastLayer.GetOutputHeight(); ++y)
               {
                 const T value = cOutput.GetValue(x, y);
                 pInput.SetValue(i++, value);

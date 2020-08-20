@@ -27,6 +27,7 @@
     <ClInclude Include="source\complex\network_2d.hpp" />
     <ClInclude Include="source\convolution\convolution_layer_2d.hpp" />
     <ClInclude Include="source\convolution\core_2d.hpp" />
+    <ClInclude Include="source\convolution\extensible_network_2d.hpp" />
     <ClInclude Include="source\convolution\filter_2d.hpp" />
     <ClInclude Include="source\convolution\i_core_2d.hpp" />
     <ClInclude Include="source\convolution\i_filter_2d.hpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="source\convolution\map_2d.hpp" />
     <ClInclude Include="source\convolution\network_2d.hpp" />
     <ClInclude Include="source\convolution\pooling_layer_2d.hpp" />
+    <ClInclude Include="source\perceptron\extensible_network.hpp" />
     <ClInclude Include="source\perceptron\i_layer.hpp" />
     <ClInclude Include="source\perceptron\i_network.hpp" />
     <ClInclude Include="source\perceptron\layer.hpp" />

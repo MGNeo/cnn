@@ -165,6 +165,7 @@ namespace cnn
         ClearOutputs();
       }
 
+      // TODO: Change the signature to (6x size_t).
       template <typename T>
       ConvolutionLayer2D<T>::ConvolutionLayer2D(const ILayer2D<T>& prevLayer,
                                                 const size_t filterWidth,
