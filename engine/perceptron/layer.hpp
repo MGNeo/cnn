@@ -42,6 +42,8 @@ namespace cnn
         const common::INeuron<T>& GetNeuron(const size_t index) const;
         common::INeuron<T>& GetNeuron(const size_t index);
 
+        void Accept(ILayerVisitor<T>& visitor) override;
+
       private:
 
         size_t InputSize;
@@ -168,6 +170,12 @@ namespace cnn
           throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron(), index >= NeuronCount.");
         }
         return *(Neurons[index]);
+      }
+
+      template <typename T>
+      void Layer<T>::Accept(ILayerVisitor<T>& visitor)
+      {
+        visitor.Visit(*this);
       }
     }
   }

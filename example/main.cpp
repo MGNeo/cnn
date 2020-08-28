@@ -1,17 +1,20 @@
 #include <iostream>
 
-#include "convolution/network_2d.hpp"
-#include "perceptron/network.hpp"
-#include "complex/network_2d.hpp"
+#include "../engine/convolution/network_2d.hpp"
+#include "../engine/perceptron/network.hpp"
+#include "../engine/complex/network_2d.hpp"
 
-#include "complex/lesson_2d.hpp"
+#include "../engine/complex/lesson_2d.hpp"
+#include "../engine/perceptron/i_layer_visitor.hpp"
+
+// TODO: Create special examples of using and put it into: "convolution", "perceptron" and "complex" namespaces and folders.
 
 int main()
 {
   // Create new 2D convolution network.
   // First layer of the network is convolution layer.
   cnn::engine::convolution::Network2D<float>::Uptr subNetwork2D = std::make_unique<cnn::engine::convolution::Network2D<float>>(32, 32, 3, 5, 5, 5);
-  
+
   // Second layer of the network is pooling layer.
   subNetwork2D->PushBack(2);
 
@@ -66,20 +69,26 @@ int main()
   }
 
   // Create new 2D complex lesson.
-  cnn::engine::complex::ILesson2D<float>::Uptr lesson2D = std::make_unique<cnn::engine::complex::Lesson2D<float>>(32, 32, 3, 5);
+  {
+    cnn::engine::complex::ILesson2D<float>::Uptr lesson2D = std::make_unique<cnn::engine::complex::Lesson2D<float>>(32, 32, 3, 5);
 
-  // Use the lesson.
-  lesson2D->GetInput(0).GetValue(0, 0);
-  lesson2D->GetInput(0).SetValue(0, 0, 1.f);
-  lesson2D->GetOutput().GetValue(0);
-  lesson2D->GetOutput().SetValue(0, 1.f);
+    // Use the lesson.
+    lesson2D->GetInput(0).GetValue(0, 0);
+    lesson2D->GetInput(0).SetValue(0, 0, 1.f);
+    lesson2D->GetOutput().GetValue(0);
+    lesson2D->GetOutput().SetValue(0, 1.f);
+  }
 
-  // TODO: Write perceptron::ILayerVisitor (for the viewing of perceptron::ILayer with its real type "Layer" and like this);
+  // Create perceptron::ILayerVisitor (for the viewing of perceptron::ILayer with its real type "Layer" and like this);
+  {
+    // TODO: Write example.
+  }
+
   // TODO: Write convolution::ILayer2DVisitor (for the viewing of convolution::ILayer2D with its real type "PoolingLayer", "ConvolutionLayer" and like this);
   // TODO: Write genetic algorithm.
   // TODO: Add activation functions.
   // TODO: ...
-  
+
   std::cout << "All was successfully completed!" << std::endl;
 }
 

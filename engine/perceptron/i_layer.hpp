@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "../common/i_map.hpp"
+#include "i_layer_visitor.hpp"
 
 namespace cnn
 {
@@ -34,6 +35,8 @@ namespace cnn
         virtual void Process() = 0;
 
         virtual ~ILayer() {}
+
+        virtual void Accept(ILayerVisitor<T>& visitor) = 0;
 
       };
     }
