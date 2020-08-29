@@ -30,6 +30,12 @@ namespace cnn
       template <typename T>
       void Example<T>::Execute() const
       {
+        // TODO: Write few private submethods for an each special example.
+        // - Simple();
+        // - Visitor();
+        // - GeneticAlgorithm();
+        // - etc.
+
         std::cout << __FUNCSIG__ << std::endl;
 
         // Create new 2D convolution network.

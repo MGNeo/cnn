@@ -33,6 +33,7 @@ namespace cnn
       {
         std::cout << "  " << __FUNCSIG__ << std::endl;
 
+        std::cout << "    Layer type: " << typeid(layer).name() << std::endl;
 
         std::cout << "    Input width: " << layer.GetInputWidth() << std::endl;
         std::cout << "    Input height: " << layer.GetInputHeight() << std::endl;
@@ -50,6 +51,8 @@ namespace cnn
       void Layer2DVisitor<T>::Visit(engine::convolution::ConvolutionLayer2D<T>& layer)
       {
         std::cout << "  " << __FUNCSIG__ << std::endl;
+
+        std::cout << "    Layer type: " << typeid(layer).name() << std::endl;
 
         std::cout << "    Input width: " << layer.GetInputWidth() << std::endl;
         std::cout << "    Input height: " << layer.GetInputHeight() << std::endl;

@@ -35,5 +35,8 @@
     <ClInclude Include="convolution\layer_2d_visitor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="complex\example.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
