@@ -1,16 +1,21 @@
 #include <iostream>
 
+#include "perceptron/example.hpp"
+
+/*
 #include "../engine/convolution/network_2d.hpp"
 #include "../engine/perceptron/network.hpp"
 #include "../engine/complex/network_2d.hpp"
 
 #include "../engine/complex/lesson_2d.hpp"
 #include "../engine/perceptron/i_layer_visitor.hpp"
+*/
 
 // TODO: Create special examples of using and put it into: "convolution", "perceptron" and "complex" namespaces and folders.
 
 int main()
 {
+  /*
   // Create new 2D convolution network.
   // First layer of the network is convolution layer.
   cnn::engine::convolution::Network2D<float>::Uptr subNetwork2D = std::make_unique<cnn::engine::convolution::Network2D<float>>(32, 32, 3, 5, 5, 5);
@@ -88,6 +93,13 @@ int main()
   // TODO: Write genetic algorithm.
   // TODO: Add activation functions.
   // TODO: ...
+
+  */
+
+  {
+    cnn::example::common::IExample<float>::Uptr example = std::make_unique<cnn::example::perceptron::Example<float>>();
+    example->Execute();
+  }
 
   std::cout << "All was successfully completed!" << std::endl;
 }

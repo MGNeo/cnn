@@ -19,4 +19,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common\i_example.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="perceptron\example.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="perceptron\layer_visitor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

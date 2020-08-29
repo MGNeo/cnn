@@ -25,6 +25,8 @@ namespace cnn
 
         virtual void Visit(Layer<T>& layer) = 0;
 
+        // TODO: Perhaps, it needs to create "const" methods too.
+
         virtual ~ILayerVisitor() {};
 
       };
