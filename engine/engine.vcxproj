@@ -33,6 +33,7 @@
     <ClInclude Include="convolution\i_core_2d.hpp" />
     <ClInclude Include="convolution\i_filter_2d.hpp" />
     <ClInclude Include="convolution\i_layer_2d.hpp" />
+    <ClInclude Include="convolution\i_layer_2d_visitor.hpp" />
     <ClInclude Include="convolution\i_map_2d.hpp" />
     <ClInclude Include="convolution\i_network_2d.hpp" />
     <ClInclude Include="convolution\i_neuron.hpp" />

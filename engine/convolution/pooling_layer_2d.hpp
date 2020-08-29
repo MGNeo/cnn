@@ -43,6 +43,8 @@ namespace cnn
 
         void Process() override;
 
+        void Accept(ILayer2DVisitor<T>& visitor) override;
+
         size_t GetStepSize() const;
 
       private:
@@ -262,6 +264,12 @@ namespace cnn
             }
           }
         }
+      }
+
+      template <typename T>
+      void PoolingLayer2D<T>::Accept(ILayer2DVisitor<T>& visitor)
+      {
+        visitor.Visit(*this);
       }
 
       template <typename T>

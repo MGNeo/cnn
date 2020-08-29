@@ -4,6 +4,7 @@
 #include <type_traits>
 
 #include "i_map_2d.hpp"
+#include "i_layer_2d_visitor.hpp"
 
 namespace cnn
 {
@@ -38,6 +39,8 @@ namespace cnn
         virtual void Process() = 0;
 
         virtual ~ILayer2D() {}
+
+        virtual void Accept(ILayer2DVisitor<T>& visitor) = 0;
 
       };
     }

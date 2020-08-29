@@ -4,6 +4,8 @@
 #include "map_2d.hpp"
 #include "filter_2d.hpp"
 
+#include "i_layer_2d_visitor.hpp"
+
 namespace cnn
 {
   namespace engine
@@ -55,6 +57,8 @@ namespace cnn
         IMap2D<T>& GetOutput(const size_t index) override;
 
         void Process() override;
+
+        void Accept(ILayer2DVisitor<T>& visitor) override;
 
         void ClearInputs();
         void ClearFilters();
@@ -331,6 +335,12 @@ namespace cnn
             }
           }
         }
+      }
+
+      template <typename T>
+      void ConvolutionLayer2D<T>::Accept(ILayer2DVisitor<T>& visitor)
+      {
+        visitor.Visit(*this);
       }
 
       template <typename T>

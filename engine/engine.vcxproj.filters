@@ -37,5 +37,6 @@
     <ClInclude Include="perceptron\i_network.hpp" />
     <ClInclude Include="perceptron\layer.hpp" />
     <ClInclude Include="perceptron\network.hpp" />
+    <ClInclude Include="convolution\i_layer_2d_visitor.hpp" />
   </ItemGroup>
 </Project>

@@ -153,6 +153,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\i_example.hpp" />
+    <ClInclude Include="convolution\example.hpp" />
+    <ClInclude Include="convolution\layer_2d_visitor.hpp" />
     <ClInclude Include="perceptron\example.hpp" />
     <ClInclude Include="perceptron\layer_visitor.hpp" />
   </ItemGroup>

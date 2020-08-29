@@ -7,6 +7,7 @@
 #include "layer_visitor.hpp"
 
 #include <random>
+#include <time.h>
 
 namespace cnn
 {
@@ -31,8 +32,10 @@ namespace cnn
       template <typename T>
       void Example<T>::Execute() const
       {
+        std::cout << __FUNCSIG__ << std::endl;
+
         // Create new perceptron network (one of implementations of cnn::engine::perceptron::INetwork).
-        auto network = std::make_unique<cnn::engine::perceptron::Network<T>>(3, 8);
+        auto network = std::make_unique<engine::perceptron::Network<T>>(3, 8);
 
         // Add few layers to the network (topology of the network is ->3-[8]-[15]-[5]-[3]->).
         {
@@ -43,7 +46,7 @@ namespace cnn
 
         // Set random signals in first layer of the network.
         {
-          std::default_random_engine dre{ 1 };
+          std::default_random_engine dre{ static_cast<unsigned int>(time(NULL)) };
           std::uniform_real_distribution<T> urd{ -1.f, +1.f };
 
           auto& firstLayer = network->GetLayer(0);
@@ -64,11 +67,10 @@ namespace cnn
           typename engine::perceptron::ILayerVisitor<T>::Uptr layerVisitor = std::make_unique<LayerVisitor<T>>();
           for (size_t l = 0; l < network->GetLayerCount(); ++l)
           {
-            std::cout << "Layer: " << l << std::endl;
             network->GetLayer(l).Accept(*layerVisitor);
-            std::cout << "---------------" << std::endl;
           }
         }
+        std::cout << std::endl;
       }
     }
   }

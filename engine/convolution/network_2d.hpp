@@ -30,6 +30,10 @@ namespace cnn
                   const size_t filterWidthInFirstLayer,
                   const size_t filterHeightInFirstLayer,
                   const size_t filterCountInFirstLayer);
+
+        // TODO: Perhaps, there are situations where it will be useful to have
+        // pooling layer in the beginning, so it needs to write special constructor for it.
+        // ...
         
         void PushBack(const size_t stepSizeInNewLayer);
 

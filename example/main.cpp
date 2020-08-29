@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "perceptron/example.hpp"
+#include "convolution/example.hpp"
 
 /*
 #include "../engine/convolution/network_2d.hpp"
@@ -96,11 +97,56 @@ int main()
 
   */
 
+  try
   {
-    cnn::example::common::IExample<float>::Uptr example = std::make_unique<cnn::example::perceptron::Example<float>>();
-    example->Execute();
+    // Examples of using for cnn::engine::perceptron.
+    {
+      {
+        cnn::example::common::IExample<float>::Uptr example = std::make_unique<cnn::example::perceptron::Example<float>>();
+        example->Execute();
+      }
+
+      {
+        cnn::example::common::IExample<double>::Uptr example = std::make_unique<cnn::example::perceptron::Example<double>>();
+        example->Execute();
+      }
+
+      {
+        cnn::example::common::IExample<long double>::Uptr example = std::make_unique<cnn::example::perceptron::Example<long double>>();
+        example->Execute();
+      }
+    }
+
+    // Examples of using for cnn::engine::convolution.
+    {
+      {
+        cnn::example::common::IExample<float>::Uptr example = std::make_unique<cnn::example::convolution::Example<float>>();
+        example->Execute();
+      }
+
+      {
+        cnn::example::common::IExample<double>::Uptr example = std::make_unique<cnn::example::convolution::Example<double>>();
+        example->Execute();
+      }
+
+      {
+        cnn::example::common::IExample<long double>::Uptr example = std::make_unique<cnn::example::convolution::Example<long double>>();
+        example->Execute();
+      }
+    }
+  }
+  catch (const std::exception& exception)
+  {
+    std::cout << "cnn::example::main(), std::exception was caught: " << exception.what() << std::endl;
+    return EXIT_FAILURE;
+  }
+  catch (...)
+  {
+    std::cout << "cnn::example::main(), unknown exception was caught." << std::endl;
+    return EXIT_FAILURE;
   }
 
   std::cout << "All was successfully completed!" << std::endl;
+  return EXIT_SUCCESS;
 }
 
