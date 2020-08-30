@@ -26,7 +26,7 @@ namespace cnn
 
         virtual void Clear() = 0;
 
-        virtual ~IMap() {};
+        virtual ~IMap() = default;
 
       };
     }

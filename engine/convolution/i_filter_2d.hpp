@@ -34,7 +34,7 @@ namespace cnn
         virtual void ClearWeight() = 0;
         virtual void ClearOutput() = 0;
 
-        virtual ~IFilter2D() {}
+        virtual ~IFilter2D() = default;
 
       };
     }

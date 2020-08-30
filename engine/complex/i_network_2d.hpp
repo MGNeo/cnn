@@ -30,7 +30,7 @@ namespace cnn
 
         virtual void Process() = 0;
 
-        virtual ~INetwork2D() {}
+        virtual ~INetwork2D() = default;
 
       };
     }

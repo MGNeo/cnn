@@ -6,6 +6,7 @@
 #include "../../engine/perceptron/network.hpp"
 #include "../../engine/complex/network_2d.hpp"
 #include "../../engine/complex/lesson_2d.hpp"
+#include "../../engine/complex/lesson_2d_library.hpp"
 
 namespace cnn
 {
@@ -37,7 +38,7 @@ namespace cnn
         std::cout << __FUNCSIG__ << std::endl;
 
         // Create new 2D convolution subnetwork.
-        cnn::engine::convolution::Network2D<float>::Uptr subNetwork2D = std::make_unique<cnn::engine::convolution::Network2D<float>>(32, 32, 3, 5, 5, 5);
+        typename cnn::engine::convolution::Network2D<T>::Uptr subNetwork2D = std::make_unique<cnn::engine::convolution::Network2D<T>>(32, 32, 3, 5, 5, 5);
 
         // Add few layers to the subnetwork.
         {
@@ -50,7 +51,7 @@ namespace cnn
         // Create new perceptron subnetwork.
         // First layer of the subnetwork has 4 neurons.
         const size_t inputCount = subNetwork2D->GetOutputValueCount();
-        cnn::engine::perceptron::Network<float>::Uptr subNetwork = std::make_unique<cnn::engine::perceptron::Network<float>>(inputCount, 4);
+        typename cnn::engine::perceptron::Network<T>::Uptr subNetwork = std::make_unique<cnn::engine::perceptron::Network<T>>(inputCount, 4);
 
         // Add few layers to the subnetwork.
         {
@@ -61,7 +62,7 @@ namespace cnn
         }
 
         // Create new complex network.
-        cnn::engine::complex::INetwork2D<float>::Uptr network2D = std::make_unique<cnn::engine::complex::Network2D<float>>(std::move(subNetwork2D), std::move(subNetwork));
+        typename cnn::engine::complex::INetwork2D<T>::Uptr network2D = std::make_unique<cnn::engine::complex::Network2D<T>>(std::move(subNetwork2D), std::move(subNetwork));
 
         // Set random signals in first layer of the convolution subnetwork.
         {
@@ -96,10 +97,9 @@ namespace cnn
           // ...
         }
 
-        /*
         // Create new 2D complex lesson.
         {
-          cnn::engine::complex::ILesson2D<float>::Uptr lesson2D = std::make_unique<cnn::engine::complex::Lesson2D<float>>(32, 32, 3, 5);
+          typename cnn::engine::complex::ILesson2D<T>::Uptr lesson2D = std::make_unique<cnn::engine::complex::Lesson2D<T>>(32, 32, 3, 5);
 
           // Use the lesson.
           lesson2D->GetInput(0).GetValue(0, 0);
@@ -108,10 +108,25 @@ namespace cnn
           lesson2D->GetOutput().SetValue(0, 1.f);
         }
 
+        // Create new lesson library.
+        typename cnn::engine::complex::ILesson2DLibrary<T>::Uptr lesson2DLibrary = std::make_unique<cnn::engine::complex::Lesson2DLibrary<T>>(32, 32, 3, 5);
+        
+        // Fill the library.
+        {
+          lesson2DLibrary->PushBack();
+          lesson2DLibrary->PushBack();
+          lesson2DLibrary->PushBack();
+        }
+
+        // Fill the last lesson in the library.
+        {
+          auto& lesson2D = lesson2DLibrary->GetLastLesson();
+          lesson2D.GetInput(0).SetValue(0, 0, 1.f);
+          // ...
+        }
+
         // TODO:
         // ...
-
-        */
 
         std::cout << std::endl;
       }

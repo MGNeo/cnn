@@ -38,5 +38,9 @@
     <ClInclude Include="perceptron\layer.hpp" />
     <ClInclude Include="perceptron\network.hpp" />
     <ClInclude Include="convolution\i_layer_2d_visitor.hpp" />
+    <ClInclude Include="complex\i_genetic_algorithm_2d.hpp" />
+    <ClInclude Include="complex\i_lesson_2d_library.hpp" />
+    <ClInclude Include="complex\lesson_2d_library.hpp" />
+    <ClInclude Include="complex\genetic_algorithm_2d.hpp" />
   </ItemGroup>
 </Project>

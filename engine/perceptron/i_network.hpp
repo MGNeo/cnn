@@ -33,7 +33,7 @@ namespace cnn
 
         // TODO: Clear() family methods.
 
-        virtual ~INetwork() {}
+        virtual ~INetwork() = default;
 
       };
     }

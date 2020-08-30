@@ -21,7 +21,7 @@ namespace cnn
 
         virtual void Execute() const = 0;
 
-        virtual ~IExample() {};
+        virtual ~IExample() = default;
 
       };
     }

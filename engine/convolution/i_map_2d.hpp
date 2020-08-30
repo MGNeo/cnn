@@ -27,7 +27,7 @@ namespace cnn
 
         virtual void Clear() = 0;
 
-        virtual ~IMap2D() {}
+        virtual ~IMap2D() = default;
 
       };
     }

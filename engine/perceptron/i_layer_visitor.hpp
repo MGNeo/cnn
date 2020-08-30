@@ -27,7 +27,7 @@ namespace cnn
 
         // TODO: Perhaps, it needs to create "const" methods too.
 
-        virtual ~ILayerVisitor() {};
+        virtual ~ILayerVisitor() = default;
 
       };
     }

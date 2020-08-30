@@ -23,9 +23,13 @@
     <ClInclude Include="common\i_neuron.hpp" />
     <ClInclude Include="common\map.hpp" />
     <ClInclude Include="common\neuron.hpp" />
+    <ClInclude Include="complex\genetic_algorithm_2d.hpp" />
+    <ClInclude Include="complex\i_genetic_algorithm_2d.hpp" />
     <ClInclude Include="complex\i_lesson_2d.hpp" />
+    <ClInclude Include="complex\i_lesson_2d_library.hpp" />
     <ClInclude Include="complex\i_network_2d.hpp" />
     <ClInclude Include="complex\lesson_2d.hpp" />
+    <ClInclude Include="complex\lesson_2d_library.hpp" />
     <ClInclude Include="complex\network_2d.hpp" />
     <ClInclude Include="convolution\convolution_layer_2d.hpp" />
     <ClInclude Include="convolution\core_2d.hpp" />

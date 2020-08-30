@@ -34,7 +34,7 @@ namespace cnn
         virtual const common::IMap<T>& GetOutput() const = 0;
         virtual common::IMap<T>& GetOutput() = 0;
 
-        virtual ~ILesson2D() {}
+        virtual ~ILesson2D() = default;
 
       };
     }

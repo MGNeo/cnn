@@ -35,7 +35,7 @@ namespace cnn
         virtual void ClearWeights() = 0;
         virtual void ClearOutput() = 0;
 
-        virtual ~ICore2D() {}
+        virtual ~ICore2D() = default;
 
       };
     }

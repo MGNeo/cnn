@@ -35,7 +35,7 @@ namespace cnn
         virtual void ClearWeight() = 0;
         virtual void ClearOutput() = 0;
 
-        virtual ~INeuron() {};
+        virtual ~INeuron() = default;
 
       };
     }

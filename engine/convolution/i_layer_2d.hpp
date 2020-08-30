@@ -38,7 +38,7 @@ namespace cnn
 
         virtual void Process() = 0;
 
-        virtual ~ILayer2D() {}
+        virtual ~ILayer2D() = default;
 
         virtual void Accept(ILayer2DVisitor<T>& visitor) = 0;
 
