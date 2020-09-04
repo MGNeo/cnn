@@ -111,7 +111,7 @@ namespace cnn
         // Create new lesson library.
         typename cnn::engine::complex::ILesson2DLibrary<T>::Uptr lesson2DLibrary = std::make_unique<cnn::engine::complex::Lesson2DLibrary<T>>(32, 32, 3, 5);
         
-        // Fill the library.
+        // Fill the library with empty lessons.
         {
           lesson2DLibrary->PushBack();
           lesson2DLibrary->PushBack();
@@ -122,6 +122,7 @@ namespace cnn
         {
           auto& lesson2D = lesson2DLibrary->GetLastLesson();
           lesson2D.GetInput(0).SetValue(0, 0, 1.f);
+          // TODO: Add more detailed examples.
           // ...
         }
 
