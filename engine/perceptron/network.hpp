@@ -40,6 +40,8 @@ namespace cnn
 
         void Process() override;
 
+        void Accept(ILayerVisitor<T>& layerVisitor) override;
+
       private:
 
         std::vector<typename ILayer<T>::Uptr> Layers;
@@ -139,6 +141,16 @@ namespace cnn
             }
           }
           layer.Process();
+        }
+      }
+
+      template <typename T>
+      void Network<T>::Accept(ILayerVisitor<T>& layerVisitor)
+      {
+        // TODO: What about rollback when exception is thrown?
+        for (auto& layer : Layers)
+        {
+          layer->Accept(layerVisitor);
         }
       }
     }

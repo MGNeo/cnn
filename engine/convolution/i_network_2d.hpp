@@ -34,6 +34,8 @@ namespace cnn
 
         virtual void Process() = 0;
 
+        virtual void Accept(ILayer2DVisitor<T>& layer2DVisitor) = 0;
+
         virtual ~INetwork2D() = default;
 
       };

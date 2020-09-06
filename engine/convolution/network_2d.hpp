@@ -54,6 +54,8 @@ namespace cnn
 
         void Process() override;
 
+        void Accept(ILayer2DVisitor<T>& layer2DVisitor) override;
+
       private:
 
         std::vector<typename ILayer2D<T>::Uptr> Layers;
@@ -191,6 +193,16 @@ namespace cnn
             }
           }
           layer.Process();
+        }
+      }
+
+      template <typename T>
+      void Network2D<T>::Accept(ILayer2DVisitor<T>& layer2DVisitor)
+      {
+        // TODO: What about rollback when exception is thrown?
+        for (auto& layer : Layers)
+        {
+          layer->Accept(layer2DVisitor);
         }
       }
     }

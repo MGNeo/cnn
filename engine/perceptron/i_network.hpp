@@ -34,6 +34,8 @@ namespace cnn
 
         virtual void Process() = 0;
 
+        virtual void Accept(ILayerVisitor<T>& layerVisitor) = 0;
+
         // TODO: Clear() family methods.
 
         virtual ~INetwork() = default;
