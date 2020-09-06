@@ -43,17 +43,6 @@ namespace cnn
           Visitor();
         }
         std::cout << std::endl;
-
-        /*
-        // Visit all layers of the network.
-        {
-          typename engine::perceptron::ILayerVisitor<T>::Uptr layerVisitor = std::make_unique<LayerVisitor<T>>();
-          for (size_t l = 0; l < network->GetLayerCount(); ++l)
-          {
-            network->GetLayer(l).Accept(*layerVisitor);
-          }
-        }
-        */
       }
 
       template <typename T>
@@ -103,16 +92,19 @@ namespace cnn
       {
         std::cout << "  " << __FUNCSIG__ << std::endl;
         {
+          // Prepare tne network.
           auto network = std::make_unique<engine::perceptron::Network<T>>(25, 3);
 
+          // Fill the network.
           network->PushBack(6);
           network->PushBack(150);
           network->PushBack(1);
 
+          // Prepare the visitor.
           auto layerVisitor = std::make_unique<LayerVisitor<T>>();
 
+          // Visit all layers of the network by the visitor.
           network->Accept(*layerVisitor);
-
         }
         std::cout << std::endl;
       }

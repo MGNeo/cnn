@@ -97,6 +97,7 @@ namespace cnn
       {
         std::cout << "  " << __FUNCSIG__ << std::endl;
         {
+          // Prepare the network.
           auto network2D = std::make_unique<engine::convolution::Network2D<T>>(32, 32, 3, 4, 4, 5);
 
           // Pooling.
@@ -108,8 +109,10 @@ namespace cnn
           // Convolution.
           network2D->PushBack(4, 4, 15);
 
+          // Prepare the visitor.
           auto layer2DVisitor = std::make_unique<Layer2DVisitor<T>>();
 
+          // Visit all layers of the network by the visitor.
           network2D->Accept(*layer2DVisitor);
 
         }
