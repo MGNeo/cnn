@@ -27,8 +27,8 @@ namespace cnn
 
       private:
 
-        void Simple() const;
-        void Visitor() const;
+        void Simple2D() const;
+        void Visitor2D() const;
 
       };
 
@@ -37,25 +37,14 @@ namespace cnn
       {
         std::cout << __FUNCSIG__ << std::endl;
         {
-          Simple();
-          Visitor();
+          Simple2D();
+          Visitor2D();
         }
         std::cout << std::endl;
-
-        /*
-        // Visit all layers of the network.
-        {
-          typename engine::convolution::ILayer2DVisitor<T>::Uptr layerVisitor2D = std::make_unique<Layer2DVisitor<T>>();
-          for (size_t l = 0; l < network2D->GetLayerCount(); ++l)
-          {
-            network2D->GetLayer(l).Accept(*layerVisitor2D);
-          }
-        }
-        */
       }
 
       template <typename T>
-      void Example<T>::Simple() const
+      void Example<T>::Simple2D() const
       {
         std::cout << "  " << __FUNCSIG__ << std::endl;
         {
@@ -104,7 +93,7 @@ namespace cnn
       }
 
       template <typename T>
-      void Example<T>::Visitor() const
+      void Example<T>::Visitor2D() const
       {
         std::cout << "  " << __FUNCSIG__ << std::endl;
         {
