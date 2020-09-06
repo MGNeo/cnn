@@ -22,13 +22,13 @@ namespace cnn
 
         using Uptr = std::unique_ptr<IGeneticAlgorithm2D<T>>;
 
-        virtual size_t GetPopulationSize() const = 0;
+        virtual size_t GetSourcePopulationSize() const = 0;
         virtual size_t GetIterationCount() const = 0;
 
         virtual typename INetwork2D<T>::Uptr Run(const ILesson2DLibrary<T>& lessonLibrary,
-                                                 const INetwork2D<T>& network) const = 0;
+                                                 const INetwork2D<T>& network) = 0;
 
-        virtual ~IGeneticAlgorithm() = default;
+        virtual ~IGeneticAlgorithm2D() = default;
 
       };
     }

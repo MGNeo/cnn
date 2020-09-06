@@ -5,8 +5,11 @@
 #include "../../engine/convolution/network_2d.hpp"
 #include "../../engine/perceptron/network.hpp"
 #include "../../engine/complex/network_2d.hpp"
+
 #include "../../engine/complex/lesson_2d.hpp"
 #include "../../engine/complex/lesson_2d_library.hpp"
+
+#include "../../engine/complex/genetic_algorithm_2d.hpp"
 
 namespace cnn
 {
@@ -145,7 +148,7 @@ namespace cnn
       {
         std::cout << "  " << __FUNCSIG__ << std::endl;
         {
-          // ...
+          auto geneticAlgorithm2D = std::make_unique<engine::complex::GeneticAlgorithm2D<T>>(10, 1);
         }
         std::cout << std::endl;
       }
