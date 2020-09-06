@@ -32,8 +32,6 @@ namespace cnn
         virtual const ILayer2D<T>& GetFirstLayer() const = 0;
         virtual ILayer2D<T>& GetFirstLayer() = 0;
 
-        virtual size_t GetOutputValueCount() const = 0;
-
         virtual void Process() = 0;
 
         virtual ~INetwork2D() = default;

@@ -42,6 +42,8 @@ namespace cnn
 
         virtual void Accept(ILayer2DVisitor<T>& visitor) = 0;
 
+        virtual size_t GetOutputValueCount() const = 0;
+
       };
     }
   }

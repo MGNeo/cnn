@@ -44,6 +44,8 @@ namespace cnn
         void Process() override;
 
         void Accept(ILayer2DVisitor<T>& visitor) override;
+        
+        size_t GetOutputValueCount() const override;
 
         size_t GetStepSize() const;
 
@@ -56,6 +58,8 @@ namespace cnn
 
         size_t OutputWidth;
         size_t OutputHeight;
+        
+        size_t OutputValueCount;
 
         size_t StepSize;
 
@@ -122,6 +126,20 @@ namespace cnn
           }
         } else {
           OutputHeight = InputHeight / StepSize;
+        }
+
+        {
+          const size_t m1 = OutputWidth * OutputHeight;
+          if ((m1 / OutputWidth) != OutputHeight)
+          {
+            throw std::overflow_error("cnn::engine::convolution::PoolingLayer2D::PoolingLayer2D(), (m1 / OutputWidth) != OutputHeight.");
+          }
+          const size_t m2 = m1 * ChannelCount;
+          if ((m2 / m1) != ChannelCount)
+          {
+            throw std::overflow_error("cnn::engine::convolution::PoolingLayer2D::PoolingLayer2D(), (m2 / m1) != ChannelCount.");
+          }
+          OutputValueCount = m2;
         }
 
         CheckExtendedOverflows();
@@ -270,6 +288,12 @@ namespace cnn
       void PoolingLayer2D<T>::Accept(ILayer2DVisitor<T>& visitor)
       {
         visitor.Visit(*this);
+      }
+
+      template <typename T>
+      size_t PoolingLayer2D<T>::GetOutputValueCount() const
+      {
+        return OutputValueCount;
       }
 
       template <typename T>

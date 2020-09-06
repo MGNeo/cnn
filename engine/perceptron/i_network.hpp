@@ -29,6 +29,9 @@ namespace cnn
         virtual const ILayer<T>& GetLastLayer() const = 0;
         virtual ILayer<T>& GetLastLayer() = 0;
 
+        virtual const ILayer<T>& GetFirstLayer() const = 0;
+        virtual ILayer<T>& GetFirstLayer() = 0;
+
         virtual void Process() = 0;
 
         // TODO: Clear() family methods.

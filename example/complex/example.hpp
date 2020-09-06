@@ -50,7 +50,7 @@ namespace cnn
 
         // Create new perceptron subnetwork.
         // First layer of the subnetwork has 4 neurons.
-        const size_t inputCount = subNetwork2D->GetOutputValueCount();
+        const size_t inputCount = subNetwork2D->GetLastLayer().GetOutputValueCount();
         typename cnn::engine::perceptron::Network<T>::Uptr subNetwork = std::make_unique<cnn::engine::perceptron::Network<T>>(inputCount, 4);
 
         // Add few layers to the subnetwork.

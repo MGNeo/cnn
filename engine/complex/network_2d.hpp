@@ -50,8 +50,10 @@ namespace cnn
         {
           throw std::invalid_argument("cnn::engine::complex::Network2D::Network2D(), perceptronNetwork == nullptr.");
         }
-
-        (void)convolutionNetwork2D->GetOutputValueCount();
+        if (convolutionNetwork2D->GetLastLayer().GetOutputValueCount() != perceptronNetwork->GetFirstLayer().GetInputSize())
+        {
+          throw std::invalid_argument("cnn::engine::complex::Network2D::Network2D(), convolutionNetwork2D->GetLastLayer().GetOutputValueCount() != perceptronNetwork->GetFirstLayer().GetInputSize().");
+        }
 
         ConvolutionNetwork2D = std::move(convolutionNetwork2D);
         PerceptronNetwork = std::move(perceptronNetwork);

@@ -60,6 +60,8 @@ namespace cnn
 
         void Accept(ILayer2DVisitor<T>& visitor) override;
 
+        size_t GetOutputValueCount() const override;
+
         void ClearInputs();
         void ClearFilters();
         void ClearOutputs();
@@ -80,6 +82,8 @@ namespace cnn
         size_t OutputHeight;
         size_t OutputCount;
         std::unique_ptr<typename IMap2D<T>::Uptr[]> Outputs;
+
+        size_t OutputValueCount;
 
       };
 
@@ -138,15 +142,30 @@ namespace cnn
           throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), FilterCount == 0.");
         }
 
+        // Maybe it is extra checks...
         if (OutputWidth > InputWidth)
         {
-          throw std::invalid_argument("cnn::engine::convolution::ConvolutionHandler2D::ConvolutionHandler2D(), OutputWidth > InputWidth.");
+          throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), OutputWidth > InputWidth.");
         }
         if (OutputHeight > InputHeight)
         {
-          throw std::invalid_argument("cnn::engine::convolution::ConvolutionHandler2D::ConvolutionHandler2D(), OutputHeight > InputHeight.");
+          throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), OutputHeight > InputHeight.");
         }
 
+        {
+          const size_t m1 = OutputWidth * OutputHeight;
+          if ((m1 / OutputWidth) != OutputHeight)
+          {
+            throw std::overflow_error("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), (m1 / OutputWidth) != OutputHeight.");
+          }
+          const size_t m2 = m1 * OutputCount;
+          if ((m2 / m1) != OutputCount)
+          {
+            throw std::overflow_error("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), (m2 / m1) != OutputCount.");
+          }
+          OutputValueCount = m2;
+        }
+        
         Inputs = std::make_unique<typename IMap2D<T>::Uptr[]>(InputCount);
         for (size_t i = 0; i < InputCount; ++i)
         {
@@ -341,6 +360,12 @@ namespace cnn
       void ConvolutionLayer2D<T>::Accept(ILayer2DVisitor<T>& visitor)
       {
         visitor.Visit(*this);
+      }
+
+      template <typename T>
+      size_t ConvolutionLayer2D<T>::GetOutputValueCount() const
+      {
+        return OutputValueCount;
       }
 
       template <typename T>

@@ -52,8 +52,6 @@ namespace cnn
         const ILayer2D<T>& GetFirstLayer() const override;
         ILayer2D<T>& GetFirstLayer() override;
 
-        size_t GetOutputValueCount() const override;
-
         void Process() override;
 
       private:
@@ -167,30 +165,6 @@ namespace cnn
           throw std::invalid_argument("cnn::engine::convolution::Network2D::GetFirstLayer(), Layers.size() == 0.");
         }
         return *(Layers.front());
-      }
-
-      template <typename T>
-      size_t Network2D<T>::GetOutputValueCount() const
-      {
-        const auto& lastLayer = GetLastLayer();
-
-        const size_t outputWidth = lastLayer.GetOutputWidth();
-        const size_t outputHeight = lastLayer.GetOutputHeight();
-        const size_t outputCount = lastLayer.GetOutputCount();
-
-        const size_t m1 = outputWidth * outputHeight;
-        if ((m1 / outputWidth) != outputHeight)
-        {
-          throw std::overflow_error("cnn::engine::convolution::Network2D::GetOutputValueCount(), m1 was overflowed.");
-        }
-
-        const size_t m2 = m1 * outputCount;
-        if ((m2 / m1) != outputCount)
-        {
-          throw std::overflow_error("cnn::engine::convolution::Network2D::GetOutputValueCount(), m2 was overflowed.");
-        }
-
-        return m2;
       }
 
       template <typename T>

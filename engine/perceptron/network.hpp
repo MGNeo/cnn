@@ -35,6 +35,9 @@ namespace cnn
         const ILayer<T>& GetLastLayer() const override;
         ILayer<T>& GetLastLayer() override;;
 
+        const ILayer<T>& GetFirstLayer() const override;
+        ILayer<T>& GetFirstLayer() override;
+
         void Process() override;
 
       private:
@@ -104,6 +107,18 @@ namespace cnn
           throw std::logic_error("cnn::engine::perceptron::Network::GetLastLayer(), Layers.size() == 0.");
         }
         return *(Layers.back());
+      }
+
+      template <typename T>
+      const ILayer<T>& Network<T>::GetFirstLayer() const
+      {
+        return *(Layers[0]);
+      }
+
+      template <typename T>
+      ILayer<T>& Network<T>::GetFirstLayer()
+      {
+        return *(Layers[0]);
       }
 
       template <typename T>
