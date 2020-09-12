@@ -31,6 +31,10 @@ namespace cnn
 
         void Clear() override;
 
+        typename IMap2D<T>::Uptr Clone(const bool cloneState) const override;
+
+        Map2D(const Map2D<T>& map, const bool cloneState);
+
       private:
 
         size_t Width;
@@ -109,6 +113,18 @@ namespace cnn
         Map_->Clear();
       }
 
+      template <typename T>
+      typename IMap2D<T>::Uptr Map2D<T>::Clone(const bool cloneState) const
+      {
+        // TODO.
+        return {};
+      }
+
+      template <typename T>
+      Map2D<T>::Map2D(const Map2D<T>& map, const bool cloneState)
+      {
+        // TODO.
+      }
     }
   }
 }

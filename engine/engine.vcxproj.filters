@@ -27,10 +27,8 @@
     <ClInclude Include="convolution\i_layer_2d.hpp" />
     <ClInclude Include="convolution\i_map_2d.hpp" />
     <ClInclude Include="convolution\i_network_2d.hpp" />
-    <ClInclude Include="convolution\i_neuron.hpp" />
     <ClInclude Include="convolution\map_2d.hpp" />
     <ClInclude Include="convolution\network_2d.hpp" />
-    <ClInclude Include="convolution\neuron.hpp" />
     <ClInclude Include="convolution\pooling_layer_2d.hpp" />
     <ClInclude Include="perceptron\i_layer.hpp" />
     <ClInclude Include="perceptron\i_layer_visitor.hpp" />

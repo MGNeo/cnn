@@ -30,6 +30,8 @@ namespace cnn
 
         virtual void Process() = 0;
 
+        virtual typename INetwork2D<T>::Uptr Clone(const bool cloneState) const = 0;
+
         virtual ~INetwork2D() = default;
 
       };

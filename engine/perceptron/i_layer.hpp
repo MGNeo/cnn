@@ -38,6 +38,8 @@ namespace cnn
 
         virtual void Accept(ILayerVisitor<T>& visitor) = 0;
 
+        virtual typename ILayer<T>::Uptr Clone(const bool cloneState) const = 0;
+
       };
     }
   }

@@ -37,6 +37,8 @@ namespace cnn
 
         virtual ~INeuron() = default;
 
+        virtual typename INeuron<T>::Uptr Clone(const bool cloneState) const = 0;
+
       };
     }
   }

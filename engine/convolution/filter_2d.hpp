@@ -36,6 +36,10 @@ namespace cnn
         void ClearWeight() override;
         void ClearOutput() override;
 
+        typename IFilter2D<T>::Uptr Clone(const bool cloneState) const override;
+
+        Filter2D(const Filter2D<T>& filter2D, const bool cloneState);
+
       private:
 
         size_t Width;
@@ -148,6 +152,18 @@ namespace cnn
         }
       }
 
+      template <typename T>
+      typename IFilter2D<T>::Uptr Filter2D<T>::Clone(const bool cloneState) const
+      {
+        // TODO.
+        return {};
+      }
+
+      template <typename T>
+      Filter2D<T>::Filter2D(const Filter2D<T>& filter2D, const bool cloneState)
+      {
+        // TODO.
+      }
     }
   }
 }

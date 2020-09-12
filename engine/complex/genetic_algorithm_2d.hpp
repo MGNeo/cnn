@@ -107,7 +107,7 @@ namespace cnn
         }
         for (size_t r = 0; r < ResultPopulationSize; ++r)
         {
-          ResultPopulationSize[r] = nullptr;
+          ResultPopulation[r] = nullptr;
         }
       }
 

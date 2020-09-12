@@ -36,6 +36,8 @@ namespace cnn
 
         virtual ~IFilter2D() = default;
 
+        virtual typename IFilter2D<T>::Uptr Clone(const bool cloneState) const = 0;
+
       };
     }
   }

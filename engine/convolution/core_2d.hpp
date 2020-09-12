@@ -38,6 +38,11 @@ namespace cnn
         void ClearInputs() override;
         void ClearWeights() override;
         void ClearOutput() override;
+
+        typename ICore2D<T>::Uptr Clone(const bool cloneState) const override;
+
+        Core2D(const Core2D<T> core2D, const bool cloneState);
+
       private:
 
         size_t Width;
@@ -155,6 +160,19 @@ namespace cnn
       void Core2D<T>::ClearOutput()
       {
         Neuron_->ClearOutput();
+      }
+
+      template <typename T>
+      typename ICore2D<T>::Uptr Core2D<T>::Clone(const bool cloneState) const
+      {
+        // TODO.
+        return {};
+      }
+
+      template <typename T>
+      Core2D<T>::Core2D(const Core2D<T> core2D, const bool cloneState)
+      {
+        // TODO.
       }
     }
   }

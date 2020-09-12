@@ -29,6 +29,10 @@ namespace cnn
 
         void Clear() override;
 
+        typename IMap<T>::Uptr Clone(const bool cloneState) const override;
+
+        Map(const Map<T>& map, const bool cloneState);
+
       private:
 
         size_t ValueCount;
@@ -82,6 +86,19 @@ namespace cnn
         {
           Values[i] = 0;
         }
+      }
+
+      template <typename T>
+      typename IMap<T>::Uptr Map<T>::Clone(const bool cloneState) const
+      {
+        // TODO.
+        return {};
+      }
+
+      template <typename T>
+      Map<T>::Map(const Map<T>& map, const bool cloneState)
+      {
+        // TODO.
       }
     }
   }

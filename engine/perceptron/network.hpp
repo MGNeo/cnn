@@ -42,6 +42,10 @@ namespace cnn
 
         void Accept(ILayerVisitor<T>& layerVisitor) override;
 
+        typename INetwork<T>::Uptr Clone(const bool cloneState) const override;
+
+        Network(const Network<T>& network, const bool cloneState);
+
       private:
 
         std::vector<typename ILayer<T>::Uptr> Layers;
@@ -151,6 +155,22 @@ namespace cnn
         for (auto& layer : Layers)
         {
           layer->Accept(layerVisitor);
+        }
+      }
+
+      template <typename T>
+      typename INetwork<T>::Uptr Network<T>::Clone(const bool cloneState) const
+      {
+        return std::make_unique<Network<T>>(*this, cloneState);
+      }
+
+      template <typename T>
+      Network<T>::Network(const Network<T>& network, const bool cloneState)
+      {
+        Layers.resize(network.GetLayerCount());
+        for (size_t l = 0; l < network.GetLayerCount(); ++l)
+        {
+          Layers[l] = network.GetLayer(l).Clone(cloneState);
         }
       }
     }

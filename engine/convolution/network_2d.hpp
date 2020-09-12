@@ -56,9 +56,15 @@ namespace cnn
 
         void Accept(ILayer2DVisitor<T>& layer2DVisitor) override;
 
+        typename INetwork2D<T>::Uptr Clone(const bool cloneState) const override;
+        
+        Network2D(const Network2D<T>& network2D, const bool cloneState);
+
       private:
 
         std::vector<typename ILayer2D<T>::Uptr> Layers;
+
+        friend Network2D<T>::Uptr std::make_unique<Network2D<T>>();
 
       };
 
@@ -203,6 +209,22 @@ namespace cnn
         for (auto& layer : Layers)
         {
           layer->Accept(layer2DVisitor);
+        }
+      }
+
+      template <typename T>
+      typename INetwork2D<T>::Uptr Network2D<T>::Clone(const bool cloneState) const
+      {
+        return std::make_unique<Network2D<T>>(*this, cloneState);
+      }
+
+      template <typename T>
+      Network2D<T>::Network2D(const Network2D<T>& network2D, const bool cloneState)
+      {
+        Layers.resize(network2D.GetLayerCount());
+        for (size_t l = 0; l < network2D.GetLayerCount(); ++l)
+        {
+          Layers[l] = network2D.GetLayer(l).Clone(cloneState);
         }
       }
     }

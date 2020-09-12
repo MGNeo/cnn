@@ -66,6 +66,10 @@ namespace cnn
         void ClearFilters();
         void ClearOutputs();
 
+        typename ILayer2D<T>::Uptr Clone(const bool cloneState) const override;
+
+        ConvolutionLayer2D(const ConvolutionLayer2D& convolutionLayer2D, const bool cloneState);
+
       private:
 
         size_t InputWidth;
@@ -392,6 +396,43 @@ namespace cnn
         for (size_t o = 0; o < OutputCount; ++o)
         {
           Outputs[o]->Clear();
+        }
+      }
+
+      template <typename T>
+      typename ILayer2D<T>::Uptr ConvolutionLayer2D<T>::Clone(const bool cloneState) const
+      {
+        return std::make_unique<ConvolutionLayer2D<T>>(*this, cloneState);
+      }
+
+      template <typename T>
+      ConvolutionLayer2D<T>::ConvolutionLayer2D(const ConvolutionLayer2D& convolutionLayer2D, const bool cloneState)
+        :
+        InputWidth{ convolutionLayer2D.GetInputWidth() },
+        InputHeight{ convolutionLayer2D.GetInputHeight() },
+        InputCount{ convolutionLayer2D.GetInputCount() },
+        Inputs{ std::make_unique<typename IMap2D<T>::Uptr[]>(InputCount) },
+        FilterWidth{ convolutionLayer2D.GetFilterWidth() },
+        FilterHeight{ convolutionLayer2D.GetFilterHeight() },
+        FilterCount{ convolutionLayer2D.GetFilterCount() },
+        Filters{ std::make_unique<typename IFilter2D<T>::Uptr[]>(FilterCount) },
+        OutputWidth{ convolutionLayer2D.GetOutputWidth() },
+        OutputHeight{ convolutionLayer2D.GetOutputHeight() },
+        OutputCount{ convolutionLayer2D.GetOutputCount() },
+        Outputs{ std::make_unique<typename IMap2D<T>::Uptr[]>(OutputCount) },
+        OutputValueCount{ convolutionLayer2D.GetOutputValueCount() }
+      {
+        for (size_t i = 0; i < InputCount; ++i)
+        {
+          Inputs[i] = convolutionLayer2D.GetInput(i).Clone(cloneState);
+        }
+        for (size_t f = 0; f < FilterCount; ++f)
+        {
+          Filters[f] = convolutionLayer2D.GetFilter(f).Clone(cloneState);
+        }
+        for (size_t o = 0; o < OutputCount; ++o)
+        {
+          Outputs[o] = convolutionLayer2D.GetOutput(o).Clone(cloneState);
         }
       }
     }

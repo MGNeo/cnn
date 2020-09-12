@@ -31,6 +31,9 @@ namespace cnn
 
         void Process() override;
 
+        typename typename INetwork2D<T>::Uptr Clone(const bool cloneState) const override;
+
+
       private:
 
         typename convolution::INetwork2D<T>::Uptr ConvolutionNetwork2D;
@@ -107,6 +110,16 @@ namespace cnn
           }
         }
         PerceptronNetwork->Process();
+      }
+
+      template <typename T>
+      typename INetwork2D<T>::Uptr Network2D<T>::Clone(const bool cloneState) const
+      {
+        auto convolutionNetwork2D = ConvolutionNetwork2D->Clone(cloneState);
+        auto perceptronNetwork = PerceptronNetwork->Clone(cloneState);
+        auto complexNetwork = std::make_unique<Network2D<T>>(std::move(convolutionNetwork2D),
+                                                             std::move(perceptronNetwork));
+        return complexNetwork;
       }
     }
   }

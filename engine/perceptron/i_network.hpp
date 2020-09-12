@@ -38,6 +38,8 @@ namespace cnn
 
         // TODO: Clear() family methods.
 
+        virtual typename INetwork<T>::Uptr Clone(const bool cloneState) const = 0;
+
         virtual ~INetwork() = default;
 
       };

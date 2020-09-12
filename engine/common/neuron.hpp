@@ -38,6 +38,10 @@ namespace cnn
         void ClearWeight() override;
         void ClearOutput() override;
 
+        typename INeuron<T>::Uptr Clone(const bool cloneState) const override;
+
+        Neuron(const Neuron<T>& neuron, const bool cloneState);
+
       public:
 
         size_t InputCount;
@@ -149,6 +153,19 @@ namespace cnn
       void Neuron<T>::ClearOutput()
       {
         Output = 0;
+      }
+
+      template <typename T>
+      typename INeuron<T>::Uptr Neuron<T>::Clone(const bool cloneState) const
+      {
+        // TODO.
+        return {};
+      }
+
+      template <typename T>
+      Neuron<T>::Neuron(const Neuron<T>& neuron, const bool cloneState)
+      {
+        // TODO.
       }
     }
   }

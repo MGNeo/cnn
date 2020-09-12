@@ -47,7 +47,12 @@ namespace cnn
         
         size_t GetOutputValueCount() const override;
 
+        size_t GetChannelCount() const;
         size_t GetStepSize() const;
+
+        typename ILayer2D<T>::Uptr Clone(const bool cloneState) const override;
+        
+        PoolingLayer2D(const PoolingLayer2D<T>& poolingLayer2D, const bool cloneState);
 
       private:
 
@@ -297,6 +302,12 @@ namespace cnn
       }
 
       template <typename T>
+      size_t PoolingLayer2D<T>::GetChannelCount() const
+      {
+        return ChannelCount;
+      }
+
+      template <typename T>
       size_t PoolingLayer2D<T>::GetStepSize() const
       {
         return StepSize;
@@ -331,6 +342,35 @@ namespace cnn
           {
             throw std::overflow_error("cnn::engine::convolution::PoolingLayer2D::CheckExtendedOverflows(), iyEnd was overflowed.");
           }
+        }
+      }
+
+      template <typename T>
+      typename ILayer2D<T>::Uptr PoolingLayer2D<T>::Clone(const bool cloneState) const
+      {
+        return std::make_unique<PoolingLayer2D<T>>(*this, cloneState);
+      }
+
+      template <typename T>
+      PoolingLayer2D<T>::PoolingLayer2D(const PoolingLayer2D<T>& poolingLayer2D, const bool cloneState)
+        :
+        InputWidth{ poolingLayer2D.GetInputWidth() },
+        InputHeight{ poolingLayer2D.GetInputHeight() },
+        ChannelCount{ poolingLayer2D.GetChannelCount() },
+        OutputWidth{ poolingLayer2D.GetOutputWidth() },
+        OutputHeight{ poolingLayer2D.GetOutputHeight() },
+        OutputValueCount{ poolingLayer2D.GetOutputValueCount() },
+        StepSize{ poolingLayer2D.GetStepSize() },
+        Inputs{ std::make_unique<typename IMap2D<T>::Uptr[]>(ChannelCount) },
+        Outputs{ std::make_unique<typename IMap2D<T>::Uptr[]>(ChannelCount) }
+      {
+        for (size_t i = 0; i < ChannelCount; ++i)
+        {
+          Inputs[i] = poolingLayer2D.GetInput(i).Clone(cloneState);
+        }
+        for (size_t o = 0; o < ChannelCount; ++o)
+        {
+          Outputs[o] = poolingLayer2D.GetOutput(o).Clone(cloneState);
         }
       }
     }

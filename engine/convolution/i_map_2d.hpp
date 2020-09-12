@@ -29,6 +29,8 @@ namespace cnn
 
         virtual ~IMap2D() = default;
 
+        virtual typename IMap2D<T>::Uptr Clone(const bool cloneState) const = 0;
+
       };
     }
   }

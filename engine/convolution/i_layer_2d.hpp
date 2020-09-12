@@ -44,6 +44,8 @@ namespace cnn
 
         virtual size_t GetOutputValueCount() const = 0;
 
+        virtual typename ILayer2D<T>::Uptr Clone(const bool cloneState) const = 0;
+
       };
     }
   }

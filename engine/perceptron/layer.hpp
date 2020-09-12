@@ -44,6 +44,10 @@ namespace cnn
 
         void Accept(ILayerVisitor<T>& visitor) override;
 
+        typename ILayer<T>::Uptr Clone(const bool cloneState) const override;
+
+        Layer(const Layer<T>& layer, const bool cloneState);
+
       private:
 
         size_t InputSize;
@@ -176,6 +180,28 @@ namespace cnn
       void Layer<T>::Accept(ILayerVisitor<T>& visitor)
       {
         visitor.Visit(*this);
+      }
+
+      template <typename T>
+      typename ILayer<T>::Uptr Layer<T>::Clone(const bool cloneState) const
+      {
+        return std::make_unique<Layer<T>>(*this, cloneState);
+      }
+
+      template <typename T>
+      Layer<T>::Layer(const Layer<T>& layer, const bool cloneState)
+        :
+        InputSize{ layer.GetInputSize() },
+        Input{ layer.GetInput().Clone(cloneState) },
+        NeuronCount{ layer.GetNeuronCount() },
+        Neurons{ std::make_unique<typename common::INeuron<T>::Uptr[]>(NeuronCount) },
+        OutputSize{ layer.GetOutputSize() },
+        Output{ layer.GetOutput().Clone(cloneState) }
+      {
+        for (size_t n = 0; n < NeuronCount; ++n)
+        {
+          Neurons[n] = layer.GetNeuron(n).Clone(cloneState);
+        }
       }
     }
   }
