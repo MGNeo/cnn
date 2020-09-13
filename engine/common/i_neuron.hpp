@@ -3,6 +3,8 @@
 #include <memory>
 #include <type_traits>
 
+#include "i_value_generator.hpp"
+
 namespace cnn
 {
   namespace engine
@@ -38,6 +40,8 @@ namespace cnn
         virtual ~INeuron() = default;
 
         virtual typename INeuron<T>::Uptr Clone(const bool cloneState) const = 0;
+
+        virtual void FillWeights(IValueGenerator<T>& valueGenerator) = 0;
 
       };
     }

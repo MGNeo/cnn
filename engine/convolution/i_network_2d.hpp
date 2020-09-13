@@ -4,6 +4,7 @@
 #include <type_traits>
 
 #include "i_layer_2d.hpp"
+#include "../common/i_value_generator.hpp"
 
 namespace cnn
 {
@@ -37,6 +38,8 @@ namespace cnn
         virtual void Accept(ILayer2DVisitor<T>& layer2DVisitor) = 0;
 
         virtual typename INetwork2D<T>::Uptr Clone(const bool cloneState) const = 0;
+
+        virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
         virtual ~INetwork2D() = default;
 

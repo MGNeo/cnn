@@ -48,6 +48,8 @@ namespace cnn
 
         Layer(const Layer<T>& layer, const bool cloneState);
 
+        void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
+
       private:
 
         size_t InputSize;
@@ -203,6 +205,16 @@ namespace cnn
           Neurons[n] = layer.GetNeuron(n).Clone(cloneState);
         }
       }
+
+      template <typename T>
+      void Layer<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
+      {
+        for (size_t n = 0; n < NeuronCount; ++n)
+        {
+          Neurons[n]->FillWeights(valueGenerator);
+        }
+      }
+
     }
   }
 }

@@ -3,6 +3,8 @@
 #include <memory>
 #include <type_traits>
 
+#include "../common/i_value_generator.hpp"
+
 namespace cnn
 {
   namespace engine
@@ -38,6 +40,8 @@ namespace cnn
         virtual ~ICore2D() = default;
 
         virtual typename ICore2D<T>::Uptr Clone(const bool cloneState) const = 0;
+
+        virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
       };
     }

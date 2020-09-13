@@ -70,6 +70,8 @@ namespace cnn
 
         ConvolutionLayer2D(const ConvolutionLayer2D& convolutionLayer2D, const bool cloneState);
 
+        void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
+
       private:
 
         size_t InputWidth;
@@ -435,6 +437,16 @@ namespace cnn
           Outputs[o] = convolutionLayer2D.GetOutput(o).Clone(cloneState);
         }
       }
+
+      template <typename T>
+      void ConvolutionLayer2D<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
+      {
+        for (size_t f = 0; f < FilterCount; ++f)
+        {
+          Filters[f]->FillWeights(valueGenerator);
+        }
+      }
+
     }
   }
 }

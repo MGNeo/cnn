@@ -60,11 +60,11 @@ namespace cnn
         
         Network2D(const Network2D<T>& network2D, const bool cloneState);
 
+        void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
+
       private:
 
         std::vector<typename ILayer2D<T>::Uptr> Layers;
-
-        friend Network2D<T>::Uptr std::make_unique<Network2D<T>>();
 
       };
 
@@ -227,6 +227,19 @@ namespace cnn
           Layers[l] = network2D.GetLayer(l).Clone(cloneState);
         }
       }
+
+      // TODO: Add "noexcept" everywhere if it is possible (in cnn::engine).
+      // It is necessary for analyzing of exception safety.
+
+      template <typename T>
+      void Network2D<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
+      {
+        for (auto& layer : Layers)
+        {
+          layer->FillWeights(valueGenerator);
+        }
+      }
+
     }
   }
 }

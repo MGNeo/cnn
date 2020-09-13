@@ -42,6 +42,8 @@ namespace cnn
 
         Neuron(const Neuron<T>& neuron, const bool cloneState);
 
+        void FillWeights(IValueGenerator<T>& valueGenerator) override;
+
       public:
 
         size_t InputCount;
@@ -182,6 +184,16 @@ namespace cnn
           Output = 0;
         }
       }
+
+      template <typename T>
+      void Neuron<T>::FillWeights(IValueGenerator<T>& valueGenerator)
+      {
+        for (size_t i = 0; i < InputCount; ++i)
+        {
+          Weights[i] = valueGenerator.Generate();
+        }
+      }
+
     }
   }
 }

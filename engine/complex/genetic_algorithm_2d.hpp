@@ -1,11 +1,11 @@
 #pragma once
 
-#include "i_genetic_algorithm_2d.hpp"
-
-#include "network_2d.hpp"
-
 #include <stdexcept>
 #include <vector>
+
+#include "i_genetic_algorithm_2d.hpp"
+#include "network_2d.hpp"
+#include "../common/value_generator.hpp"
 
 namespace cnn
 {
@@ -23,64 +23,91 @@ namespace cnn
         
         using Uptr = std::unique_ptr<GeneticAlgorithm2D<T>>;
 
-        GeneticAlgorithm2D(const size_t sourcePopulationSize,
-                           const size_t iterationCount);
+        static constexpr size_t MIN_POPULATION_SIZE = 10;
+        static constexpr size_t MIN_ITERATION_COUNT = 10;
 
-        size_t GetSourcePopulationSize() const override;
+        GeneticAlgorithm2D();
+
+        T GetMinWeight() const override;
+        void SetMinWeight(const T minWeight) override;
+
+        T GetMaxWeight() const override;
+        void SetMaxWeight(const T maxWeight) override;
+
+        size_t GetPopulationSize() const override;
+        void SetPopulationSize(const size_t populationSize) override;
+
         size_t GetIterationCount() const override;
+        void SetIterationCount(const size_t iterationCount) override;
 
         typename INetwork2D<T>::Uptr Run(const ILesson2DLibrary<T>& lessonLibrary,
                                          const INetwork2D<T>& network) override;
 
       private:
 
-        size_t SourcePopulationSize;
-        std::unique_ptr<typename INetwork2D<T>::Uptr[]> SourcePopulation;
-
-        size_t ResultPopulationSize;
-        std::unique_ptr<typename INetwork2D<T>::Uptr[]> ResultPopulation;
-
+        T MinWeight;
+        T MaxWeight;
+        size_t PopulationSize;
         size_t IterationCount;
-
-        void ClearPopulations();
-        void NoisePopulations();
 
       };
 
       template <typename T>
-      GeneticAlgorithm2D<T>::GeneticAlgorithm2D(const size_t sourcePopulationSize,
-                                                const size_t iterationCount)
+      GeneticAlgorithm2D<T>::GeneticAlgorithm2D()
         :
-        SourcePopulationSize{ sourcePopulationSize },
-        IterationCount{ iterationCount }
+        MinWeight{ -1 },
+        MaxWeight{ +1 },
+        PopulationSize{ MIN_POPULATION_SIZE },
+        IterationCount{ MIN_ITERATION_COUNT }
       {
-        if (SourcePopulationSize <= 4)
-        {
-          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::GeneticAlgorithm2D(), SourcePopulationSize <= 4.");
-        }
-
-        {
-          const size_t s = SourcePopulationSize - 1;
-          ResultPopulationSize = SourcePopulationSize * s;
-          if ((ResultPopulationSize / SourcePopulationSize) != s)
-          {
-            throw std::overflow_error("cnn::engine::complex::GeneticAlgorithm2D::GeneticAlgorithm2D(), ResultPopulationSize was overflowed.");
-          }
-        }
-
-        if (IterationCount == 0)
-        {
-          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::GeneticAlgorithm2D(), IterationCount == 0.");
-        }
-
-        SourcePopulation = std::make_unique<typename INetwork2D<T>::Uptr[]>(SourcePopulationSize);
-        ResultPopulation = std::make_unique<typename INetwork2D<T>::Uptr[]>(ResultPopulationSize);
       }
 
       template <typename T>
-      size_t GeneticAlgorithm2D<T>::GetSourcePopulationSize() const
+      T GeneticAlgorithm2D<T>::GetMinWeight() const
       {
-        return SourcePopulationSize;
+        return MinWeight;
+      }
+
+      template <typename T>
+      void GeneticAlgorithm2D<T>::SetMinWeight(const T minWeight)
+      {
+        if (MinWeight >= MaxWeight)
+        {
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::SetMinWeight(), MinWeight >= MaxWeight.");
+        }
+        MinWeight = minWeight;
+      }
+
+      template <typename T>
+      T GeneticAlgorithm2D<T>::GetMaxWeight() const
+      {
+        return MaxWeight;
+      }
+
+      template <typename T>
+      void GeneticAlgorithm2D<T>::SetMaxWeight(const T maxWeight)
+      {
+        if (MaxWeight <= MinWeight)
+        {
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::SetMaxWeight(), MaxWeight <= MinWeight.");
+        }
+        MaxWeight = maxWeight;
+      }
+
+      template <typename T>
+      size_t GeneticAlgorithm2D<T>::GetPopulationSize() const
+      {
+        return PopulationSize;
+      }
+
+      template <typename T>
+      void GeneticAlgorithm2D<T>::SetPopulationSize(const size_t populationSize)
+      {
+        if (populationSize < MIN_POPULATION_SIZE)
+        {
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::SetPopulationSize(), populationSize < MIN_POPULATION_SIZE.");
+        }
+        PopulationSize = populationSize;
       }
 
       template <typename T>
@@ -90,32 +117,35 @@ namespace cnn
       }
 
       template <typename T>
+      void GeneticAlgorithm2D<T>::SetIterationCount(const size_t iterationCount)
+      {
+        if (iterationCount < MIN_ITERATION_COUNT)
+        {
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::SetIterationCount(), iterationCount < MIN_ITERATION_COUNT.");
+        }
+        IterationCount = iterationCount;
+      }
+
+      template <typename T>
       typename INetwork2D<T>::Uptr GeneticAlgorithm2D<T>::Run(const ILesson2DLibrary<T>& lessonLibrary,
                                                               const INetwork2D<T>& network)
       {
-        ClearPopulations();
-        NoisePopulations();
-        return{};
+        const size_t sourcePopulationSize = PopulationSize;
+        const size_t resultPopulationSize = sourcePopulationSize * sourcePopulationSize;
+
+        if ((resultPopulationSize / sourcePopulationSize) != sourcePopulationSize)
+        {
+          throw std::overflow_error("cnn::engine::complex::GeneticAlgorithm2D::Run(), resultPopulationSize has been overflowed.");
+        }
+
+        auto sourcePopulation = std::make_unique<typename INetwork2D<T>::Uptr[]>(sourcePopulationSize);
+        auto resultPopulation = std::make_unique<typename INetwork2D<T>::Uptr[]>(resultPopulationSize);
+
+        // TODO: ...
+
+        return {};
       }
 
-      template <typename T>
-      void GeneticAlgorithm2D<T>::ClearPopulations()
-      {
-        for (size_t s = 0; s < SourcePopulationSize; ++s)
-        {
-          SourcePopulation[s] = nullptr;
-        }
-        for (size_t r = 0; r < ResultPopulationSize; ++r)
-        {
-          ResultPopulation[r] = nullptr;
-        }
-      }
-
-      template <typename T>
-      void GeneticAlgorithm2D<T>::NoisePopulations()
-      {
-        // ...
-      }
     }
   }
 }

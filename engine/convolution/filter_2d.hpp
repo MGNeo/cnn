@@ -40,6 +40,8 @@ namespace cnn
 
         Filter2D(const Filter2D<T>& filter2D, const bool cloneState);
 
+        void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
+
       private:
 
         size_t Width;
@@ -169,6 +171,15 @@ namespace cnn
         for (size_t c = 0; c < CoreCount; ++c)
         {
           Cores[c] = Cores[c]->Clone(cloneState);
+        }
+      }
+
+      template <typename T>
+      void Filter2D<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
+      {
+        for (size_t c = 0; c < CoreCount; ++c)
+        {
+          Cores[c]->FillWeights(valueGenerator);
         }
       }
     }

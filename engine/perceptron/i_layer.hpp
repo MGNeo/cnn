@@ -5,6 +5,7 @@
 
 #include "../common/i_map.hpp"
 #include "i_layer_visitor.hpp"
+#include "../common/i_value_generator.hpp"
 
 namespace cnn
 {
@@ -39,6 +40,8 @@ namespace cnn
         virtual void Accept(ILayerVisitor<T>& visitor) = 0;
 
         virtual typename ILayer<T>::Uptr Clone(const bool cloneState) const = 0;
+
+        virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
       };
     }

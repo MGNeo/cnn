@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "i_layer.hpp"
+#include "../common/i_value_generator.hpp"
 
 namespace cnn
 {
@@ -39,6 +40,8 @@ namespace cnn
         // TODO: Clear() family methods.
 
         virtual typename INetwork<T>::Uptr Clone(const bool cloneState) const = 0;
+
+        virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
         virtual ~INetwork() = default;
 

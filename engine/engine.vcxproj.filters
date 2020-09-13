@@ -40,5 +40,7 @@
     <ClInclude Include="complex\i_lesson_2d_library.hpp" />
     <ClInclude Include="complex\lesson_2d_library.hpp" />
     <ClInclude Include="complex\genetic_algorithm_2d.hpp" />
+    <ClInclude Include="common\i_value_generator.hpp" />
+    <ClInclude Include="common\value_generator.hpp" />
   </ItemGroup>
 </Project>

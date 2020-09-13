@@ -5,6 +5,7 @@
 
 #include "../convolution/i_network_2d.hpp"
 #include "../perceptron/i_network.hpp"
+#include "../common/i_value_generator.hpp"
 
 namespace cnn
 {
@@ -31,6 +32,8 @@ namespace cnn
         virtual void Process() = 0;
 
         virtual typename INetwork2D<T>::Uptr Clone(const bool cloneState) const = 0;
+
+        virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
         virtual ~INetwork2D() = default;
 

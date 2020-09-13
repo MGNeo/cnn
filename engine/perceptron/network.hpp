@@ -46,6 +46,8 @@ namespace cnn
 
         Network(const Network<T>& network, const bool cloneState);
 
+        void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
+
       private:
 
         std::vector<typename ILayer<T>::Uptr> Layers;
@@ -173,6 +175,16 @@ namespace cnn
           Layers[l] = network.GetLayer(l).Clone(cloneState);
         }
       }
+
+      template <typename T>
+      void Network<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
+      {
+        for (auto& layer : Layers)
+        {
+          layer->FillWeights(valueGenerator);
+        }
+      }
+
     }
   }
 }

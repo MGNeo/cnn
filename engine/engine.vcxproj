@@ -21,8 +21,10 @@
   <ItemGroup>
     <ClInclude Include="common\i_map.hpp" />
     <ClInclude Include="common\i_neuron.hpp" />
+    <ClInclude Include="common\i_value_generator.hpp" />
     <ClInclude Include="common\map.hpp" />
     <ClInclude Include="common\neuron.hpp" />
+    <ClInclude Include="common\value_generator.hpp" />
     <ClInclude Include="complex\genetic_algorithm_2d.hpp" />
     <ClInclude Include="complex\i_genetic_algorithm_2d.hpp" />
     <ClInclude Include="complex\i_lesson_2d.hpp" />

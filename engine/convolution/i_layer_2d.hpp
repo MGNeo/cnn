@@ -5,6 +5,7 @@
 
 #include "i_map_2d.hpp"
 #include "i_layer_2d_visitor.hpp"
+#include "../common/i_value_generator.hpp"
 
 namespace cnn
 {
@@ -45,6 +46,8 @@ namespace cnn
         virtual size_t GetOutputValueCount() const = 0;
 
         virtual typename ILayer2D<T>::Uptr Clone(const bool cloneState) const = 0;
+
+        virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
       };
     }

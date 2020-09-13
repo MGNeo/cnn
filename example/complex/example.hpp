@@ -148,7 +148,7 @@ namespace cnn
       {
         std::cout << "  " << __FUNCSIG__ << std::endl;
         {
-          auto geneticAlgorithm2D = std::make_unique<engine::complex::GeneticAlgorithm2D<T>>(10, 1);
+          auto geneticAlgorithm2D = std::make_unique<engine::complex::GeneticAlgorithm2D<T>>();
         }
         std::cout << std::endl;
       }

@@ -43,6 +43,8 @@ namespace cnn
 
         Core2D(const Core2D<T>& core2D, const bool cloneState);
 
+        void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
+
       private:
 
         size_t Width;
@@ -176,6 +178,13 @@ namespace cnn
         Neuron_{ core2D.Neuron_->Clone(cloneState) }
       {
       }
+
+      template <typename T>
+      void Core2D<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
+      {
+        Neuron_->FillWeights(valueGenerator);
+      }
+
     }
   }
 }

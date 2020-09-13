@@ -33,6 +33,7 @@ namespace cnn
 
         typename typename INetwork2D<T>::Uptr Clone(const bool cloneState) const override;
 
+        void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
       private:
 
@@ -120,6 +121,13 @@ namespace cnn
         auto complexNetwork = std::make_unique<Network2D<T>>(std::move(convolutionNetwork2D),
                                                              std::move(perceptronNetwork));
         return complexNetwork;
+      }
+
+      template <typename T>
+      void Network2D<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
+      {
+        ConvolutionNetwork2D->FillWeights(valueGenerator);
+        PerceptronNetwork->FillWeights(valueGenerator);
       }
     }
   }

@@ -54,6 +54,8 @@ namespace cnn
         
         PoolingLayer2D(const PoolingLayer2D<T>& poolingLayer2D, const bool cloneState);
 
+        void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
+
       private:
 
         size_t InputWidth;
@@ -150,14 +152,12 @@ namespace cnn
         CheckExtendedOverflows();
 
         Inputs = std::make_unique<typename Map2D<T>::Uptr[]>(ChannelCount);
-        for (size_t i = 0; i < ChannelCount; ++i)
-        {
-          Inputs[i] = std::make_unique<Map2D<T>>(InputWidth, InputHeight);
-        }
         Outputs = std::make_unique<typename Map2D<T>::Uptr[]>(ChannelCount);
-        for (size_t i = 0; i < ChannelCount; ++i)
+
+        for (size_t c = 0; c < ChannelCount; ++c)
         {
-          Outputs[i] = std::make_unique<Map2D<T>>(OutputWidth, OutputHeight);
+          Inputs[c] = std::make_unique<Map2D<T>>(InputWidth, InputHeight);
+          Outputs[c] = std::make_unique<Map2D<T>>(OutputWidth, OutputHeight);
         }
       }
 
@@ -364,14 +364,17 @@ namespace cnn
         Inputs{ std::make_unique<typename IMap2D<T>::Uptr[]>(ChannelCount) },
         Outputs{ std::make_unique<typename IMap2D<T>::Uptr[]>(ChannelCount) }
       {
-        for (size_t i = 0; i < ChannelCount; ++i)
+        for (size_t c = 0; c < ChannelCount; ++c)
         {
-          Inputs[i] = poolingLayer2D.GetInput(i).Clone(cloneState);
+          Inputs[c] = poolingLayer2D.GetInput(c).Clone(cloneState);
+          Outputs[c] = poolingLayer2D.GetOutput(c).Clone(cloneState);
         }
-        for (size_t o = 0; o < ChannelCount; ++o)
-        {
-          Outputs[o] = poolingLayer2D.GetOutput(o).Clone(cloneState);
-        }
+      }
+
+      template <typename T>
+      void PoolingLayer2D<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
+      {
+        // We don't have any weights. 
       }
     }
   }
