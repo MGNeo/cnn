@@ -91,14 +91,24 @@ namespace cnn
       template <typename T>
       typename IMap<T>::Uptr Map<T>::Clone(const bool cloneState) const
       {
-        // TODO.
-        return {};
+        return std::make_unique<Map<T>>(*this, cloneState);
       }
 
       template <typename T>
       Map<T>::Map(const Map<T>& map, const bool cloneState)
+        :
+        ValueCount{ map.GetValueCount() },
+        Values{ std::make_unique<T[]>(ValueCount) }
       {
-        // TODO.
+        if (cloneState == true)
+        {
+          memcpy(Values.get(), map.Values.get(), sizeof(T) * ValueCount);
+        } else {
+          for (size_t v = 0; v < ValueCount; ++v)
+          {
+            Values[v] = 0;
+          }
+        }
       }
     }
   }

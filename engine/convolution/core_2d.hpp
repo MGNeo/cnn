@@ -41,7 +41,7 @@ namespace cnn
 
         typename ICore2D<T>::Uptr Clone(const bool cloneState) const override;
 
-        Core2D(const Core2D<T> core2D, const bool cloneState);
+        Core2D(const Core2D<T>& core2D, const bool cloneState);
 
       private:
 
@@ -165,14 +165,16 @@ namespace cnn
       template <typename T>
       typename ICore2D<T>::Uptr Core2D<T>::Clone(const bool cloneState) const
       {
-        // TODO.
-        return {};
+        return std::make_unique<Core2D<T>>(*this, cloneState);
       }
 
       template <typename T>
-      Core2D<T>::Core2D(const Core2D<T> core2D, const bool cloneState)
+      Core2D<T>::Core2D(const Core2D<T>& core2D, const bool cloneState)
+        :
+        Width{ core2D.GetWidth() },
+        Height{ core2D.GetHeight() },
+        Neuron_{ core2D.Neuron_->Clone(cloneState) }
       {
-        // TODO.
       }
     }
   }

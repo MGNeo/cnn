@@ -116,14 +116,16 @@ namespace cnn
       template <typename T>
       typename IMap2D<T>::Uptr Map2D<T>::Clone(const bool cloneState) const
       {
-        // TODO.
-        return {};
+        return std::make_unique<Map2D<T>>(*this, cloneState);
       }
 
       template <typename T>
       Map2D<T>::Map2D(const Map2D<T>& map, const bool cloneState)
+        :
+        Width{ map.GetWidth() },
+        Height{ map.GetHeight() },
+        Map_{ map.Map_->Clone(cloneState) }
       {
-        // TODO.
       }
     }
   }

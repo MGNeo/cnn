@@ -158,14 +158,29 @@ namespace cnn
       template <typename T>
       typename INeuron<T>::Uptr Neuron<T>::Clone(const bool cloneState) const
       {
-        // TODO.
-        return {};
+        return std::make_unique<Neuron<T>>(*this, cloneState);
       }
 
       template <typename T>
       Neuron<T>::Neuron(const Neuron<T>& neuron, const bool cloneState)
+        :
+        InputCount{ neuron.GetInputCount() },
+        Inputs{ std::make_unique<T[]>(InputCount) },
+        Weights{ std::make_unique<T[]>(InputCount) }
       {
-        // TODO.
+        if (cloneState == true)
+        {
+          memcpy(Inputs.get(), neuron.Inputs.get(), sizeof(T) * InputCount);
+          memcpy(Weights.get(), neuron.Weights.get(), sizeof(T) * InputCount);
+          Output = neuron.GetOutput();
+        } else {
+          for (size_t i = 0; i < InputCount; ++i)
+          {
+            Inputs[i] = 0;
+            Weights[i] = 0;
+          }
+          Output = 0;
+        }
       }
     }
   }

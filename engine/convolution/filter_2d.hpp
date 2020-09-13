@@ -155,14 +155,21 @@ namespace cnn
       template <typename T>
       typename IFilter2D<T>::Uptr Filter2D<T>::Clone(const bool cloneState) const
       {
-        // TODO.
-        return {};
+        return std::make_unique<Filter2D<T>>(*this, cloneState);
       }
 
       template <typename T>
       Filter2D<T>::Filter2D(const Filter2D<T>& filter2D, const bool cloneState)
+        :
+        Width{ filter2D.GetWidth() },
+        Height{ filter2D.GetHeight() },
+        CoreCount{ filter2D.GetCoreCount() },
+        Cores{ std::make_unique<typename ICore2D<T>::Uptr[]>(CoreCount) }
       {
-        // TODO.
+        for (size_t c = 0; c < CoreCount; ++c)
+        {
+          Cores[c] = Cores[c]->Clone(cloneState);
+        }
       }
     }
   }
