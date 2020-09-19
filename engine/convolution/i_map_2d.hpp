@@ -31,6 +31,9 @@ namespace cnn
 
         virtual typename IMap2D<T>::Uptr Clone(const bool cloneState) const = 0;
 
+        //virtual void CrossFrom(const IMap2D<T>& source1,
+        //                       const IMap2D<T>& source2) = 0;
+
       };
     }
   }

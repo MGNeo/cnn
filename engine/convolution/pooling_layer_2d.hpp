@@ -9,6 +9,8 @@ namespace cnn
   {
     namespace convolution
     {
+      // TODO: PoolingLayer2D must be joined with ConvolutionLayer2D, and generalized interface must be moved to ILayer2D!
+      // It is necessary for CrossFrom() method.
       template <typename T>
       class PoolingLayer2D : public ILayer2D<T>
       {

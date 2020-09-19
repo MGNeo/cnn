@@ -43,6 +43,9 @@ namespace cnn
 
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
+        //virtual void CrossFrom(const ICore2D<T>& source1,
+        //                       const ICore2D<T>& source2) = 0;
+
       };
     }
   }

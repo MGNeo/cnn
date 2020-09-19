@@ -39,6 +39,9 @@ namespace cnn
 
         virtual typename IFilter2D<T>::Uptr Clone(const bool cloneState) const = 0;
 
+        //virtual void CrossFrom(const IFilter2D<T>& source1,
+        //                       const IFilter2D<T>& source2) = 0;
+
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
       };

@@ -30,6 +30,9 @@ namespace cnn
 
         virtual typename IMap<T>::Uptr Clone(const bool cloneState) const = 0;
 
+        //virtual void CrossFrom(const IMap<T>& source1,
+        //                       const IMap<T>& source2) = 0;
+
       };
     }
   }
