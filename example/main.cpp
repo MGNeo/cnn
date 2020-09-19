@@ -51,7 +51,7 @@ int main()
     // Examples of using for cnn::engine::complex.
     {
       {
-        cnn::example::common::IExample<float>::Uptr example = std::make_unique<cnn::example::complex::Example<float>>();
+        cnn::example::common::IExample<float>::Uptr example = std::make_unique<typename cnn::example::complex::Example<float>>();
         example->Execute();
       }
 

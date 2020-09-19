@@ -28,11 +28,11 @@ namespace cnn
 
         GeneticAlgorithm2D();
 
-        T GetMinWeight() const override;
-        void SetMinWeight(const T minWeight) override;
+        T GetMinWeightValue() const override;
+        void SetMinWeightValue(const T minWeightValue) override;
 
-        T GetMaxWeight() const override;
-        void SetMaxWeight(const T maxWeight) override;
+        T GetMaxWeightValue() const override;
+        void SetMaxWeightValue(const T maxWeightValue) override;
 
         size_t GetPopulationSize() const override;
         void SetPopulationSize(const size_t populationSize) override;
@@ -41,57 +41,64 @@ namespace cnn
         void SetIterationCount(const size_t iterationCount) override;
 
         typename INetwork2D<T>::Uptr Run(const ILesson2DLibrary<T>& lessonLibrary,
-                                         const INetwork2D<T>& network) override;
+                                         const INetwork2D<T>& network) const override;
 
       private:
 
-        T MinWeight;
-        T MaxWeight;
+        T MinWeightValue;
+        T MaxWeightValue;
         size_t PopulationSize;
         size_t IterationCount;
+
+        void Preparation(const complex::INetwork2D<T>& sourceNetwork,
+                         std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
+                         std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
+
+        void CrossAndMutation(std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
+                              std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
 
       };
 
       template <typename T>
       GeneticAlgorithm2D<T>::GeneticAlgorithm2D()
         :
-        MinWeight{ -1 },
-        MaxWeight{ +1 },
+        MinWeightValue{ -1 },
+        MaxWeightValue{ +1 },
         PopulationSize{ MIN_POPULATION_SIZE },
         IterationCount{ MIN_ITERATION_COUNT }
       {
       }
 
       template <typename T>
-      T GeneticAlgorithm2D<T>::GetMinWeight() const
+      T GeneticAlgorithm2D<T>::GetMinWeightValue() const
       {
-        return MinWeight;
+        return MinWeightValue;
       }
 
       template <typename T>
-      void GeneticAlgorithm2D<T>::SetMinWeight(const T minWeight)
+      void GeneticAlgorithm2D<T>::SetMinWeightValue(const T minWeightValue)
       {
-        if (MinWeight >= MaxWeight)
+        if (MinWeightValue >= MaxWeightValue)
         {
-          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::SetMinWeight(), MinWeight >= MaxWeight.");
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::SetMinWeight(), MinWeightValue >= MaxWeightValue.");
         }
-        MinWeight = minWeight;
+        MinWeightValue = minWeightValue;
       }
 
       template <typename T>
-      T GeneticAlgorithm2D<T>::GetMaxWeight() const
+      T GeneticAlgorithm2D<T>::GetMaxWeightValue() const
       {
-        return MaxWeight;
+return MaxWeightValue;
       }
 
       template <typename T>
-      void GeneticAlgorithm2D<T>::SetMaxWeight(const T maxWeight)
+      void GeneticAlgorithm2D<T>::SetMaxWeightValue(const T maxWeightValue)
       {
-        if (MaxWeight <= MinWeight)
+        if (MaxWeightValue <= MinWeightValue)
         {
-          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::SetMaxWeight(), MaxWeight <= MinWeight.");
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::SetMaxWeight(), MaxWeightValue <= MinWeightValue.");
         }
-        MaxWeight = maxWeight;
+        MaxWeightValue = maxWeightValue;
       }
 
       template <typename T>
@@ -128,24 +135,70 @@ namespace cnn
 
       template <typename T>
       typename INetwork2D<T>::Uptr GeneticAlgorithm2D<T>::Run(const ILesson2DLibrary<T>& lessonLibrary,
-                                                              const INetwork2D<T>& network)
+        const INetwork2D<T>& network) const
       {
-        const size_t sourcePopulationSize = PopulationSize;
-        const size_t resultPopulationSize = sourcePopulationSize * sourcePopulationSize;
+        std::vector<typename complex::INetwork2D<T>::Uptr> sourcePopulation;
+        std::vector<typename complex::INetwork2D<T>::Uptr> resultPopulation;
 
-        if ((resultPopulationSize / sourcePopulationSize) != sourcePopulationSize)
+        Preparation(network, sourcePopulation, resultPopulation);
+
+        for (size_t i = 0; i < GetIterationCount(); ++i)
         {
-          throw std::overflow_error("cnn::engine::complex::GeneticAlgorithm2D::Run(), resultPopulationSize has been overflowed.");
+          CrossAndMutation(sourcePopulation, resultPopulation);
         }
-
-        auto sourcePopulation = std::make_unique<typename INetwork2D<T>::Uptr[]>(sourcePopulationSize);
-        auto resultPopulation = std::make_unique<typename INetwork2D<T>::Uptr[]>(resultPopulationSize);
-
-        // TODO: ...
 
         return {};
       }
 
+      template <typename T>
+      void GeneticAlgorithm2D<T>::Preparation(const complex::INetwork2D<T>& sourceNetwork,
+                                              std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
+                                              std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
+      {
+        const size_t sourcePopulationSize = PopulationSize;
+        const size_t m = sourcePopulationSize - 1;
+        const size_t resultPopulationSize = sourcePopulationSize * m;
+
+        if ((resultPopulationSize / sourcePopulationSize) != m)
+        {
+          throw std::overflow_error("cnn::engine::complex::GeneticAlgorithm2D::Preparation(), resultPopulationSize has been overflowed.");
+        }
+
+        sourcePopulation.resize(sourcePopulationSize);
+        resultPopulation.resize(resultPopulationSize);
+
+        auto valueGenerator = std::make_unique<common::ValueGenerator<T>>(GetMinWeightValue(), GetMaxWeightValue());
+
+        sourcePopulation[0] = sourceNetwork.Clone(true);
+        for (auto& network : sourcePopulation)
+        {
+          network = sourceNetwork.Clone(false);
+          network->FillWeights(*valueGenerator);
+        }
+        for (auto& network : resultPopulation)
+        {
+          network = sourceNetwork.Clone(false);
+        }
+      }
+
+      template <typename T>
+      void GeneticAlgorithm2D<T>::CrossAndMutation(std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
+                                                   std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
+      {
+        size_t r{};
+        for (const auto& sourceNetwork1 : sourcePopulation)
+        {
+          for (const auto& sourceNetwork2 : sourcePopulation)
+          {
+            if (sourceNetwork1 != sourceNetwork2)
+            {
+              // TODO: resultPopulation[r++]->CrossFrom(sourceNetwork1, sourceNetwork2).
+              // TODO: resultPopulation[r++]->Mutation(force, minValue, maxValue);
+              // ...
+            }
+          }
+        }
+      }
     }
   }
 }
