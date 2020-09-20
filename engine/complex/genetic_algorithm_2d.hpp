@@ -6,6 +6,7 @@
 #include "i_genetic_algorithm_2d.hpp"
 #include "network_2d.hpp"
 #include "../common/value_generator.hpp"
+#include "../common/binary_random_generator.hpp"
 
 namespace cnn
 {
@@ -185,6 +186,8 @@ return MaxWeightValue;
       void GeneticAlgorithm2D<T>::CrossAndMutation(std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
                                                    std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
       {
+        auto binaryRandomGenerator = std::make_unique<common::BinaryRandomGenerator>();
+
         size_t r{};
         for (const auto& sourceNetwork1 : sourcePopulation)
         {
@@ -192,7 +195,7 @@ return MaxWeightValue;
           {
             if (sourceNetwork1 != sourceNetwork2)
             {
-              // TODO: resultPopulation[r++]->CrossFrom(sourceNetwork1, sourceNetwork2).
+              resultPopulation[r++]->CrossFrom(*sourceNetwork1, *sourceNetwork2, *binaryRandomGenerator);
               // TODO: resultPopulation[r++]->Mutation(force, minValue, maxValue);
               // ...
             }

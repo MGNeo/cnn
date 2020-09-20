@@ -67,7 +67,8 @@ namespace cnn
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
         void CrossFrom(const ILayer2D<T>& source1,
-                       const ILayer2D<T>& source2) override;
+                       const ILayer2D<T>& source2,
+                       common::IBinaryRandomGenerator& binaryRandomGenerator) override;
 
       private:
 
@@ -440,7 +441,8 @@ namespace cnn
 
       template <typename T>
       void Layer2D<T>::CrossFrom(const ILayer2D<T>& source1,
-                                 const ILayer2D<T>& source2)
+                                 const ILayer2D<T>& source2,
+                                 common::IBinaryRandomGenerator& binaryRandomGenerator)
       {
         // Compare us with source1.
         {
@@ -528,7 +530,7 @@ namespace cnn
 
         for (size_t f = 0; f < GetFilterCount(); ++f)
         {
-          Filters[f]->CrossFrom(source1.GetFilter(f), source2.GetFilter(f));
+          Filters[f]->CrossFrom(source1.GetFilter(f), source2.GetFilter(f), binaryRandomGenerator);
         }
       }
     }

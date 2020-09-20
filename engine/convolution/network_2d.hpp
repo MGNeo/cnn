@@ -2,6 +2,7 @@
 
 #include "i_network_2d.hpp"
 #include "layer_2d.hpp"
+#include "../common/binary_random_generator.hpp"
 
 #include <vector>
 #include <stdexcept>
@@ -54,7 +55,8 @@ namespace cnn
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
         void CrossFrom(const INetwork2D<T>& source1,
-                       const INetwork2D<T>& source2) override;
+                       const INetwork2D<T>& source2,
+                       common::IBinaryRandomGenerator& binaryRandomGenerator) override;
 
       private:
 
@@ -217,7 +219,8 @@ namespace cnn
 
       template <typename T>
       void Network2D<T>::CrossFrom(const INetwork2D<T>& source1,
-                                   const INetwork2D<T>& source2)
+                                   const INetwork2D<T>& source2,
+                                   common::IBinaryRandomGenerator& binaryRandomGenerator)
       {
         if (GetLayerCount() != source1.GetLayerCount())
         {
@@ -229,7 +232,7 @@ namespace cnn
         }
         for (size_t l = 0; l < GetLayerCount(); ++l)
         {
-          Layers[l]->CrossFrom(source1.GetLayer(l), source2.GetLayer(l));
+          Layers[l]->CrossFrom(source1.GetLayer(l), source2.GetLayer(l), binaryRandomGenerator);
         }
       }
     }

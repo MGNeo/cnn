@@ -6,6 +6,7 @@
 #include "../common/i_map.hpp"
 #include "../common/i_neuron.hpp"
 #include "../common/i_value_generator.hpp"
+#include "../common/i_binary_random_generator.hpp"
 
 namespace cnn
 {
@@ -44,7 +45,8 @@ namespace cnn
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
         virtual void CrossFrom(const ILayer<T>& source1,
-                               const ILayer<T>& source2) = 0;
+                               const ILayer<T>& source2,
+                               common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
 
       };
     }

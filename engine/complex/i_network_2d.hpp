@@ -6,6 +6,7 @@
 #include "../convolution/i_network_2d.hpp"
 #include "../perceptron/i_network.hpp"
 #include "../common/i_value_generator.hpp"
+#include "../common/i_binary_random_generator.hpp"
 
 namespace cnn
 {
@@ -36,7 +37,8 @@ namespace cnn
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
         virtual void CrossFrom(const INetwork2D<T>& source1,
-                               const INetwork2D<T>& source2) = 0;
+                               const INetwork2D<T>& source2,
+                               common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
 
         virtual ~INetwork2D() = default;
 

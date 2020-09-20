@@ -11,6 +11,9 @@
 
 #include "../../engine/complex/genetic_algorithm_2d.hpp"
 
+// Temporary
+#include "../../engine/common/binary_random_generator.hpp"
+
 namespace cnn
 {
   namespace example
@@ -111,7 +114,10 @@ namespace cnn
           }
 
           // Temporary.
-          network2D->CrossFrom(*network2D, *network2D);
+          {
+            auto binaryRandomGenerator = std::make_unique<engine::common::BinaryRandomGenerator>(0);
+            //network2D->CrossFrom(*network2D, *network2D, *binaryRandomGenerator);
+          }
         }
       }
 

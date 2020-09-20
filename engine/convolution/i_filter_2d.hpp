@@ -5,6 +5,7 @@
 
 #include "i_core_2d.hpp"
 #include "../common/i_value_generator.hpp"
+#include "../common/i_binary_random_generator.hpp"
 
 namespace cnn
 {
@@ -40,7 +41,8 @@ namespace cnn
         virtual typename IFilter2D<T>::Uptr Clone(const bool cloneState) const = 0;
 
         virtual void CrossFrom(const IFilter2D<T>& source1,
-                               const IFilter2D<T>& source2) = 0;
+                               const IFilter2D<T>& source2,
+                               common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
 
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 

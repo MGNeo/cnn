@@ -4,6 +4,7 @@
 #include <type_traits>
 
 #include "../common/i_value_generator.hpp"
+#include "../common/i_binary_random_generator.hpp"
 
 namespace cnn
 {
@@ -44,7 +45,8 @@ namespace cnn
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
         virtual void CrossFrom(const ICore2D<T>& source1,
-                               const ICore2D<T>& source2) = 0;
+                               const ICore2D<T>& source2,
+                               common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
 
       };
     }

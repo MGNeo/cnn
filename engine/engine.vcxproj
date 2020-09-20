@@ -50,9 +50,6 @@
     <ClInclude Include="perceptron\layer.hpp" />
     <ClInclude Include="perceptron\network.hpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="common\binary_random_generator.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{59472396-6CF8-4312-AA4E-71B27929E3AC}</ProjectGuid>

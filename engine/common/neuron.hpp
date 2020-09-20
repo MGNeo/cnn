@@ -45,7 +45,8 @@ namespace cnn
         void FillWeights(IValueGenerator<T>& valueGenerator) override;
 
         void CrossFrom(const INeuron<T>& source1,
-                       const INeuron<T>& source2) override;
+                       const INeuron<T>& source2,
+                       common::IBinaryRandomGenerator& binaryRandomGenerator) override;
 
       public:
 
@@ -200,7 +201,8 @@ namespace cnn
 
       template <typename T>
       void Neuron<T>::CrossFrom(const INeuron<T>& source1,
-                                const INeuron<T>& source2)
+                                const INeuron<T>& source2,
+                                common::IBinaryRandomGenerator& binaryRandomGenerator)
       {
         if (GetInputCount() != source1.GetInputCount())
         {

@@ -42,9 +42,4 @@
     <ClInclude Include="common\i_binary_random_generator.hpp" />
     <ClInclude Include="common\binary_random_generator.hpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="common\binary_random_generator.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-  </ItemGroup>
 </Project>

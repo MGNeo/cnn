@@ -46,7 +46,8 @@ namespace cnn
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
         void CrossFrom(const ICore2D<T>& source1,
-                       const ICore2D<T>& source2) override;
+                       const ICore2D<T>& source2,
+                       common::IBinaryRandomGenerator& binaryRandomGenerator) override;
 
       private:
 
@@ -190,7 +191,8 @@ namespace cnn
 
       template <typename T>
       void Core2D<T>::CrossFrom(const ICore2D<T>& source1,
-                                const ICore2D<T>& source2)
+                                const ICore2D<T>& source2,
+                                common::IBinaryRandomGenerator& binaryRandomGenerator)
       {
         {
           if (GetWidth() != source1.GetWidth())

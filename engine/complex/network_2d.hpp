@@ -36,7 +36,8 @@ namespace cnn
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
         void CrossFrom(const INetwork2D<T>& source1,
-                       const INetwork2D<T>& source2) override;
+                       const INetwork2D<T>& source2,
+                       common::IBinaryRandomGenerator& binaryRandomGenerator) override;
 
       private:
 
@@ -135,10 +136,11 @@ namespace cnn
 
       template <typename T>
       void Network2D<T>::CrossFrom(const INetwork2D<T>& source1,
-                                   const INetwork2D<T>& source2)
+                                   const INetwork2D<T>& source2,
+                                   common::IBinaryRandomGenerator& binaryRandomGenerator)
       {
-        ConvolutionNetwork2D->CrossFrom(source1.GetConvolutionNetwork2D(), source2.GetConvolutionNetwork2D());
-        PerceptronNetwork->CrossFrom(source1.GetPerceptronNetwork(), source2.GetPerceptronNetwork());
+        ConvolutionNetwork2D->CrossFrom(source1.GetConvolutionNetwork2D(), source2.GetConvolutionNetwork2D(), binaryRandomGenerator);
+        PerceptronNetwork->CrossFrom(source1.GetPerceptronNetwork(), source2.GetPerceptronNetwork(), binaryRandomGenerator);
       }
     }
   }

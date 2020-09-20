@@ -5,6 +5,7 @@
 
 #include "i_layer.hpp"
 #include "../common/i_value_generator.hpp"
+#include "../common/i_binary_random_generator.hpp"
 
 namespace cnn
 {
@@ -42,7 +43,8 @@ namespace cnn
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
         virtual void CrossFrom(const INetwork<T>& source1,
-                               const INetwork<T>& source2) = 0;
+                               const INetwork<T>& source2,
+                               common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
 
         virtual ~INetwork() = default;
 
