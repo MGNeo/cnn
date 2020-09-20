@@ -219,7 +219,18 @@ namespace cnn
       void Network2D<T>::CrossFrom(const INetwork2D<T>& source1,
                                    const INetwork2D<T>& source2)
       {
-        // ...
+        if (GetLayerCount() != source1.GetLayerCount())
+        {
+          throw std::invalid_argument("cnn::engine::convolution::Network2D::CrossFrom(), GetLayerCount() != source1.GetLayerCount().");
+        }
+        if (GetLayerCount() != source2.GetLayerCount())
+        {
+          throw std::invalid_argument("cnn::engine::convolution::Network2D::CrossFrom(), GetLayerCount() != source2.GetLayerCount().");
+        }
+        for (size_t l = 0; l < GetLayerCount(); ++l)
+        {
+          Layers[l]->CrossFrom(source1.GetLayer(l), source2.GetLayer(l));
+        }
       }
     }
   }

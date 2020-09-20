@@ -137,7 +137,8 @@ namespace cnn
       void Network2D<T>::CrossFrom(const INetwork2D<T>& source1,
                                    const INetwork2D<T>& source2)
       {
-        // ...
+        ConvolutionNetwork2D->CrossFrom(source1.GetConvolutionNetwork2D(), source2.GetConvolutionNetwork2D());
+        PerceptronNetwork->CrossFrom(source1.GetPerceptronNetwork(), source2.GetPerceptronNetwork());
       }
     }
   }

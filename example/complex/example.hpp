@@ -109,6 +109,9 @@ namespace cnn
             const auto& outputLayer = network2D->GetPerceptronNetwork().GetLastLayer();
             // ...
           }
+
+          // Temporary.
+          network2D->CrossFrom(*network2D, *network2D);
         }
       }
 

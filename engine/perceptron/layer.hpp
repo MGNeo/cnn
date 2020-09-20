@@ -211,7 +211,38 @@ namespace cnn
       void Layer<T>::CrossFrom(const ILayer<T>& source1,
                                const ILayer<T>& source2)
       {
-        // ...
+        {
+          if (GetInputSize() != source1.GetInputSize())
+          {
+            throw std::invalid_argument("cnn::engine::perceptron::Layer::CrossFrom(), GetInputSize() != source1.GetInputSize().");
+          }
+          if (GetNeuronCount() != source1.GetNeuronCount())
+          {
+            throw std::invalid_argument("cnn::engine::perceptron::Layer::CrossFrom(), GetNeuronCount() != source1.GetNeuronCount().");
+          }
+          if (GetOutputSize() != source1.GetOutputSize())
+          {
+            throw std::invalid_argument("cnn::engine::perceptron::Layer::CrossFrom(), GetOutputSize() != source1.GetOutputSize().");
+          }
+        }
+        {
+          if (GetInputSize() != source2.GetInputSize())
+          {
+            throw std::invalid_argument("cnn::engine::perceptron::Layer::CrossFrom(), GetInputSize() != source2.GetInputSize().");
+          }
+          if (GetNeuronCount() != source2.GetNeuronCount())
+          {
+            throw std::invalid_argument("cnn::engine::perceptron::Layer::CrossFrom(), GetNeuronCount() != source2.GetNEuronCount().");
+          }
+          if (GetOutputSize() != source2.GetOutputSize())
+          {
+            throw std::invalid_argument("cnn::engine::perceptron::Layer::CrossFrom(), GetOutputSize() != source2.GetOutputSize().");
+          }
+        }
+        for (size_t n = 0; n < GetNeuronCount(); ++n)
+        {
+          Neurons[n]->CrossFrom(source1.GetNeuron(n), source2.GetNeuron(n));
+        }
       }
     }
   }

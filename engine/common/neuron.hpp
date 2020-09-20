@@ -202,6 +202,15 @@ namespace cnn
       void Neuron<T>::CrossFrom(const INeuron<T>& source1,
                                 const INeuron<T>& source2)
       {
+        if (GetInputCount() != source1.GetInputCount())
+        {
+          throw std::invalid_argument("cnn::engine::common::Neuron::CrossFrom(), GetInputCount() != source1.GetInputCount().");
+        }
+        if (GetInputCount() != source2.GetInputCount())
+        {
+          throw std::invalid_argument("cnn::engine::common::Neuron::CrossFrom(), GetInputCount() != source2.GetInputCount().");
+        }
+        // Cross weights.
         // ...
       }
     }

@@ -7,6 +7,7 @@
 // TODO: Extend examples for sub examples.
 // TODO: Create special builders for creating of networks, etc.
 // TODO: Create a genetic algorithm.
+// TODO: Add methods which will be exception safety (such methods must use "copy-swap" idiom).
 
 int main()
 {

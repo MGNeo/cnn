@@ -192,6 +192,26 @@ namespace cnn
       void Core2D<T>::CrossFrom(const ICore2D<T>& source1,
                                 const ICore2D<T>& source2)
       {
+        {
+          if (GetWidth() != source1.GetWidth())
+          {
+            throw std::invalid_argument("cnn::engine::convolution::Core2D::CrossFrom(), GetWidth() != source1.GetWidth().");
+          }
+          if (GetHeight() != source1.GetHeight())
+          {
+            throw std::invalid_argument("cnn::engine::convolution::Core2D::CrossFrom(), GetHeight() != source1.GetHeight().");
+          }
+        }
+        {
+          if (GetWidth() != source2.GetWidth())
+          {
+            throw std::invalid_argument("cnn::engine::convolution::Core2D::CrossFrom(), GetWidth() != source2.GetWidth().");
+          }
+          if (GetHeight() != source.GetHeight())
+          {
+            throw std::invalid_argument("cnn::engine::convolution::Core2D::CrossFrom(), GetHeight() != source2.GetHeight().");
+          }
+        }
         // ...
       }
     }
