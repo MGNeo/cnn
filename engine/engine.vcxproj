@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\binary_random_generator.hpp" />
+    <ClInclude Include="common\i_binary_random_generator.hpp" />
     <ClInclude Include="common\i_map.hpp" />
     <ClInclude Include="common\i_neuron.hpp" />
     <ClInclude Include="common\i_value_generator.hpp" />
@@ -47,6 +49,9 @@
     <ClInclude Include="perceptron\i_network.hpp" />
     <ClInclude Include="perceptron\layer.hpp" />
     <ClInclude Include="perceptron\network.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="common\binary_random_generator.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

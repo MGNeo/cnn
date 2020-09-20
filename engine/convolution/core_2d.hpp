@@ -158,7 +158,7 @@ namespace cnn
       template <typename T>
       void Core2D<T>::ClearWeights()
       {
-        Neuron_->ClearWeight();
+        Neuron_->ClearWeights();
       }
 
       template <typename T>
@@ -207,7 +207,7 @@ namespace cnn
           {
             throw std::invalid_argument("cnn::engine::convolution::Core2D::CrossFrom(), GetWidth() != source2.GetWidth().");
           }
-          if (GetHeight() != source.GetHeight())
+          if (GetHeight() != source2.GetHeight())
           {
             throw std::invalid_argument("cnn::engine::convolution::Core2D::CrossFrom(), GetHeight() != source2.GetHeight().");
           }

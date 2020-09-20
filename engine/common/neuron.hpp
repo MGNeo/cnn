@@ -35,7 +35,7 @@ namespace cnn
         T GetOutput() const override;
 
         void ClearInputs() override;
-        void ClearWeight() override;
+        void ClearWeights() override;
         void ClearOutput() override;
 
         typename INeuron<T>::Uptr Clone(const bool cloneState) const override;
@@ -70,7 +70,7 @@ namespace cnn
         Inputs = std::make_unique<T[]>(InputCount);
         Weights = std::make_unique<T[]>(InputCount);
         ClearInputs();
-        ClearWeight();
+        ClearWeights();
         ClearOutput();
       }
 
@@ -146,7 +146,7 @@ namespace cnn
       }
 
       template <typename T>
-      void Neuron<T>::ClearWeight()
+      void Neuron<T>::ClearWeights()
       {
         for (size_t w = 0; w < InputCount; ++w)
         {

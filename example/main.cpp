@@ -1,4 +1,5 @@
 #include <iostream>
+#include <random>
 
 #include "perceptron/example.hpp"
 #include "convolution/example.hpp"
