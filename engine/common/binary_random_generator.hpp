@@ -16,6 +16,8 @@ namespace cnn
 
         using Uptr = std::unique_ptr<BinaryRandomGenerator>;
 
+        // Inline is necessary for keeping the library as header-only-library.
+
         inline BinaryRandomGenerator(const unsigned int seed = 0);
 
         inline bool Generate() override;
