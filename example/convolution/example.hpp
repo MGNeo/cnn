@@ -2,7 +2,6 @@
 
 #include "../common/i_example.hpp"
 #include "../../engine/convolution/network_2d.hpp"
-#include "layer_2d_visitor.hpp"
 
 #include <random>
 #include <time.h>
@@ -28,7 +27,6 @@ namespace cnn
       private:
 
         void Simple2D() const;
-        void Visitor2D() const;
 
       };
 
@@ -38,7 +36,6 @@ namespace cnn
         std::cout << __FUNCSIG__ << std::endl;
         {
           Simple2D();
-          Visitor2D();
         }
         std::cout << std::endl;
       }
@@ -53,10 +50,8 @@ namespace cnn
 
           // Add few layers to the network.
           {
-            // Pooling layer.
-            network2D->PushBack(3);
-            // Convolution layer.
-            network2D->PushBack(5, 5, 15);
+            network2D->PushBack(3, 3, 7);
+            network2D->PushBack(5, 5, 25);
           }
 
           // Set random signals in first layer of the network.
@@ -66,6 +61,7 @@ namespace cnn
 
             auto& firstLayer = network2D->GetLayer(0);
 
+            // TODO: Create special method for cloning of state of IMap/IMap2D.
             for (size_t i = 0; i < firstLayer.GetInputCount(); ++i)
             {
               for (size_t x = 0; x < firstLayer.GetInputWidth(); ++x)
@@ -88,33 +84,6 @@ namespace cnn
             const auto& lastLayer = network2D->GetLastLayer();
             // ...
           }
-        }
-        std::cout << std::endl;
-      }
-
-      template <typename T>
-      void Example<T>::Visitor2D() const
-      {
-        std::cout << "  " << __FUNCSIG__ << std::endl;
-        {
-          // Prepare the network.
-          auto network2D = std::make_unique<engine::convolution::Network2D<T>>(32, 32, 3, 4, 4, 5);
-
-          // Pooling.
-          network2D->PushBack(2);
-          // Convolution.
-          network2D->PushBack(3, 3, 25);
-          // Pooling.
-          network2D->PushBack(3);
-          // Convolution.
-          network2D->PushBack(4, 4, 15);
-
-          // Prepare the visitor.
-          auto layer2DVisitor = std::make_unique<Layer2DVisitor<T>>();
-
-          // Visit all layers of the network by the visitor.
-          network2D->Accept(*layer2DVisitor);
-
         }
         std::cout << std::endl;
       }

@@ -19,7 +19,6 @@
     <ClInclude Include="complex\i_network_2d.hpp" />
     <ClInclude Include="complex\lesson_2d.hpp" />
     <ClInclude Include="complex\network_2d.hpp" />
-    <ClInclude Include="convolution\convolution_layer_2d.hpp" />
     <ClInclude Include="convolution\core_2d.hpp" />
     <ClInclude Include="convolution\filter_2d.hpp" />
     <ClInclude Include="convolution\i_core_2d.hpp" />
@@ -29,18 +28,16 @@
     <ClInclude Include="convolution\i_network_2d.hpp" />
     <ClInclude Include="convolution\map_2d.hpp" />
     <ClInclude Include="convolution\network_2d.hpp" />
-    <ClInclude Include="convolution\pooling_layer_2d.hpp" />
     <ClInclude Include="perceptron\i_layer.hpp" />
-    <ClInclude Include="perceptron\i_layer_visitor.hpp" />
     <ClInclude Include="perceptron\i_network.hpp" />
     <ClInclude Include="perceptron\layer.hpp" />
     <ClInclude Include="perceptron\network.hpp" />
-    <ClInclude Include="convolution\i_layer_2d_visitor.hpp" />
     <ClInclude Include="complex\i_genetic_algorithm_2d.hpp" />
     <ClInclude Include="complex\i_lesson_2d_library.hpp" />
     <ClInclude Include="complex\lesson_2d_library.hpp" />
     <ClInclude Include="complex\genetic_algorithm_2d.hpp" />
     <ClInclude Include="common\i_value_generator.hpp" />
     <ClInclude Include="common\value_generator.hpp" />
+    <ClInclude Include="convolution\layer_2d.hpp" />
   </ItemGroup>
 </Project>

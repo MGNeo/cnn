@@ -4,8 +4,6 @@
 
 #include "../../engine/perceptron/network.hpp"
 
-#include "layer_visitor.hpp"
-
 #include <random>
 #include <time.h>
 
@@ -40,7 +38,6 @@ namespace cnn
         std::cout << __FUNCSIG__ << std::endl;
         {
           Simple();
-          Visitor();
         }
         std::cout << std::endl;
       }
@@ -83,28 +80,6 @@ namespace cnn
             const auto& lastLayer = network->GetLastLayer();
             // ...
           }
-        }
-        std::cout << std::endl;
-      }
-
-      template <typename T>
-      void Example<T>::Visitor() const
-      {
-        std::cout << "  " << __FUNCSIG__ << std::endl;
-        {
-          // Prepare tne network.
-          auto network = std::make_unique<engine::perceptron::Network<T>>(25, 3);
-
-          // Fill the network.
-          network->PushBack(6);
-          network->PushBack(150);
-          network->PushBack(1);
-
-          // Prepare the visitor.
-          auto layerVisitor = std::make_unique<LayerVisitor<T>>();
-
-          // Visit all layers of the network by the visitor.
-          network->Accept(*layerVisitor);
         }
         std::cout << std::endl;
       }

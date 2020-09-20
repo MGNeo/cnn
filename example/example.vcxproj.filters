@@ -26,13 +26,7 @@
     <ClInclude Include="perceptron\example.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="perceptron\layer_visitor.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="convolution\example.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="convolution\layer_2d_visitor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="complex\example.hpp">

@@ -4,7 +4,7 @@
 #include <type_traits>
 
 #include "i_map_2d.hpp"
-#include "i_layer_2d_visitor.hpp"
+#include "i_filter_2d.hpp"
 #include "../common/i_value_generator.hpp"
 
 namespace cnn
@@ -30,6 +30,13 @@ namespace cnn
         virtual const IMap2D<T>& GetInput(const size_t index) const = 0;
         virtual IMap2D<T>& GetInput(const size_t index) = 0;
 
+        virtual size_t GetFilterWidth() const = 0;
+        virtual size_t GetFilterHeight() const = 0;
+        virtual size_t GetFilterCount() const = 0;
+
+        virtual IFilter2D<T>& GetFilter(const size_t index) = 0;
+        virtual const IFilter2D<T>& GetFilter(const size_t index) const = 0;
+
         virtual size_t GetOutputWidth() const = 0;
         virtual size_t GetOutputHeight() const = 0;
         virtual size_t GetOutputCount() const = 0;
@@ -40,8 +47,6 @@ namespace cnn
         virtual void Process() = 0;
 
         virtual ~ILayer2D() = default;
-
-        virtual void Accept(ILayer2DVisitor<T>& visitor) = 0;
 
         virtual size_t GetOutputValueCount() const = 0;
 

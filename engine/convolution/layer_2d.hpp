@@ -4,8 +4,6 @@
 #include "map_2d.hpp"
 #include "filter_2d.hpp"
 
-#include "i_layer_2d_visitor.hpp"
-
 namespace cnn
 {
   namespace engine
@@ -15,27 +13,27 @@ namespace cnn
       // TODO: ConvolutionLayer2D must be joined with PoolingLayer2D, and generalized interface must be moved to ILayer2D!
       // It is necessary for CrossFrom() method.
       template <typename T>
-      class ConvolutionLayer2D : public ILayer2D<T>
+      class Layer2D : public ILayer2D<T>
       {
 
         static_assert(std::is_floating_point<T>::value);
 
       public:
 
-        using Uptr = std::unique_ptr<ConvolutionLayer2D<T>>;
+        using Uptr = std::unique_ptr<Layer2D<T>>;
 
-        ConvolutionLayer2D(const size_t inputWidth,
-                           const size_t inputHeight,
-                           const size_t inputCount,
+        Layer2D(const size_t inputWidth,
+                const size_t inputHeight,
+                const size_t inputCount,
                            
-                           const size_t filterWidth,
-                           const size_t filterHeight,
-                           const size_t filterCount);
+                const size_t filterWidth,
+                const size_t filterHeight,
+                const size_t filterCount);
 
-        ConvolutionLayer2D(const ILayer2D<T>& prevLayer,
-                           const size_t filterWidth,
-                           const size_t filterHeight,
-                           const size_t filterCount);
+        Layer2D(const ILayer2D<T>& prevLayer,
+                const size_t filterWidth,
+                const size_t filterHeight,
+                const size_t filterCount);
 
         size_t GetInputWidth() const override;
         size_t GetInputHeight() const override;
@@ -44,12 +42,12 @@ namespace cnn
         const IMap2D<T>& GetInput(const size_t index) const override;
         IMap2D<T>& GetInput(const size_t index) override;
 
-        size_t GetFilterWidth() const;
-        size_t GetFilterHeight() const;
-        size_t GetFilterCount() const;
+        size_t GetFilterWidth() const override;
+        size_t GetFilterHeight() const override;
+        size_t GetFilterCount() const override;
 
-        IFilter2D<T>& GetFilter(const size_t index);
-        const IFilter2D<T>& GetFilter(const size_t index) const;
+        IFilter2D<T>& GetFilter(const size_t index) override;
+        const IFilter2D<T>& GetFilter(const size_t index) const override;
 
         size_t GetOutputWidth() const override;
         size_t GetOutputHeight() const override;
@@ -60,8 +58,6 @@ namespace cnn
 
         void Process() override;
 
-        void Accept(ILayer2DVisitor<T>& visitor) override;
-
         size_t GetOutputValueCount() const override;
 
         void ClearInputs();
@@ -70,7 +66,8 @@ namespace cnn
 
         typename ILayer2D<T>::Uptr Clone(const bool cloneState) const override;
 
-        ConvolutionLayer2D(const ConvolutionLayer2D& convolutionLayer2D, const bool cloneState);
+        Layer2D(const Layer2D<T>& layer,
+                const bool cloneState);
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
@@ -96,13 +93,13 @@ namespace cnn
       };
 
       template <typename T>
-      ConvolutionLayer2D<T>::ConvolutionLayer2D(const size_t inputWidth,
-                                                const size_t inputHeight,
-                                                const size_t inputCount,
+      Layer2D<T>::Layer2D(const size_t inputWidth,
+                          const size_t inputHeight,
+                          const size_t inputCount,
 
-                                                const size_t filterWidth,
-                                                const size_t filterHeight,
-                                                const size_t filterCount)
+                          const size_t filterWidth,
+                          const size_t filterHeight,
+                          const size_t filterCount)
         :
         InputWidth{ inputWidth },
         InputHeight{ inputHeight },
@@ -118,58 +115,58 @@ namespace cnn
       {
         if (InputWidth == 0)
         {
-          throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), InputWidth == 0.");
+          throw std::invalid_argument("cnn::engine::convolution::Layer2D::Layer2D(), InputWidth == 0.");
         }
         if (InputHeight == 0)
         {
-          throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), InputHeight == 0.");
+          throw std::invalid_argument("cnn::engine::convolution::Layer2D::Layer2D(), InputHeight == 0.");
         }
         if (InputCount == 0)
         {
-          throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), InputCount == 0.");
+          throw std::invalid_argument("cnn::engine::convolution::Layer2D::Layer2D(), InputCount == 0.");
         }
 
         if (FilterWidth == 0)
         {
-          throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), FilterWidth == 0.");
+          throw std::invalid_argument("cnn::engine::convolution::Layer2D::Layer2D(), FilterWidth == 0.");
         }
         if (FilterWidth > InputWidth)
         {
-          throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), FilterWidth > InputWidth.");
+          throw std::invalid_argument("cnn::engine::convolution::Layer2D::Layer2D(), FilterWidth > InputWidth.");
         }
         if (FilterHeight == 0)
         {
-          throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), FilterHeight == 0.");
+          throw std::invalid_argument("cnn::engine::convolution::Layer2D::Layer2D(), FilterHeight == 0.");
         }
         if (FilterHeight > InputHeight)
         {
-          throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), FilterHeight > InputHeight.");
+          throw std::invalid_argument("cnn::engine::convolution::Layer2D::Layer2D(), FilterHeight > InputHeight.");
         }
         if (FilterCount == 0)
         {
-          throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), FilterCount == 0.");
+          throw std::invalid_argument("cnn::engine::convolution::Layer2D::Layer2D(), FilterCount == 0.");
         }
 
         // Maybe it is extra checks...
         if (OutputWidth > InputWidth)
         {
-          throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), OutputWidth > InputWidth.");
+          throw std::invalid_argument("cnn::engine::convolution::Layer2D::Layer2D(), OutputWidth > InputWidth.");
         }
         if (OutputHeight > InputHeight)
         {
-          throw std::invalid_argument("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), OutputHeight > InputHeight.");
+          throw std::invalid_argument("cnn::engine::convolution::Layer2D::Layer2D(), OutputHeight > InputHeight.");
         }
 
         {
           const size_t m1 = OutputWidth * OutputHeight;
           if ((m1 / OutputWidth) != OutputHeight)
           {
-            throw std::overflow_error("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), (m1 / OutputWidth) != OutputHeight.");
+            throw std::overflow_error("cnn::engine::convolution::Layer2D::Layer2D(), (m1 / OutputWidth) != OutputHeight.");
           }
           const size_t m2 = m1 * OutputCount;
           if ((m2 / m1) != OutputCount)
           {
-            throw std::overflow_error("cnn::engine::convolution::ConvolutionLayer2D::ConvolutionLayer2D(), (m2 / m1) != OutputCount.");
+            throw std::overflow_error("cnn::engine::convolution::Layer2D::Layer2D(), (m2 / m1) != OutputCount.");
           }
           OutputValueCount = m2;
         }
@@ -198,137 +195,137 @@ namespace cnn
 
       // TODO: Change the signature to (6x size_t).
       template <typename T>
-      ConvolutionLayer2D<T>::ConvolutionLayer2D(const ILayer2D<T>& prevLayer,
-                                                const size_t filterWidth,
-                                                const size_t filterHeight,
-                                                const size_t filterCount)
+      Layer2D<T>::Layer2D(const ILayer2D<T>& prevLayer,
+                          const size_t filterWidth,
+                          const size_t filterHeight,
+                          const size_t filterCount)
         :
-        ConvolutionLayer2D{ prevLayer.GetOutputWidth(),
-                            prevLayer.GetOutputHeight(),
-                            prevLayer.GetOutputCount(),
+        Layer2D{ prevLayer.GetOutputWidth(),
+                 prevLayer.GetOutputHeight(),
+                 prevLayer.GetOutputCount(),
 
-                            filterWidth,
-                            filterHeight,
-                            filterCount }
+                 filterWidth,
+                 filterHeight,
+                 filterCount }
       {
       }
 
       template <typename T>
-      size_t ConvolutionLayer2D<T>::GetInputWidth() const
+      size_t Layer2D<T>::GetInputWidth() const
       {
         return InputWidth;
       }
 
       template <typename T>
-      size_t ConvolutionLayer2D<T>::GetInputHeight() const
+      size_t Layer2D<T>::GetInputHeight() const
       {
         return InputHeight;
       }
 
       template <typename T>
-      size_t ConvolutionLayer2D<T>::GetInputCount() const
+      size_t Layer2D<T>::GetInputCount() const
       {
         return InputCount;
       }
 
       template <typename T>
-      const IMap2D<T>& ConvolutionLayer2D<T>::GetInput(const size_t index) const
+      const IMap2D<T>& Layer2D<T>::GetInput(const size_t index) const
       {
         if (index >= InputCount)
         {
-          throw std::range_error("cnn::engine::convolution::ConvolutionLayer2D::GetInput() const, index >= InputCount.");
+          throw std::range_error("cnn::engine::convolution::Layer2D::GetInput() const, index >= InputCount.");
         }
         return *(Inputs[index]);
       }
 
       template <typename T>
-      IMap2D<T>& ConvolutionLayer2D<T>::GetInput(const size_t index)
+      IMap2D<T>& Layer2D<T>::GetInput(const size_t index)
       {
         if (index >= InputCount)
         {
-          throw std::range_error("cnn::engine::convolution::ConvolutionHandler2D::GetInput(), index >= InputCount.");
+          throw std::range_error("cnn::engine::convolution::Layer2D::GetInput(), index >= InputCount.");
         }
         return *(Inputs[index]);
       }
 
       template <typename T>
-      size_t ConvolutionLayer2D<T>::GetFilterWidth() const
+      size_t Layer2D<T>::GetFilterWidth() const
       {
         return FilterWidth;
       }
 
       template <typename T>
-      size_t ConvolutionLayer2D<T>::GetFilterHeight() const
+      size_t Layer2D<T>::GetFilterHeight() const
       {
         return FilterHeight;
       }
 
       template <typename T>
-      size_t ConvolutionLayer2D<T>::GetFilterCount() const
+      size_t Layer2D<T>::GetFilterCount() const
       {
         return FilterCount;
       }
 
       template <typename T>
-      const IFilter2D<T>& ConvolutionLayer2D<T>::GetFilter(const size_t index) const
+      const IFilter2D<T>& Layer2D<T>::GetFilter(const size_t index) const
       {
         if (index >= FilterCount)
         {
-          throw std::range_error("cnn::engine::convolution::ConvolutionLayer2D::GetFilter() const, index >= FilterCount.");
+          throw std::range_error("cnn::engine::convolution::Layer2D::GetFilter() const, index >= FilterCount.");
         }
         return *(Filters[index]);
       }
 
       template <typename T>
-      IFilter2D<T>& ConvolutionLayer2D<T>::GetFilter(const size_t index)
+      IFilter2D<T>& Layer2D<T>::GetFilter(const size_t index)
       {
         if (index >= FilterCount)
         {
-          throw std::range_error("cnn::engine::convolution::ConvolutionLayer2D::GetFilter(), index >= FilterCount.");
+          throw std::range_error("cnn::engine::convolution::Layer2D::GetFilter(), index >= FilterCount.");
         }
         return *(Filters[index]);
       }
 
       template <typename T>
-      size_t ConvolutionLayer2D<T>::GetOutputWidth() const
+      size_t Layer2D<T>::GetOutputWidth() const
       {
         return OutputWidth;
       }
 
       template <typename T>
-      size_t ConvolutionLayer2D<T>::GetOutputHeight() const
+      size_t Layer2D<T>::GetOutputHeight() const
       {
         return OutputHeight;
       }
 
       template <typename T>
-      size_t ConvolutionLayer2D<T>::GetOutputCount() const
+      size_t Layer2D<T>::GetOutputCount() const
       {
         return OutputCount;
       }
 
       template <typename T>
-      const IMap2D<T>& ConvolutionLayer2D<T>::GetOutput(const size_t index) const
+      const IMap2D<T>& Layer2D<T>::GetOutput(const size_t index) const
       {
         if (index >= OutputCount)
         {
-          throw std::range_error("cnn::engine::convolution::ConvolutionLayer2D::GetOutput() const, index >= OutputCount.");
+          throw std::range_error("cnn::engine::convolution::Layer2D::GetOutput() const, index >= OutputCount.");
         }
         return *(Outputs[index]);
       }
 
       template <typename T>
-      IMap2D<T>& ConvolutionLayer2D<T>::GetOutput(const size_t index)
+      IMap2D<T>& Layer2D<T>::GetOutput(const size_t index)
       {
         if (index >= OutputCount)
         {
-          throw std::range_error("std::engine::convolution::ConvolutionLayer2D::GetOutput(), index >= OutputCount.");
+          throw std::range_error("std::engine::convolution::Layer2D::GetOutput(), index >= OutputCount.");
         }
         return *(Outputs[index]);
       }
 
       template <typename T>
-      void ConvolutionLayer2D<T>::Process()
+      void Layer2D<T>::Process()
       {
         // TODO: Think about rollback when exception is thrown.
         for (size_t f = 0; f < FilterCount; ++f)
@@ -365,19 +362,13 @@ namespace cnn
       }
 
       template <typename T>
-      void ConvolutionLayer2D<T>::Accept(ILayer2DVisitor<T>& visitor)
-      {
-        visitor.Visit(*this);
-      }
-
-      template <typename T>
-      size_t ConvolutionLayer2D<T>::GetOutputValueCount() const
+      size_t Layer2D<T>::GetOutputValueCount() const
       {
         return OutputValueCount;
       }
 
       template <typename T>
-      void ConvolutionLayer2D<T>::ClearInputs()
+      void Layer2D<T>::ClearInputs()
       {
         for (size_t i = 0; i < InputCount; ++i)
         {
@@ -386,7 +377,7 @@ namespace cnn
       }
 
       template <typename T>
-      void ConvolutionLayer2D<T>::ClearFilters()
+      void Layer2D<T>::ClearFilters()
       {
         for (size_t f = 0; f < FilterCount; ++f)
         {
@@ -395,7 +386,7 @@ namespace cnn
       }
 
       template <typename T>
-      void ConvolutionLayer2D<T>::ClearOutputs()
+      void Layer2D<T>::ClearOutputs()
       {
         for (size_t o = 0; o < OutputCount; ++o)
         {
@@ -404,44 +395,44 @@ namespace cnn
       }
 
       template <typename T>
-      typename ILayer2D<T>::Uptr ConvolutionLayer2D<T>::Clone(const bool cloneState) const
+      typename ILayer2D<T>::Uptr Layer2D<T>::Clone(const bool cloneState) const
       {
-        return std::make_unique<ConvolutionLayer2D<T>>(*this, cloneState);
+        return std::make_unique<Layer2D<T>>(*this, cloneState);
       }
 
       template <typename T>
-      ConvolutionLayer2D<T>::ConvolutionLayer2D(const ConvolutionLayer2D& convolutionLayer2D, const bool cloneState)
+      Layer2D<T>::Layer2D(const Layer2D<T>& layer, const bool cloneState)
         :
-        InputWidth{ convolutionLayer2D.GetInputWidth() },
-        InputHeight{ convolutionLayer2D.GetInputHeight() },
-        InputCount{ convolutionLayer2D.GetInputCount() },
+        InputWidth{ layer.GetInputWidth() },
+        InputHeight{ layer.GetInputHeight() },
+        InputCount{ layer.GetInputCount() },
         Inputs{ std::make_unique<typename IMap2D<T>::Uptr[]>(InputCount) },
-        FilterWidth{ convolutionLayer2D.GetFilterWidth() },
-        FilterHeight{ convolutionLayer2D.GetFilterHeight() },
-        FilterCount{ convolutionLayer2D.GetFilterCount() },
+        FilterWidth{ layer.GetFilterWidth() },
+        FilterHeight{ layer.GetFilterHeight() },
+        FilterCount{ layer.GetFilterCount() },
         Filters{ std::make_unique<typename IFilter2D<T>::Uptr[]>(FilterCount) },
-        OutputWidth{ convolutionLayer2D.GetOutputWidth() },
-        OutputHeight{ convolutionLayer2D.GetOutputHeight() },
-        OutputCount{ convolutionLayer2D.GetOutputCount() },
+        OutputWidth{ layer.GetOutputWidth() },
+        OutputHeight{ layer.GetOutputHeight() },
+        OutputCount{ layer.GetOutputCount() },
         Outputs{ std::make_unique<typename IMap2D<T>::Uptr[]>(OutputCount) },
-        OutputValueCount{ convolutionLayer2D.GetOutputValueCount() }
+        OutputValueCount{ layer.GetOutputValueCount() }
       {
         for (size_t i = 0; i < InputCount; ++i)
         {
-          Inputs[i] = convolutionLayer2D.GetInput(i).Clone(cloneState);
+          Inputs[i] = layer.GetInput(i).Clone(cloneState);
         }
         for (size_t f = 0; f < FilterCount; ++f)
         {
-          Filters[f] = convolutionLayer2D.GetFilter(f).Clone(cloneState);
+          Filters[f] = layer.GetFilter(f).Clone(cloneState);
         }
         for (size_t o = 0; o < OutputCount; ++o)
         {
-          Outputs[o] = convolutionLayer2D.GetOutput(o).Clone(cloneState);
+          Outputs[o] = layer.GetOutput(o).Clone(cloneState);
         }
       }
 
       template <typename T>
-      void ConvolutionLayer2D<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
+      void Layer2D<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
       {
         for (size_t f = 0; f < FilterCount; ++f)
         {

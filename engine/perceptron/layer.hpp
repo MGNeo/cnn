@@ -42,8 +42,6 @@ namespace cnn
         const common::INeuron<T>& GetNeuron(const size_t index) const;
         common::INeuron<T>& GetNeuron(const size_t index);
 
-        void Accept(ILayerVisitor<T>& visitor) override;
-
         typename ILayer<T>::Uptr Clone(const bool cloneState) const override;
 
         Layer(const Layer<T>& layer, const bool cloneState);
@@ -176,12 +174,6 @@ namespace cnn
           throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron(), index >= NeuronCount.");
         }
         return *(Neurons[index]);
-      }
-
-      template <typename T>
-      void Layer<T>::Accept(ILayerVisitor<T>& visitor)
-      {
-        visitor.Visit(*this);
       }
 
       template <typename T>

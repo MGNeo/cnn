@@ -1,8 +1,7 @@
 #pragma once
 
 #include "i_network_2d.hpp"
-#include "convolution_layer_2d.hpp"
-#include "pooling_layer_2d.hpp"
+#include "layer_2d.hpp"
 
 #include <vector>
 #include <stdexcept>
@@ -31,12 +30,6 @@ namespace cnn
                   const size_t filterHeightInFirstLayer,
                   const size_t filterCountInFirstLayer);
 
-        // TODO: Perhaps, there are situations where it will be useful to have
-        // pooling layer in the beginning, so it needs to write special constructor for it.
-        // ...
-        
-        void PushBack(const size_t stepSizeInNewLayer);
-
         void PushBack(const size_t filterWidthInNewLayer,
                       const size_t filterHeightInNewLayer,
                       const size_t filterCountInNewLayer);
@@ -53,8 +46,6 @@ namespace cnn
         ILayer2D<T>& GetFirstLayer() override;
 
         void Process() override;
-
-        void Accept(ILayer2DVisitor<T>& layer2DVisitor) override;
 
         typename INetwork2D<T>::Uptr Clone(const bool cloneState) const override;
         
@@ -77,23 +68,14 @@ namespace cnn
                               const size_t filterHeightInFirstLayer,
                               const size_t filterCountInFirstLayer)
       {
-        typename ILayer2D<T>::Uptr firstLayer = std::make_unique<ConvolutionLayer2D<T>>(inputWidthInFirstLayer,
-                                                                                        inputHeightInFirstLayer,
-                                                                                        inputCountInFirstLayer,
+        typename ILayer2D<T>::Uptr firstLayer = std::make_unique<Layer2D<T>>(inputWidthInFirstLayer,
+                                                                             inputHeightInFirstLayer,
+                                                                             inputCountInFirstLayer,
 
-                                                                                        filterWidthInFirstLayer,
-                                                                                        filterHeightInFirstLayer,
-                                                                                        filterCountInFirstLayer);
+                                                                             filterWidthInFirstLayer,
+                                                                             filterHeightInFirstLayer,
+                                                                             filterCountInFirstLayer);
         Layers.push_back(std::move(firstLayer));
-      }
-
-      template <typename T>
-      void Network2D<T>::PushBack(const size_t stepSizeInNewLayer)
-      {
-        const auto& prevLayer = GetLastLayer();
-        typename ILayer2D<T>::Uptr layer = std::make_unique<PoolingLayer2D<T>>(prevLayer,
-                                                                               stepSizeInNewLayer);
-        Layers.push_back(std::move(layer));
       }
 
       template <typename T>
@@ -102,10 +84,10 @@ namespace cnn
                                   const size_t filterCountInNewLayer)
       {
         const auto& prevLayer = GetLastLayer();
-        typename ILayer2D<T>::Uptr layer = std::make_unique<ConvolutionLayer2D<T>>(prevLayer,
-                                                                                   filterWidthInNewLayer,
-                                                                                   filterHeightInNewLayer,
-                                                                                   filterCountInNewLayer);
+        typename ILayer2D<T>::Uptr layer = std::make_unique<Layer2D<T>>(prevLayer,
+                                                                        filterWidthInNewLayer,
+                                                                        filterHeightInNewLayer,
+                                                                        filterCountInNewLayer);
         Layers.push_back(std::move(layer));
       }
 
@@ -199,16 +181,6 @@ namespace cnn
             }
           }
           layer.Process();
-        }
-      }
-
-      template <typename T>
-      void Network2D<T>::Accept(ILayer2DVisitor<T>& layer2DVisitor)
-      {
-        // TODO: What about rollback when exception is thrown?
-        for (auto& layer : Layers)
-        {
-          layer->Accept(layer2DVisitor);
         }
       }
 

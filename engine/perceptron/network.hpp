@@ -40,8 +40,6 @@ namespace cnn
 
         void Process() override;
 
-        void Accept(ILayerVisitor<T>& layerVisitor) override;
-
         typename INetwork<T>::Uptr Clone(const bool cloneState) const override;
 
         Network(const Network<T>& network, const bool cloneState);
@@ -147,16 +145,6 @@ namespace cnn
             }
           }
           layer.Process();
-        }
-      }
-
-      template <typename T>
-      void Network<T>::Accept(ILayerVisitor<T>& layerVisitor)
-      {
-        // TODO: What about rollback when exception is thrown?
-        for (auto& layer : Layers)
-        {
-          layer->Accept(layerVisitor);
         }
       }
 

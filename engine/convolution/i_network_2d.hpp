@@ -35,8 +35,6 @@ namespace cnn
 
         virtual void Process() = 0;
 
-        virtual void Accept(ILayer2DVisitor<T>& layer2DVisitor) = 0;
-
         virtual typename INetwork2D<T>::Uptr Clone(const bool cloneState) const = 0;
 
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;

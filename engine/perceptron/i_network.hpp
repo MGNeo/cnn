@@ -35,8 +35,6 @@ namespace cnn
 
         virtual void Process() = 0;
 
-        virtual void Accept(ILayerVisitor<T>& layerVisitor) = 0;
-
         // TODO: Clear() family methods.
 
         virtual typename INetwork<T>::Uptr Clone(const bool cloneState) const = 0;

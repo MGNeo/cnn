@@ -57,10 +57,8 @@ namespace cnn
 
           // Add few layers to the subnetwork.
           {
-            // Second layer of the subnetwork is pooling layer.
-            subNetwork2D->PushBack(2);
-            // Third layer of the subnetwork is convolution layer.
-            subNetwork2D->PushBack(8, 8, 15);
+            subNetwork2D->PushBack(8, 8, 5);
+            subNetwork2D->PushBack(5, 5, 15);
           }
 
           // Create new perceptron subnetwork.
