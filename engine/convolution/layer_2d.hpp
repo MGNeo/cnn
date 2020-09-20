@@ -38,21 +38,18 @@ namespace cnn
         size_t GetInputWidth() const override;
         size_t GetInputHeight() const override;
         size_t GetInputCount() const override;
-
         const IMap2D<T>& GetInput(const size_t index) const override;
         IMap2D<T>& GetInput(const size_t index) override;
 
         size_t GetFilterWidth() const override;
         size_t GetFilterHeight() const override;
         size_t GetFilterCount() const override;
-
         IFilter2D<T>& GetFilter(const size_t index) override;
         const IFilter2D<T>& GetFilter(const size_t index) const override;
 
         size_t GetOutputWidth() const override;
         size_t GetOutputHeight() const override;
         size_t GetOutputCount() const override;
-
         const IMap2D<T>& GetOutput(const size_t index) const override;
         IMap2D<T>& GetOutput(const size_t index) override;
 

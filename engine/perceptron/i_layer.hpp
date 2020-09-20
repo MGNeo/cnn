@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "../common/i_map.hpp"
+#include "../common/i_neuron.hpp"
 #include "../common/i_value_generator.hpp"
 
 namespace cnn
@@ -23,12 +24,14 @@ namespace cnn
         using Uptr = std::unique_ptr<ILayer<T>>;
         
         virtual size_t GetInputSize() const = 0;
-
         virtual const common::IMap<T>& GetInput() const = 0;
         virtual common::IMap<T>& GetInput() = 0;
 
-        virtual size_t GetOutputSize() const = 0;
+        virtual size_t GetNeuronCount() const = 0;
+        virtual const common::INeuron<T>& GetNeuron(const size_t index) const = 0;
+        virtual common::INeuron<T>& GetNeuron(const size_t index) = 0;
 
+        virtual size_t GetOutputSize() const = 0;
         virtual const common::IMap<T>& GetOutput() const = 0;
         virtual common::IMap<T>& GetOutput() = 0;
 

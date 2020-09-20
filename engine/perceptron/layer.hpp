@@ -26,21 +26,18 @@ namespace cnn
               const size_t outputSize);
 
         size_t GetInputSize() const override;
-
         const common::IMap<T>& GetInput() const override;
         common::IMap<T>& GetInput() override;
 
-        size_t GetOutputSize() const override;
+        size_t GetNeuronCount() const override;
+        const common::INeuron<T>& GetNeuron(const size_t index) const override;
+        common::INeuron<T>& GetNeuron(const size_t index) override;
 
+        size_t GetOutputSize() const override;
         const common::IMap<T>& GetOutput() const override;
         common::IMap<T>& GetOutput() override;
 
         void Process() override;
-
-        size_t GetNeuronCount() const;
-
-        const common::INeuron<T>& GetNeuron(const size_t index) const;
-        common::INeuron<T>& GetNeuron(const size_t index);
 
         typename ILayer<T>::Uptr Clone(const bool cloneState) const override;
 
@@ -114,6 +111,32 @@ namespace cnn
       }
 
       template <typename T>
+      size_t Layer<T>::GetNeuronCount() const
+      {
+        return NeuronCount;
+      }
+
+      template <typename T>
+      const common::INeuron<T>& Layer<T>::GetNeuron(const size_t index) const
+      {
+        if (index >= NeuronCount)
+        {
+          throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron() const, index >= NeuronCount.");
+        }
+        return *(Neurons[index]);
+      }
+
+      template <typename T>
+      common::INeuron<T>& Layer<T>::GetNeuron(const size_t index)
+      {
+        if (index >= NeuronCount)
+        {
+          throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron(), index >= NeuronCount.");
+        }
+        return *(Neurons[index]);
+      }
+
+      template <typename T>
       size_t Layer<T>::GetOutputSize() const
       {
         return OutputSize;
@@ -148,32 +171,6 @@ namespace cnn
           Output->SetValue(n, value);
           
         }
-      }
-
-      template <typename T>
-      size_t Layer<T>::GetNeuronCount() const
-      {
-        return NeuronCount;
-      }
-
-      template <typename T>
-      const common::INeuron<T>& Layer<T>::GetNeuron(const size_t index) const
-      {
-        if (index >= NeuronCount)
-        {
-          throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron() const, index >= NeuronCount.");
-        }
-        return *(Neurons[index]);
-      }
-
-      template <typename T>
-      common::INeuron<T>& Layer<T>::GetNeuron(const size_t index)
-      {
-        if (index >= NeuronCount)
-        {
-          throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron(), index >= NeuronCount.");
-        }
-        return *(Neurons[index]);
       }
 
       template <typename T>
