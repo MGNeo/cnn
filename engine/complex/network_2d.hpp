@@ -35,6 +35,9 @@ namespace cnn
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
+        void CrossFrom(const INetwork2D<T>& source1,
+                       const INetwork2D<T>& source2) override;
+
       private:
 
         typename convolution::INetwork2D<T>::Uptr ConvolutionNetwork2D;
@@ -128,6 +131,13 @@ namespace cnn
       {
         ConvolutionNetwork2D->FillWeights(valueGenerator);
         PerceptronNetwork->FillWeights(valueGenerator);
+      }
+
+      template <typename T>
+      void Network2D<T>::CrossFrom(const INetwork2D<T>& source1,
+                                   const INetwork2D<T>& source2)
+      {
+        // ...
       }
     }
   }

@@ -45,6 +45,9 @@ namespace cnn
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
+        void CrossFrom(const ILayer<T>& source1,
+                       const ILayer<T>& source2) override;
+
       private:
 
         size_t InputSize;
@@ -204,6 +207,12 @@ namespace cnn
         }
       }
 
+      template <typename T>
+      void Layer<T>::CrossFrom(const ILayer<T>& source1,
+                               const ILayer<T>& source2)
+      {
+        // ...
+      }
     }
   }
 }

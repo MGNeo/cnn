@@ -44,6 +44,9 @@ namespace cnn
 
         void FillWeights(IValueGenerator<T>& valueGenerator) override;
 
+        void CrossFrom(const INeuron<T>& source1,
+                       const INeuron<T>& source2) override;
+
       public:
 
         size_t InputCount;
@@ -194,6 +197,13 @@ namespace cnn
         }
       }
 
+
+      template <typename T>
+      void Neuron<T>::CrossFrom(const INeuron<T>& source1,
+                                const INeuron<T>& source2)
+      {
+        // ...
+      }
     }
   }
 }

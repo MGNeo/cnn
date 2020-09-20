@@ -42,6 +42,9 @@ namespace cnn
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
+        void CrossFrom(const IFilter2D<T>& source1,
+                       const IFilter2D<T>& source2) override;
+
       private:
 
         size_t Width;
@@ -181,6 +184,13 @@ namespace cnn
         {
           Cores[c]->FillWeights(valueGenerator);
         }
+      }
+
+      template <typename T>
+      void Filter2D<T>::CrossFrom(const IFilter2D<T>& source1,
+                                  const IFilter2D<T>& source2)
+      {
+        // ...
       }
     }
   }

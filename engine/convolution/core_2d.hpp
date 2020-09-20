@@ -45,6 +45,9 @@ namespace cnn
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
+        void CrossFrom(const ICore2D<T>& source1,
+                       const ICore2D<T>& source2) override;
+
       private:
 
         size_t Width;
@@ -185,6 +188,12 @@ namespace cnn
         Neuron_->FillWeights(valueGenerator);
       }
 
+      template <typename T>
+      void Core2D<T>::CrossFrom(const ICore2D<T>& source1,
+                                const ICore2D<T>& source2)
+      {
+        // ...
+      }
     }
   }
 }

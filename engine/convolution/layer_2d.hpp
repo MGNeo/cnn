@@ -10,8 +10,6 @@ namespace cnn
   {
     namespace convolution
     {
-      // TODO: ConvolutionLayer2D must be joined with PoolingLayer2D, and generalized interface must be moved to ILayer2D!
-      // It is necessary for CrossFrom() method.
       template <typename T>
       class Layer2D : public ILayer2D<T>
       {
@@ -67,6 +65,9 @@ namespace cnn
                 const bool cloneState);
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
+
+        void CrossFrom(const ILayer2D<T>& source1,
+                       const ILayer2D<T>& source2) override;
 
       private:
 
@@ -437,6 +438,12 @@ namespace cnn
         }
       }
 
+      template <typename T>
+      void Layer2D<T>::CrossFrom(const ILayer2D<T>& source1,
+                                 const ILayer2D<T>& source2)
+      {
+        // ...
+      }
     }
   }
 }

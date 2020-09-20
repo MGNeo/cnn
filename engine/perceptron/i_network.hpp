@@ -41,8 +41,8 @@ namespace cnn
 
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
-        //virtual void CrossFrom(const INetwork<T>& source1,
-        //                       const INetwork<T>& source2) = 0;
+        virtual void CrossFrom(const INetwork<T>& source1,
+                               const INetwork<T>& source2) = 0;
 
         virtual ~INetwork() = default;
 

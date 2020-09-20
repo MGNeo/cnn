@@ -53,6 +53,9 @@ namespace cnn
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
+        void CrossFrom(const INetwork2D<T>& source1,
+                       const INetwork2D<T>& source2) override;
+
       private:
 
         std::vector<typename ILayer2D<T>::Uptr> Layers;
@@ -212,6 +215,12 @@ namespace cnn
         }
       }
 
+      template <typename T>
+      void Network2D<T>::CrossFrom(const INetwork2D<T>& source1,
+                                   const INetwork2D<T>& source2)
+      {
+        // ...
+      }
     }
   }
 }

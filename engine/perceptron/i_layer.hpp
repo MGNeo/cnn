@@ -43,8 +43,8 @@ namespace cnn
 
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
-        //virtual void CrossFrom(const ILayer<T>& source1,
-        //                       const ILayer<T>& source2) = 0;
+        virtual void CrossFrom(const ILayer<T>& source1,
+                               const ILayer<T>& source2) = 0;
 
       };
     }
