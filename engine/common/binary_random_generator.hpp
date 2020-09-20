@@ -16,7 +16,7 @@ namespace cnn
 
         using Uptr = std::unique_ptr<BinaryRandomGenerator>;
 
-        inline BinaryRandomGenerator(const size_t seed = 0);
+        inline BinaryRandomGenerator(const unsigned int seed = 0);
 
         inline bool Generate() override;
 
@@ -30,9 +30,9 @@ namespace cnn
 
       };
 
-      BinaryRandomGenerator::BinaryRandomGenerator(const size_t seed)
+      BinaryRandomGenerator::BinaryRandomGenerator(const unsigned int seed)
         :
-        DRE{ static_cast<size_t>(time(NULL)) + static_cast<size_t>(clock()) + seed },
+        DRE{ static_cast<unsigned int>(time(NULL)) + static_cast<unsigned int>(clock()) + seed },
         UID{ 0, UINT64_MAX },
         Pos{ 1 },
         Values{}

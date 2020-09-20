@@ -116,7 +116,7 @@ namespace cnn
           // Temporary.
           {
             auto binaryRandomGenerator = std::make_unique<engine::common::BinaryRandomGenerator>(0);
-            //network2D->CrossFrom(*network2D, *network2D, *binaryRandomGenerator);
+            network2D->CrossFrom(*network2D, *network2D, *binaryRandomGenerator);
           }
         }
       }
