@@ -22,9 +22,11 @@
     <ClInclude Include="common\binary_random_generator.hpp" />
     <ClInclude Include="common\i_binary_random_generator.hpp" />
     <ClInclude Include="common\i_map.hpp" />
+    <ClInclude Include="common\i_mutagen.hpp" />
     <ClInclude Include="common\i_neuron.hpp" />
     <ClInclude Include="common\i_value_generator.hpp" />
     <ClInclude Include="common\map.hpp" />
+    <ClInclude Include="common\mutagen.hpp" />
     <ClInclude Include="common\neuron.hpp" />
     <ClInclude Include="common\value_generator.hpp" />
     <ClInclude Include="complex\genetic_algorithm_2d.hpp" />

@@ -11,18 +11,18 @@ namespace cnn
     namespace common
     {
       template <typename T>
-      class IValueGenerator
+      class IMutagen
       {
 
         static_assert(std::is_floating_point<T>::value);
 
       public:
 
-        using Uptr = std::unique_ptr<IValueGenerator<T>>;
+        using Uptr = std::unique_ptr<IMutagen<T>>;
 
-        virtual T Generate() = 0;
+        virtual T Mutate(const T value) = 0;
 
-        virtual ~IValueGenerator() = default;
+        virtual ~IMutagen() = default;
 
       };
     }

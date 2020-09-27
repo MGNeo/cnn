@@ -24,9 +24,6 @@ namespace cnn
 
         ValueGenerator(const T minValue, const T maxValue);
 
-        T GetMinValue() const override;
-        T GetMaxValue() const override;
-
         T Generate() override;
 
       private:
@@ -42,18 +39,6 @@ namespace cnn
         UDR{ minValue, maxValue },
         DRE{ static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count()) }
       {
-      }
-
-      template <typename T>
-      T ValueGenerator<T>::GetMinValue() const
-      {
-        return UDR.min();
-      }
-
-      template <typename T>
-      T ValueGenerator<T>::GetMaxValue() const
-      {
-        return UDR.max();
       }
 
       template <typename T>

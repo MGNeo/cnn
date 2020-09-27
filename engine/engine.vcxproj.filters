@@ -41,5 +41,7 @@
     <ClInclude Include="convolution\layer_2d.hpp" />
     <ClInclude Include="common\i_binary_random_generator.hpp" />
     <ClInclude Include="common\binary_random_generator.hpp" />
+    <ClInclude Include="common\i_mutagen.hpp" />
+    <ClInclude Include="common\mutagen.hpp" />
   </ItemGroup>
 </Project>
