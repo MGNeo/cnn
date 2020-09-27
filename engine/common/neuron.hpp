@@ -212,8 +212,11 @@ namespace cnn
         {
           throw std::invalid_argument("cnn::engine::common::Neuron::CrossFrom(), GetInputCount() != source2.GetInputCount().");
         }
-        // Cross weights.
-        // ...
+        for (size_t w = 0; w < GetInputCount(); ++w)
+        {
+          const T value = binaryRandomGenerator.Generate() ? source1.GetWeight(w) : source2.GetWeight(w);
+          SetWeight(w, value);
+        }
       }
     }
   }

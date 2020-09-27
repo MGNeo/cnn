@@ -5,6 +5,7 @@
 
 #include "../common/i_value_generator.hpp"
 #include "../common/i_binary_random_generator.hpp"
+#include "../common/i_neuron.hpp"
 
 namespace cnn
 {

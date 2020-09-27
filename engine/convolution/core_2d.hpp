@@ -214,7 +214,14 @@ namespace cnn
             throw std::invalid_argument("cnn::engine::convolution::Core2D::CrossFrom(), GetHeight() != source2.GetHeight().");
           }
         }
-        // ...
+        for (size_t x = 0; x < GetWidth(); ++x)
+        {
+          for (size_t y = 0; y < GetHeight(); ++y)
+          {
+            const T value = binaryRandomGenerator.Generate() ? source1.GetWeight(x, y) : source2.GetWeight(x, y);
+            SetWeight(x, y, value);
+          }
+        }
       }
     }
   }
