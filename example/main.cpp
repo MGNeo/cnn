@@ -5,10 +5,10 @@
 #include "convolution/example.hpp"
 #include "complex/example.hpp"
 
-// TODO: Extend examples for sub examples.
-// TODO: Create special builders for creating of networks, etc.
-// TODO: Create a genetic algorithm.
-// TODO: Add methods which will be exception safety (such methods must use "copy-swap" idiom).
+// 1 TODO: Create a genetic algorithm.
+// 2 TODO: Add methods which will be exception safety (such methods must use "copy-swap" idiom).
+// 3 TODO: Extend examples for sub examples.
+// 4 TODO: Create special builders for creating of networks, etc.
 
 int main()
 {

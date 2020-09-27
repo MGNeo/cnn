@@ -59,7 +59,7 @@ namespace cnn
         void Cross(std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
                    std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
 
-        void Mutation(std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
+        void Mutate(std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
 
       };
 
@@ -200,21 +200,23 @@ namespace cnn
             if (sourceNetwork1 != sourceNetwork2)
             {
               resultPopulation[r++]->CrossFrom(*sourceNetwork1, *sourceNetwork2, *binaryRandomGenerator);
-              ++r;
             }
           }
         }
       }
 
       template <typename T>
-      void GeneticAlgorithm2D<T>::Mutation(std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
+      void GeneticAlgorithm2D<T>::Mutate(std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
       {
         auto mutagen = std::make_unique<common::Mutagen<T>>();
 
-        // ...
+        mutagen->SetMinResult(GetMinWeightValue());
+        mutagen->SetMaxResult(GetMaxWeightValue());
 
         for (auto& network : resultPopulation)
         {
+          // 0 TODO:
+          // Write Mutate() method for all what have weights.
           //network->Mutation(mutagen);
         }
       }
