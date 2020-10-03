@@ -9,6 +9,7 @@
 // 2 TODO: Add methods which will be exception safety (such methods must use "copy-swap" idiom).
 // 3 TODO: Extend examples for sub examples.
 // 4 TODO: Create special builders for creating of networks, etc.
+// 5 TODO: Add macros DISABLE_ALL_CHECKS and ENABLE_STRONG_EXCEPTION_GUARANTEE.
 
 int main()
 {
