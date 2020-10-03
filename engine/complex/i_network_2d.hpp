@@ -40,6 +40,8 @@ namespace cnn
                                const INetwork2D<T>& source2,
                                common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
 
+        virtual void Mutate(common::IMutagen<T>& mutagen) = 0;
+
         virtual ~INetwork2D() = default;
 
       };

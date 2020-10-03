@@ -5,6 +5,7 @@
 
 #include "i_value_generator.hpp"
 #include "i_binary_random_generator.hpp"
+#include "i_mutagen.hpp"
 
 namespace cnn
 {
@@ -46,7 +47,9 @@ namespace cnn
 
         virtual void CrossFrom(const INeuron<T>& source1,
                                const INeuron<T>& source2,
-                               common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
+                               IBinaryRandomGenerator& binaryRandomGenerator) = 0;
+
+        virtual void Mutate(IMutagen<T>& mutagen) = 0;
 
       };
     }

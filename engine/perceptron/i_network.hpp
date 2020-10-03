@@ -6,6 +6,7 @@
 #include "i_layer.hpp"
 #include "../common/i_value_generator.hpp"
 #include "../common/i_binary_random_generator.hpp"
+#include "../common/i_mutagen.hpp"
 
 namespace cnn
 {
@@ -45,6 +46,8 @@ namespace cnn
         virtual void CrossFrom(const INetwork<T>& source1,
                                const INetwork<T>& source2,
                                common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
+
+        virtual void Mutate(common::IMutagen<T>& mutagen) = 0;
 
         virtual ~INetwork() = default;
 

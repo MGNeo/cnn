@@ -149,7 +149,7 @@ namespace cnn
         for (size_t i = 0; i < GetIterationCount(); ++i)
         {
           Cross(sourcePopulation, resultPopulation);
-          Mutation(resultPopulation);
+          Mutate(resultPopulation);
         }
 
         return {};

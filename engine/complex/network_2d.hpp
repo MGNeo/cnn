@@ -39,6 +39,8 @@ namespace cnn
                        const INetwork2D<T>& source2,
                        common::IBinaryRandomGenerator& binaryRandomGenerator) override;
 
+        void Mutate(common::IMutagen<T>& mutagen) override;
+
       private:
 
         typename convolution::INetwork2D<T>::Uptr ConvolutionNetwork2D;
@@ -141,6 +143,13 @@ namespace cnn
       {
         ConvolutionNetwork2D->CrossFrom(source1.GetConvolutionNetwork2D(), source2.GetConvolutionNetwork2D(), binaryRandomGenerator);
         PerceptronNetwork->CrossFrom(source1.GetPerceptronNetwork(), source2.GetPerceptronNetwork(), binaryRandomGenerator);
+      }
+
+      template <typename T>
+      void Network2D<T>::Mutate(common::IMutagen<T>& mutagen)
+      {
+        ConvolutionNetwork2D->Mutate(mutagen);
+        PerceptronNetwork->Mutate(mutagen);
       }
     }
   }

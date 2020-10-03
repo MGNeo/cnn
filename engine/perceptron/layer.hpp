@@ -49,6 +49,8 @@ namespace cnn
                        const ILayer<T>& source2,
                        common::IBinaryRandomGenerator& binaryRandomGenerator) override;
 
+        void Mutate(common::IMutagen<T>& mutagen) override;
+
       private:
 
         size_t InputSize;
@@ -246,6 +248,16 @@ namespace cnn
           Neurons[n]->CrossFrom(source1.GetNeuron(n), source2.GetNeuron(n), binaryRandomGenerator);
         }
       }
+
+      template <typename T>
+      void Layer<T>::Mutate(common::IMutagen<T>& mutagen)
+      {
+        for (size_t n = 0; n < GetNeuronCount(); ++n)
+        {
+          Neurons[n]->Mutate(mutagen);
+        }
+      }
+
     }
   }
 }

@@ -49,6 +49,8 @@ namespace cnn
                        const ICore2D<T>& source2,
                        common::IBinaryRandomGenerator& binaryRandomGenerator) override;
 
+        void Mutate(common::IMutagen<T>& mutagen) override;
+
       private:
 
         size_t Width;
@@ -223,6 +225,13 @@ namespace cnn
           }
         }
       }
+
+      template <typename T>
+      void Core2D<T>::Mutate(common::IMutagen<T>& mutagen)
+      {
+        Neuron_->Mutate(mutagen);
+      }
+
     }
   }
 }

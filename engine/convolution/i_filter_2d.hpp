@@ -6,6 +6,7 @@
 #include "i_core_2d.hpp"
 #include "../common/i_value_generator.hpp"
 #include "../common/i_binary_random_generator.hpp"
+#include "../common/i_mutagen.hpp"
 
 namespace cnn
 {
@@ -45,6 +46,8 @@ namespace cnn
                                common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
 
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
+
+        virtual void Mutate(common::IMutagen<T>& mutagen) = 0;
 
       };
     }

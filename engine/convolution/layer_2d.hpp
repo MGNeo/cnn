@@ -70,6 +70,8 @@ namespace cnn
                        const ILayer2D<T>& source2,
                        common::IBinaryRandomGenerator& binaryRandomGenerator) override;
 
+        void Mutate(common::IMutagen<T>& mutagen) override;
+
       private:
 
         size_t InputWidth;
@@ -531,6 +533,15 @@ namespace cnn
         for (size_t f = 0; f < GetFilterCount(); ++f)
         {
           Filters[f]->CrossFrom(source1.GetFilter(f), source2.GetFilter(f), binaryRandomGenerator);
+        }
+      }
+
+      template <typename T>
+      void Layer2D<T>::Mutate(common::IMutagen<T>& mutagen)
+      {
+        for (size_t f = 0; f < GetFilterCount(); ++f)
+        {
+          Filters[f]->Mutate(mutagen);
         }
       }
     }

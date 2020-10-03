@@ -46,6 +46,8 @@ namespace cnn
                        const IFilter2D<T>& source2,
                        common::IBinaryRandomGenerator& binaryRandomGenerator) override;
 
+        void Mutate(common::IMutagen<T>& mutagen) override;
+
       private:
 
         size_t Width;
@@ -224,6 +226,15 @@ namespace cnn
         for (size_t c = 0; c < GetCoreCount(); ++c)
         {
           Cores[c]->CrossFrom(source1.GetCore(c), source2.GetCore(c), binaryRandomGenerator);;
+        }
+      }
+
+      template <typename T>
+      void Filter2D<T>::Mutate(common::IMutagen<T>& mutagen)
+      {
+        for (size_t c = 0; c < GetCoreCount(); ++c)
+        {
+          Cores[c]->Mutate(mutagen);
         }
       }
     }

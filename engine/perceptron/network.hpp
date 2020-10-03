@@ -50,6 +50,8 @@ namespace cnn
                        const INetwork<T>& source2,
                        common::IBinaryRandomGenerator& binaryRandomGenerator) override;
 
+        void Mutate(common::IMutagen<T>& mutagen) override;
+
       private:
 
         std::vector<typename ILayer<T>::Uptr> Layers;
@@ -193,6 +195,15 @@ namespace cnn
         for (size_t l = 0; l < GetLayerCount(); ++l)
         {
           Layers[l]->CrossFrom(source1.GetLayer(l), source2.GetLayer(l), binaryRandomGenerator);
+        }
+      }
+
+      template <typename T>
+      void Network<T>::Mutate(common::IMutagen<T>& mutagen)
+      {
+        for (auto& layer : Layers)
+        {
+          layer->Mutate(mutagen);
         }
       }
     }

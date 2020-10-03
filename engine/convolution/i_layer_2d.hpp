@@ -7,6 +7,7 @@
 #include "i_filter_2d.hpp"
 #include "../common/i_value_generator.hpp"
 #include "../common/i_binary_random_generator.hpp"
+#include "../common/i_mutagen.hpp"
 
 namespace cnn
 {
@@ -55,6 +56,8 @@ namespace cnn
         virtual void CrossFrom(const ILayer2D<T>& source1,
                                const ILayer2D<T>& source2,
                                common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
+
+        virtual void Mutate(common::IMutagen<T>& mutagen) = 0;
 
       };
     }

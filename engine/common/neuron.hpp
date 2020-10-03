@@ -46,7 +46,9 @@ namespace cnn
 
         void CrossFrom(const INeuron<T>& source1,
                        const INeuron<T>& source2,
-                       common::IBinaryRandomGenerator& binaryRandomGenerator) override;
+                       IBinaryRandomGenerator& binaryRandomGenerator) override;
+
+        void Mutate(common::IMutagen<T>& mutagen) override;
 
       public:
 
@@ -202,7 +204,7 @@ namespace cnn
       template <typename T>
       void Neuron<T>::CrossFrom(const INeuron<T>& source1,
                                 const INeuron<T>& source2,
-                                common::IBinaryRandomGenerator& binaryRandomGenerator)
+                                IBinaryRandomGenerator& binaryRandomGenerator)
       {
         if (GetInputCount() != source1.GetInputCount())
         {
@@ -216,6 +218,15 @@ namespace cnn
         {
           const T value = binaryRandomGenerator.Generate() ? source1.GetWeight(w) : source2.GetWeight(w);
           SetWeight(w, value);
+        }
+      }
+
+      template <typename T>
+      void Neuron<T>::Mutate(common::IMutagen<T>& mutagen)
+      {
+        for (size_t w = 0; w < GetInputCount(); ++w)
+        {
+          Weights[w] = mutagen.Mutate(Weights[w]);
         }
       }
     }
