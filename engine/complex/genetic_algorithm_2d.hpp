@@ -52,14 +52,20 @@ namespace cnn
         size_t PopulationSize;
         size_t IterationCount;
 
-        void Preparation(const complex::INetwork2D<T>& sourceNetwork,
-                         std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
-                         std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
+        void Check(const ILesson2DLibrary<T>& lessonLibrary,
+                   const INetwork2D<T>& network) const;
+
+        void Prepare(const complex::INetwork2D<T>& sourceNetwork,
+                     std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
+                     std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
 
         void Cross(std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
                    std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
 
         void Mutate(std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
+
+        void Test(const ILesson2DLibrary<T>& lessonLibrary,
+                  std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
 
       };
 
@@ -141,24 +147,50 @@ namespace cnn
       typename INetwork2D<T>::Uptr GeneticAlgorithm2D<T>::Run(const ILesson2DLibrary<T>& lessonLibrary,
                                                               const INetwork2D<T>& network) const
       {
+        Check(lessonLibrary, network);
+
         std::vector<typename complex::INetwork2D<T>::Uptr> sourcePopulation;
         std::vector<typename complex::INetwork2D<T>::Uptr> resultPopulation;
 
-        Preparation(network, sourcePopulation, resultPopulation);
+        Prepare(network, sourcePopulation, resultPopulation);
 
         for (size_t i = 0; i < GetIterationCount(); ++i)
         {
           Cross(sourcePopulation, resultPopulation);
           Mutate(resultPopulation);
+          Test(lessonLibrary, resultPopulation);
+          // Select();
         }
 
         return {};
       }
 
       template <typename T>
-      void GeneticAlgorithm2D<T>::Preparation(const complex::INetwork2D<T>& sourceNetwork,
-                                              std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
-                                              std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
+      void GeneticAlgorithm2D<T>::Check(const ILesson2DLibrary<T>& lessonLibrary,
+                                        const INetwork2D<T>& network) const
+      {
+        if (lessonLibrary.GetLessonInputCount() != network.GetConvolutionNetwork2D().GetFirstLayer().GetInputCount())
+        {
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::Check(), lessonLibrary.GetLessonInputCount() != network.GetConvolutionNetwork2D().GetFirstLayer().GetInputCount().");
+        }
+        if (lessonLibrary.GetLessonInputWidth() != network.GetConvolutionNetwork2D().GetFirstLayer().GetInputWidth())
+        {
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::Check(), lessonLibrary.GetLessonInputWidth() != network.GetConvolutionNetwork2D().GetFirstLayer().GetInputWidth().");
+        }
+        if (lessonLibrary.GetLessonInputHeight() != network.GetConvolutionNetwork2D().GetFirstLayer().GetInputHeight())
+        {
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::Check(), lessonLibrary.GetLessonInputHeight() != network.GetConvolutionNetwork2D().GetFirstLayer().GetInputHeight().");
+        }
+        if (lessonLibrary.GetLessonOutputSize() != network.GetPerceptronNetwork().GetLastLayer().GetOutputSize())
+        {
+          throw std::invalid_argument("cnn::engine::Complex::GeneticAlgorithm2D::Check(), lessonLibrary.GetLessonOutputSize() != network.GetPerceptronNetwork().GetLastLayer().GetOutputSize().");
+        }
+      }
+
+      template <typename T>
+      void GeneticAlgorithm2D<T>::Prepare(const complex::INetwork2D<T>& sourceNetwork,
+                                          std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
+                                          std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
       {
         const size_t sourcePopulationSize = PopulationSize;
         const size_t m = sourcePopulationSize - 1;
@@ -166,7 +198,7 @@ namespace cnn
 
         if ((resultPopulationSize / sourcePopulationSize) != m)
         {
-          throw std::overflow_error("cnn::engine::complex::GeneticAlgorithm2D::Preparation(), resultPopulationSize has been overflowed.");
+          throw std::overflow_error("cnn::engine::complex::GeneticAlgorithm2D::Prepare(), resultPopulationSize has been overflowed.");
         }
 
         sourcePopulation.resize(sourcePopulationSize);
@@ -215,11 +247,37 @@ namespace cnn
 
         for (auto& network : resultPopulation)
         {
-          // 0 TODO:
-          // Write Mutate() method for all what have weights.
-          //network->Mutation(mutagen);
+          network->Mutate(*mutagen);
         }
       }
+
+      template <typename T>
+      void GeneticAlgorithm2D<T>::Test(const ILesson2DLibrary<T>& lessonLibrary, 
+                                       std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
+      {
+        for (auto& network : resultPopulation)
+        {
+          auto& convolutionNetwork = network->GetConvolutionNetwork2D();
+          auto& perceptronNetwork = network->GetPerceptronNetwork();
+
+          for (size_t l = 0; l < lessonLibrary.GetLessonCount(); ++l)
+          {
+            const auto& lesson = lessonLibrary.GetLesson(l);
+
+            for (size_t i = 0; i < lessonLibrary.GetLessonInputCount(); ++i)
+            {
+              for (size_t x = 0; x < lessonLibrary.GetLessonInputWidth(); ++x)
+              {
+                for (size_t y = 0; y < lessonLibrary.GetLessonInputHeight(); ++y)
+                {
+                  
+                }
+              }
+            }
+          }
+        }
+      }
+
     }
   }
 }

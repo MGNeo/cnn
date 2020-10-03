@@ -27,7 +27,7 @@ namespace cnn
                  const size_t outputSize);
 
         size_t GetInputWidth() const override;
-        size_t GetIntputHeight() const override;
+        size_t GetInputHeight() const override;
         size_t GetInputCount() const override;
 
         const convolution::IMap2D<T>& GetInput(const size_t index) const override;
@@ -79,7 +79,7 @@ namespace cnn
       }
 
       template <typename T>
-      size_t Lesson2D<T>::GetIntputHeight() const
+      size_t Lesson2D<T>::GetInputHeight() const
       {
         return InputHeight;
       }
