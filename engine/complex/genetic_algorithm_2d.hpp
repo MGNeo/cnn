@@ -257,21 +257,47 @@ namespace cnn
       {
         for (auto& network : resultPopulation)
         {
+          // Get the input signal of the lesson through the convoultion network.
           auto& convolutionNetwork = network->GetConvolutionNetwork2D();
-          auto& perceptronNetwork = network->GetPerceptronNetwork();
-
-          for (size_t l = 0; l < lessonLibrary.GetLessonCount(); ++l)
           {
-            const auto& lesson = lessonLibrary.GetLesson(l);
-
-            for (size_t i = 0; i < lessonLibrary.GetLessonInputCount(); ++i)
+            auto& layer = convolutionNetwork.GetFirstLayer();
+            for (size_t l = 0; l < lessonLibrary.GetLessonCount(); ++l)
             {
-              for (size_t x = 0; x < lessonLibrary.GetLessonInputWidth(); ++x)
+              const auto& lesson = lessonLibrary.GetLesson(l);
+
+              for (size_t i = 0; i < lessonLibrary.GetLessonInputCount(); ++i)
               {
-                for (size_t y = 0; y < lessonLibrary.GetLessonInputHeight(); ++y)
+                const auto& lessonInput = lesson.GetInput(i);
+                auto& layerInput = layer.GetInput(i);
+                for (size_t x = 0; x < lessonLibrary.GetLessonInputWidth(); ++x)
                 {
-                  
+                  for (size_t y = 0; y < lessonLibrary.GetLessonInputHeight(); ++y)
+                  {
+                    layerInput.SetValue(x, y, lessonInput.GetValue(x, y));
+                  }
                 }
+              }
+              convolutionNetwork.Process();
+              // Get the output signal of the convolution network through the perceptron network.
+              auto& perceptronNetwork = network->GetPerceptronNetwork();
+              {
+                auto& firstLayer = perceptronNetwork.GetFirstLayer();
+                const auto& lastLayer = convolutionNetwork.GetLastLayer();
+                size_t i{};
+                for (size_t o = 0; o < lastLayer.GetOutputCount(); ++o)
+                {
+                  auto& firstInput = firstLayer.GetInput();
+                  const auto& lastOutput = lastLayer.GetOutput(o);
+                  for (size_t x = 0; x < lastLayer.GetOutputWidth(); ++x)
+                  {
+                    for (size_t y = 0; y < lastLayer.GetOutputHeight(); ++y)
+                    {
+                      firstInput.SetValue(i++, lastOutput.GetValue(x, y));
+                    }
+                  }
+                }
+                // Measure the difference between the output signal of the lesson and of the perceptron network.
+                // ...
               }
             }
           }
