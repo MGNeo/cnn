@@ -41,6 +41,8 @@ namespace cnn
 
         void Mutate(common::IMutagen<T>& mutagen) override;
 
+        void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
+
       private:
 
         typename convolution::INetwork2D<T>::Uptr ConvolutionNetwork2D;
@@ -151,6 +153,14 @@ namespace cnn
         ConvolutionNetwork2D->Mutate(mutagen);
         PerceptronNetwork->Mutate(mutagen);
       }
+
+      template <typename T>
+      void Network2D<T>::SetActivationFunctions(const common::IActivationFunction<T>& activationFunction)
+      {
+        ConvolutionNetwork2D->SetActivationFunctions(activationFunction);
+        PerceptronNetwork->SetActivationFunctions(activationFunction);
+      }
+
     }
   }
 }

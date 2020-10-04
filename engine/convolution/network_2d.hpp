@@ -60,6 +60,8 @@ namespace cnn
 
         void Mutate(common::IMutagen<T>& mutagen) override;
 
+        void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
+
       private:
 
         std::vector<typename ILayer2D<T>::Uptr> Layers;
@@ -244,6 +246,15 @@ namespace cnn
         for (auto& layer : Layers)
         {
           layer->Mutate(mutagen);
+        }
+      }
+
+      template <typename T>
+      void Network2D<T>::SetActivationFunctions(const common::IActivationFunction<T>& activationFunction)
+      {
+        for (auto& layer : Layers)
+        {
+          layer->SetActivationFunctions(activationFunction);
         }
       }
     }

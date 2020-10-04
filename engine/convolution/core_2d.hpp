@@ -51,6 +51,8 @@ namespace cnn
 
         void Mutate(common::IMutagen<T>& mutagen) override;
 
+        void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
+
       private:
 
         size_t Width;
@@ -230,6 +232,12 @@ namespace cnn
       void Core2D<T>::Mutate(common::IMutagen<T>& mutagen)
       {
         Neuron_->Mutate(mutagen);
+      }
+
+      template <typename T>
+      void Core2D<T>::SetActivationFunctions(const common::IActivationFunction<T>& activationFunction)
+      {
+        Neuron_->SetActivationFunction(activationFunction);
       }
 
     }

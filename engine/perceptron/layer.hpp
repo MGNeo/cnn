@@ -51,6 +51,8 @@ namespace cnn
 
         void Mutate(common::IMutagen<T>& mutagen) override;
 
+        void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
+
       private:
 
         size_t InputSize;
@@ -255,6 +257,15 @@ namespace cnn
         for (size_t n = 0; n < GetNeuronCount(); ++n)
         {
           Neurons[n]->Mutate(mutagen);
+        }
+      }
+
+      template <typename T>
+      void Layer<T>::SetActivationFunctions(const common::IActivationFunction<T>& activationFunction)
+      {
+        for (size_t n = 0; n < GetNeuronCount(); ++n)
+        {
+          Neurons[n]->SetActivationFunction(activationFunction);
         }
       }
 

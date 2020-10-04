@@ -48,6 +48,8 @@ namespace cnn
 
         void Mutate(common::IMutagen<T>& mutagen) override;
 
+        void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
+
       private:
 
         size_t Width;
@@ -235,6 +237,15 @@ namespace cnn
         for (size_t c = 0; c < GetCoreCount(); ++c)
         {
           Cores[c]->Mutate(mutagen);
+        }
+      }
+
+      template <typename T>
+      void Filter2D<T>::SetActivationFunctions(const common::IActivationFunction<T>& activationFunction)
+      {
+        for (size_t c = 0; c < GetCoreCount(); ++c)
+        {
+          Cores[c]->SetActivationFunctions(activationFunction);
         }
       }
     }

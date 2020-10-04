@@ -39,8 +39,6 @@ namespace cnn
 
         virtual void Process() = 0;
 
-        virtual ~ILayer() = default;
-
         virtual typename ILayer<T>::Uptr Clone(const bool cloneState) const = 0;
 
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
@@ -50,6 +48,10 @@ namespace cnn
                                common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
 
         virtual void Mutate(common::IMutagen<T>& mutagen) = 0;
+
+        virtual void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) = 0;
+
+        virtual ~ILayer() = default;
 
       };
     }

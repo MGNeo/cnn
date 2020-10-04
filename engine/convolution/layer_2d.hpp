@@ -72,6 +72,8 @@ namespace cnn
 
         void Mutate(common::IMutagen<T>& mutagen) override;
 
+        void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
+
       private:
 
         size_t InputWidth;
@@ -542,6 +544,15 @@ namespace cnn
         for (size_t f = 0; f < GetFilterCount(); ++f)
         {
           Filters[f]->Mutate(mutagen);
+        }
+      }
+
+      template <typename T>
+      void Layer2D<T>::SetActivationFunctions(const common::IActivationFunction<T>& activationFunction)
+      {
+        for (size_t f = 0; f < GetFilterCount(); ++f)
+        {
+          Filters[f]->SetActivationFunctions(activationFunction);
         }
       }
     }

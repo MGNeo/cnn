@@ -7,6 +7,7 @@
 #include "../perceptron/i_network.hpp"
 #include "../common/i_value_generator.hpp"
 #include "../common/i_binary_random_generator.hpp"
+#include "../common/i_activation_function.hpp"
 
 namespace cnn
 {
@@ -41,6 +42,8 @@ namespace cnn
                                common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
 
         virtual void Mutate(common::IMutagen<T>& mutagen) = 0;
+
+        virtual void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) = 0;
 
         virtual ~INetwork2D() = default;
 

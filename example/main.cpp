@@ -5,6 +5,7 @@
 #include "convolution/example.hpp"
 #include "complex/example.hpp"
 
+// 0 TODO: Add activation function.
 // 1 TODO: Create a genetic algorithm.
 // 2 TODO: Add methods which will be exception safety (such methods must use "copy-swap" idiom).
 // 3 TODO: Extend examples for sub examples.

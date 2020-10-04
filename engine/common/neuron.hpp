@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include "i_neuron.hpp"
+#include "activation_function.hpp"
 
 namespace cnn
 {
@@ -50,6 +51,9 @@ namespace cnn
 
         void Mutate(common::IMutagen<T>& mutagen) override;
 
+        const IActivationFunction<T>& GetActivationFunction() const override;
+        void SetActivationFunction(const IActivationFunction<T>& activationFunction) override;
+
       public:
 
         size_t InputCount;
@@ -59,12 +63,15 @@ namespace cnn
 
         T Output;
 
+        typename IActivationFunction<T>::Uptr ActivationFunction_;
+
       };
 
       template <typename T>
       Neuron<T>::Neuron(const size_t inputCount)
         :
-        InputCount{ inputCount }
+        InputCount{ inputCount },
+        ActivationFunction_{ std::make_unique<common::ActivationFunction<T>>() }
       {
         if (InputCount == 0)
         {
@@ -131,6 +138,7 @@ namespace cnn
         {
           Output += Inputs[i] * Weights[i];
         }
+        // TODO: Add activation function.
       }
 
       template <typename T>
@@ -228,6 +236,18 @@ namespace cnn
         {
           Weights[w] = mutagen.Mutate(Weights[w]);
         }
+      }
+
+      template <typename T>
+      const IActivationFunction<T>& Neuron<T>::GetActivationFunction() const
+      {
+        return *ActivationFunction_;
+      }
+
+      template <typename T>
+      void Neuron<T>::SetActivationFunction(const IActivationFunction<T>& activationFunction)
+      {
+        ActivationFunction_ = activationFunction.Clone();
       }
     }
   }

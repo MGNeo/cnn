@@ -47,6 +47,8 @@ namespace cnn
 
         virtual void Mutate(common::IMutagen<T>& mutagen) = 0;
 
+        virtual void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) = 0;
+
         virtual ~INetwork2D() = default;
 
       };

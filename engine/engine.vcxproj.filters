@@ -43,5 +43,7 @@
     <ClInclude Include="common\binary_random_generator.hpp" />
     <ClInclude Include="common\i_mutagen.hpp" />
     <ClInclude Include="common\mutagen.hpp" />
+    <ClInclude Include="common\i_activation_function.hpp" />
+    <ClInclude Include="common\activation_function.hpp" />
   </ItemGroup>
 </Project>
