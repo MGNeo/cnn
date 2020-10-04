@@ -28,7 +28,6 @@ namespace cnn
       private:
 
         void Simple() const;
-        void Visitor() const;
 
       };
 
