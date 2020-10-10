@@ -148,7 +148,7 @@ namespace cnn
         {
           throw std::logic_error("cnn::engine::complex::Lesson2DLibrary::GetLastLesson(), Lessons.size() == 0.");
         }
-        return *(Lessons.front());
+        return *(Lessons.back());
       }
 
       template <typename T>
@@ -158,7 +158,7 @@ namespace cnn
         {
           throw std::logic_error("cnn::engine::complex::Lesson2DLibrary::GetLastLesson(), Lessons.size() == 0.");
         }
-        return *(Lessons.front());
+        return *(Lessons.back());
       }
     }
   }

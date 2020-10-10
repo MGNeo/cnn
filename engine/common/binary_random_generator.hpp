@@ -3,6 +3,7 @@
 #include "i_binary_random_generator.hpp"
 
 #include <random>
+#include <time.h>
 
 namespace cnn
 {
