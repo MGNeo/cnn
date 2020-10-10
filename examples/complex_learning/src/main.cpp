@@ -1,14 +1,20 @@
 #include <iostream>
 
-#include "loader.hpp"
+#include "factory.hpp"
+
+#include "engine/complex/network_2d.hpp"
 
 using namespace cnn::examples::complex_learning;
 
 int main(int argc, char** argv)
 {
-  ILoader<float>::Uptr loader = std::make_unique<Loader<float>>();
+  IFactory<float>::Uptr factory = std::make_unique<Factory<float>>();
 
-  auto library = loader->Load();
+  auto library = factory->Library();
+  auto network = factory->Network();
+  auto algorithm = factory->Algorithm();
+
+  algorithm->Run(*library, *network);
 
   return 0;
 }

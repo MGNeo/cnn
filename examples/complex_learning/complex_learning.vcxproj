@@ -22,8 +22,8 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\i_loader.hpp" />
-    <ClInclude Include="src\loader.hpp" />
+    <ClInclude Include="src\i_factory.hpp" />
+    <ClInclude Include="src\factory.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -20,10 +20,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\i_loader.hpp">
+    <ClInclude Include="src\i_factory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\loader.hpp">
+    <ClInclude Include="src\factory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
