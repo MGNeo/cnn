@@ -178,7 +178,7 @@ namespace cnn
       {
         for (size_t c = 0; c < CoreCount; ++c)
         {
-          Cores[c] = Cores[c]->Clone(cloneState);
+          Cores[c] = filter2D.GetCore(c).Clone(cloneState);
         }
       }
 
