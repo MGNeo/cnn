@@ -33,12 +33,14 @@
     <ClInclude Include="common\value_generator.hpp" />
     <ClInclude Include="complex\genetic_algorithm_2d.hpp" />
     <ClInclude Include="complex\i_genetic_algorithm_2d.hpp" />
+    <ClInclude Include="complex\i_test_task_2d.hpp" />
     <ClInclude Include="complex\i_lesson_2d.hpp" />
     <ClInclude Include="complex\i_lesson_2d_library.hpp" />
     <ClInclude Include="complex\i_network_2d.hpp" />
     <ClInclude Include="complex\lesson_2d.hpp" />
     <ClInclude Include="complex\lesson_2d_library.hpp" />
     <ClInclude Include="complex\network_2d.hpp" />
+    <ClInclude Include="complex\test_task_2d.hpp" />
     <ClInclude Include="convolution\layer_2d.hpp" />
     <ClInclude Include="convolution\core_2d.hpp" />
     <ClInclude Include="convolution\filter_2d.hpp" />

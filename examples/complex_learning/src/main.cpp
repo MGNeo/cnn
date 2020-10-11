@@ -5,6 +5,7 @@
 #include "engine/complex/network_2d.hpp"
 
 // TODO: Add multithreading to GeneticAlgorithm2D.
+  // GeneticAlgorithm2D<T>::Test().
 // TODO: Add statistics (performance and other) in GeneticAlgorithm2D.
 // TODO: Deny all move constructors and move operators=.
 // TODO: Add marco ENABLE_STRONG_EXCEPTION_GUARANTEE.

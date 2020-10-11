@@ -5,12 +5,14 @@
 #include <map>
 
 #include "i_genetic_algorithm_2d.hpp"
+#include "test_task_2d.hpp"
 #include "network_2d.hpp"
 #include "../common/value_generator.hpp"
 #include "../common/binary_random_generator.hpp"
 #include "../common/mutagen.hpp"
 
 #include <iostream>// DEBUG
+#include <list>
 
 namespace cnn
 {
@@ -266,72 +268,13 @@ namespace cnn
       void GeneticAlgorithm2D<T>::Test(const ILesson2DLibrary<T>& lessonLibrary,
                                        std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
       {
-        std::multimap<T, size_t> statistics;// TODO: Raname it.
-        for (size_t n = 0; n < resultPopulation.size(); ++n)
-        {
-          auto& network = resultPopulation[n];
-          // Get the input signal of the lesson through the convoultion network.
-          {
-            auto& convolutionNetwork = network->GetConvolutionNetwork2D();
-            auto& layer = convolutionNetwork.GetFirstLayer();
-            T totalError{};
-            for (size_t l = 0; l < lessonLibrary.GetLessonCount(); ++l)
-            {
-              const auto& lesson = lessonLibrary.GetLesson(l);
+        // TODO: Write TestTask2DPool.
+        // TODO: Write TestTask2DThread.
 
-              for (size_t i = 0; i < lessonLibrary.GetLessonInputCount(); ++i)
-              {
-                const auto& lessonInput = lesson.GetInput(i);
-                auto& layerInput = layer.GetInput(i);
-                for (size_t x = 0; x < lessonLibrary.GetLessonInputWidth(); ++x)
-                {
-                  for (size_t y = 0; y < lessonLibrary.GetLessonInputHeight(); ++y)
-                  {
-                    layerInput.SetValue(x, y, lessonInput.GetValue(x, y));
-                  }
-                }
-              }
-              convolutionNetwork.Process();
-              // Get the output signal of the convolution network through the perceptron network.
-              {
-                auto& perceptronNetwork = network->GetPerceptronNetwork();
-                auto& firstLayer = perceptronNetwork.GetFirstLayer();
-                const auto& lastLayer = convolutionNetwork.GetLastLayer();
-                size_t i{};
-                for (size_t o = 0; o < lastLayer.GetOutputCount(); ++o)
-                {
-                  auto& firstInput = firstLayer.GetInput();
-                  const auto& lastOutput = lastLayer.GetOutput(o);
-                  for (size_t x = 0; x < lastLayer.GetOutputWidth(); ++x)
-                  {
-                    for (size_t y = 0; y < lastLayer.GetOutputHeight(); ++y)
-                    {
-                      firstInput.SetValue(i++, lastOutput.GetValue(x, y));
-                    }
-                  }
-                }
-                perceptronNetwork.Process();
-                // Measure the difference between the output signal of the lesson and of the perceptron network.
-                {
-                  const auto& perceptronOutput = perceptronNetwork.GetLastLayer().GetOutput();
-                  const auto& lessonOutput = lesson.GetOutput();
-                  for (size_t o = 0; o < perceptronOutput.GetValueCount(); ++o)
-                  {
-                    totalError += std::abs(perceptronOutput.GetValue(o) - lessonOutput.GetValue(o));
-                  }
-                }
-              }
-            }
-            statistics.insert({ totalError, n });
-          }
-          std::cout << n << std::endl;// DEBUG
-        }
-        // Sort from the best to the worst.
-        size_t n{};
-        for (const auto& info : statistics)
-        {
-          resultPopulation[n].swap(resultPopulation[info.second]);
-        }
+        // Fill the task pool.
+        // Run the test threads;
+        // Sort resultPopulations.
+
       }
 
       template <typename T>

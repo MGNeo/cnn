@@ -45,5 +45,7 @@
     <ClInclude Include="common\mutagen.hpp" />
     <ClInclude Include="common\i_activation_function.hpp" />
     <ClInclude Include="common\activation_function.hpp" />
+    <ClInclude Include="complex\i_test_task_2d.hpp" />
+    <ClInclude Include="complex\test_task_2d.hpp" />
   </ItemGroup>
 </Project>
