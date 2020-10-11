@@ -4,12 +4,12 @@
 
 #include "engine/complex/network_2d.hpp"
 
-using namespace cnn::examples::complex_learning;
-
 // TODO: Add multithreading to GeneticAlgorithm2D.
 // TODO: Add statistics (performance and other) in GeneticAlgorithm2D.
 // TODO: Deny all move constructors and move operators=.
 // TODO: Add marco ENABLE_STRONG_EXCEPTION_GUARANTEE.
+
+using namespace cnn::examples::complex_learning;
 
 int main(int argc, char** argv)
 {

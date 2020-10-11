@@ -158,17 +158,18 @@ namespace cnn
         std::vector<typename complex::INetwork2D<T>::Uptr> sourcePopulation;
         std::vector<typename complex::INetwork2D<T>::Uptr> resultPopulation;
 
+        std::cout << "Prepare..." << std::endl;// DEBUG
         Prepare(network, sourcePopulation, resultPopulation);
 
         for (size_t i = 0; i < GetIterationCount(); ++i)
         {
-          std::cout << "Cross..." << std::endl;
+          std::cout << "Cross..." << std::endl;// DEBUG
           Cross(sourcePopulation, resultPopulation);
-          std::cout << "Mutate..." << std::endl;
+          std::cout << "Mutate..." << std::endl;// DEBUG
           Mutate(resultPopulation);
-          std::cout << "Test..." << std::endl;
-          Test(lessonLibrary, resultPopulation);
-          std::cout << "Select..." << std::endl;
+          std::cout << "Test..." << std::endl;// DEBUG
+          Test(lessonLibrary, resultPopulation);// This operation is the heaviest, it must be multithreaded in the first place (and without any synchronisations).
+          std::cout << "Select..." << std::endl;// DEBUG
           Select(sourcePopulation, resultPopulation);
         }
 
@@ -265,7 +266,7 @@ namespace cnn
       void GeneticAlgorithm2D<T>::Test(const ILesson2DLibrary<T>& lessonLibrary,
                                        std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
       {
-        std::multimap<T, size_t> statistics;
+        std::multimap<T, size_t> statistics;// TODO: Raname it.
         for (size_t n = 0; n < resultPopulation.size(); ++n)
         {
           auto& network = resultPopulation[n];
@@ -309,6 +310,7 @@ namespace cnn
                     }
                   }
                 }
+                perceptronNetwork.Process();
                 // Measure the difference between the output signal of the lesson and of the perceptron network.
                 {
                   const auto& perceptronOutput = perceptronNetwork.GetLastLayer().GetOutput();
@@ -322,6 +324,7 @@ namespace cnn
             }
             statistics.insert({ totalError, n });
           }
+          std::cout << n << std::endl;// DEBUG
         }
         // Sort from the best to the worst.
         size_t n{};

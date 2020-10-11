@@ -25,8 +25,11 @@ namespace cnn
 
         using Uptr = std::unique_ptr<IFactory<T>>;
 
+        // The result must not be nullptr.
         virtual typename engine::complex::ILesson2DLibrary<T>::Uptr Library() const = 0;
+        // The result must not be nullptr.
         virtual typename engine::complex::INetwork2D<T>::Uptr Network() const = 0;
+        // The result must not be nullptr.
         virtual typename engine::complex::IGeneticAlgorithm2D<T>::Uptr Algorithm() const = 0;
 
         virtual ~IFactory() = default;

@@ -28,8 +28,11 @@ namespace cnn
 
         Factory();
 
+        // The result must not be nullptr.
         typename engine::complex::ILesson2DLibrary<T>::Uptr Library() const override;
+        // The result must not be nullptr.
         typename engine::complex::INetwork2D<T>::Uptr Network() const override;
+        // The result must not be nullptr.
         typename engine::complex::IGeneticAlgorithm2D<T>::Uptr Algorithm() const override;
 
       private:
@@ -54,7 +57,7 @@ namespace cnn
       {
       }
 
-      // Returned value can't have nullptr.
+      // The result must not be nullptr.
       template <typename T>
       typename engine::complex::ILesson2DLibrary<T>::Uptr Factory<T>::Library() const
       {
@@ -122,7 +125,7 @@ namespace cnn
         }
       }
 
-      // Returned value can't have nullptr.
+      // The result must not be nullptr.
       template <typename T>
       typename engine::complex::INetwork2D<T>::Uptr Factory<T>::Network() const
       {
@@ -140,6 +143,7 @@ namespace cnn
         return std::move(complexNetwork);
       }
 
+      // The result must not be nullptr.
       template <typename T>
       typename engine::complex::IGeneticAlgorithm2D<T>::Uptr Factory<T>::Algorithm() const
       {
