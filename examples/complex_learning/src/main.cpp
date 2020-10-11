@@ -6,7 +6,10 @@
 
 using namespace cnn::examples::complex_learning;
 
-// TODO: Deny all move constructors and operators=.
+// TODO: Add multithreading to GeneticAlgorithm2D.
+// TODO: Add statistics (performance and other) in GeneticAlgorithm2D.
+// TODO: Deny all move constructors and move operators=.
+// TODO: Add marco ENABLE_STRONG_EXCEPTION_GUARANTEE.
 
 int main(int argc, char** argv)
 {
@@ -16,7 +19,7 @@ int main(int argc, char** argv)
   auto network = factory->Network();
   auto algorithm = factory->Algorithm();
 
-  algorithm->Run(*library, *network);
+  auto newNetwork = algorithm->Run(*library, *network);
 
   return 0;
 }

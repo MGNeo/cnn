@@ -162,11 +162,14 @@ namespace cnn
 
         for (size_t i = 0; i < GetIterationCount(); ++i)
         {
+          std::cout << "Cross..." << std::endl;
           Cross(sourcePopulation, resultPopulation);
+          std::cout << "Mutate..." << std::endl;
           Mutate(resultPopulation);
+          std::cout << "Test..." << std::endl;
           Test(lessonLibrary, resultPopulation);
+          std::cout << "Select..." << std::endl;
           Select(sourcePopulation, resultPopulation);
-          std::cout << i << " ";// DEBUG
         }
 
         return {};
