@@ -48,6 +48,7 @@ namespace cnn
 
         void Process() override;
 
+        // The result must not be nullptr.
         typename INetwork2D<T>::Uptr Clone(const bool cloneState) const override;
         
         Network2D(const Network2D<T>& network2D, const bool cloneState);
@@ -109,20 +110,24 @@ namespace cnn
       template <typename T>
       const ILayer2D<T>& Network2D<T>::GetLayer(const size_t index) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= Layers.size())
         {
           throw std::range_error("cnn::engine::convolution::Network2D::GetLayer() const, index >= Layer.size().");
         }
+#endif
         return *(Layers[index]);
       }
 
       template <typename T>
       ILayer2D<T>& Network2D<T>::GetLayer(const size_t index)
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= Layers.size())
         {
           throw std::range_error("cnn::engine::convolution::Network2D::GetLayer(), index >= Layer.size().");
         }
+#endif
         return *(Layers[index]);
       }
 
@@ -193,6 +198,7 @@ namespace cnn
         }
       }
 
+      // The result must not be nullptr.
       template <typename T>
       typename INetwork2D<T>::Uptr Network2D<T>::Clone(const bool cloneState) const
       {

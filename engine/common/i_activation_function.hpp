@@ -19,6 +19,7 @@ namespace cnn
 
         virtual T Use(const T value) const = 0;
 
+        // The result must not be nullptr.
         virtual typename IActivationFunction<T>::Uptr Clone() const = 0;
 
         virtual ~IActivationFunction() = default;

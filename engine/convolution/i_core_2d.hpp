@@ -42,6 +42,7 @@ namespace cnn
 
         virtual ~ICore2D() = default;
 
+        // The result must not be nullptr.
         virtual typename ICore2D<T>::Uptr Clone(const bool cloneState) const = 0;
 
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;

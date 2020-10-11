@@ -39,6 +39,7 @@ namespace cnn
 
         virtual void Process() = 0;
 
+        // The result must not be nullptr.
         virtual typename ILayer<T>::Uptr Clone(const bool cloneState) const = 0;
 
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;

@@ -6,6 +6,8 @@
 
 using namespace cnn::examples::complex_learning;
 
+// TODO: Deny all move constructors and operators=.
+
 int main(int argc, char** argv)
 {
   IFactory<float>::Uptr factory = std::make_unique<Factory<float>>();

@@ -31,6 +31,7 @@ namespace cnn
 
         void Process() override;
 
+        // The result must not be nullptr.
         typename typename INetwork2D<T>::Uptr Clone(const bool cloneState) const override;
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
@@ -121,6 +122,7 @@ namespace cnn
         PerceptronNetwork->Process();
       }
 
+      // The result must not be nullptr.
       template <typename T>
       typename INetwork2D<T>::Uptr Network2D<T>::Clone(const bool cloneState) const
       {

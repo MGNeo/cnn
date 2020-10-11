@@ -59,6 +59,7 @@ namespace cnn
         void ClearFilters();
         void ClearOutputs();
 
+        // The result must not be nullptr.
         typename ILayer2D<T>::Uptr Clone(const bool cloneState) const override;
 
         Layer2D(const Layer2D<T>& layer,
@@ -234,20 +235,24 @@ namespace cnn
       template <typename T>
       const IMap2D<T>& Layer2D<T>::GetInput(const size_t index) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= InputCount)
         {
           throw std::range_error("cnn::engine::convolution::Layer2D::GetInput() const, index >= InputCount.");
         }
+#endif
         return *(Inputs[index]);
       }
 
       template <typename T>
       IMap2D<T>& Layer2D<T>::GetInput(const size_t index)
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= InputCount)
         {
           throw std::range_error("cnn::engine::convolution::Layer2D::GetInput(), index >= InputCount.");
         }
+#endif
         return *(Inputs[index]);
       }
 
@@ -272,20 +277,24 @@ namespace cnn
       template <typename T>
       const IFilter2D<T>& Layer2D<T>::GetFilter(const size_t index) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= FilterCount)
         {
           throw std::range_error("cnn::engine::convolution::Layer2D::GetFilter() const, index >= FilterCount.");
         }
+#endif
         return *(Filters[index]);
       }
 
       template <typename T>
       IFilter2D<T>& Layer2D<T>::GetFilter(const size_t index)
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= FilterCount)
         {
           throw std::range_error("cnn::engine::convolution::Layer2D::GetFilter(), index >= FilterCount.");
         }
+#endif
         return *(Filters[index]);
       }
 
@@ -310,20 +319,24 @@ namespace cnn
       template <typename T>
       const IMap2D<T>& Layer2D<T>::GetOutput(const size_t index) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= OutputCount)
         {
           throw std::range_error("cnn::engine::convolution::Layer2D::GetOutput() const, index >= OutputCount.");
         }
+#endif
         return *(Outputs[index]);
       }
 
       template <typename T>
       IMap2D<T>& Layer2D<T>::GetOutput(const size_t index)
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= OutputCount)
         {
           throw std::range_error("std::engine::convolution::Layer2D::GetOutput(), index >= OutputCount.");
         }
+#endif
         return *(Outputs[index]);
       }
 
@@ -397,6 +410,7 @@ namespace cnn
         }
       }
 
+      // The result must not be nullptr.
       template <typename T>
       typename ILayer2D<T>::Uptr Layer2D<T>::Clone(const bool cloneState) const
       {

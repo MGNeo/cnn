@@ -17,6 +17,7 @@ namespace cnn
 
         T Use(const T value) const override;
 
+        // The result must not be nullptr.
         typename IActivationFunction<T>::Uptr Clone() const override;
 
       };
@@ -27,6 +28,7 @@ namespace cnn
         return atan(value);
       }
 
+      // The result must not be nullptr.
       template <typename T>
       typename IActivationFunction<T>::Uptr ActivationFunction<T>::Clone() const
       {

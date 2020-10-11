@@ -39,6 +39,7 @@ namespace cnn
 
         virtual ~IFilter2D() = default;
 
+        // The result must not be nullptr.
         virtual typename IFilter2D<T>::Uptr Clone(const bool cloneState) const = 0;
 
         virtual void CrossFrom(const IFilter2D<T>& source1,

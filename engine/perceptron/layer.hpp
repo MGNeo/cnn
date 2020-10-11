@@ -39,6 +39,7 @@ namespace cnn
 
         void Process() override;
 
+        // The result must not be nullptr.
         typename ILayer<T>::Uptr Clone(const bool cloneState) const override;
 
         Layer(const Layer<T>& layer, const bool cloneState);
@@ -127,20 +128,24 @@ namespace cnn
       template <typename T>
       const common::INeuron<T>& Layer<T>::GetNeuron(const size_t index) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= NeuronCount)
         {
           throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron() const, index >= NeuronCount.");
         }
+#endif
         return *(Neurons[index]);
       }
 
       template <typename T>
       common::INeuron<T>& Layer<T>::GetNeuron(const size_t index)
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= NeuronCount)
         {
           throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron(), index >= NeuronCount.");
         }
+#endif
         return *(Neurons[index]);
       }
 
@@ -181,6 +186,7 @@ namespace cnn
         }
       }
 
+      // The result must not be nullptr.
       template <typename T>
       typename ILayer<T>::Uptr Layer<T>::Clone(const bool cloneState) const
       {

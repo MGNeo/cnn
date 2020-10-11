@@ -39,6 +39,7 @@ namespace cnn
 
         // TODO: Clear() family methods.
 
+        // The result must not be nullptr.
         virtual typename INetwork<T>::Uptr Clone(const bool cloneState) const = 0;
 
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;

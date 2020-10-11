@@ -28,6 +28,7 @@ namespace cnn
 
         virtual ~IMap() = default;
 
+        // The result must not be nullptr.
         virtual typename IMap<T>::Uptr Clone(const bool cloneState) const = 0;
 
       };

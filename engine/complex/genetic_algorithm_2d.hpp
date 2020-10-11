@@ -10,6 +10,8 @@
 #include "../common/binary_random_generator.hpp"
 #include "../common/mutagen.hpp"
 
+#include <iostream>// DEBUG
+
 namespace cnn
 {
   namespace engine
@@ -163,6 +165,8 @@ namespace cnn
           Cross(sourcePopulation, resultPopulation);
           Mutate(resultPopulation);
           Test(lessonLibrary, resultPopulation);
+          Select(sourcePopulation, resultPopulation);
+          std::cout << i << " ";// DEBUG
         }
 
         return {};
@@ -328,7 +332,7 @@ namespace cnn
       void GeneticAlgorithm2D<T>::Select(std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
                                          std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
       {
-        for (size_t s = 0; s < sourcePopulation; ++s)
+        for (size_t s = 0; s < sourcePopulation.size(); ++s)
         {
           sourcePopulation[s].swap(resultPopulation[s]);
         }

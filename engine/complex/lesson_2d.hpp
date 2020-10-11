@@ -93,20 +93,24 @@ namespace cnn
       template <typename T>
       const convolution::IMap2D<T>& Lesson2D<T>::GetInput(const size_t index) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= InputCount)
         {
           throw std::range_error("cnn::engine::complex::Lesson2D::GetInput() const, index >= InputCount.");
         }
+#endif
         return *(Inputs[index]);
       }
 
       template <typename T>
       convolution::IMap2D<T>& Lesson2D<T>::GetInput(const size_t index)
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= InputCount)
         {
           throw std::range_error("cnn::engine::complex::Lesson2D::GetInput(), index >= InputCount.");
         }
+#endif
         return *(Inputs[index]);
       }
 

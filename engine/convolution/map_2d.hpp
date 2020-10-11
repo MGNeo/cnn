@@ -31,8 +31,10 @@ namespace cnn
 
         void Clear() override;
 
+        // The result must not be nullptr.
         typename IMap2D<T>::Uptr Clone(const bool cloneState) const override;
 
+        // The result must not be nullptr.
         Map2D(const Map2D<T>& map, const bool cloneState);
 
       private:
@@ -96,6 +98,7 @@ namespace cnn
       template <typename T>
       size_t Map2D<T>::ToIndex(const size_t x, const size_t y) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (x >= Width)
         {
           throw std::range_error("cnn::engine::convolution::Map2D::ToIndex(), x >= Width.");
@@ -104,6 +107,7 @@ namespace cnn
         {
           throw std::range_error("cnn::engine::convolution::Map2D::ToIndex(), y >= Height.");
         }
+#endif
         return x + y * Width;
       }
 
@@ -113,6 +117,7 @@ namespace cnn
         Map_->Clear();
       }
 
+      // The result must not be nullptr.
       template <typename T>
       typename IMap2D<T>::Uptr Map2D<T>::Clone(const bool cloneState) const
       {

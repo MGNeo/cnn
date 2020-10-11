@@ -29,6 +29,7 @@ namespace cnn
 
         void Clear() override;
 
+        // The result must not be nullptr.
         typename IMap<T>::Uptr Clone(const bool cloneState) const override;
 
         Map(const Map<T>& map, const bool cloneState);
@@ -62,20 +63,24 @@ namespace cnn
       template <typename T>
       T Map<T>::GetValue(const size_t index) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= ValueCount)
         {
           throw std::range_error("cnn::engine::common::Map::GetValue(), index >= ValueCount.");
         }
+#endif
         return Values[index];
       }
       
       template <typename T>
       void Map<T>::SetValue(const size_t index, const T value)
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= ValueCount)
         {
           throw std::range_error("cnn::engine::common::Map::SetValue(), index >= ValueCount.");
         }
+#endif
         Values[index] = value;
       }
 
@@ -88,6 +93,7 @@ namespace cnn
         }
       }
 
+      // The result must not be nullptr.
       template <typename T>
       typename IMap<T>::Uptr Map<T>::Clone(const bool cloneState) const
       {

@@ -42,6 +42,7 @@ namespace cnn
 
         virtual ~INeuron() = default;
 
+        // The result must not be nullptr.
         virtual typename INeuron<T>::Uptr Clone(const bool cloneState) const = 0;
 
         virtual void FillWeights(IValueGenerator<T>& valueGenerator) = 0;

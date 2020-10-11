@@ -36,6 +36,7 @@ namespace cnn
         void ClearWeight() override;
         void ClearOutput() override;
 
+        // The result must not be nullptr.
         typename IFilter2D<T>::Uptr Clone(const bool cloneState) const override;
 
         Filter2D(const Filter2D<T>& filter2D, const bool cloneState);
@@ -107,20 +108,24 @@ namespace cnn
       template <typename T>
       ICore2D<T>& Filter2D<T>::GetCore(const size_t index)
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= CoreCount)
         {
           throw std::range_error("cnn::engine::convolution::Filter2D::GetCore(), index >= CoreCount.");
         }
+#endif
         return *(Cores[index]);
       }
 
       template <typename T>
       const ICore2D<T>& Filter2D<T>::GetCore(const size_t index) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= CoreCount)
         {
           throw std::range_error("cnn::engine::convolution::Filter2D::GetCore() const, index >= CoreCount.");
         }
+#endif
         return *(Cores[index]);
       }
 
@@ -162,6 +167,7 @@ namespace cnn
         }
       }
 
+      // The result must not be nullptr.
       template <typename T>
       typename IFilter2D<T>::Uptr Filter2D<T>::Clone(const bool cloneState) const
       {

@@ -126,10 +126,10 @@ namespace cnn
       template <typename T>
       typename engine::complex::INetwork2D<T>::Uptr Factory<T>::Network() const
       {
-        auto convolutionNetwork = std::make_unique<engine::convolution::Network2D<T>>(InputWidth, InputHeight, InputCount, 4, 4, 8);
-        convolutionNetwork->PushBack(8, 8, 16);
-        convolutionNetwork->PushBack(16, 16, 32);
-        convolutionNetwork->PushBack(7, 7, 100);
+        auto convolutionNetwork = std::make_unique<engine::convolution::Network2D<T>>(InputWidth, InputHeight, InputCount, 3, 3, 3);
+        convolutionNetwork->PushBack(4, 4, 4);
+        convolutionNetwork->PushBack(5, 5, 5);
+        convolutionNetwork->PushBack(23, 23, 4);
 
         auto perceptronNetwork = std::make_unique<engine::perceptron::Network<T>>(convolutionNetwork->GetLastLayer().GetOutputCount(), 8);
         perceptronNetwork->PushBack(15);

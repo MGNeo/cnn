@@ -39,6 +39,7 @@ namespace cnn
         void ClearWeights() override;
         void ClearOutput() override;
 
+        // The result must not be nullptr.
         typename INeuron<T>::Uptr Clone(const bool cloneState) const override;
 
         Neuron(const Neuron<T>& neuron, const bool cloneState);
@@ -63,6 +64,7 @@ namespace cnn
 
         T Output;
 
+        // ActivationFunction_ must not be nullptr.
         typename IActivationFunction<T>::Uptr ActivationFunction_;
 
       };
@@ -93,40 +95,48 @@ namespace cnn
       template <typename T>
       T Neuron<T>::GetInput(const size_t index) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= InputCount)
         {
           throw std::range_error("cnn::engine::common::Neuron::GetInput(), index >= InputCount.");
         }
+#endif
         return Inputs[index];
       }
 
       template <typename T>
       void Neuron<T>::SetInput(const size_t index, const T value)
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= InputCount)
         {
           throw std::range_error("cnn::engine::common::Neuron::SetInput(), index >= InputCount.");
         }
+#endif
         Inputs[index] = value;
       }
 
       template <typename T>
       T Neuron<T>::GetWeight(const size_t index) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= InputCount)
         {
           throw std::range_error("cnn::engine::common::Neuron::GetWeight(), index >= InputCount.");
         }
+#endif
         return Weights[index];
       }
 
       template <typename T>
       void Neuron<T>::SetWeight(const size_t index, const T value)
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= InputCount)
         {
           throw std::range_error("cnn::engine::common::Neuron::SetWeight(), index >= InputCount.");
         }
+#endif
         Weights[index] = value;
       }
 
@@ -138,7 +148,8 @@ namespace cnn
         {
           Output += Inputs[i] * Weights[i];
         }
-        // TODO: Add activation function.
+        // ActivationFunction_ must not be nullptr.
+        Output = ActivationFunction_->Use(Output);
       }
 
       template <typename T>
@@ -171,6 +182,7 @@ namespace cnn
         Output = 0;
       }
 
+      // The result must not be nullptr.
       template <typename T>
       typename INeuron<T>::Uptr Neuron<T>::Clone(const bool cloneState) const
       {
@@ -182,7 +194,8 @@ namespace cnn
         :
         InputCount{ neuron.GetInputCount() },
         Inputs{ std::make_unique<T[]>(InputCount) },
-        Weights{ std::make_unique<T[]>(InputCount) }
+        Weights{ std::make_unique<T[]>(InputCount) },
+        ActivationFunction_{ neuron.GetActivationFunction().Clone() }
       {
         if (cloneState == true)
         {
@@ -244,6 +257,7 @@ namespace cnn
         return *ActivationFunction_;
       }
 
+      // The result must not be nullptr.
       template <typename T>
       void Neuron<T>::SetActivationFunction(const IActivationFunction<T>& activationFunction)
       {

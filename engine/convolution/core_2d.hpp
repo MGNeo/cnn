@@ -39,6 +39,7 @@ namespace cnn
         void ClearWeights() override;
         void ClearOutput() override;
 
+        // The result must not be nullptr.
         typename ICore2D<T>::Uptr Clone(const bool cloneState) const override;
 
         Core2D(const Core2D<T>& core2D, const bool cloneState);
@@ -143,6 +144,7 @@ namespace cnn
       template <typename T>
       size_t Core2D<T>::ToIndex(const size_t x, const size_t y) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (x >= Width)
         {
           throw std::range_error("cnn::engine::convolution::Core2D::ToIndex(), x >= Width.");
@@ -151,6 +153,7 @@ namespace cnn
         {
           throw std::range_error("cnn::engine::convolution::Core2D::ToIndex(), y >= Height.");
         }
+#endif
         return x + y * Width;;
       }
 
@@ -172,12 +175,14 @@ namespace cnn
         Neuron_->ClearOutput();
       }
 
+      // The result must not be nullptr.
       template <typename T>
       typename ICore2D<T>::Uptr Core2D<T>::Clone(const bool cloneState) const
       {
         return std::make_unique<Core2D<T>>(*this, cloneState);
       }
 
+      // The result must not be nullptr.
       template <typename T>
       Core2D<T>::Core2D(const Core2D<T>& core2D, const bool cloneState)
         :
@@ -218,6 +223,9 @@ namespace cnn
             throw std::invalid_argument("cnn::engine::convolution::Core2D::CrossFrom(), GetHeight() != source2.GetHeight().");
           }
         }
+
+        // TODO: Perhaps, we must use Neuron_ directly.
+        // But it will be bad for abstractions.
         for (size_t x = 0; x < GetWidth(); ++x)
         {
           for (size_t y = 0; y < GetHeight(); ++y)

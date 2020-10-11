@@ -124,20 +124,24 @@ namespace cnn
       template <typename T>
       const ILesson2D<T>& Lesson2DLibrary<T>::GetLesson(const size_t index) const
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= Lessons.size())
         {
           throw std::range_error("cnn::engine::complex::Lesson2DLibrary::GetLesson() const, index >= Lessons.size().");
         }
+#endif
         return *(Lessons[index]);
       }
 
       template <typename T>
       ILesson2D<T>& Lesson2DLibrary<T>::GetLesson(const size_t index)
       {
+#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= Lessons.size())
         {
           throw std::range_error("cnn::engine::complex::Lesson2DLibrary::GetLesson(), index >= Lessons.size().");
         }
+#endif
         return *(Lessons[index]);
       }
 
