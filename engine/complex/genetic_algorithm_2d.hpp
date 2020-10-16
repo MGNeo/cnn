@@ -10,6 +10,9 @@
 #include "../common/value_generator.hpp"
 #include "../common/binary_random_generator.hpp"
 #include "../common/mutagen.hpp"
+#include "test_task_2d.hpp"
+#include "test_task_2d_pool.hpp"
+#include "test_task_2d_thread_pool.hpp"
 
 #include <iostream>// DEBUG
 #include <list>
@@ -268,13 +271,30 @@ namespace cnn
       void GeneticAlgorithm2D<T>::Test(const ILesson2DLibrary<T>& lessonLibrary,
                                        std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
       {
-        // TODO: Write TestTask2DPool.
-        // TODO: Write TestTask2DThread.
+        auto taskPool = std::make_unique<TestTask2DPool<T>>();
+        for (const auto& network : resultPopulation)
+        {
+          auto task = std::make_unique<TestTask2D<T>>(lessonLibrary, *network);
+          taskPool->Push(std::move(task));
+        }
 
-        // Fill the task pool.
-        // Run the test threads;
-        // Sort resultPopulations.
+        auto threadPool = std::make_unique<TestTask2DThreadPool<T>>(*taskPool);
 
+        while (true)
+        {
+          if (threadPool->IsWrong() == true)
+          {
+            throw std::runtime_error("cnn::engine::complex::GeneticAlgorithm2D::Test(), threadPool->IsWrong() == true.");
+          }
+          if (taskPool->IsEmpty() == true)
+          {
+            break;
+          }
+          std::this_thread::yield();
+        }
+
+        // TODO: Return test results from test-thread to this thread.
+        // ...
       }
 
       template <typename T>

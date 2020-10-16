@@ -37,10 +37,16 @@
     <ClInclude Include="complex\i_lesson_2d.hpp" />
     <ClInclude Include="complex\i_lesson_2d_library.hpp" />
     <ClInclude Include="complex\i_network_2d.hpp" />
+    <ClInclude Include="complex\i_test_task_2d_pool.hpp" />
+    <ClInclude Include="complex\i_test_task_2d_thread.hpp" />
     <ClInclude Include="complex\lesson_2d.hpp" />
     <ClInclude Include="complex\lesson_2d_library.hpp" />
     <ClInclude Include="complex\network_2d.hpp" />
     <ClInclude Include="complex\test_task_2d.hpp" />
+    <ClInclude Include="complex\test_task_2d_pool.hpp" />
+    <ClInclude Include="complex\test_task_2d_thread.hpp" />
+    <ClInclude Include="complex\i_test_task_2d_thread_pool.hpp" />
+    <ClInclude Include="complex\test_task_2d_thread_pool.hpp" />
     <ClInclude Include="convolution\layer_2d.hpp" />
     <ClInclude Include="convolution\core_2d.hpp" />
     <ClInclude Include="convolution\filter_2d.hpp" />
