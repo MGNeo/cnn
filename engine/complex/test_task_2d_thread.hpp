@@ -21,94 +21,55 @@ namespace cnn
 
       public:
 
-        TestTask2DThread(typename ITestTask2DPool<T>& taskPool,
-                         std::atomic<bool>& wrongFlag);
+        TestTask2DThread(typename ITestTask2DPool<T>& taskPool);
+
+        void Wait() override;
 
         ~TestTask2DThread();
 
       private:
-        
-        std::atomic<bool> StopCommand;
+
         ITestTask2DPool<T>& TaskPool;
-        std::atomic<bool>& WrongFlag;
+        std::atomic<bool> StopCommand;
         std::future<void> Future;
 
-
         void Thread() const;
-        
+
       };
 
       template <typename T>
-      TestTask2DThread<T>::TestTask2DThread(typename ITestTask2DPool<T>& taskPool,
-                                            std::atomic<bool>& wrongFlag)
+      TestTask2DThread<T>::TestTask2DThread(typename ITestTask2DPool<T>& taskPool)
         :
-        StopCommand{ false },
         TaskPool{ taskPool },
-        WrongFlag{ wrongFlag },
+        StopCommand{ true },
         Future{ std::async(std::launch::async, &TestTask2DThread::Thread, this) }
       {
       }
 
       template <typename T>
-      void TestTask2DThread<T>::Thread() const
+      void TestTask2DThread<T>::Wait()
       {
-        // This exception processing is not good, but others is worse.
-        std::string exceptionDescription;
-        try
-        {
-          while (StopCommand.load() == false)
-          {
-            auto task = TaskPool.Pop();
-            if (task == nullptr)
-            {
-              break;
-            }
-            task->Execute();
-          }
-        }
-        catch (std::exception& e)
-        {
-          exceptionDescription = "cnn::engine::complex::TestTask2DThread::Thread(), " + std::string(e.what());
-        }
-        catch (...)
-        {
-          exceptionDescription = "cnn::engine::complex::TestTask2DThread::Thread(), unknown exception has been caught.";
-        }
-        // If an exception will be thrown from here... then rest in peace.
-        if (exceptionDescription.size() != 0)
-        {
-          static std::mutex mutex;
-          std::lock_guard lock{ mutex };
-          std::cerr << exceptionDescription << std::endl;
-          WrongFlag.store(true, std::memory_order_relaxed);
-        }
+        Future.get();
       }
 
       template <typename T>
       TestTask2DThread<T>::~TestTask2DThread()
       {
         StopCommand.store(true);
-        // If the future has an exception we must softly notify the user.
-        std::string exceptionDescription;
-        try
+      }
+
+      template <typename T>
+      void TestTask2DThread<T>::Thread() const
+      {
+        while (StopCommand.load() == false)
         {
-          Future.get();
-        }
-        catch (std::exception& e)
-        {
-          exceptionDescription = "cnn::engine::complex::TestTask2DThread::~TestTask2DThread(), " + std::string(e.what());
-        }
-        catch (...)
-        {
-          exceptionDescription = "cnn::engine::complex::TestTask2DThread::~TestTask2DThread(), unknown exception has been caught.";
-        }
-        // If an exception will be thrown from here... then rest in peace.
-        if (exceptionDescription.size() != 0)
-        {
-          static std::mutex mutex;
-          std::lock_guard lock{ mutex };
-          std::cerr << exceptionDescription << std::endl;
-          WrongFlag.store(true, std::memory_order_relaxed);
+          auto task = TaskPool.Pop();
+          if (task != nullptr)
+          {
+            task->Execute();
+          } else {
+            return;
+          }
         }
       }
     }

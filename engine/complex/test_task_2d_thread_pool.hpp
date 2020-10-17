@@ -5,6 +5,7 @@
 
 #include <list>
 #include <thread>
+#include <sstream>
 
 namespace cnn
 {
@@ -22,12 +23,9 @@ namespace cnn
 
         TestTask2DThreadPool(ITestTask2DPool<T>& taskPool);
 
-        bool IsWrong() const override;
+        void Wait() override;
 
       private:
-
-        // It can be changed only from any thread from Threads from false to true, otherwise the behavior is undefined.
-        std::atomic<bool> WrongFlag;
 
         std::list<typename ITestTask2DThread<T>::Uptr> Threads;
 
@@ -39,15 +37,34 @@ namespace cnn
         const int count = (std::thread::hardware_concurrency() > 0) ? std::thread::hardware_concurrency() : 1;
         for (int i = 0; i < count; ++i)
         {
-          auto thread = std::make_unique<TestTask2DThread<T>>(taskPool, WrongFlag);
+          auto thread = std::make_unique<TestTask2DThread<T>>(taskPool);
           Threads.push_front(std::move(thread));
         }
       }
 
       template <typename T>
-      bool TestTask2DThreadPool<T>::IsWrong() const
+      void TestTask2DThreadPool<T>::Wait()
       {
-        return WrongFlag.load(std::memory_order_relaxed);
+        std::stringstream exceptionDescriptions;
+        for (auto& thread : Threads)
+        {
+          try
+          {
+            thread->Wait();
+          }
+          catch (std::exception& e)
+          {
+            exceptionDescriptions << "cnn::engine::complex::TestTask2DThreadPool::Wait(), " << e.what() << std::endl;
+          }
+          catch (...)
+          {
+            exceptionDescriptions << "cnn::engine::Complex::TestTask2DThreadPool::Wait(), unknown exception has been caught." << std::endl;
+          }
+        }
+        if (exceptionDescriptions.str().size() != 0)
+        {
+          throw std::runtime_error(exceptionDescriptions.str());
+        }
       }
     }
   }

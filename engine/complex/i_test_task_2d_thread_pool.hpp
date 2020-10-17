@@ -18,8 +18,8 @@ namespace cnn
 
         using Uptr = std::unique_ptr<ITestTask2DThreadPool<T>>;
 
-        // It can be called from any thread any time.
-        virtual bool IsWrong() const = 0;
+        // It can be called only once time, otherwise the behavior is undefined.
+        virtual void Wait() = 0;
 
         virtual ~ITestTask2DThreadPool() = default;
 

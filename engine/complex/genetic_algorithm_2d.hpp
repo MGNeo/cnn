@@ -280,21 +280,7 @@ namespace cnn
 
         auto threadPool = std::make_unique<TestTask2DThreadPool<T>>(*taskPool);
 
-        while (true)
-        {
-          if (threadPool->IsWrong() == true)
-          {
-            throw std::runtime_error("cnn::engine::complex::GeneticAlgorithm2D::Test(), threadPool->IsWrong() == true.");
-          }
-          if (taskPool->IsEmpty() == true)
-          {
-            break;
-          }
-          std::this_thread::yield();
-        }
-
-        // TODO: Return test results from test-thread to this thread.
-        // ...
+        threadPool->Wait();
       }
 
       template <typename T>

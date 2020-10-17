@@ -21,8 +21,9 @@ namespace cnn
       public:
 
         using Uptr = std::unique_ptr<ITestTask2DThread<T>>;
-
-        // The best interface is a interface which has nothing!
+        
+        // It can be called only once time, otherwise the behavior is undefined.
+        virtual void Wait() = 0;
 
         virtual ~ITestTask2DThread() = default;
 
