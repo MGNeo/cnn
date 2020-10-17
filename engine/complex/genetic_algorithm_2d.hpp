@@ -54,8 +54,8 @@ namespace cnn
 
       private:
 
-        static constexpr size_t MIN_POPULATION_SIZE = 10;
-        static constexpr size_t MIN_ITERATION_COUNT = 10;
+        static constexpr size_t MIN_POPULATION_SIZE = 3;
+        static constexpr size_t MIN_ITERATION_COUNT = 1;
 
         typename common::IValueGenerator<T>::Uptr ValueGenerator;
         typename common::IMutagen<T>::Uptr Mutagen;
@@ -159,22 +159,18 @@ namespace cnn
         std::vector<typename complex::INetwork2D<T>::Uptr> sourcePopulation;
         std::vector<typename complex::INetwork2D<T>::Uptr> resultPopulation;
 
-        std::cout << "Prepare..." << std::endl;// DEBUG
         Prepare(network, sourcePopulation, resultPopulation);
 
         for (size_t i = 0; i < GetIterationCount(); ++i)
         {
-          std::cout << "Cross..." << std::endl;// DEBUG
           Cross(sourcePopulation, resultPopulation);
-          std::cout << "Mutate..." << std::endl;// DEBUG
           Mutate(resultPopulation);
-          std::cout << "Test..." << std::endl;// DEBUG
-          Test(lessonLibrary, resultPopulation);// This operation is the heaviest, it must be multithreaded in the first place (and without any synchronisations).
-          std::cout << "Select..." << std::endl;// DEBUG
+          Test(lessonLibrary, resultPopulation);
           Select(sourcePopulation, resultPopulation);
+          std::cout << std::endl;// DEBUG
         }
 
-        return {};
+        return std::move(sourcePopulation[0]);
       }
 
       template <typename T>
@@ -217,10 +213,10 @@ namespace cnn
         resultPopulation.resize(resultPopulationSize);
 
         sourcePopulation[0] = sourceNetwork.Clone(true);
-        for (auto& network : sourcePopulation)
+        for (size_t n = 1; n < sourcePopulation.size(); ++n)
         {
-          network = sourceNetwork.Clone(false);
-          network->FillWeights(*ValueGenerator);
+          sourcePopulation[n] = sourceNetwork.Clone(false);
+          sourcePopulation[n]->FillWeights(*ValueGenerator);
         }
         for (auto& network : resultPopulation)
         {
@@ -295,6 +291,7 @@ namespace cnn
       void GeneticAlgorithm2D<T>::Select(std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
                                          std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
       {
+        // TODO: Improve this algorithm.
         for (size_t s = 0; s < sourcePopulation.size(); ++s)
         {
           sourcePopulation[s].swap(resultPopulation[s]);

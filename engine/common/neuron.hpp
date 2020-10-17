@@ -146,6 +146,8 @@ namespace cnn
         Output = 0;
         for (size_t i = 0; i < InputCount; ++i)
         {
+          auto a = Inputs[i];
+          auto b = Weights[i];
           Output += Inputs[i] * Weights[i];
         }
         // ActivationFunction_ must not be nullptr.

@@ -129,13 +129,24 @@ namespace cnn
       template <typename T>
       typename engine::complex::INetwork2D<T>::Uptr Factory<T>::Network() const
       {
-        auto convolutionNetwork = std::make_unique<engine::convolution::Network2D<T>>(InputWidth, InputHeight, InputCount, 4, 4, 5);
-        convolutionNetwork->PushBack(4, 4, 5);
-        convolutionNetwork->PushBack(4, 4, 5);
-        convolutionNetwork->PushBack(4, 4, 5);
+        auto convolutionNetwork = std::make_unique<engine::convolution::Network2D<T>>(InputWidth, InputHeight, InputCount, 3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(3, 3, 10);
+        convolutionNetwork->PushBack(2, 2, 10);
 
-        auto perceptronNetwork = std::make_unique<engine::perceptron::Network<T>>(convolutionNetwork->GetLastLayer().GetOutputValueCount(), 8);
-        perceptronNetwork->PushBack(15);
+        auto perceptronNetwork = std::make_unique<engine::perceptron::Network<T>>(convolutionNetwork->GetLastLayer().GetOutputValueCount(), 15);
         perceptronNetwork->PushBack(OutputCount);
 
         auto complexNetwork = std::make_unique<engine::complex::Network2D<T>>(std::move(convolutionNetwork), std::move(perceptronNetwork));
@@ -149,19 +160,22 @@ namespace cnn
       {
         auto algorithm = std::make_unique<engine::complex::GeneticAlgorithm2D<T>>();
 
+        algorithm->SetIterationCount(1);
+        algorithm->SetPopulationSize(3);
+
         // Configure the value generator which fills the weights of the networks with noise.
         auto valueGenerator = algorithm->GetValueGenerator().Clone();
-        valueGenerator->SetMinValue(-1000);
-        valueGenerator->SetMaxValue(+1000);
+        valueGenerator->SetMinValue(static_cast<T>(-10L));
+        valueGenerator->SetMaxValue(static_cast<T>(+10L));
         algorithm->SetValueGenerator(*valueGenerator);
 
         // Configure the mutagen which mutates the weights of the networks.
         auto mutagen = algorithm->GetMutagen().Clone();
-        mutagen->SetMinResult(static_cast<T>(-1000L));
-        mutagen->SetMaxResult(static_cast<T>(+1000L));
+        mutagen->SetMinResult(static_cast<T>(-10L));
+        mutagen->SetMaxResult(static_cast<T>(+10L));
         mutagen->SetMutationProbability(static_cast<T>(0.00001L));
-        mutagen->SetMutationForce(static_cast<T>(100L));
-        mutagen->SetVariabilityForce(static_cast<T>(0.001L));
+        mutagen->SetMutationForce(static_cast<T>(10L));
+        mutagen->SetVariabilityForce(static_cast<T>(0.0001L));
         algorithm->SetMutagen(*mutagen);
 
         return std::move(algorithm);

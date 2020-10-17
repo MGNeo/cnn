@@ -111,6 +111,7 @@ namespace cnn
         const auto& perceptronNetwork = Network.GetPerceptronNetwork();
         const auto& perceptronOutput = perceptronNetwork.GetLastLayer().GetOutput();
         const auto& lessonOutput = Library.GetLesson(lessonNumber).GetOutput();
+        T maxError = 0;
         for (size_t o = 0; o < perceptronOutput.GetValueCount(); ++o)
         {
           error += std::abs(perceptronOutput.GetValue(o) - lessonOutput.GetValue(o));

@@ -353,11 +353,11 @@ namespace cnn
           {
             const auto& input = *(Inputs[i]);
             auto& core = filter.GetCore(i);
-            core.ClearInputs();
             for (size_t ox = 0; ox < OutputWidth; ++ox)
             {
               for (size_t oy = 0; oy < OutputHeight; ++oy)
               {
+                core.ClearInputs();
                 for (size_t cx = 0; cx < FilterWidth; ++cx)
                 {
                   for (size_t cy = 0; cy < FilterHeight; ++cy)

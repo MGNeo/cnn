@@ -161,7 +161,7 @@ namespace cnn
         // Mutation.
         {
           std::uniform_real_distribution<T> urd{ 0, 1 };
-          if (urd(DRE) >= MutationProbability)
+          if (urd(DRE) <= MutationProbability)
           {
             std::uniform_real_distribution<T> urd{ -MutationForce, +MutationForce };
             result += urd(DRE);

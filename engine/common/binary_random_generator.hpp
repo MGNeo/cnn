@@ -37,7 +37,7 @@ namespace cnn
         :
         DRE{ static_cast<unsigned int>(time(NULL)) + static_cast<unsigned int>(clock()) + seed },
         UID{ 0, UINT64_MAX },
-        Pos{ 1 },
+        Pos{ 64 },
         Values{}
       {
       }
