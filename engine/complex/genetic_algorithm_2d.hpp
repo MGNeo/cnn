@@ -86,7 +86,7 @@ namespace cnn
       template <typename T>
       GeneticAlgorithm2D<T>::GeneticAlgorithm2D()
         :
-        ValueGenerator{ std::make_unique<common::ValueGenerator<T>>(-1, 1) },
+        ValueGenerator{ std::make_unique<common::ValueGenerator<T>>() },
         Mutagen{ std::make_unique<common::Mutagen<T>>() },
 
         PopulationSize{ MIN_POPULATION_SIZE },

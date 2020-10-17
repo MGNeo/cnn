@@ -22,7 +22,13 @@ namespace cnn
 
         using Uptr = std::unique_ptr<ValueGenerator<T>>;
 
-        ValueGenerator(const T minValue, const T maxValue);// TODO: We must not use the parameters in the constructor.
+        ValueGenerator();// TODO: We must not use the parameters in the constructor.
+
+        T GetMinValue() const;
+        void SetMinValue(const T minValue);
+
+        T GetMaxValue() const;
+        void SetMaxValue(const T maxValue);
 
         T Generate() override;
 
@@ -30,23 +36,59 @@ namespace cnn
 
       private:
         
-        std::uniform_real_distribution<T> UDR;
+        T MinValue;
+        T MaxValue;
+
         std::default_random_engine DRE;
 
       };
 
       template <typename T>
-      ValueGenerator<T>::ValueGenerator(const T minValue, const T maxValue)
+      ValueGenerator<T>::ValueGenerator()
         :
-        UDR{ minValue, maxValue },
+        MinValue{ static_cast<T>(-1L) },
+        MaxValue{ static_cast<T>(+1L) },
         DRE{ static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count()) }
       {
       }
 
       template <typename T>
+      T ValueGenerator<T>::GetMinValue() const
+      {
+        return MinValue;
+      }
+
+      template <typename T>
+      void ValueGenerator<T>::SetMinValue(const T minValue)
+      {
+        if (minValue >= MaxValue)
+        {
+          throw std::invalid_argument("cnn::engine::common::ValueGenerator::SetMinValue(), minValue >= MaxValue.");
+        }
+        MinValue = minValue;
+      }
+
+      template <typename T>
+      T ValueGenerator<T>::GetMaxValue() const
+      {
+        return MaxValue;
+      }
+
+      template <typename T>
+      void ValueGenerator<T>::SetMaxValue(const T maxValue)
+      {
+        if (maxValue <= MinValue)
+        {
+          throw std::invalid_argument("cnn::engine::common::ValueGenerator::SetMaxValue(), maxValue <= MinValue.");
+        }
+        MaxValue = maxValue;
+      }
+
+      template <typename T>
       T ValueGenerator<T>::Generate()
       {
-        return UDR(DRE);
+        std::uniform_real_distribution<T> URD{ MinValue, MaxValue };
+        return URD(DRE);
       }
 
       template <typename T>
