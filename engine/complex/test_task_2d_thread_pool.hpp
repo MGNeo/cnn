@@ -1,11 +1,12 @@
 #pragma once
 
 #include "i_test_task_2d_thread_pool.hpp"
-#include "test_task_2d_thread.hpp"
 
 #include <list>
-#include <thread>
+#include <future>
 #include <sstream>
+#include <atomic>
+#include <thread>
 
 namespace cnn
 {
@@ -27,18 +28,34 @@ namespace cnn
 
       private:
 
-        std::list<typename ITestTask2DThread<T>::Uptr> Threads;
+        // This function is static because the function must not have access to Futures.
+        static void Thread(ITestTask2DPool<T>& taskPool, std::atomic<bool>& sharedStopCommand);
+
+        std::atomic<bool> StopCommand;
+
+        std::list<std::future<void>> Futures;
 
       };
 
       template <typename T>
       TestTask2DThreadPool<T>::TestTask2DThreadPool(ITestTask2DPool<T>& taskPool)
+        :
+        StopCommand{ false }
       {
-        const int count = (std::thread::hardware_concurrency() > 0) ? std::thread::hardware_concurrency() : 1;
-        for (int i = 0; i < count; ++i)
+        try
         {
-          auto thread = std::make_unique<TestTask2DThread<T>>(taskPool);
-          Threads.push_front(std::move(thread));
+          const int count = (std::thread::hardware_concurrency() > 0) ? std::thread::hardware_concurrency() : 1;
+          for (int i = 0; i < count; ++i)
+          {
+            std::future<void> future = std::async(std::launch::async, TestTask2DThreadPool<T>::Thread, std::ref(taskPool), std::ref(StopCommand));
+            Futures.push_back(std::move(future));
+          }
+        }
+        catch (...)
+        {
+          // If the constructor is failed then we must send stop signal all already started threads.
+          StopCommand.store(true);
+          throw;
         }
       }
 
@@ -46,11 +63,11 @@ namespace cnn
       void TestTask2DThreadPool<T>::Wait()
       {
         std::stringstream exceptionDescriptions;
-        for (auto& thread : Threads)
+        for (auto& future : Futures)
         {
           try
           {
-            thread->Wait();
+            future.get();
           }
           catch (std::exception& e)
           {
@@ -64,6 +81,30 @@ namespace cnn
         if (exceptionDescriptions.str().size() != 0)
         {
           throw std::runtime_error(exceptionDescriptions.str());
+        }
+      }
+
+      template <typename T>
+      void TestTask2DThreadPool<T>::Thread(ITestTask2DPool<T>& taskPool, std::atomic<bool>& sharedStopCommand)
+      {
+        try
+        {
+          while (sharedStopCommand.load() == false)
+          {
+            auto task = taskPool.Pop();
+            if (task != nullptr)
+            {
+              task->Execute();
+            } else {
+              break;
+            }
+          }
+        }
+        catch (...)
+        {
+          // If the thread is failed then we must send stop signal all threads.
+          sharedStopCommand.store(true);
+          throw;
         }
       }
     }

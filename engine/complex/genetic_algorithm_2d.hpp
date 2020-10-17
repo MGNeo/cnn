@@ -289,7 +289,6 @@ namespace cnn
           std::cout << sortedNode.first << " ";// DEBUG
           resultPopulation[i++].swap(resultPopulation[sortedNode.second]);
         }
-        std::cout << std::endl;// DEBUG
       }
 
       template <typename T>

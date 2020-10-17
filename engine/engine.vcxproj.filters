@@ -49,8 +49,6 @@
     <ClInclude Include="complex\test_task_2d.hpp" />
     <ClInclude Include="complex\i_test_task_2d_pool.hpp" />
     <ClInclude Include="complex\test_task_2d_pool.hpp" />
-    <ClInclude Include="complex\test_task_2d_thread.hpp" />
-    <ClInclude Include="complex\i_test_task_2d_thread.hpp" />
     <ClInclude Include="complex\i_test_task_2d_thread_pool.hpp" />
     <ClInclude Include="complex\test_task_2d_thread_pool.hpp" />
   </ItemGroup>

@@ -1,6 +1,8 @@
 #pragma once
 
-#include "i_test_task_2d_thread.hpp"
+#include <memory>
+#include <cstddef>
+#include <cstdint>
 
 namespace cnn
 {
