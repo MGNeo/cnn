@@ -37,10 +37,10 @@ namespace cnn
 
         GeneticAlgorithm2D();
 
-        typename common::IValueGenerator<T>::Uptr GetValueGenerator() const override;
+        const typename common::IValueGenerator<T>& GetValueGenerator() const override;
         void SetValueGenerator(const common::IValueGenerator<T>& valueGenerator) override;
 
-        typename common::IMutagen<T>::Uptr GetMutagen() const override;
+        const typename common::IMutagen<T>& GetMutagen() const override;
         void SetMutagen(const common::IMutagen<T>& mutagen) override;
 
         size_t GetPopulationSize() const override;
@@ -95,9 +95,9 @@ namespace cnn
       }
 
       template <typename T>
-      typename common::IValueGenerator<T>::Uptr GeneticAlgorithm2D<T>::GetValueGenerator() const
+      const typename common::IValueGenerator<T>& GeneticAlgorithm2D<T>::GetValueGenerator() const
       {
-        return ValueGenerator->Clone();
+        return *ValueGenerator;
       }
 
       template <typename T>
@@ -107,9 +107,9 @@ namespace cnn
       }
 
       template <typename T>
-      typename common::IMutagen<T>::Uptr GeneticAlgorithm2D<T>::GetMutagen() const
+      const typename common::IMutagen<T>& GeneticAlgorithm2D<T>::GetMutagen() const
       {
-        return Mutagen->Clone();
+        return *Mutagen;
       }
 
       template <typename T>

@@ -25,11 +25,11 @@ namespace cnn
         using Uptr = std::unique_ptr<IGeneticAlgorithm2D<T>>;
 
         // The value generator is used for filling the weights with noise.
-        virtual typename common::IValueGenerator<T>::Uptr GetValueGenerator() const = 0;
+        virtual const typename common::IValueGenerator<T>& GetValueGenerator() const = 0;
         virtual void SetValueGenerator(const common::IValueGenerator<T>& valueGenerator) = 0;
 
         // The mutagen is used for mutating the weights.
-        virtual typename common::IMutagen<T>::Uptr GetMutagen() const = 0;
+        virtual const typename common::IMutagen<T>& GetMutagen() const = 0;
         virtual void SetMutagen(const common::IMutagen<T>& mutagen) = 0;
 
         virtual size_t GetPopulationSize() const = 0;

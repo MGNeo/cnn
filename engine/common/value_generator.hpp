@@ -22,13 +22,13 @@ namespace cnn
 
         using Uptr = std::unique_ptr<ValueGenerator<T>>;
 
-        ValueGenerator();// TODO: We must not use the parameters in the constructor.
+        ValueGenerator();
 
-        T GetMinValue() const;
-        void SetMinValue(const T minValue);
+        T GetMinValue() const override;
+        void SetMinValue(const T minValue) override;
 
-        T GetMaxValue() const;
-        void SetMaxValue(const T maxValue);
+        T GetMaxValue() const override;
+        void SetMaxValue(const T maxValue) override;
 
         T Generate() override;
 

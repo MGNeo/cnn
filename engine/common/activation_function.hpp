@@ -25,7 +25,12 @@ namespace cnn
       template <typename T>
       T ActivationFunction<T>::Use(const T value) const
       {
-        return atan(value);
+        if (value > 0)
+        {
+          return sqrt(value);
+        } else {
+          return sqrt(-value);
+        }
       }
 
       // The result must not be nullptr.

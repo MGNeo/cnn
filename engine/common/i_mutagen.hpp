@@ -20,6 +20,21 @@ namespace cnn
 
         using Uptr = std::unique_ptr<IMutagen<T>>;
 
+        virtual T GetMinResult() const = 0;
+        virtual void SetMinResult(const T minResult) = 0;
+
+        virtual T GetMaxResult() const = 0;
+        virtual void SetMaxResult(const T maxResult) = 0;
+
+        virtual T GetMutationProbability() const = 0;
+        virtual void SetMutationProbability(const T mutationProbability) = 0;
+
+        virtual T GetMutationForce() const = 0;
+        virtual void SetMutationForce(const T mutationForce) = 0;
+
+        virtual T GetVariabilityForce() const = 0;
+        virtual void SetVariabilityForce(const T variabilityForce) = 0;
+
         virtual T Mutate(const T value) = 0;
 
         virtual typename IMutagen<T>::Uptr Clone() const = 0;

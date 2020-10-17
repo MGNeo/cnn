@@ -24,20 +24,20 @@ namespace cnn
 
         Mutagen();
 
-        T GetMinResult() const;
-        void SetMinResult(const T minResult);
+        T GetMinResult() const override;
+        void SetMinResult(const T minResult) override;
 
-        T GetMaxResult() const;
-        void SetMaxResult(const T maxResult);
+        T GetMaxResult() const override;
+        void SetMaxResult(const T maxResult) override;
         
-        T GetMutationProbability() const;
-        void SetMutationProbability(const T mutationProbability);
+        T GetMutationProbability() const override;
+        void SetMutationProbability(const T mutationProbability) override;
 
-        T GetMutationForce() const;
-        void SetMutationForce(const T mutationForce);
+        T GetMutationForce() const override;
+        void SetMutationForce(const T mutationForce) override;
 
-        T GetVariabilityForce() const;
-        void SetVariabilityForce(const T variabilityForce);
+        T GetVariabilityForce() const override;
+        void SetVariabilityForce(const T variabilityForce) override;
 
         T Mutate(const T value) override;
 

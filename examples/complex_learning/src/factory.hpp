@@ -129,12 +129,13 @@ namespace cnn
       template <typename T>
       typename engine::complex::INetwork2D<T>::Uptr Factory<T>::Network() const
       {
-        auto convolutionNetwork = std::make_unique<engine::convolution::Network2D<T>>(InputWidth, InputHeight, InputCount, 3, 3, 3);
-        convolutionNetwork->PushBack(4, 4, 4);
-        convolutionNetwork->PushBack(5, 5, 5);
-        convolutionNetwork->PushBack(23, 23, 4);
+        auto convolutionNetwork = std::make_unique<engine::convolution::Network2D<T>>(InputWidth, InputHeight, InputCount, 5, 5, 30);
+        convolutionNetwork->PushBack(4, 4, 10);
+        convolutionNetwork->PushBack(5, 5, 10);
+        convolutionNetwork->PushBack(10, 10, 10);
+        //convolutionNetwork->PushBack(12, 12, 10);
 
-        auto perceptronNetwork = std::make_unique<engine::perceptron::Network<T>>(convolutionNetwork->GetLastLayer().GetOutputCount(), 8);
+        auto perceptronNetwork = std::make_unique<engine::perceptron::Network<T>>(convolutionNetwork->GetLastLayer().GetOutputValueCount(), 8);
         perceptronNetwork->PushBack(15);
         perceptronNetwork->PushBack(OutputCount);
 
@@ -149,7 +150,20 @@ namespace cnn
       {
         auto algorithm = std::make_unique<engine::complex::GeneticAlgorithm2D<T>>();
 
-        // ...
+        // Configure the value generator which fills the weights of the networks with noise.
+        auto valueGenerator = algorithm->GetValueGenerator().Clone();
+        valueGenerator->SetMinValue(-1000);
+        valueGenerator->SetMaxValue(+1000);
+        algorithm->SetValueGenerator(*valueGenerator);
+
+        // Configure the mutagen which mutates the weights of the networks.
+        auto mutagen = algorithm->GetMutagen().Clone();
+        mutagen->SetMinResult(static_cast<T>(-1000L));
+        mutagen->SetMaxResult(static_cast<T>(+1000L));
+        mutagen->SetMutationProbability(static_cast<T>(0.00001L));
+        mutagen->SetMutationForce(static_cast<T>(100L));
+        mutagen->SetVariabilityForce(static_cast<T>(0.001L));
+        algorithm->SetMutagen(*mutagen);
 
         return std::move(algorithm);
       }
