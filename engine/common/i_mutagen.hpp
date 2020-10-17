@@ -22,6 +22,8 @@ namespace cnn
 
         virtual T Mutate(const T value) = 0;
 
+        virtual typename IMutagen<T>::Uptr Clone() const = 0;
+
         virtual ~IMutagen() = default;
 
       };

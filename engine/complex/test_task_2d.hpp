@@ -19,7 +19,8 @@ namespace cnn
       public:
 
         TestTask2D(const ILesson2DLibrary<T>& library,
-                   INetwork2D<T>& network);
+                   INetwork2D<T>& network,
+                   T& error);
 
         void Execute() override;
 
@@ -27,6 +28,7 @@ namespace cnn
 
         INetwork2D<T>& Network;
         const ILesson2DLibrary<T>& Library;
+        T& Error;
 
         void ProcessConvolutionNetwork(const size_t lessonNumber);
         void ProcessPerceptronNetwork(const size_t lessonNumber);
@@ -36,10 +38,12 @@ namespace cnn
 
       template <typename T>
       TestTask2D<T>::TestTask2D(const ILesson2DLibrary<T>& library,
-                                INetwork2D<T>& network)
+                                INetwork2D<T>& network,
+                                T& error)
         :
         Library{ library },
-        Network{ network }
+        Network{ network },
+        Error{ error }
       {
       }
 
@@ -53,7 +57,7 @@ namespace cnn
           ProcessPerceptronNetwork(l);
           totalError += CalculateError(l);
         }
-        // ...
+        Error = totalError;
       }
 
       template <typename T>

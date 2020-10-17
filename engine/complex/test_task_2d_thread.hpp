@@ -41,7 +41,7 @@ namespace cnn
       TestTask2DThread<T>::TestTask2DThread(typename ITestTask2DPool<T>& taskPool)
         :
         TaskPool{ taskPool },
-        StopCommand{ true },
+        StopCommand{ false },
         Future{ std::async(std::launch::async, &TestTask2DThread::Thread, this) }
       {
       }

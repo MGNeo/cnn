@@ -149,11 +149,7 @@ namespace cnn
       {
         auto algorithm = std::make_unique<engine::complex::GeneticAlgorithm2D<T>>();
 
-        algorithm->SetMinWeightValue(0);
-        algorithm->SetMaxWeightValue(1);
-
-        algorithm->SetPopulationSize(10);
-        algorithm->SetIterationCount(10);
+        // ...
 
         return std::move(algorithm);
       }

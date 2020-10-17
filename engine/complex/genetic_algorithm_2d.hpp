@@ -13,6 +13,8 @@
 #include "test_task_2d.hpp"
 #include "test_task_2d_pool.hpp"
 #include "test_task_2d_thread_pool.hpp"
+#include "../common/value_generator.hpp"
+#include "../common/mutagen.hpp"
 
 #include <iostream>// DEBUG
 #include <list>
@@ -33,16 +35,13 @@ namespace cnn
         
         using Uptr = std::unique_ptr<GeneticAlgorithm2D<T>>;
 
-        static constexpr size_t MIN_POPULATION_SIZE = 10;
-        static constexpr size_t MIN_ITERATION_COUNT = 10;
-
         GeneticAlgorithm2D();
 
-        T GetMinWeightValue() const override;
-        void SetMinWeightValue(const T minWeightValue) override;
+        typename common::IValueGenerator<T>::Uptr GetValueGenerator() const override;
+        void SetValueGenerator(const common::IValueGenerator<T>& valueGenerator) override;
 
-        T GetMaxWeightValue() const override;
-        void SetMaxWeightValue(const T maxWeightValue) override;
+        typename common::IMutagen<T>::Uptr GetMutagen() const override;
+        void SetMutagen(const common::IMutagen<T>& mutagen) override;
 
         size_t GetPopulationSize() const override;
         void SetPopulationSize(const size_t populationSize) override;
@@ -55,8 +54,12 @@ namespace cnn
 
       private:
 
-        T MinWeightValue;
-        T MaxWeightValue;
+        static constexpr size_t MIN_POPULATION_SIZE = 10;
+        static constexpr size_t MIN_ITERATION_COUNT = 10;
+
+        typename common::IValueGenerator<T>::Uptr ValueGenerator;
+        typename common::IMutagen<T>::Uptr Mutagen;
+
         size_t PopulationSize;
         size_t IterationCount;
 
@@ -83,43 +86,36 @@ namespace cnn
       template <typename T>
       GeneticAlgorithm2D<T>::GeneticAlgorithm2D()
         :
-        MinWeightValue{ -1 },
-        MaxWeightValue{ +1 },
+        ValueGenerator{ std::make_unique<common::ValueGenerator<T>>(-1, 1) },
+        Mutagen{ std::make_unique<common::Mutagen<T>>() },
+
         PopulationSize{ MIN_POPULATION_SIZE },
         IterationCount{ MIN_ITERATION_COUNT }
       {
       }
 
       template <typename T>
-      T GeneticAlgorithm2D<T>::GetMinWeightValue() const
+      typename common::IValueGenerator<T>::Uptr GeneticAlgorithm2D<T>::GetValueGenerator() const
       {
-        return MinWeightValue;
+        return ValueGenerator->Clone();
       }
 
       template <typename T>
-      void GeneticAlgorithm2D<T>::SetMinWeightValue(const T minWeightValue)
+      void GeneticAlgorithm2D<T>::SetValueGenerator(const common::IValueGenerator<T>& valueGenerator)
       {
-        if (MinWeightValue >= MaxWeightValue)
-        {
-          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::SetMinWeight(), MinWeightValue >= MaxWeightValue.");
-        }
-        MinWeightValue = minWeightValue;
+        ValueGenerator = valueGenerator.Clone();
       }
 
       template <typename T>
-      T GeneticAlgorithm2D<T>::GetMaxWeightValue() const
+      typename common::IMutagen<T>::Uptr GeneticAlgorithm2D<T>::GetMutagen() const
       {
-        return MaxWeightValue;
+        return Mutagen->Clone();
       }
 
       template <typename T>
-      void GeneticAlgorithm2D<T>::SetMaxWeightValue(const T maxWeightValue)
+      void GeneticAlgorithm2D<T>::SetMutagen(const common::IMutagen<T>& mutagen)
       {
-        if (MaxWeightValue <= MinWeightValue)
-        {
-          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::SetMaxWeight(), MaxWeightValue <= MinWeightValue.");
-        }
-        MaxWeightValue = maxWeightValue;
+        Mutagen = mutagen.Clone();
       }
 
       template <typename T>
@@ -220,13 +216,11 @@ namespace cnn
         sourcePopulation.resize(sourcePopulationSize);
         resultPopulation.resize(resultPopulationSize);
 
-        auto valueGenerator = std::make_unique<common::ValueGenerator<T>>(GetMinWeightValue(), GetMaxWeightValue());
-
         sourcePopulation[0] = sourceNetwork.Clone(true);
         for (auto& network : sourcePopulation)
         {
           network = sourceNetwork.Clone(false);
-          network->FillWeights(*valueGenerator);
+          network->FillWeights(*ValueGenerator);
         }
         for (auto& network : resultPopulation)
         {
@@ -256,14 +250,9 @@ namespace cnn
       template <typename T>
       void GeneticAlgorithm2D<T>::Mutate(std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
       {
-        auto mutagen = std::make_unique<common::Mutagen<T>>();
-
-        mutagen->SetMinResult(GetMinWeightValue());
-        mutagen->SetMaxResult(GetMaxWeightValue());
-
         for (auto& network : resultPopulation)
         {
-          network->Mutate(*mutagen);
+          network->Mutate(*Mutagen);
         }
       }
 
@@ -271,16 +260,36 @@ namespace cnn
       void GeneticAlgorithm2D<T>::Test(const ILesson2DLibrary<T>& lessonLibrary,
                                        std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
       {
+        // Prepare the storage for result of the testing.
+        std::vector<T> errors(resultPopulation.size());
+
+        // Prepare the task pool.
         auto taskPool = std::make_unique<TestTask2DPool<T>>();
-        for (const auto& network : resultPopulation)
+        for (size_t i = 0; i < resultPopulation.size(); ++i)
         {
-          auto task = std::make_unique<TestTask2D<T>>(lessonLibrary, *network);
+          auto task = std::make_unique<TestTask2D<T>>(lessonLibrary, *(resultPopulation[i]), errors[i]);
           taskPool->Push(std::move(task));
         }
 
+        // Prepare the thread pool.
         auto threadPool = std::make_unique<TestTask2DThreadPool<T>>(*taskPool);
 
+        // Wait the thread pool.
         threadPool->Wait();
+
+        // Sort the networks using sorting tree.
+        std::multimap<T, size_t> sortingTree;
+        for (size_t i = 0; i < resultPopulation.size(); ++i)
+        {
+          sortingTree.insert({ errors[i], i });
+        }
+        size_t i{};
+        for (auto& sortedNode : sortingTree)
+        {
+          std::cout << sortedNode.first << " ";// DEBUG
+          resultPopulation[i++].swap(resultPopulation[sortedNode.second]);
+        }
+        std::cout << std::endl;// DEBUG
       }
 
       template <typename T>

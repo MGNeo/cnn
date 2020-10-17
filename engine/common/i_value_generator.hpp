@@ -22,6 +22,8 @@ namespace cnn
 
         virtual T Generate() = 0;
 
+        virtual typename IValueGenerator<T>::Uptr Clone() const = 0;
+
         virtual ~IValueGenerator() = default;
 
       };

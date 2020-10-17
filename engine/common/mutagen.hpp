@@ -41,6 +41,8 @@ namespace cnn
 
         T Mutate(const T value) override;
 
+        typename IMutagen<T>::Uptr Clone() const override;
+
       private:
 
         T MinResult;
@@ -185,6 +187,14 @@ namespace cnn
           return result;
         }
       }
+
+      template <typename T>
+      typename IMutagen<T>::Uptr Mutagen<T>::Clone() const
+      {
+        auto mutagen = std::make_unique<Mutagen<T>>(*this);
+        return mutagen;
+      }
+
     }
   }
 }

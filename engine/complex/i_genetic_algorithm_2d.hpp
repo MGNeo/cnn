@@ -5,6 +5,8 @@
 
 #include "i_network_2d.hpp"
 #include "i_lesson_2d_library.hpp"
+#include "../common/i_value_generator.hpp"
+#include "../common/i_mutagen.hpp"
 
 namespace cnn
 {
@@ -22,11 +24,13 @@ namespace cnn
 
         using Uptr = std::unique_ptr<IGeneticAlgorithm2D<T>>;
 
-        virtual T GetMinWeightValue() const = 0;
-        virtual void SetMinWeightValue(const T minWeightValue) = 0;
+        // The value generator is used for filling the weights with noise.
+        virtual typename common::IValueGenerator<T>::Uptr GetValueGenerator() const = 0;
+        virtual void SetValueGenerator(const common::IValueGenerator<T>& valueGenerator) = 0;
 
-        virtual T GetMaxWeightValue() const = 0;
-        virtual void SetMaxWeightValue(const T maxWeightValue) = 0;
+        // The mutagen is used for mutating the weights.
+        virtual typename common::IMutagen<T>::Uptr GetMutagen() const = 0;
+        virtual void SetMutagen(const common::IMutagen<T>& mutagen) = 0;
 
         virtual size_t GetPopulationSize() const = 0;
         virtual void SetPopulationSize(const size_t populationSize) = 0;

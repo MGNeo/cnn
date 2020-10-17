@@ -22,9 +22,11 @@ namespace cnn
 
         using Uptr = std::unique_ptr<ValueGenerator<T>>;
 
-        ValueGenerator(const T minValue, const T maxValue);
+        ValueGenerator(const T minValue, const T maxValue);// TODO: We must not use the parameters in the constructor.
 
         T Generate() override;
+
+        typename IValueGenerator<T>::Uptr Clone() const override;
 
       private:
         
@@ -46,6 +48,14 @@ namespace cnn
       {
         return UDR(DRE);
       }
+
+      template <typename T>
+      typename IValueGenerator<T>::Uptr ValueGenerator<T>::Clone() const
+      {
+        auto valueGenerator = std::make_unique<ValueGenerator<T>>(*this);
+        return valueGenerator;
+      }
+
     }
   }
 }
