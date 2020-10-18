@@ -4,9 +4,7 @@
 
 #include "engine/complex/network_2d.hpp"
 
-// TODO: Algorithm must be changed because the existing doesn't work. (Done)
-
-// TODO: Add methods: operator==(Network2) ...
+// TODO: Add Save/Load functions for all abstractions.
 
 // TODO: Add pooling processor into Layer2D.
 // TODO: Add statistics (performance and other) in GeneticAlgorithm2D.

@@ -46,7 +46,6 @@ namespace cnn
 
         virtual void Process() = 0;
 
-
         virtual size_t GetOutputValueCount() const = 0;
 
         // The result must not be nullptr.

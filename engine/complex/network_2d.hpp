@@ -3,6 +3,7 @@
 #include "i_network_2d.hpp"
 
 #include <stdexcept>
+#include <fstream>
 
 namespace cnn
 {
@@ -30,7 +31,7 @@ namespace cnn
         perceptron::INetwork<T>& GetPerceptronNetwork() override;
 
         void Process() override;
-
+        
         // The result must not be nullptr.
         typename typename INetwork2D<T>::Uptr Clone(const bool cloneState) const override;
 
@@ -39,6 +40,9 @@ namespace cnn
         void Mutate(common::IMutagen<T>& mutagen) override;
 
         void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
+
+        void Save(const std::string& filename) const override;
+        void Load(const std::string& filename) override;
 
       private:
 
@@ -148,6 +152,18 @@ namespace cnn
       {
         ConvolutionNetwork2D->SetActivationFunctions(activationFunction);
         PerceptronNetwork->SetActivationFunctions(activationFunction);
+      }
+
+      template <typename T>
+      void Network2D<T>::Save(const std::string& filename) const
+      {
+        // ...
+      }
+
+      template <typename T>
+      void Network2D<T>::Load(const std::string& filename)
+      {
+        // ...
       }
 
     }

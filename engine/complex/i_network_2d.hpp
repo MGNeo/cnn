@@ -42,6 +42,14 @@ namespace cnn
 
         virtual void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) = 0;
 
+        // The file doesn't have information about the topology and the implementation
+        // of the subparts.The topology and the implementation must be set from the code
+        // and it must be equal between saving and loading. The reason of this is templates
+        // and dynamic polymorphism. Theoretically, it can be changed, but I don't think that
+        // it is necessary.
+        virtual void Save(const std::string& filename) const = 0;
+        virtual void Load(const std::string& filename) = 0;
+
         virtual ~INetwork2D() = default;
 
       };

@@ -163,14 +163,13 @@ namespace cnn
             // Compare.
             if (newError < bestError)
             {
-              std::cout << newError << std::endl;// DEBUG.
               bestError = newError;
               bestNetwork.swap(newNetwork);
             }
           }
           
           clock_t t2 = clock();// DEBUG
-          std::cout << "DT: " << (t2 - t1) / static_cast<float>(CLOCKS_PER_SEC) << std::endl;// DEBUG
+          std::cout << "Time elapsed: " << (t2 - t1) / static_cast<float>(CLOCKS_PER_SEC)  << " Best error: " << bestError << std::endl;// DEBUG
         }
 
         return {};
