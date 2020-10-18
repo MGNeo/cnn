@@ -67,10 +67,6 @@ namespace cnn
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
-        void CrossFrom(const ILayer2D<T>& source1,
-                       const ILayer2D<T>& source2,
-                       common::IBinaryRandomGenerator& binaryRandomGenerator) override;
-
         void Mutate(common::IMutagen<T>& mutagen) override;
 
         void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
@@ -454,101 +450,6 @@ namespace cnn
         for (size_t f = 0; f < FilterCount; ++f)
         {
           Filters[f]->FillWeights(valueGenerator);
-        }
-      }
-
-      template <typename T>
-      void Layer2D<T>::CrossFrom(const ILayer2D<T>& source1,
-                                 const ILayer2D<T>& source2,
-                                 common::IBinaryRandomGenerator& binaryRandomGenerator)
-      {
-        // Compare us with source1.
-        {
-          if (GetInputWidth() != source1.GetInputWidth())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetInputWidth() != source1.GetInputWidth().");
-          }
-          if (GetInputHeight() != source1.GetInputHeight())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetInputHeight() != source1.GetInputHeight().");
-          }
-          if (GetInputCount() != source1.GetInputCount())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetInputCount() != source1.GetInputCount().");
-          }
-
-          if (GetFilterWidth() != source1.GetFilterWidth())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetFilterWidth() != source1.GetFilterWidth().");
-          }
-          if (GetFilterHeight() != source1.GetFilterHeight())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetFilterHeight() != source1.GetFilterHeight().");
-          }
-          if (GetFilterCount() != source1.GetFilterCount())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetFilterCount() != source1.GetFilterCount().");
-          }
-
-          if (GetOutputWidth() != source1.GetOutputWidth())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetOutputWidth() != source1.GetOutputWidth().");
-          }
-          if (GetOutputHeight() != source1.GetOutputHeight())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetOutputHeight() != source1.GetOutputHeight().");
-          }
-          if (GetOutputCount() != source1.GetOutputCount())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetOutputCount() != source1.GetOutputCount().");
-          }
-        }
-
-        // Compare us with source2.
-        {
-          if (GetInputWidth() != source2.GetInputWidth())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetInputWidth() != source2.GetInputWidth().");
-          }
-          if (GetInputHeight() != source2.GetInputHeight())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetInputHeight() != source2.GetInputHeight().");
-          }
-          if (GetInputCount() != source2.GetInputCount())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetInputCount() != source2.GetInputCount().");
-          }
-
-          if (GetFilterWidth() != source2.GetFilterWidth())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetFilterWidth() != source2.GetFilterWidth().");
-          }
-          if (GetFilterHeight() != source2.GetFilterHeight())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetFilterHeight() != source2.GetFilterHeight().");
-          }
-          if (GetFilterCount() != source2.GetFilterCount())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetFilterCount() != source2.GetFilterCount().");
-          }
-
-          if (GetOutputWidth() != source2.GetOutputWidth())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetOutputWidth() != source2.GetOutputWidth().");
-          }
-          if (GetOutputHeight() != source2.GetOutputHeight())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetOutputHeight() != source2.GetOutputHeight().");
-          }
-          if (GetOutputCount() != source2.GetOutputCount())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Layer2D::CrossFrom(), GetOutputCount() != source2.GetOutputCount().");
-          }
-        }
-
-        for (size_t f = 0; f < GetFilterCount(); ++f)
-        {
-          Filters[f]->CrossFrom(source1.GetFilter(f), source2.GetFilter(f), binaryRandomGenerator);
         }
       }
 

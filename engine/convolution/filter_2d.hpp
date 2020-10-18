@@ -43,10 +43,6 @@ namespace cnn
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
-        void CrossFrom(const IFilter2D<T>& source1,
-                       const IFilter2D<T>& source2,
-                       common::IBinaryRandomGenerator& binaryRandomGenerator) override;
-
         void Mutate(common::IMutagen<T>& mutagen) override;
 
         void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
@@ -194,46 +190,6 @@ namespace cnn
         for (size_t c = 0; c < CoreCount; ++c)
         {
           Cores[c]->FillWeights(valueGenerator);
-        }
-      }
-
-      template <typename T>
-      void Filter2D<T>::CrossFrom(const IFilter2D<T>& source1,
-                                  const IFilter2D<T>& source2,
-                                  common::IBinaryRandomGenerator& binaryRandomGenerator)
-      {
-        {
-          if (GetWidth() != source1.GetWidth())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Filter2D::CrossFrom(), GetWidth() != source1.GetWidth().");
-          }
-          if (GetHeight() != source1.GetHeight())
-          {
-            throw std::invalid_argument("cnn::engine::convolution");
-          }
-          if (GetCoreCount() != source1.GetCoreCount())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Filter2D::CrossFrom(), GetCoreCount() != source1.GetCoreCount().");
-          }
-        }
-        {
-          if (GetWidth() != source2.GetWidth())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Filter2D::CrossFrom(), GetWidth() != source2.GetWidth().");
-          }
-          if (GetHeight() != source2.GetHeight())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Filter2D::CrossFrom(), GetHeight() != source2.GetHeight().");
-          }
-          if (GetCoreCount() != source2.GetCoreCount())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Filter2D::CrossFrom(), GetCoreCount() != source2.GetCoreCount().");
-          }
-        }
-
-        for (size_t c = 0; c < GetCoreCount(); ++c)
-        {
-          Cores[c]->CrossFrom(source1.GetCore(c), source2.GetCore(c), binaryRandomGenerator);;
         }
       }
 

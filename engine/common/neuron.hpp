@@ -46,10 +46,6 @@ namespace cnn
 
         void FillWeights(IValueGenerator<T>& valueGenerator) override;
 
-        void CrossFrom(const INeuron<T>& source1,
-                       const INeuron<T>& source2,
-                       IBinaryRandomGenerator& binaryRandomGenerator) override;
-
         void Mutate(common::IMutagen<T>& mutagen) override;
 
         const IActivationFunction<T>& GetActivationFunction() const override;
@@ -220,27 +216,6 @@ namespace cnn
         for (size_t i = 0; i < InputCount; ++i)
         {
           Weights[i] = valueGenerator.Generate();
-        }
-      }
-
-
-      template <typename T>
-      void Neuron<T>::CrossFrom(const INeuron<T>& source1,
-                                const INeuron<T>& source2,
-                                IBinaryRandomGenerator& binaryRandomGenerator)
-      {
-        if (GetInputCount() != source1.GetInputCount())
-        {
-          throw std::invalid_argument("cnn::engine::common::Neuron::CrossFrom(), GetInputCount() != source1.GetInputCount().");
-        }
-        if (GetInputCount() != source2.GetInputCount())
-        {
-          throw std::invalid_argument("cnn::engine::common::Neuron::CrossFrom(), GetInputCount() != source2.GetInputCount().");
-        }
-        for (size_t w = 0; w < GetInputCount(); ++w)
-        {
-          const T value = binaryRandomGenerator.Generate() ? source1.GetWeight(w) : source2.GetWeight(w);
-          SetWeight(w, value);
         }
       }
 

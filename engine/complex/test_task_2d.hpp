@@ -3,6 +3,8 @@
 #include <stdexcept>
 
 #include "i_test_task_2d.hpp"
+#include "i_network_2d.hpp"
+#include "i_lesson_2d.hpp"
 
 namespace cnn
 {
@@ -18,7 +20,7 @@ namespace cnn
 
       public:
 
-        TestTask2D(const ILesson2DLibrary<T>& library,
+        TestTask2D(const ILesson2D<T>& lesson,
                    INetwork2D<T>& network,
                    T& error);
 
@@ -26,22 +28,22 @@ namespace cnn
 
       private:
 
+        const ILesson2D<T>& Lesson;
         INetwork2D<T>& Network;
-        const ILesson2DLibrary<T>& Library;
         T& Error;
 
-        void ProcessConvolutionNetwork(const size_t lessonNumber);
-        void ProcessPerceptronNetwork(const size_t lessonNumber);
-        T CalculateError(const size_t lessonNumber);
+        void ProcessConvolutionNetwork();
+        void ProcessPerceptronNetwork();
+        T CalculateError();
 
       };
 
       template <typename T>
-      TestTask2D<T>::TestTask2D(const ILesson2DLibrary<T>& library,
+      TestTask2D<T>::TestTask2D(const ILesson2D<T>& lesson,
                                 INetwork2D<T>& network,
                                 T& error)
         :
-        Library{ library },
+        Lesson{ lesson },
         Network{ network },
         Error{ error }
       {
@@ -50,29 +52,23 @@ namespace cnn
       template <typename T>
       void TestTask2D<T>::Execute()
       {
-        T totalError{};
-        for (size_t l = 0; l < Library.GetLessonCount(); ++l)
-        {
-          ProcessConvolutionNetwork(l);
-          ProcessPerceptronNetwork(l);
-          totalError += CalculateError(l);
-        }
-        Error = totalError;
+        ProcessConvolutionNetwork();
+        ProcessPerceptronNetwork();
+        Error = CalculateError();
       }
 
       template <typename T>
-      void TestTask2D<T>::ProcessConvolutionNetwork(const size_t lessonNumber)
+      void TestTask2D<T>::ProcessConvolutionNetwork()
       {
         auto& convolutionNetwork = Network.GetConvolutionNetwork2D();
         auto& layer = convolutionNetwork.GetFirstLayer();
-        const auto& lesson = Library.GetLesson(lessonNumber);
-        for (size_t i = 0; i < Library.GetLessonInputCount(); ++i)
+        for (size_t i = 0; i < Lesson.GetInputCount(); ++i)
         {
-          const auto& lessonInput = lesson.GetInput(i);
+          const auto& lessonInput = Lesson.GetInput(i);
           auto& layerInput = layer.GetInput(i);
-          for (size_t x = 0; x < Library.GetLessonInputWidth(); ++x)
+          for (size_t x = 0; x < Lesson.GetInputWidth(); ++x)
           {
-            for (size_t y = 0; y < Library.GetLessonInputHeight(); ++y)
+            for (size_t y = 0; y < Lesson.GetInputHeight(); ++y)
             {
               layerInput.SetValue(x, y, lessonInput.GetValue(x, y));
             }
@@ -82,7 +78,7 @@ namespace cnn
       }
 
       template <typename T>
-      void TestTask2D<T>::ProcessPerceptronNetwork(const size_t lessonNumber)
+      void TestTask2D<T>::ProcessPerceptronNetwork()
       {
         const auto& convolutionNetwork = Network.GetConvolutionNetwork2D();
         auto& perceptronNetwork = Network.GetPerceptronNetwork();
@@ -105,12 +101,12 @@ namespace cnn
       }
 
       template <typename T>
-      T TestTask2D<T>::CalculateError(const size_t lessonNumber)
+      T TestTask2D<T>::CalculateError()
       {
         T error{};
         const auto& perceptronNetwork = Network.GetPerceptronNetwork();
         const auto& perceptronOutput = perceptronNetwork.GetLastLayer().GetOutput();
-        const auto& lessonOutput = Library.GetLesson(lessonNumber).GetOutput();
+        const auto& lessonOutput = Lesson.GetOutput();
         T maxError = 0;
         for (size_t o = 0; o < perceptronOutput.GetValueCount(); ++o)
         {

@@ -38,10 +38,6 @@ namespace cnn
 
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
-        virtual void CrossFrom(const INetwork2D<T>& source1,
-                               const INetwork2D<T>& source2,
-                               common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
-
         virtual void Mutate(common::IMutagen<T>& mutagen) = 0;
 
         virtual void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) = 0;

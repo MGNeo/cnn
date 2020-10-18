@@ -11,6 +11,7 @@
 #include "engine/convolution/network_2d.hpp"
 #include "engine/perceptron/network.hpp"
 #include "engine/complex/genetic_algorithm_2d.hpp"
+#include "engine/common/value_generator.hpp"
 
 namespace cnn
 {
@@ -129,6 +130,7 @@ namespace cnn
       template <typename T>
       typename engine::complex::INetwork2D<T>::Uptr Factory<T>::Network() const
       {
+        // Prepare convolution network.
         auto convolutionNetwork = std::make_unique<engine::convolution::Network2D<T>>(InputWidth, InputHeight, InputCount, 3, 3, 10);
         convolutionNetwork->PushBack(3, 3, 10);
         convolutionNetwork->PushBack(3, 3, 10);
@@ -146,10 +148,18 @@ namespace cnn
         convolutionNetwork->PushBack(3, 3, 10);
         convolutionNetwork->PushBack(2, 2, 10);
 
+        // Prepare perceptron network.
         auto perceptronNetwork = std::make_unique<engine::perceptron::Network<T>>(convolutionNetwork->GetLastLayer().GetOutputValueCount(), 15);
         perceptronNetwork->PushBack(OutputCount);
 
+        // Prepare complex network.
         auto complexNetwork = std::make_unique<engine::complex::Network2D<T>>(std::move(convolutionNetwork), std::move(perceptronNetwork));
+
+        // Fill the complex network with noise.
+        auto valueGenerator = std::make_unique<engine::common::ValueGenerator<T>>();
+        valueGenerator->SetMinValue(-5);
+        valueGenerator->SetMaxValue(+5);
+        complexNetwork->FillWeights(*valueGenerator);
 
         return std::move(complexNetwork);
       }
@@ -160,22 +170,14 @@ namespace cnn
       {
         auto algorithm = std::make_unique<engine::complex::GeneticAlgorithm2D<T>>();
 
-        algorithm->SetIterationCount(1);
-        algorithm->SetPopulationSize(3);
-
-        // Configure the value generator which fills the weights of the networks with noise.
-        auto valueGenerator = algorithm->GetValueGenerator().Clone();
-        valueGenerator->SetMinValue(static_cast<T>(-10L));
-        valueGenerator->SetMaxValue(static_cast<T>(+10L));
-        algorithm->SetValueGenerator(*valueGenerator);
+        algorithm->SetIterationCount(1000);
+        algorithm->SetThreadCount(8);
 
         // Configure the mutagen which mutates the weights of the networks.
         auto mutagen = algorithm->GetMutagen().Clone();
-        mutagen->SetMinResult(static_cast<T>(-10L));
-        mutagen->SetMaxResult(static_cast<T>(+10L));
-        mutagen->SetMutationProbability(static_cast<T>(0.00001L));
-        mutagen->SetMutationForce(static_cast<T>(10L));
-        mutagen->SetVariabilityForce(static_cast<T>(0.0001L));
+        mutagen->SetMinResult(static_cast<T>(-5L));
+        mutagen->SetMaxResult(static_cast<T>(+5L));
+        mutagen->SetVariabilityForce(static_cast<T>(0.1L));
         algorithm->SetMutagen(*mutagen);
 
         return std::move(algorithm);

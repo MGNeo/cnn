@@ -4,8 +4,7 @@
 #include <cstddef>
 #include <memory>
 
-#include "i_network_2d.hpp"
-#include "i_lesson_2d_library.hpp"
+
 
 namespace cnn
 {

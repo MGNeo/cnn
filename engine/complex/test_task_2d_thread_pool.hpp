@@ -22,7 +22,7 @@ namespace cnn
 
       public:
 
-        TestTask2DThreadPool(ITestTask2DPool<T>& taskPool);
+        TestTask2DThreadPool(ITestTask2DPool<T>& taskPool, const size_t threadCount);
 
         void Wait() override;
 
@@ -38,14 +38,17 @@ namespace cnn
       };
 
       template <typename T>
-      TestTask2DThreadPool<T>::TestTask2DThreadPool(ITestTask2DPool<T>& taskPool)
+      TestTask2DThreadPool<T>::TestTask2DThreadPool(ITestTask2DPool<T>& taskPool, const size_t threadCount)
         :
         StopCommand{ false }
       {
         try
         {
-          const int count = (std::thread::hardware_concurrency() > 0) ? std::thread::hardware_concurrency() : 1;
-          for (int i = 0; i < count; ++i)
+          if (threadCount == 0)
+          {
+            throw std::invalid_argument("cnn::engine::complex::TestTask2DThreadPool::TestTask2DThreadPool(), threadCount == 0.");
+          }
+          for (int i = 0; i < threadCount; ++i)
           {
             std::future<void> future = std::async(std::launch::async, TestTask2DThreadPool<T>::Thread, std::ref(taskPool), std::ref(StopCommand));
             Futures.push_back(std::move(future));

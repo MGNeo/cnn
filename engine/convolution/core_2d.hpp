@@ -46,10 +46,6 @@ namespace cnn
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
-        void CrossFrom(const ICore2D<T>& source1,
-                       const ICore2D<T>& source2,
-                       common::IBinaryRandomGenerator& binaryRandomGenerator) override;
-
         void Mutate(common::IMutagen<T>& mutagen) override;
 
         void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
@@ -196,44 +192,6 @@ namespace cnn
       void Core2D<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
       {
         Neuron_->FillWeights(valueGenerator);
-      }
-
-      template <typename T>
-      void Core2D<T>::CrossFrom(const ICore2D<T>& source1,
-                                const ICore2D<T>& source2,
-                                common::IBinaryRandomGenerator& binaryRandomGenerator)
-      {
-        {
-          if (GetWidth() != source1.GetWidth())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Core2D::CrossFrom(), GetWidth() != source1.GetWidth().");
-          }
-          if (GetHeight() != source1.GetHeight())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Core2D::CrossFrom(), GetHeight() != source1.GetHeight().");
-          }
-        }
-        {
-          if (GetWidth() != source2.GetWidth())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Core2D::CrossFrom(), GetWidth() != source2.GetWidth().");
-          }
-          if (GetHeight() != source2.GetHeight())
-          {
-            throw std::invalid_argument("cnn::engine::convolution::Core2D::CrossFrom(), GetHeight() != source2.GetHeight().");
-          }
-        }
-
-        // TODO: Perhaps, we must use Neuron_ directly.
-        // But it will be bad for abstractions.
-        for (size_t x = 0; x < GetWidth(); ++x)
-        {
-          for (size_t y = 0; y < GetHeight(); ++y)
-          {
-            const T value = binaryRandomGenerator.Generate() ? source1.GetWeight(x, y) : source2.GetWeight(x, y);
-            SetWeight(x, y, value);
-          }
-        }
       }
 
       template <typename T>

@@ -47,10 +47,6 @@ namespace cnn
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
-        void CrossFrom(const INetwork<T>& source1,
-                       const INetwork<T>& source2,
-                       common::IBinaryRandomGenerator& binaryRandomGenerator) override;
-
         void Mutate(common::IMutagen<T>& mutagen) override;
 
         void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
@@ -184,25 +180,6 @@ namespace cnn
         for (auto& layer : Layers)
         {
           layer->FillWeights(valueGenerator);
-        }
-      }
-
-      template <typename T>
-      void Network<T>::CrossFrom(const INetwork<T>& source1,
-                                 const INetwork<T>& source2,
-                                 common::IBinaryRandomGenerator& binaryRandomGenerator)
-      {
-        if (GetLayerCount() != source1.GetLayerCount())
-        {
-          throw std::invalid_argument("cnn::engine::perceptron::Network::CrossFrom(), GetLayerCount() != source1.GetLayerCount().");
-        }
-        if (GetLayerCount() != source2.GetLayerCount())
-        {
-          throw std::invalid_argument("cnn::engine::perceptron::Network::CrossFrom(), GetLayerCount() != source2.GetLayerCount().");
-        }
-        for (size_t l = 0; l < GetLayerCount(); ++l)
-        {
-          Layers[l]->CrossFrom(source1.GetLayer(l), source2.GetLayer(l), binaryRandomGenerator);
         }
       }
 

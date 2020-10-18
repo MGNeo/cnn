@@ -26,12 +26,6 @@ namespace cnn
         virtual T GetMaxResult() const = 0;
         virtual void SetMaxResult(const T maxResult) = 0;
 
-        virtual T GetMutationProbability() const = 0;
-        virtual void SetMutationProbability(const T mutationProbability) = 0;
-
-        virtual T GetMutationForce() const = 0;
-        virtual void SetMutationForce(const T mutationForce) = 0;
-
         virtual T GetVariabilityForce() const = 0;
         virtual void SetVariabilityForce(const T variabilityForce) = 0;
 

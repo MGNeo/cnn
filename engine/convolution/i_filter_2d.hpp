@@ -42,10 +42,6 @@ namespace cnn
         // The result must not be nullptr.
         virtual typename IFilter2D<T>::Uptr Clone(const bool cloneState) const = 0;
 
-        virtual void CrossFrom(const IFilter2D<T>& source1,
-                               const IFilter2D<T>& source2,
-                               common::IBinaryRandomGenerator& binaryRandomGenerator) = 0;
-
         virtual void FillWeights(common::IValueGenerator<T>& valueGenerator) = 0;
 
         virtual void Mutate(common::IMutagen<T>& mutagen) = 0;

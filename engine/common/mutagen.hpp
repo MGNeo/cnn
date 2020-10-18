@@ -29,12 +29,6 @@ namespace cnn
 
         T GetMaxResult() const override;
         void SetMaxResult(const T maxResult) override;
-        
-        T GetMutationProbability() const override;
-        void SetMutationProbability(const T mutationProbability) override;
-
-        T GetMutationForce() const override;
-        void SetMutationForce(const T mutationForce) override;
 
         T GetVariabilityForce() const override;
         void SetVariabilityForce(const T variabilityForce) override;
@@ -48,9 +42,6 @@ namespace cnn
         T MinResult;
         T MaxResult;
 
-        T MutationProbability;
-        T MutationForce;
-
         T VariabilityForce;
 
         std::default_random_engine DRE;
@@ -62,8 +53,6 @@ namespace cnn
         :
         MinResult{ static_cast<T>(0L) },
         MaxResult{ static_cast<T>(1L) },
-        MutationProbability{ static_cast<T>(0.001L) },
-        MutationForce{ static_cast<T>(0.1L) },
         VariabilityForce{ static_cast<T>(0.0001L) },
         DRE{ static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count()) }
       {
@@ -102,42 +91,6 @@ namespace cnn
       }
 
       template <typename T>
-      T Mutagen<T>::GetMutationProbability() const
-      {
-        return MutationProbability;
-      }
-
-      template <typename T>
-      void Mutagen<T>::SetMutationProbability(const T mutationProbability)
-      {
-        if (mutationProbability < 0)
-        {
-          throw std::invalid_argument("cnn::engine::common::Mutagen::SetMutationProbability(), mutationProbability < 0.");
-        }
-        if (mutationProbability > 1)
-        {
-          throw std::invalid_argument("cnn::engine::common::Mutagen::SetMutationProbability(), mutationProbability > 1.");
-        }
-        MutationProbability = mutationProbability;
-      }
-
-      template <typename T>
-      T Mutagen<T>::GetMutationForce() const
-      {
-        return MutationForce;
-      }
-
-      template <typename T>
-      void Mutagen<T>::SetMutationForce(const T mutationForce)
-      {
-        if (mutationForce < 0)
-        {
-          throw std::invalid_argument("cnn::engine::common::Mutagen::SetMutationForce(), mutationForce < 0.");
-        }
-        MutationForce = mutationForce;
-      }
-
-      template <typename T>
       T Mutagen<T>::GetVariabilityForce() const
       {
         return VariabilityForce;
@@ -157,16 +110,6 @@ namespace cnn
       T Mutagen<T>::Mutate(const T value)
       {
         T result{ value };
-
-        // Mutation.
-        {
-          std::uniform_real_distribution<T> urd{ 0, 1 };
-          if (urd(DRE) <= MutationProbability)
-          {
-            std::uniform_real_distribution<T> urd{ -MutationForce, +MutationForce };
-            result += urd(DRE);
-          }
-        }
 
         // Variability.
         {

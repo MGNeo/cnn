@@ -46,10 +46,6 @@ namespace cnn
 
         void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
 
-        void CrossFrom(const ILayer<T>& source1,
-                       const ILayer<T>& source2,
-                       common::IBinaryRandomGenerator& binaryRandomGenerator) override;
-
         void Mutate(common::IMutagen<T>& mutagen) override;
 
         void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
@@ -215,45 +211,6 @@ namespace cnn
         for (size_t n = 0; n < NeuronCount; ++n)
         {
           Neurons[n]->FillWeights(valueGenerator);
-        }
-      }
-
-      template <typename T>
-      void Layer<T>::CrossFrom(const ILayer<T>& source1,
-                               const ILayer<T>& source2,
-                               common::IBinaryRandomGenerator& binaryRandomGenerator)
-      {
-        {
-          if (GetInputSize() != source1.GetInputSize())
-          {
-            throw std::invalid_argument("cnn::engine::perceptron::Layer::CrossFrom(), GetInputSize() != source1.GetInputSize().");
-          }
-          if (GetNeuronCount() != source1.GetNeuronCount())
-          {
-            throw std::invalid_argument("cnn::engine::perceptron::Layer::CrossFrom(), GetNeuronCount() != source1.GetNeuronCount().");
-          }
-          if (GetOutputSize() != source1.GetOutputSize())
-          {
-            throw std::invalid_argument("cnn::engine::perceptron::Layer::CrossFrom(), GetOutputSize() != source1.GetOutputSize().");
-          }
-        }
-        {
-          if (GetInputSize() != source2.GetInputSize())
-          {
-            throw std::invalid_argument("cnn::engine::perceptron::Layer::CrossFrom(), GetInputSize() != source2.GetInputSize().");
-          }
-          if (GetNeuronCount() != source2.GetNeuronCount())
-          {
-            throw std::invalid_argument("cnn::engine::perceptron::Layer::CrossFrom(), GetNeuronCount() != source2.GetNEuronCount().");
-          }
-          if (GetOutputSize() != source2.GetOutputSize())
-          {
-            throw std::invalid_argument("cnn::engine::perceptron::Layer::CrossFrom(), GetOutputSize() != source2.GetOutputSize().");
-          }
-        }
-        for (size_t n = 0; n < GetNeuronCount(); ++n)
-        {
-          Neurons[n]->CrossFrom(source1.GetNeuron(n), source2.GetNeuron(n), binaryRandomGenerator);
         }
       }
 

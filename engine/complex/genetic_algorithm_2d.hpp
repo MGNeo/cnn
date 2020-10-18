@@ -37,73 +37,41 @@ namespace cnn
 
         GeneticAlgorithm2D();
 
-        const typename common::IValueGenerator<T>& GetValueGenerator() const override;
-        void SetValueGenerator(const common::IValueGenerator<T>& valueGenerator) override;
-
         const typename common::IMutagen<T>& GetMutagen() const override;
         void SetMutagen(const common::IMutagen<T>& mutagen) override;
 
-        size_t GetPopulationSize() const override;
-        void SetPopulationSize(const size_t populationSize) override;
-
         size_t GetIterationCount() const override;
         void SetIterationCount(const size_t iterationCount) override;
+
+        size_t GenThreadCount() const override;
+        void SetThreadCount(const size_t threadCount) override;
 
         typename INetwork2D<T>::Uptr Run(const ILesson2DLibrary<T>& lessonLibrary,
                                          const INetwork2D<T>& network) const override;
 
       private:
 
-        static constexpr size_t MIN_POPULATION_SIZE = 3;
-        static constexpr size_t MIN_ITERATION_COUNT = 1;
+        static constexpr size_t MIN_ITERATION_COUNT = 10;
 
         typename common::IValueGenerator<T>::Uptr ValueGenerator;
         typename common::IMutagen<T>::Uptr Mutagen;
 
-        size_t PopulationSize;
         size_t IterationCount;
+        size_t ThreadCount;
 
         void Check(const ILesson2DLibrary<T>& lessonLibrary,
                    const INetwork2D<T>& network) const;
-
-        void Prepare(const complex::INetwork2D<T>& sourceNetwork,
-                     std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
-                     std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
-
-        void Cross(std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
-                   std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
-
-        void Mutate(std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
-
-        void Test(const ILesson2DLibrary<T>& lessonLibrary,
-                  std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
-
-        void Select(std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
-                    std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const;
 
       };
 
       template <typename T>
       GeneticAlgorithm2D<T>::GeneticAlgorithm2D()
         :
-        ValueGenerator{ std::make_unique<common::ValueGenerator<T>>() },
         Mutagen{ std::make_unique<common::Mutagen<T>>() },
 
-        PopulationSize{ MIN_POPULATION_SIZE },
-        IterationCount{ MIN_ITERATION_COUNT }
+        IterationCount{ MIN_ITERATION_COUNT },
+        ThreadCount{ 1 }
       {
-      }
-
-      template <typename T>
-      const typename common::IValueGenerator<T>& GeneticAlgorithm2D<T>::GetValueGenerator() const
-      {
-        return *ValueGenerator;
-      }
-
-      template <typename T>
-      void GeneticAlgorithm2D<T>::SetValueGenerator(const common::IValueGenerator<T>& valueGenerator)
-      {
-        ValueGenerator = valueGenerator.Clone();
       }
 
       template <typename T>
@@ -116,22 +84,6 @@ namespace cnn
       void GeneticAlgorithm2D<T>::SetMutagen(const common::IMutagen<T>& mutagen)
       {
         Mutagen = mutagen.Clone();
-      }
-
-      template <typename T>
-      size_t GeneticAlgorithm2D<T>::GetPopulationSize() const
-      {
-        return PopulationSize;
-      }
-
-      template <typename T>
-      void GeneticAlgorithm2D<T>::SetPopulationSize(const size_t populationSize)
-      {
-        if (populationSize < MIN_POPULATION_SIZE)
-        {
-          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::SetPopulationSize(), populationSize < MIN_POPULATION_SIZE.");
-        }
-        PopulationSize = populationSize;
       }
 
       template <typename T>
@@ -151,26 +103,77 @@ namespace cnn
       }
 
       template <typename T>
+      size_t GeneticAlgorithm2D<T>::GenThreadCount() const
+      {
+        return ThreadCount;
+      }
+
+      template <typename T>
+      void GeneticAlgorithm2D<T>::SetThreadCount(const size_t threadCount)
+      {
+        if (threadCount == 0)
+        {
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::SetThreadCount(), threadCOunt == 0.");
+        }
+        ThreadCount = threadCount;
+      }
+
+      template <typename T>
       typename INetwork2D<T>::Uptr GeneticAlgorithm2D<T>::Run(const ILesson2DLibrary<T>& lessonLibrary,
                                                               const INetwork2D<T>& network) const
       {
         Check(lessonLibrary, network);
 
-        std::vector<typename complex::INetwork2D<T>::Uptr> sourcePopulation;
-        std::vector<typename complex::INetwork2D<T>::Uptr> resultPopulation;
+        T bestError = std::numeric_limits<T>::max();
 
-        Prepare(network, sourcePopulation, resultPopulation);
+        auto bestNetwork = network.Clone(true);
 
         for (size_t i = 0; i < GetIterationCount(); ++i)
         {
-          Cross(sourcePopulation, resultPopulation);
-          Mutate(resultPopulation);
-          Test(lessonLibrary, resultPopulation);
-          Select(sourcePopulation, resultPopulation);
-          std::cout << std::endl;// DEBUG
+          clock_t t1 = clock();// DEBUG
+
+          // Clone the best network.
+          auto newNetwork = bestNetwork->Clone(true);
+          // Mutate the new network.
+          newNetwork->Mutate(*Mutagen);
+          // Test new network.
+          {
+            std::vector<T> errors(lessonLibrary.GetLessonCount());
+            // Prepare the task pool.
+            auto taskPool = std::make_unique<TestTask2DPool<T>>();
+            for (size_t l = 0; l < lessonLibrary.GetLessonCount(); ++l)
+            {
+              const auto& lesson = lessonLibrary.GetLesson(l);
+              auto task = std::make_unique<TestTask2D<T>>(lesson, *newNetwork, errors[l]);
+              taskPool->Push(std::move(task));
+            }
+            // Prepare the thread pool.
+            auto threadPool = std::make_unique<TestTask2DThreadPool<T>>(*taskPool, ThreadCount);
+
+            // Wait the thread pool.
+            threadPool->Wait();
+
+            // Sum the errors.
+            T newError{};
+            for (const auto& error : errors)
+            {
+              newError += error;
+            }
+            
+            // Compare.
+            if (newError < bestError)
+            {
+              std::cout << newError << std::endl;// DEBUG.
+              bestError = newError;
+              bestNetwork.swap(newNetwork);
+            }
+          }
+          
+          clock_t t2 = clock();// DEBUG
+          std::cout << "DT: " << (t2 - t1) / static_cast<float>(CLOCKS_PER_SEC) << std::endl;// DEBUG
         }
 
-        return std::move(sourcePopulation[0]);
+        return {};
       }
 
       template <typename T>
@@ -194,110 +197,6 @@ namespace cnn
           throw std::invalid_argument("cnn::engine::Complex::GeneticAlgorithm2D::Check(), lessonLibrary.GetLessonOutputSize() != network.GetPerceptronNetwork().GetLastLayer().GetOutputSize().");
         }
       }
-
-      template <typename T>
-      void GeneticAlgorithm2D<T>::Prepare(const complex::INetwork2D<T>& sourceNetwork,
-                                          std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
-                                          std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
-      {
-        const size_t sourcePopulationSize = PopulationSize;
-        const size_t m = sourcePopulationSize - 1;
-        const size_t resultPopulationSize = sourcePopulationSize * m;
-
-        if ((resultPopulationSize / sourcePopulationSize) != m)
-        {
-          throw std::overflow_error("cnn::engine::complex::GeneticAlgorithm2D::Prepare(), resultPopulationSize has been overflowed.");
-        }
-
-        sourcePopulation.resize(sourcePopulationSize);
-        resultPopulation.resize(resultPopulationSize);
-
-        sourcePopulation[0] = sourceNetwork.Clone(true);
-        for (size_t n = 1; n < sourcePopulation.size(); ++n)
-        {
-          sourcePopulation[n] = sourceNetwork.Clone(false);
-          sourcePopulation[n]->FillWeights(*ValueGenerator);
-        }
-        for (auto& network : resultPopulation)
-        {
-          network = sourceNetwork.Clone(false);
-        }
-      }
-
-      template <typename T>
-      void GeneticAlgorithm2D<T>::Cross(std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
-                                        std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
-      {
-        auto binaryRandomGenerator = std::make_unique<common::BinaryRandomGenerator>();
-
-        size_t r{};
-        for (const auto& sourceNetwork1 : sourcePopulation)
-        {
-          for (const auto& sourceNetwork2 : sourcePopulation)
-          {
-            if (sourceNetwork1 != sourceNetwork2)
-            {
-              resultPopulation[r++]->CrossFrom(*sourceNetwork1, *sourceNetwork2, *binaryRandomGenerator);
-            }
-          }
-        }
-      }
-
-      template <typename T>
-      void GeneticAlgorithm2D<T>::Mutate(std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
-      {
-        for (auto& network : resultPopulation)
-        {
-          network->Mutate(*Mutagen);
-        }
-      }
-
-      template <typename T>
-      void GeneticAlgorithm2D<T>::Test(const ILesson2DLibrary<T>& lessonLibrary,
-                                       std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
-      {
-        // Prepare the storage for result of the testing.
-        std::vector<T> errors(resultPopulation.size());
-
-        // Prepare the task pool.
-        auto taskPool = std::make_unique<TestTask2DPool<T>>();
-        for (size_t i = 0; i < resultPopulation.size(); ++i)
-        {
-          auto task = std::make_unique<TestTask2D<T>>(lessonLibrary, *(resultPopulation[i]), errors[i]);
-          taskPool->Push(std::move(task));
-        }
-
-        // Prepare the thread pool.
-        auto threadPool = std::make_unique<TestTask2DThreadPool<T>>(*taskPool);
-
-        // Wait the thread pool.
-        threadPool->Wait();
-
-        // Sort the networks using sorting tree.
-        std::multimap<T, size_t> sortingTree;
-        for (size_t i = 0; i < resultPopulation.size(); ++i)
-        {
-          sortingTree.insert({ errors[i], i });
-        }
-        size_t i{};
-        for (auto& sortedNode : sortingTree)
-        {
-          std::cout << sortedNode.first << " ";// DEBUG
-          resultPopulation[i++].swap(resultPopulation[sortedNode.second]);
-        }
-      }
-
-      template <typename T>
-      void GeneticAlgorithm2D<T>::Select(std::vector<typename complex::INetwork2D<T>::Uptr>& sourcePopulation,
-                                         std::vector<typename complex::INetwork2D<T>::Uptr>& resultPopulation) const
-      {
-        // TODO: Improve this algorithm.
-        for (size_t s = 0; s < sourcePopulation.size(); ++s)
-        {
-          sourcePopulation[s].swap(resultPopulation[s]);
-        }
-      }
-
     }
   }
 }

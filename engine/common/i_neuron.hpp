@@ -47,10 +47,6 @@ namespace cnn
 
         virtual void FillWeights(IValueGenerator<T>& valueGenerator) = 0;
 
-        virtual void CrossFrom(const INeuron<T>& source1,
-                               const INeuron<T>& source2,
-                               IBinaryRandomGenerator& binaryRandomGenerator) = 0;
-
         virtual void Mutate(IMutagen<T>& mutagen) = 0;
 
         virtual const IActivationFunction<T>& GetActivationFunction() const = 0;
