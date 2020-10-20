@@ -22,6 +22,7 @@ namespace cnn
 
         using Uptr = std::unique_ptr<Layer<T>>;
 
+        // TODO: Perhaps, default constructor will be more flexible.
         Layer(const size_t inputSize,
               const size_t outputSize);
 

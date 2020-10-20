@@ -22,6 +22,7 @@ namespace cnn
 
         using Uptr = std::unique_ptr<Network<T>>;
 
+        // TODO: Perhaps, default constructor will be more flexible.
         Network(const size_t inputCountInFirstLayer,
                 const size_t outputCountInFirstLayer);
 

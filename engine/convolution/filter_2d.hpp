@@ -21,6 +21,7 @@ namespace cnn
 
       public:
 
+        // TODO: Perhaps, default constructor will be more flexible.
         Filter2D(const size_t width, const size_t height, const size_t coreCount);
 
         size_t GetWidth() const override;

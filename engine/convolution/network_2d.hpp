@@ -23,6 +23,7 @@ namespace cnn
 
         using Uptr = std::unique_ptr<Network2D<T>>;
 
+        // TODO: Perhaps, default constructor will be more flexible.
         Network2D(const size_t inputWidthInFirstLayer,
                   const size_t inputHeightInFirstLayer,
                   const size_t inputCountInFirstLayer,

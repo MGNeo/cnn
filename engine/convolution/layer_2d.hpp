@@ -20,6 +20,7 @@ namespace cnn
 
         using Uptr = std::unique_ptr<Layer2D<T>>;
 
+        // TODO: Perhaps, default constructor will be more flexible.
         Layer2D(const size_t inputWidth,
                 const size_t inputHeight,
                 const size_t inputCount,
