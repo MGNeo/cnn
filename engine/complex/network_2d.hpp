@@ -42,6 +42,10 @@ namespace cnn
 
         void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
 
+        void Save(const std::string& fileName) const override;
+
+        void Load(const std::string& fileName) override;
+
       private:
 
         typename convolution::INetwork2D<T>::Uptr ConvolutionNetwork2D;
@@ -150,6 +154,126 @@ namespace cnn
       {
         ConvolutionNetwork2D->SetActivationFunctions(activationFunction);
         PerceptronNetwork->SetActivationFunctions(activationFunction);
+      }
+
+      template <typename T>
+      void Network2D<T>::Save(const std::string& fileName) const
+      {
+        std::ofstream file(fileName, std::ios_base::out | std::ios_base::binary);
+
+        if (file.is_open() == false)
+        {
+          throw std::invalid_argument("cnn::engine::complex::Netowkr2D<T>::Save(), file.is_open() == false.");
+        }
+
+        // Process convolution network.
+        {
+          const auto& network = *ConvolutionNetwork2D;
+          for (size_t l = 0; l < network.GetLayerCount(); ++l)
+          {
+            const auto& layer = network.GetLayer(l);
+            for (size_t f = 0; f < layer.GetFilterCount(); ++f)
+            {
+              const auto& filter = layer.GetFilter(f);
+              for (size_t c = 0; c < filter.GetCoreCount(); ++c)
+              {
+                const auto& core = filter.GetCore(c);
+                for (size_t x = 0; x < core.GetWidth(); ++x)
+                {
+                  for (size_t y = 0; y < core.GetHeight(); ++y)
+                  {
+                    const T value = core.GetWeight(x, y);
+                    file.write(reinterpret_cast<const char*>(&value), sizeof(value));
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // Process perceptron network.
+        {
+          const auto& network = *PerceptronNetwork;
+          for (size_t l = 0; l < network.GetLayerCount(); ++l)
+          {
+            const auto& layer = network.GetLayer(l);
+            for (size_t n = 0; n < layer.GetNeuronCount(); ++n)
+            {
+              const auto& neuron = layer.GetNeuron(n);
+              for (size_t w = 0; w < neuron.GetInputCount(); ++w)
+              {
+                const T value = neuron.GetWeight(w);
+                file.write(reinterpret_cast<const char*>(&value), sizeof(value));
+              }
+            }
+          }
+        }
+
+        if (file.good() == false)
+        {
+          throw std::invalid_argument("cnn::engine::complex::Network2D::Save(), file.good() == false.");
+        }
+      }
+
+      template <typename T>
+      void Network2D<T>::Load(const std::string& fileName)
+      {
+        std::ifstream file(fileName, std::ios_base::in | std::ios_base::binary);
+
+        if (file.is_open() == false)
+        {
+          throw std::invalid_argument("cnn::engine::complex::Netowkr2D<T>::Load(), file.is_open() == false.");
+        }
+
+        // Process convolution network.
+        {
+          auto& network = *ConvolutionNetwork2D;
+          for (size_t l = 0; l < network.GetLayerCount(); ++l)
+          {
+            auto& layer = network.GetLayer(l);
+            for (size_t f = 0; f < layer.GetFilterCount(); ++f)
+            {
+              auto& filter = layer.GetFilter(f);
+              for (size_t c = 0; c < filter.GetCoreCount(); ++c)
+              {
+                auto& core = filter.GetCore(c);
+                for (size_t x = 0; x < core.GetWidth(); ++x)
+                {
+                  for (size_t y = 0; y < core.GetHeight(); ++y)
+                  {
+                    T value{};
+                    file.read(reinterpret_cast<char*>(&value), sizeof(value));
+                    core.SetWeight(x, y, value);
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // Process perceptron network.
+        {
+          auto& network = *PerceptronNetwork;
+          for (size_t l = 0; l < network.GetLayerCount(); ++l)
+          {
+            auto& layer = network.GetLayer(l);
+            for (size_t n = 0; n < layer.GetNeuronCount(); ++n)
+            {
+              auto& neuron = layer.GetNeuron(n);
+              for (size_t w = 0; w < neuron.GetInputCount(); ++w)
+              {
+                T value{};
+                file.read(reinterpret_cast<char*>(&value), sizeof(value));
+                neuron.SetWeight(w, value);
+              }
+            }
+          }
+        }
+
+        if (file.good() == false)
+        {
+          throw std::invalid_argument("cnn::engine::complex::Network2D::Load(), file.good() == false.");
+        }
       }
 
     }

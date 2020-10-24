@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <type_traits>
+#include <string>
 
 #include "i_layer_2d.hpp"
 #include "../common/i_value_generator.hpp"

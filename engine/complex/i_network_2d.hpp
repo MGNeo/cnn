@@ -2,6 +2,7 @@
 
 #include <type_traits>
 #include <memory>
+#include <string>
 
 #include "../convolution/i_network_2d.hpp"
 #include "../perceptron/i_network.hpp"
@@ -41,6 +42,18 @@ namespace cnn
         virtual void Mutate(common::IMutagen<T>& mutagen) = 0;
 
         virtual void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) = 0;
+
+        // Save weights values to file.
+        virtual void Save(const std::string& fileName) const = 0;
+
+        // Load weight values from file.
+        // Static types, dynamic types and topology of all subitems between
+        // this network and the network loaded from the file must be equal.
+        // Otherwise the behavior is undefined.
+
+        // Of course, we can implement full saving and loading of the network,
+        // but it need much more time, so we hasn't done this.
+        virtual void Load(const std::string& fileName) = 0;
 
         virtual ~INetwork2D() = default;
 

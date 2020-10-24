@@ -170,7 +170,7 @@ namespace cnn
       {
         auto algorithm = std::make_unique<engine::complex::GeneticAlgorithm2D<T>>();
 
-        algorithm->SetIterationCount(1000);
+        algorithm->SetIterationCount(10);
         algorithm->SetThreadCount(8);
 
         // Configure the mutagen which mutates the weights of the networks.

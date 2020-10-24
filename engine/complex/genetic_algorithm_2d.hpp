@@ -172,7 +172,7 @@ namespace cnn
           std::cout << "Time elapsed: " << (t2 - t1) / static_cast<float>(CLOCKS_PER_SEC)  << " Best error: " << bestError << std::endl;// DEBUG
         }
 
-        return {};
+        return std::move(bestNetwork);
       }
 
       template <typename T>
