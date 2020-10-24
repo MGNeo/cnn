@@ -2,6 +2,8 @@
 
 #include "factory.hpp"
 
+// TODO: Add complex_using example .
+
 // TODO: Add pooling processor into Layer2D.
 // TODO: Add statistics (performance and other) in GeneticAlgorithm2D.
 // TODO: Deny all move constructors and move operators=.
