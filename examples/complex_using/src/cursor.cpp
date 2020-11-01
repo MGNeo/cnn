@@ -6,24 +6,10 @@ namespace cnn
   {
     namespace complex_using
     {
-      Cursor::Cursor(const size_t width,
-                     const size_t height)
-        :
-        Width{ width },
-        Height{ height }
+      Cursor::Cursor()
       {
         SetX(0);
         SetY(0);
-      }
-
-      size_t Cursor::GetWidth() const
-      {
-        return Width;
-      }
-
-      size_t Cursor::GetHeight() const
-      {
-        return Height;
       }
 
       size_t Cursor::GetX() const

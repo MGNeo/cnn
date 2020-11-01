@@ -21,13 +21,7 @@
     <ClCompile Include="src\cursor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\field.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\backend.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

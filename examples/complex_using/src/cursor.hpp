@@ -13,11 +13,7 @@ namespace cnn
       {
       public:
 
-        Cursor(const size_t width,
-               const size_t height);
-
-        size_t GetWidth() const;
-        size_t GetHeight() const;
+        Cursor();
 
         size_t GetX() const;
         size_t GetY() const;
@@ -26,9 +22,6 @@ namespace cnn
         void SetY(const size_t y);
 
       private:
-
-        size_t Width;
-        size_t Height;
 
         size_t X;
         size_t Y;

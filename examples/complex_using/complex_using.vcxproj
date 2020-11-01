@@ -145,9 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\backend.cpp" />
     <ClCompile Include="src\cursor.cpp" />
-    <ClCompile Include="src\field.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\scene.cpp" />
   </ItemGroup>
