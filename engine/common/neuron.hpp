@@ -72,7 +72,6 @@ namespace cnn
 
       private:
 
-        // InputCount % 2 must be zero.
         size_t InputCount;
         
         std::unique_ptr<T[]> Inputs;
@@ -86,11 +85,6 @@ namespace cnn
       template <typename T>
       Neuron<T>::Neuron(const size_t inputCount)
       {
-        if ((inputCount % 2) != 0)
-        {
-          throw std::invalid_argument("cnn::engine::common::Neuron::Neuron(), (inputCount % 2) != 0.");
-        }
-
         InputCount = inputCount;
 
         Inputs = std::make_unique<T[]>(InputCount);
