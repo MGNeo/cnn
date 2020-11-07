@@ -1,11 +1,11 @@
 #pragma once
 
-#include <memory>
+#include <cstdint>
+#include <cstddef>
 #include <type_traits>
-#include <stdexcept>
-
-#include "i_neuron.hpp"
-#include "activation_function.hpp"
+#include <memory>
+#include <istream>
+#include <ostream>
 
 namespace cnn
 {
@@ -14,232 +14,315 @@ namespace cnn
     namespace common
     {
       template <typename T>
-      class Neuron : public INeuron<T>
+      class Neuron
       {
 
         static_assert(std::is_floating_point<T>::value);
 
       public:
 
-        Neuron(const size_t inputCount);
+        Neuron(const size_t inputCount = 0);
 
-        size_t GetInputCount() const override;
+        Neuron(const Neuron& neuron);
 
-        T GetInput(const size_t index) const override;
-        void SetInput(const size_t index, const T value) override;
+        Neuron(Neuron&& neuron) noexcept;
 
-        T GetWeight(const size_t index) const override;
-        void SetWeight(const size_t index, const T value) override;
+        // Exception guarantee: strong for this.
+        Neuron& operator=(const Neuron& neuron);
 
-        void Process() override;
+        Neuron& operator=(Neuron&& neuron) noexcept;
 
-        T GetOutput() const override;
+        size_t GetInputCount() const noexcept;
 
-        void ClearInputs() override;
-        void ClearWeights() override;
-        void ClearOutput() override;
+        // Exception guarantee: strong for this.
+        void SetInputCount(const size_t inputCount);
 
-        // The result must not be nullptr.
-        typename INeuron<T>::Uptr Clone(const bool cloneState) const override;
+        T GetInput(const size_t index) const;
 
-        Neuron(const Neuron<T>& neuron, const bool cloneState);
+        // Exception guarantee: strong for this.
+        void SetInput(const size_t index, const T value);
 
-        void FillWeights(IValueGenerator<T>& valueGenerator) override;
+        T GetWeight(const size_t index) const;
 
-        void Mutate(common::IMutagen<T>& mutagen) override;
+        // Exception guarantee: strong for this.
+        void SetWeight(const size_t index, const T value);
 
-        const IActivationFunction<T>& GetActivationFunction() const override;
-        void SetActivationFunction(const IActivationFunction<T>& activationFunction) override;
+        T GetOutput() const noexcept;
 
-      public:
+        // Exception guarantee: strong for this.
+        void SetOutput(const T value);
 
+        void GenerateOutput() noexcept;
+
+        void Clear() noexcept;
+
+        void ClearInputs() noexcept;
+
+        void ClearWeights() noexcept;
+
+        void ClearOutput() noexcept;
+
+        // Exception guarantee: strong for this and base for ostream.
+        // It saves full state.
+        void Save(std::ostream& ostream);
+
+        // Exception guarantee: strong for this and base for istream.
+        // It loads full state.
+        void Load(std::istream& istream);
+
+      private:
+
+        // InputCount % 2 must be zero.
         size_t InputCount;
-
+        
         std::unique_ptr<T[]> Inputs;
+        
         std::unique_ptr<T[]> Weights;
-
+        
         T Output;
-
-        // ActivationFunction_ must not be nullptr.
-        typename IActivationFunction<T>::Uptr ActivationFunction_;
 
       };
 
       template <typename T>
       Neuron<T>::Neuron(const size_t inputCount)
-        :
-        InputCount{ inputCount },
-        ActivationFunction_{ std::make_unique<common::ActivationFunction<T>>() }
       {
-        if (InputCount == 0)
+        if ((inputCount % 2) != 0)
         {
-          throw std::invalid_argument("cnn::engine::common::Neuron::Neuron(), InputCount == 0.");
+          throw std::invalid_argument("cnn::engine::common::Neuron::Neuron(), (inputCount % 2) != 0.");
         }
+
+        InputCount = inputCount;
+
         Inputs = std::make_unique<T[]>(InputCount);
         Weights = std::make_unique<T[]>(InputCount);
-        ClearInputs();
-        ClearWeights();
-        ClearOutput();
+
+        Clear();
       }
 
       template <typename T>
-      size_t Neuron<T>::GetInputCount() const
+      Neuron<T>::Neuron(const Neuron& neuron)
+        :
+        InputCount{ neuron.InputCount },
+        Output{ neuron.Output }
+      {
+        if (InputCount != 0)
+        {
+          Inputs = std::make_unique<T[]>(InputCount);
+          memcpy(Inputs.get(), neuron.Inputs.get(), sizeof(T) * InputCount);
+
+          Weights = std::make_unique<T[]>(InputCount);
+          memcpy(Weights.get(), neuron.Weights.get(), sizeof(T) * InputCount);
+        }
+      }
+
+      template <typename T>
+      Neuron<T>::Neuron(Neuron&& neuron) noexcept
+        :
+        InputCount{ neuron.InputCount },
+        Inputs{ std::move(neuron.Inputs) },
+        Weights{ std::move(neuron.Weights) },
+        Output{ neuron.Output }
+      {
+        neuron.InputCount = 0;
+        neuron.Output = static_cast<T>(0.L);
+      }
+
+      template <typename T>
+      Neuron<T>& Neuron<T>::operator=(const Neuron& neuron)
+      {
+        if (this != &neuron)
+        {
+          Neuron tmpNeuron{ neuron };
+          std::swap(tmpNeuron, *this);
+        }
+        return *this;
+      }
+
+      template <typename T>
+      Neuron<T>& Neuron<T>::operator=(Neuron&& neuron) noexcept
+      {
+        if (this != &neuron)
+        {
+          InputCount = neuron.InputCount;
+          Inputs = std::move(neuron.Inputs);
+          Weights = std::move(neuron.Weights);
+          Output = neuron.Output;
+
+          neuron.InputCount = 0;
+          neuron.Output = static_cast<T>(0.L);
+        }
+        return *this;
+      }
+
+      template <typename T>
+      size_t Neuron<T>::GetInputCount() const noexcept
       {
         return InputCount;
       }
 
       template <typename T>
+      void Neuron<T>::SetInputCount(const size_t inputCount)
+      {
+        if (InputCount != inputCount)
+        {
+          Neuron neuron(inputCount);
+          std::swap(neuron, *this);
+        }
+      }
+
+      template <typename T>
       T Neuron<T>::GetInput(const size_t index) const
       {
-#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= InputCount)
         {
           throw std::range_error("cnn::engine::common::Neuron::GetInput(), index >= InputCount.");
         }
-#endif
         return Inputs[index];
       }
 
       template <typename T>
       void Neuron<T>::SetInput(const size_t index, const T value)
       {
-#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= InputCount)
         {
           throw std::range_error("cnn::engine::common::Neuron::SetInput(), index >= InputCount.");
         }
-#endif
         Inputs[index] = value;
       }
 
       template <typename T>
       T Neuron<T>::GetWeight(const size_t index) const
       {
-#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= InputCount)
         {
           throw std::range_error("cnn::engine::common::Neuron::GetWeight(), index >= InputCount.");
         }
-#endif
         return Weights[index];
       }
 
       template <typename T>
       void Neuron<T>::SetWeight(const size_t index, const T value)
       {
-#ifndef CNN_DISABLE_RANGE_CHECKS
         if (index >= InputCount)
         {
           throw std::range_error("cnn::engine::common::Neuron::SetWeight(), index >= InputCount.");
         }
-#endif
         Weights[index] = value;
       }
 
       template <typename T>
-      void Neuron<T>::Process()
-      {
-        Output = 0;
-        for (size_t i = 0; i < InputCount; ++i)
-        {
-          auto a = Inputs[i];
-          auto b = Weights[i];
-          Output += Inputs[i] * Weights[i];
-        }
-        // ActivationFunction_ must not be nullptr.
-        Output = ActivationFunction_->Use(Output);
-      }
-
-      template <typename T>
-      T Neuron<T>::GetOutput() const
+      T Neuron<T>::GetOutput() const noexcept
       {
         return Output;
       }
 
       template <typename T>
-      void Neuron<T>::ClearInputs()
+      void Neuron<T>::SetOutput(const T value)
       {
-        for (size_t i = 0; i < InputCount; ++i)
+        Output = value;
+      }
+
+      template <typename T>
+      void Neuron<T>::GenerateOutput() noexcept
+      {
+        if (InputCount != 0)
         {
-          Inputs[i] = 0;
-        }
-      }
-
-      template <typename T>
-      void Neuron<T>::ClearWeights()
-      {
-        for (size_t w = 0; w < InputCount; ++w)
-        {
-          Weights[w] = 0;
-        }
-      }
-
-      template <typename T>
-      void Neuron<T>::ClearOutput()
-      {
-        Output = 0;
-      }
-
-      // The result must not be nullptr.
-      template <typename T>
-      typename INeuron<T>::Uptr Neuron<T>::Clone(const bool cloneState) const
-      {
-        return std::make_unique<Neuron<T>>(*this, cloneState);
-      }
-
-      template <typename T>
-      Neuron<T>::Neuron(const Neuron<T>& neuron, const bool cloneState)
-        :
-        InputCount{ neuron.GetInputCount() },
-        Inputs{ std::make_unique<T[]>(InputCount) },
-        Weights{ std::make_unique<T[]>(InputCount) },
-        ActivationFunction_{ neuron.GetActivationFunction().Clone() }
-      {
-        if (cloneState == true)
-        {
-          memcpy(Inputs.get(), neuron.Inputs.get(), sizeof(T) * InputCount);
-          memcpy(Weights.get(), neuron.Weights.get(), sizeof(T) * InputCount);
-          Output = neuron.GetOutput();
-        } else {
+          Output = static_cast<T>(0.L);
           for (size_t i = 0; i < InputCount; ++i)
           {
-            Inputs[i] = 0;
-            Weights[i] = 0;
+            Output += Inputs[i] * Weights[i];
           }
-          Output = 0;
+          Output = 1 / (1 + exp(-Output));
         }
       }
 
       template <typename T>
-      void Neuron<T>::FillWeights(IValueGenerator<T>& valueGenerator)
+      void Neuron<T>::Clear() noexcept
+      {
+        ClearInputs();
+        ClearWeights();
+        ClearOutput();
+      }
+
+      template <typename T>
+      void Neuron<T>::ClearInputs() noexcept
       {
         for (size_t i = 0; i < InputCount; ++i)
         {
-          Weights[i] = valueGenerator.Generate();
+          Inputs[i] = static_cast<T>(0.L);
         }
       }
 
       template <typename T>
-      void Neuron<T>::Mutate(common::IMutagen<T>& mutagen)
+      void Neuron<T>::ClearWeights() noexcept
       {
-        for (size_t w = 0; w < GetInputCount(); ++w)
+        for (size_t i = 0; i < InputCount; ++i)
         {
-          Weights[w] = mutagen.Mutate(Weights[w]);
+          Weights[i] = static_cast<T>(0.L);
         }
       }
 
       template <typename T>
-      const IActivationFunction<T>& Neuron<T>::GetActivationFunction() const
+      void Neuron<T>::ClearOutput() noexcept
       {
-        return *ActivationFunction_;
+        Output = static_cast<T>(0.L);
       }
 
-      // The result must not be nullptr.
       template <typename T>
-      void Neuron<T>::SetActivationFunction(const IActivationFunction<T>& activationFunction)
+      void Neuron<T>::Save(std::ostream& ostream)
       {
-        ActivationFunction_ = activationFunction.Clone();
+        if (ostream.good() == false)
+        {
+          throw std::invalid_argument("cnn::engine::Neuron::Save(), ostream.good() == false.");
+        }
+        ostream.write(reinterpret_cast<char*const>(&InputCount), sizeof(InputCount));
+        for (size_t i = 0; i < InputCount; ++i)
+        {
+          ostream.write(reinterpret_cast<const char*const>(&(Inputs[i])), sizeof(T));
+        }
+        for (size_t i = 0; i < InputCount; ++i)
+        {
+          ostream.write(reinterpret_cast<const char* const>(&(Weights[i])), sizeof(T));
+        }
+        ostream.write(reinterpret_cast<char* const>(&Output), sizeof(Output));
+        if (ostream.good() == false)
+        {
+          throw std::runtime_error("cnn::engine::Neuron::Save(), ostream.good() == false.");
+        }
+      }
+
+      template <typename T>
+      void Neuron<T>::Load(std::istream& istream)
+      {
+        if (istream.good() == false)
+        {
+          throw std::invalid_argument("cnn::engine::Neuron::Load(), istream.good() == false.");
+        }
+        decltype(InputCount) inputCount{};
+        istream.read(reinterpret_cast<char*const>(&inputCount), sizeof(inputCount));
+        Neuron tmpNeuron{ inputCount };
+        for (size_t i = 0; i < inputCount; ++i)
+        {
+          T tmpInput{};
+          istream.read(reinterpret_cast<char*const>(&tmpInput), sizeof(tmpInput));
+          tmpNeuron.SetInput(i, tmpInput);
+        }
+        for (size_t i = 0; i < inputCount; ++i)
+        {
+          T tmpWeight{};
+          istream.read(reinterpret_cast<char* const>(&tmpWeight), sizeof(tmpWeight));
+          tmpNeuron.SetWeight(i, tmpWeight);
+        }
+        decltype(Output) tmpOutput{};
+        istream.read(reinterpret_cast<char* const>(&tmpOutput), sizeof(tmpOutput));
+        tmpNeuron.SetOutput(tmpOutput);
+        if (istream.good() == false)
+        {
+          throw std::runtime_error("cnn::engine::Neuron::Load(), istream.good() == false.");
+        }
+        std::swap(tmpNeuron, *this);
       }
     }
   }
 }
+

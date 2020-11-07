@@ -19,46 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common\activation_function.hpp" />
-    <ClInclude Include="common\binary_random_generator.hpp" />
-    <ClInclude Include="common\i_activation_function.hpp" />
-    <ClInclude Include="common\i_binary_random_generator.hpp" />
-    <ClInclude Include="common\i_map.hpp" />
-    <ClInclude Include="common\i_mutagen.hpp" />
-    <ClInclude Include="common\i_neuron.hpp" />
-    <ClInclude Include="common\i_value_generator.hpp" />
-    <ClInclude Include="common\map.hpp" />
-    <ClInclude Include="common\mutagen.hpp" />
-    <ClInclude Include="common\neuron.hpp" />
-    <ClInclude Include="common\value_generator.hpp" />
-    <ClInclude Include="complex\genetic_algorithm_2d.hpp" />
-    <ClInclude Include="complex\i_genetic_algorithm_2d.hpp" />
-    <ClInclude Include="complex\i_test_task_2d.hpp" />
-    <ClInclude Include="complex\i_lesson_2d.hpp" />
-    <ClInclude Include="complex\i_lesson_2d_library.hpp" />
-    <ClInclude Include="complex\i_network_2d.hpp" />
-    <ClInclude Include="complex\i_test_task_2d_pool.hpp" />
-    <ClInclude Include="complex\lesson_2d.hpp" />
-    <ClInclude Include="complex\lesson_2d_library.hpp" />
-    <ClInclude Include="complex\network_2d.hpp" />
-    <ClInclude Include="complex\test_task_2d.hpp" />
-    <ClInclude Include="complex\test_task_2d_pool.hpp" />
-    <ClInclude Include="complex\i_test_task_2d_thread_pool.hpp" />
-    <ClInclude Include="complex\test_task_2d_thread_pool.hpp" />
-    <ClInclude Include="convolution\layer_2d.hpp" />
-    <ClInclude Include="convolution\core_2d.hpp" />
-    <ClInclude Include="convolution\filter_2d.hpp" />
-    <ClInclude Include="convolution\i_core_2d.hpp" />
-    <ClInclude Include="convolution\i_filter_2d.hpp" />
-    <ClInclude Include="convolution\i_layer_2d.hpp" />
-    <ClInclude Include="convolution\i_map_2d.hpp" />
-    <ClInclude Include="convolution\i_network_2d.hpp" />
-    <ClInclude Include="convolution\map_2d.hpp" />
-    <ClInclude Include="convolution\network_2d.hpp" />
-    <ClInclude Include="perceptron\i_layer.hpp" />
-    <ClInclude Include="perceptron\i_network.hpp" />
-    <ClInclude Include="perceptron\layer.hpp" />
-    <ClInclude Include="perceptron\network.hpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common\Neuron.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -81,13 +45,13 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
