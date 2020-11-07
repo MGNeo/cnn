@@ -2,9 +2,15 @@
 
 #include "factory.hpp"
 
-// TODO: Add complex_using example .
+// Very important TODOs are:
+// TODO: The serialization and deserialization must be full.
+// TODO: All dynamic polymorphism must be killed because it leads to problems with serialization.
+// TODO: Only standard activation function must be used.
+// TODO: The complex network must be being created from a file or dynamic settings.
+// TODO: Every convolution layer must have a pooler.
+// TODO: All size must be multiple of two.
 
-// TODO: Add pooling processor into Layer2D.
+// Optionally TODOs are:
 // TODO: Add statistics (performance and other) in GeneticAlgorithm2D.
 // TODO: Deny all move constructors and move operators=.
 // TODO: Add marco ENABLE_STRONG_EXCEPTION_GUARANTEE.
