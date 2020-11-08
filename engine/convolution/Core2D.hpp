@@ -85,10 +85,10 @@ namespace cnn
 
       template <typename T>
       Core2D<T>::Core2D(const common::Size2D<size_t> size)
+        :
+        Size{ size }, 
+        Neuron{ Size.GetArea() }
       {
-        Size = size;
-        Neuron.SetInputCount(Size.GetArea());
-
         Clear();
       }
 
