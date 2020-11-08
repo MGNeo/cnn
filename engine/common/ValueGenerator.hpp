@@ -69,7 +69,7 @@ namespace cnn
         :
         MinValue{ valueGenerator.MinValue },
         MaxValue{ valueGenerator.MaxValue },
-        DRE{ valueGenerator.DRE }
+        DRE{ std::move(valueGenerator.DRE) }
       {
         valueGenerator.Clear();
       }
