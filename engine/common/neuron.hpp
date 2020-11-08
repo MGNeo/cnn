@@ -283,7 +283,7 @@ namespace cnn
         {
           throw std::invalid_argument("cnn::engine::Neuron::Save(), ostream.good() == false.");
         }
-        ostream.write(reinterpret_cast<char*const>(&InputCount), sizeof(InputCount));
+        ostream.write(reinterpret_cast<const char*const>(&InputCount), sizeof(InputCount));
         for (size_t i = 0; i < InputCount; ++i)
         {
           ostream.write(reinterpret_cast<const char*const>(&(Inputs[i])), sizeof(Inputs[i]));
@@ -292,7 +292,7 @@ namespace cnn
         {
           ostream.write(reinterpret_cast<const char* const>(&(Weights[i])), sizeof(Weights[i]));
         }
-        ostream.write(reinterpret_cast<char* const>(&Output), sizeof(Output));
+        ostream.write(reinterpret_cast<const char* const>(&Output), sizeof(Output));
         if (ostream.good() == false)
         {
           throw std::runtime_error("cnn::engine::Neuron::Save(), ostream.good() == false.");
