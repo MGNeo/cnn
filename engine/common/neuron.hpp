@@ -133,8 +133,7 @@ namespace cnn
         Weights{ std::move(neuron.Weights) },
         Output{ neuron.Output }
       {
-        neuron.InputCount = 0;
-        neuron.Output = static_cast<T>(0.L);
+        neuron.Clear();
       }
 
       template <typename T>
@@ -158,8 +157,7 @@ namespace cnn
           Weights = std::move(neuron.Weights);
           Output = neuron.Output;
 
-          neuron.InputCount = 0;
-          neuron.Output = static_cast<T>(0.L);
+          neuron.Clear();
         }
         return *this;
       }
