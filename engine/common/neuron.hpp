@@ -286,11 +286,11 @@ namespace cnn
         ostream.write(reinterpret_cast<char*const>(&InputCount), sizeof(InputCount));
         for (size_t i = 0; i < InputCount; ++i)
         {
-          ostream.write(reinterpret_cast<const char*const>(&(Inputs[i])), sizeof(T));
+          ostream.write(reinterpret_cast<const char*const>(&(Inputs[i])), sizeof(Inputs[i]));
         }
         for (size_t i = 0; i < InputCount; ++i)
         {
-          ostream.write(reinterpret_cast<const char* const>(&(Weights[i])), sizeof(T));
+          ostream.write(reinterpret_cast<const char* const>(&(Weights[i])), sizeof(Weights[i]));
         }
         ostream.write(reinterpret_cast<char* const>(&Output), sizeof(Output));
         if (ostream.good() == false)
