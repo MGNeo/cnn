@@ -45,13 +45,13 @@ namespace cnn
         // Exception guarantee: strong for this.
         void SetVariabilityForce(const T variabilityForce);
 
-        // We expect that the method throws an exception never.
+        // We expect that the method never throws any exception.
         void SetSeed(const unsigned int seed) noexcept;
 
-        // We expect that the method throws an exception never.
+        // We expect that the method never throws any exception.
         void Clear() noexcept;
 
-        // We expect that the method throws an exception never.
+        // We expect that the method never throws any exception.
         T Mutate(const T value) noexcept;
 
       private:

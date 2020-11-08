@@ -40,13 +40,13 @@ namespace cnn
         // Exception guarantee: strong for this.
         void SetMaxValue(const T maxValue);
 
-        // We expect that the method throws an exception never.
+        // We expect that the method never throws any exception.
         T Generate();
 
-        // We expect that the method throws an exception never.
+        // We expect that the method never throws any exception.
         void SetSeed(const unsigned int seed);
 
-        // We expect that the method throws an exception never.
+        // We expect that the method never throws any exception.
         void Clear();
 
       private:

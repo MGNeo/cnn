@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <cstddef>
 #include <type_traits>
-#include <memory>
+#include <cstring>
 #include <istream>
 #include <ostream>
 
@@ -57,26 +57,30 @@ namespace cnn
 
         void GenerateOutput() noexcept;
 
+        // It clears the state without changing of the topology.
         void Clear() noexcept;
 
+        // It clears the state without changing of the topology.
         void ClearInputs() noexcept;
 
+        // It clears the state without changing of the topology.
         void ClearWeights() noexcept;
 
+        // It clears the state without changing of the topology.
         void ClearOutput() noexcept;
 
-        // Exception guarantee: strong for this and base for ostream.
+        // Exception guarantee: base for ostream.
         // It saves full state.
-        void Save(std::ostream& ostream);
+        void Save(std::ostream& ostream) const;
 
         // Exception guarantee: strong for this and base for istream.
         // It loads full state.
         void Load(std::istream& istream);
 
-        // We expect that the method throws an exception never.
+        // We expect that the method never throws any exception.
         void FillWeights(ValueGenerator<T>& valueGenerator) noexcept;
 
-        // We expect that the method throws an exception never.
+        // We expect that the method never throws any exception.
         void Mutate(Mutagen<T>& mutagen) noexcept;
 
       private:
@@ -114,10 +118,10 @@ namespace cnn
         if (InputCount != 0)
         {
           Inputs = std::make_unique<T[]>(InputCount);
-          memcpy(Inputs.get(), neuron.Inputs.get(), sizeof(T) * InputCount);
+          std::memcpy(Inputs.get(), neuron.Inputs.get(), sizeof(T) * InputCount);
 
           Weights = std::make_unique<T[]>(InputCount);
-          memcpy(Weights.get(), neuron.Weights.get(), sizeof(T) * InputCount);
+          std::memcpy(Weights.get(), neuron.Weights.get(), sizeof(T) * InputCount);
         }
       }
 
@@ -275,7 +279,7 @@ namespace cnn
       }
 
       template <typename T>
-      void Neuron<T>::Save(std::ostream& ostream)
+      void Neuron<T>::Save(std::ostream& ostream) const
       {
         if (ostream.good() == false)
         {
@@ -304,8 +308,10 @@ namespace cnn
         {
           throw std::invalid_argument("cnn::engine::Neuron::Load(), istream.good() == false.");
         }
+
         decltype(InputCount) inputCount{};
         istream.read(reinterpret_cast<char*const>(&inputCount), sizeof(inputCount));
+
         Neuron neuron{ inputCount };
         for (size_t i = 0; i < inputCount; ++i)
         {
@@ -319,9 +325,11 @@ namespace cnn
           istream.read(reinterpret_cast<char* const>(&weight), sizeof(weight));
           neuron.SetWeight(i, weight);
         }
+
         decltype(Output) output{};
         istream.read(reinterpret_cast<char* const>(&output), sizeof(output));
         neuron.SetOutput(output);
+
         if (istream.good() == false)
         {
           throw std::runtime_error("cnn::engine::Neuron::Load(), istream.good() == false.");

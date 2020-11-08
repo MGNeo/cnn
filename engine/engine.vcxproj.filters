@@ -20,5 +20,6 @@
     <ClInclude Include="convolution\Core2D.hpp" />
     <ClInclude Include="common\Mutagen.hpp" />
     <ClInclude Include="common\ValueGenerator.hpp" />
+    <ClInclude Include="common\Size2D.hpp" />
   </ItemGroup>
 </Project>
