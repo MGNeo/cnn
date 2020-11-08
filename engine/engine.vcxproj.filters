@@ -17,5 +17,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\Neuron.hpp" />
+    <ClInclude Include="convolution\Core2D.hpp" />
+    <ClInclude Include="common\Mutagen.hpp" />
+    <ClInclude Include="common\ValueGenerator.hpp" />
   </ItemGroup>
 </Project>

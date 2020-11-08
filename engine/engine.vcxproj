@@ -22,7 +22,10 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\Mutagen.hpp" />
     <ClInclude Include="common\Neuron.hpp" />
+    <ClInclude Include="common\ValueGenerator.hpp" />
+    <ClInclude Include="convolution\Core2D.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -7,6 +7,9 @@
 #include <istream>
 #include <ostream>
 
+#include "ValueGenerator.hpp"
+#include "Mutagen.hpp"
+
 namespace cnn
 {
   namespace engine
@@ -70,6 +73,12 @@ namespace cnn
         // It loads full state.
         void Load(std::istream& istream);
 
+        // We expect that the method throws an exception never.
+        void FillWeights(ValueGenerator<T>& valueGenerator) noexcept;
+
+        // We expect that the method throws an exception never.
+        void Mutate(Mutagen<T>& mutagen) noexcept;
+
       private:
 
         size_t InputCount;
@@ -87,8 +96,11 @@ namespace cnn
       {
         InputCount = inputCount;
 
-        Inputs = std::make_unique<T[]>(InputCount);
-        Weights = std::make_unique<T[]>(InputCount);
+        if (InputCount != 0)
+        {
+          Inputs = std::make_unique<T[]>(InputCount);
+          Weights = std::make_unique<T[]>(InputCount);
+        }
 
         Clear();
       }
@@ -294,27 +306,45 @@ namespace cnn
         }
         decltype(InputCount) inputCount{};
         istream.read(reinterpret_cast<char*const>(&inputCount), sizeof(inputCount));
-        Neuron tmpNeuron{ inputCount };
+        Neuron neuron{ inputCount };
         for (size_t i = 0; i < inputCount; ++i)
         {
-          T tmpInput{};
-          istream.read(reinterpret_cast<char*const>(&tmpInput), sizeof(tmpInput));
-          tmpNeuron.SetInput(i, tmpInput);
+          T input{};
+          istream.read(reinterpret_cast<char*const>(&input), sizeof(input));
+          neuron.SetInput(i, input);
         }
         for (size_t i = 0; i < inputCount; ++i)
         {
-          T tmpWeight{};
-          istream.read(reinterpret_cast<char* const>(&tmpWeight), sizeof(tmpWeight));
-          tmpNeuron.SetWeight(i, tmpWeight);
+          T weight{};
+          istream.read(reinterpret_cast<char* const>(&weight), sizeof(weight));
+          neuron.SetWeight(i, weight);
         }
-        decltype(Output) tmpOutput{};
-        istream.read(reinterpret_cast<char* const>(&tmpOutput), sizeof(tmpOutput));
-        tmpNeuron.SetOutput(tmpOutput);
+        decltype(Output) output{};
+        istream.read(reinterpret_cast<char* const>(&output), sizeof(output));
+        neuron.SetOutput(output);
         if (istream.good() == false)
         {
           throw std::runtime_error("cnn::engine::Neuron::Load(), istream.good() == false.");
         }
-        std::swap(tmpNeuron, *this);
+        std::swap(neuron, *this);
+      }
+
+      template <typename T>
+      void Neuron<T>::FillWeights(ValueGenerator<T>& valueGenerator) noexcept
+      {
+        for (size_t i = 0; i < InputCount; ++i)
+        {
+          Weights[i] = valueGenerator.Generate();
+        }
+      }
+
+      template <typename T>
+      void Neuron<T>::Mutate(Mutagen<T>& mutagen) noexcept
+      {
+        for (size_t i = 0; i < InputCount; ++i)
+        {
+          Weights[i] = mutagen.Mutate(Weights[i]);
+        }
       }
     }
   }
