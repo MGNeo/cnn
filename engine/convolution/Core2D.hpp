@@ -75,8 +75,6 @@ namespace cnn
 
       private:
 
-        void CheckSize(const common::Size2D<size_t>& size) const;
-
         common::Size2D<size_t> Size;
 
         common::Neuron<T> Neuron;
@@ -88,8 +86,6 @@ namespace cnn
       template <typename T>
       Core2D<T>::Core2D(const common::Size2D<size_t> size)
       {
-        CheckSize(size);
-
         Size = size;
         Neuron.SetInputCount(Size.GetArea());
 
@@ -246,8 +242,6 @@ namespace cnn
           throw std::runtime_error("cnn::engine::convolution::Core2D::Load(), istream.good() == false.");
         }
 
-        CheckSize(size);
-
         if (neuron.GetInputCount() != size.GetArea())
         {
           throw std::logic_error("cnn::engine::convolution::Core2D::Load(), neuron != size.GetArea().");
@@ -267,19 +261,6 @@ namespace cnn
       void Core2D<T>::Mutate(common::Mutagen<T>& mutagen) noexcept
       {
         Neuron.Mutate(mutagen);
-      }
-
-      template <typename T>
-      void Core2D<T>::CheckSize(const common::Size2D<size_t>& size) const
-      {
-        if ((size.GetWidth() == 0) && (size.GetHeight() != 0))
-        {
-          throw std::invalid_argument("cnn::engine::convolution::Core2D::CheckSize(), (size.GetWidth() == 0) && (size.GetHeight() != 0).");
-        }
-        if ((size.GetWidth() != 0) && (size.GetHeight() == 0))
-        {
-          throw std::invalid_argument("cnn::engine::convolution::Core2D::CheckSize(), (size.GetWidth() != 0) && (size.GetHeight() == 0).");
-        }
       }
     }
   }
