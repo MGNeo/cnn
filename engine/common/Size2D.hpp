@@ -68,8 +68,7 @@ namespace cnn
         Width{ size.Width },
         Height{ size.Height }
       {
-        size.Width = 0;
-        size.Height = 0;
+        size.Clear() ;
       }
 
       template <typename T>
@@ -80,8 +79,7 @@ namespace cnn
           Width = size.Width;
           Height = size.Height;
 
-          size.Width = 0;
-          size.Height = 0;
+          size.Clear() ;
         }
         return *this;
       }
