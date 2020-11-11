@@ -69,6 +69,9 @@ namespace cnn
         // It clears the state without changing of the topology.
         void ClearOutput() noexcept;
 
+        // It resets the state to zero including the topology.
+        void Reset() noexcept;
+
         // Exception guarantee: base for ostream.
         // It saves full state.
         void Save(std::ostream& ostream) const;
@@ -104,9 +107,11 @@ namespace cnn
         {
           Inputs = std::make_unique<T[]>(InputCount);
           Weights = std::make_unique<T[]>(InputCount);
+          Clear();
+        } else {
+          ClearOutput();
         }
 
-        Clear();
       }
 
       template <typename T>
@@ -133,7 +138,7 @@ namespace cnn
         Weights{ std::move(neuron.Weights) },
         Output{ neuron.Output }
       {
-        neuron.Clear();
+        neuron.Reset();
       }
 
       template <typename T>
@@ -157,7 +162,7 @@ namespace cnn
           Weights = std::move(neuron.Weights);
           Output = neuron.Output;
 
-          neuron.Clear();
+          neuron.Reset();
         }
         return *this;
       }
@@ -277,22 +282,36 @@ namespace cnn
       }
 
       template <typename T>
+      void Neuron<T>::Reset() noexcept
+      {
+        InputCount = 0;
+        Inputs.reset(nullptr);
+        Weights.reset(nullptr);
+        Output = static_cast<T>(0.L);
+      }
+
+      template <typename T>
       void Neuron<T>::Save(std::ostream& ostream) const
       {
         if (ostream.good() == false)
         {
           throw std::invalid_argument("cnn::engine::Neuron::Save(), ostream.good() == false.");
         }
+
         ostream.write(reinterpret_cast<const char*const>(&InputCount), sizeof(InputCount));
+
         for (size_t i = 0; i < InputCount; ++i)
         {
           ostream.write(reinterpret_cast<const char*const>(&(Inputs[i])), sizeof(Inputs[i]));
         }
+
         for (size_t i = 0; i < InputCount; ++i)
         {
           ostream.write(reinterpret_cast<const char* const>(&(Weights[i])), sizeof(Weights[i]));
         }
+
         ostream.write(reinterpret_cast<const char* const>(&Output), sizeof(Output));
+
         if (ostream.good() == false)
         {
           throw std::runtime_error("cnn::engine::Neuron::Save(), ostream.good() == false.");
@@ -317,6 +336,7 @@ namespace cnn
           istream.read(reinterpret_cast<char*const>(&input), sizeof(input));
           neuron.SetInput(i, input);
         }
+
         for (size_t i = 0; i < inputCount; ++i)
         {
           T weight{};
@@ -332,6 +352,7 @@ namespace cnn
         {
           throw std::runtime_error("cnn::engine::Neuron::Load(), istream.good() == false.");
         }
+
         std::swap(neuron, *this);
       }
 

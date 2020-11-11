@@ -22,6 +22,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\Map.hpp" />
     <ClInclude Include="common\Mutagen.hpp" />
     <ClInclude Include="common\Neuron.hpp" />
     <ClInclude Include="common\Size2D.hpp" />
