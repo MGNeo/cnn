@@ -5,6 +5,7 @@
 
 #include <sstream>
 #include <iostream>
+#include <fstream>
 
 // TODO: Core2D.hpp (exception guarantee).
 

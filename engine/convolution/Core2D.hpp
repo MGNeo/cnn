@@ -33,31 +33,37 @@ namespace cnn
 
         common::Size2D<size_t> GetSize() const noexcept;
 
+        // Exception guarantee: strong for this.
         void SetSize(const common::Size2D<size_t> size);
 
         T GetInput(const size_t x, const size_t y) const;
 
+        // Exception guarantee: strong for this.
         void SetInput(const size_t x, const size_t y, const T value);
 
         T GetWeight(const size_t x, const size_t y) const;
 
+        // Exception guarantee: strong for this.
         void SetWeight(const size_t x, const size_t y, const T value);
 
-        void GenerateOutput();
+        void GenerateOutput() noexcept;
 
-        T GetOutput() const;
-
-        // It clears the state without changing of the topology.
-        void ClearInputs();
+        T GetOutput() const noexcept;
 
         // It clears the state without changing of the topology.
-        void ClearWeights();
+        void ClearInputs() noexcept;
 
         // It clears the state without changing of the topology.
-        void ClearOutput();
+        void ClearWeights() noexcept;
 
         // It clears the state without changing of the topology.
-        void Clear();
+        void ClearOutput() noexcept;
+
+        // It clears the state without changing of the topology.
+        void Clear() noexcept;
+
+        // It resets the state to zero including the topology.
+        void Reset() noexcept;
 
         // Exception guarantee: base for ostream.
         // It saves full state.
@@ -98,7 +104,6 @@ namespace cnn
         Size{ std::move(core.Size) },
         Neuron{ std::move(core.Neuron) }
       {
-        core.Clear();
       }
 
       template <typename T>
@@ -154,13 +159,13 @@ namespace cnn
       }
 
       template <typename T>
-      void Core2D<T>::GenerateOutput()
+      void Core2D<T>::GenerateOutput() noexcept
       {
         Neuron.GenerateOutput();
       }
 
       template <typename T>
-      T Core2D<T>::GetOutput() const
+      T Core2D<T>::GetOutput() const noexcept
       {
         return Neuron.GetOutput();
       }
@@ -182,27 +187,34 @@ namespace cnn
       }
 
       template <typename T>
-      void Core2D<T>::ClearInputs()
+      void Core2D<T>::ClearInputs() noexcept
       {
         Neuron.ClearInputs();
       }
 
       template <typename T>
-      void Core2D<T>::ClearWeights()
+      void Core2D<T>::ClearWeights() noexcept
       {
         Neuron.ClearWeights();
       }
 
       template <typename T>
-      void Core2D<T>::ClearOutput()
+      void Core2D<T>::ClearOutput() noexcept
       {
         Neuron.ClearOutput();
       }
 
       template <typename T>
-      void Core2D<T>::Clear()
+      void Core2D<T>::Clear() noexcept
       {
         Neuron.Clear();
+      }
+
+      template <typename T>
+      void Core2D<T>::Reset() noexcept
+      {
+        Size.Clear();
+        Neuron.Reset();
       }
 
       template <typename T>
@@ -222,7 +234,6 @@ namespace cnn
         }
       }
 
-      // ??????????
       template <typename T>
       void Core2D<T>::Load(std::istream& istream)
       {

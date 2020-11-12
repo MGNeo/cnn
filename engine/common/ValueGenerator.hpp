@@ -41,13 +41,13 @@ namespace cnn
         void SetMaxValue(const T maxValue);
 
         // We expect that the method never throws any exception.
-        T Generate();
+        T Generate() noexcept;
 
         // We expect that the method never throws any exception.
-        void SetSeed(const unsigned int seed);
+        void SetSeed(const unsigned int seed) noexcept;
 
         // We expect that the method never throws any exception.
-        void Clear();
+        void Clear() noexcept;
 
       private:
         
@@ -121,20 +121,20 @@ namespace cnn
       }
 
       template <typename T>
-      T ValueGenerator<T>::Generate()
+      T ValueGenerator<T>::Generate() noexcept
       {
         std::uniform_real_distribution<T> URD{ MinValue, MaxValue };
         return URD(DRE);
       }
 
       template <typename T>
-      void ValueGenerator<T>::SetSeed(const unsigned int seed)
+      void ValueGenerator<T>::SetSeed(const unsigned int seed) noexcept
       {
         DRE.seed(seed);
       }
 
       template <typename T>
-      void ValueGenerator<T>::Clear()
+      void ValueGenerator<T>::Clear() noexcept
       {
         MinValue = static_cast<T>(0.L);
         MaxValue = static_cast<T>(0.L);

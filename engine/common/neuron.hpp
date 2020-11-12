@@ -303,10 +303,6 @@ namespace cnn
         for (size_t i = 0; i < InputCount; ++i)
         {
           ostream.write(reinterpret_cast<const char*const>(&(Inputs[i])), sizeof(Inputs[i]));
-        }
-
-        for (size_t i = 0; i < InputCount; ++i)
-        {
           ostream.write(reinterpret_cast<const char* const>(&(Weights[i])), sizeof(Weights[i]));
         }
 
@@ -329,31 +325,33 @@ namespace cnn
         decltype(InputCount) inputCount{};
         istream.read(reinterpret_cast<char*const>(&inputCount), sizeof(inputCount));
 
-        Neuron neuron{ inputCount };
-        for (size_t i = 0; i < inputCount; ++i)
-        {
-          T input{};
-          istream.read(reinterpret_cast<char*const>(&input), sizeof(input));
-          neuron.SetInput(i, input);
-        }
+        decltype(Inputs) inputs;
+        decltype(Weights) weights;
+        decltype(Output) output{};
 
-        for (size_t i = 0; i < inputCount; ++i)
+        if (inputCount != 0)
         {
-          T weight{};
-          istream.read(reinterpret_cast<char* const>(&weight), sizeof(weight));
-          neuron.SetWeight(i, weight);
+          inputs = std::make_unique<T[]>(inputCount);
+          weights = std::make_unique<T[]>(inputCount);
+          for (size_t i = 0; i < inputCount; ++i)
+          {
+            istream.read(reinterpret_cast<char* const>(&(inputs[i])), sizeof(inputs[i]));
+            istream.read(reinterpret_cast<char* const>(&(weights[i])), sizeof(weights[i]));
+          }
         }
 
         decltype(Output) output{};
         istream.read(reinterpret_cast<char* const>(&output), sizeof(output));
-        neuron.SetOutput(output);
 
         if (istream.good() == false)
         {
           throw std::runtime_error("cnn::engine::Neuron::Load(), istream.good() == false.");
         }
 
-        std::swap(neuron, *this);
+        InputCount = inputCount;
+        Inputs = std::move(inputs);
+        Weights = std::move(weights);
+        Output = output;
       }
 
       template <typename T>

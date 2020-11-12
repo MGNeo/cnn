@@ -46,7 +46,7 @@ namespace cnn
         // It clears the state without changing of the topology.
         void Clear() noexcept;
 
-        // It clears the state to zero including the topology.
+        // It resets the state to zero including the topology.
         void Reset() noexcept;
 
         // Exception guarantee: base for ostream.
@@ -183,14 +183,17 @@ namespace cnn
           throw std::invalid_argument("cnn::engine::common::Map::Save(), ostream.good == false.");
         }
 
-        // ...
+        ostream.write(reinterpret_cast<const char*const>(&ValueCount), sizeof(ValueCount));
+        for (size_t i = 0; i < ValueCount; ++i)
+        {
+          ostream.write(reinterpret_cast<const char*const>(&(Values[i])), sizeof(Values[i]));
+        }
 
         if (ostream.good() == false)
         {
           throw std::runtime_error("cnn::engine::common::Map::Save(), ostream.good == false.");
         }
       }
-
 
       template <typename T>
       void Map<T>::Load(std::istream& istream)
@@ -200,12 +203,27 @@ namespace cnn
           throw std::invalid_argument("cnn::engine::common::Map::Load(), istream.good == false.");
         }
 
-        // ...
+        decltype(ValueCount) valueCount{};
+        decltype(Values) values;
+
+        istream.read(reinterpret_cast<char*const>(&valueCount), sizeof(valueCount));
+
+        if (valueCount != 0)
+        {
+          values = std::make_unique<T[]>(valueCount);
+          for (size_t i = 0; i < valueCount; ++i)
+          {
+            istream.read(reinterpret_cast<char* const>(&(values[i])), sizeof(values[i]));
+          }
+        }
 
         if (istream.good() == false)
         {
           throw std::runtime_error("cnn::engine::common::Map::Load(), istream.good == false.");
         }
+
+        ValueCount = valueCount;
+        Values = std::move(values);
       }
     }
   }
