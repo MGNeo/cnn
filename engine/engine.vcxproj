@@ -28,6 +28,7 @@
     <ClInclude Include="common\Size2D.hpp" />
     <ClInclude Include="common\ValueGenerator.hpp" />
     <ClInclude Include="convolution\Core2D.hpp" />
+    <ClInclude Include="perceptron\Layer.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -7,7 +7,10 @@
 #include <iostream>
 #include <fstream>
 
-// TODO: Core2D.hpp (exception guarantee).
+// TODO: Add sticky flag "LockedTopology" for any elements which have topology.
+// The flag will block changing of topology of an element.
+// It is necessary for user can't break topology of sub elements of complex objects through "setters" and "copy/move" operators.
+// For example: network.GetLayer(0).GetFilter(0).GetCore(0).SetSize(...);// Oops, topology of network can be broken!
 
 int main(int argc, char** argv)
 {
