@@ -2,6 +2,7 @@
 #include "common/Mutagen.hpp"
 #include "convolution/Core2D.hpp"
 #include "common/Map.hpp"
+#include "common/ProxyNeuron.hpp"
 
 #include <sstream>
 #include <iostream>
@@ -18,6 +19,8 @@ int main(int argc, char** argv)
   cnn::engine::convolution::Core2D<float> core;
 
   cnn::engine::common::Map<float> map;
+
+  cnn::engine::common::ProxyNeuron<float> proxyNeuron = neuron;
 
   return 0;
 }

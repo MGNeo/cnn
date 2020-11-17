@@ -1,4 +1,3 @@
-/*
 #pragma once
 
 #include "../common/Neuron.hpp"
@@ -12,6 +11,7 @@ namespace cnn
   {
     namespace perceptron
     {
+      /*
       template <typename T>
       class Layer
       {
@@ -20,7 +20,7 @@ namespace cnn
 
       public:
 
-        Layer(const size_t inputSize = 0, const size_t neuronCount = 0);
+        Layer(const size_t inputCount = 0, const size_t neuronCount = 0);
 
         Layer(const Layer& layer) = default;
 
@@ -31,33 +31,41 @@ namespace cnn
         Layer& operator=(Layer&& layer) noexcept;
 
         size_t GetInputSize() const noexcept;
-        
+
         void SetInputSize(const size_t inputSize);
+
+        T GetInputValue(const size_t index);
+
+        void SetInputValue(const size_t index, const T value);
+
+        size_t GetOutputSize() const noexcept;
+
+        void SetOutputSize(const size_t outputSize);
+
+        T GetOutputValue(const size_t index);
+
+        void SetOutputValue(const size_t index, const T value);
 
         size_t GetNeuronCount() const noexcept;
 
         void SetNeuronCount(const size_t neuronCount);
 
-        size_t GetOutputSize() const noexcept;
+        // ...
 
-        void Process();
+        void GenerateOutput();
 
-        void FillWeights(common::IValueGenerator<T>& valueGenerator);
+        void FillWeights(common::ValueGenerator<T>& valueGenerator);
 
-        void Mutate(common::IMutagen<T>& mutagen);
-
-        void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction);
+        void Mutate(common::Mutagen<T>& mutagen);
 
       private:
 
-        size_t InputSize;
-        typename common::IMap<T>::Uptr Input;
+        common::Map<T> Input;
 
         size_t NeuronCount;
-        std::unique_ptr<typename common::INeuron<T>::Uptr[]> Neurons;
+        std::unique_ptr<common::Neuron<T>[]> Neurons;
 
-        size_t OutputSize;
-        typename common::IMap<T>::Uptr Output;
+        common::Map<T> Output;
 
         // TODO: Clear() family functions.
 
@@ -230,6 +238,7 @@ namespace cnn
         }
       }
 
+      */
     }
   }
-*/
+}
