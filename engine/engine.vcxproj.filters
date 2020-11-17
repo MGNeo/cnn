@@ -24,5 +24,6 @@
     <ClInclude Include="common\Map.hpp" />
     <ClInclude Include="perceptron\Layer.hpp" />
     <ClInclude Include="common\ProxyNeuron.hpp" />
+    <ClInclude Include="common\ProxyMap.hpp" />
   </ItemGroup>
 </Project>

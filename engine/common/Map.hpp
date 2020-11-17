@@ -39,8 +39,10 @@ namespace cnn
         // Exception guarantee: strong for this.
         void SetValueCount(const size_t valueCount);
 
+        // Exception guarantee: strong for this.
         T GetValue(const size_t index) const;
 
+        // Exception guarantee: strong for this.
         void SetValue(const size_t index, const T value);
 
         // It clears the state without changing of the topology.

@@ -8,8 +8,8 @@ namespace cnn
   {
     namespace common
     {
-      // ProxyNeuron is a protecting proxy which protects Neuron from changing of topology and other dangerous
-      // operations, which can break consistency of complex object, which contains the Neuron as its part.
+      // ProxyNeuron is a protecting proxy, which protects a Neuron from changing of topology and other dangerous
+      // operations, which can break consistency of complex object, which contains a Neuron as its part.
       template <typename T>
       class ProxyNeuron
       {
