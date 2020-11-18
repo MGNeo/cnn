@@ -106,6 +106,7 @@ namespace cnn
         if (this != &map)
         {
           Map tmpMap{ map };
+          // Beware, it is very intimate place for strong exception guarantee.
           std::swap(*this, tmpMap);
         }
         return *this;
@@ -134,6 +135,7 @@ namespace cnn
       void Map<T>::SetValueCount(const size_t valueCount)
       {
         Map tmpMap{ valueCount };
+        // Beware, it is very intimate place for strong exception guarantee.
         std::swap(*this, tmpMap);
       }
 

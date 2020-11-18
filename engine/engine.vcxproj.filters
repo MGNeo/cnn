@@ -20,11 +20,12 @@
     <ClInclude Include="convolution\Core2D.hpp" />
     <ClInclude Include="common\Mutagen.hpp" />
     <ClInclude Include="common\ValueGenerator.hpp" />
-    <ClInclude Include="common\Size2D.hpp" />
     <ClInclude Include="common\Map.hpp" />
     <ClInclude Include="perceptron\Layer.hpp" />
     <ClInclude Include="common\ProxyNeuron.hpp" />
     <ClInclude Include="common\ProxyMap.hpp" />
     <ClInclude Include="convolution\ProxyCore2D.hpp" />
+    <ClInclude Include="convolution\Map2D.hpp" />
+    <ClInclude Include="convolution\Size2D.hpp" />
   </ItemGroup>
 </Project>

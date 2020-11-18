@@ -25,11 +25,12 @@ namespace cnn
 
         Core2D(const Core2D& core) = default;
 
-        Core2D(Core2D&& core) noexcept;
+        Core2D(Core2D&& core) noexcept = default;
 
-        Core2D& operator=(const Core2D& core) = default;
+        // Exception guarantee: strong for this.
+        Core2D& operator=(const Core2D& core);
 
-        Core2D& operator=(Core2D&& core) noexcept;
+        Core2D& operator=(Core2D&& core) noexcept = default;
 
         Size2D<size_t> GetSize() const noexcept;
 
@@ -99,20 +100,13 @@ namespace cnn
       }
 
       template <typename T>
-      Core2D<T>::Core2D(Core2D&& core) noexcept
-        :
-        Size{ std::move(core.Size) },
-        Neuron{ std::move(core.Neuron) }
-      {
-      }
-
-      template <typename T>
-      Core2D<T>& Core2D<T>::operator=(Core2D&& core) noexcept
+      Core2D<T>& Core2D<T>::operator=(const Core2D<T>& core)
       {
         if (this != &core)
         {
-          Size = std::move(core.Size);
-          Neuron = std::move(core.Neuron);
+          Core2D<T> tmpCore{ core };
+          // Beware, it is very intimate place for exception guarantee.
+          std::swap(*this, tmpCore);
         }
         return *this;
       }
@@ -127,6 +121,7 @@ namespace cnn
       void Core2D<T>::SetSize(const Size2D<size_t> size)
       {
         Core2D<T> core{ size };
+        // Beware, it is very intimate place for strong exception guarantee.
         std::swap(core, *this);
       }
 

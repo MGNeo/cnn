@@ -149,6 +149,7 @@ namespace cnn
         if (this != &neuron)
         {
           Neuron tmpNeuron{ neuron };
+          // Beware, it is very intimate place for strong exception guarantee.
           std::swap(tmpNeuron, *this);
         }
         return *this;
@@ -180,7 +181,8 @@ namespace cnn
       {
         if (InputCount != inputCount)
         {
-          Neuron neuron(inputCount);
+          Neuron neuron{ inputCount };
+          // Beware, it is very intimate place for strong exception guarantee.
           std::swap(neuron, *this);
         }
       }
