@@ -81,7 +81,7 @@ namespace cnn
         if (this != &map)
         {
           Map2D<T> tmpMap{ map };
-          // Beware, it is very intimate place for exception guarantee.
+          // Beware, it is very intimate place for strong exception guarantee.
           std::swap(*this, tmpMap);
         }
         return *this;
@@ -97,7 +97,7 @@ namespace cnn
       void Map2D<T>::SetSize(const Size2D<size_t> size)
       {
         Map2D<T> tmpMap{ size };
-        // Beware, it is very intimate place for exception guarantee.
+        // Beware, it is very intimate place for strong exception guarantee.
         std::swap(*this, tmpMap);
       }
 

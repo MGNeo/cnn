@@ -105,7 +105,7 @@ namespace cnn
         if (this != &core)
         {
           Core2D<T> tmpCore{ core };
-          // Beware, it is very intimate place for exception guarantee.
+          // Beware, it is very intimate place for strong exception guarantee.
           std::swap(*this, tmpCore);
         }
         return *this;
