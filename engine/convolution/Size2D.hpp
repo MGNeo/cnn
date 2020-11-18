@@ -11,7 +11,7 @@ namespace cnn
 {
   namespace engine
   {
-    namespace common
+    namespace convolution
     {
       template <typename T>
       class Size2D
@@ -120,13 +120,13 @@ namespace cnn
       {
         if (ostream.good() == false)
         {
-          throw std::invalid_argument("cnn::engine::common::Size2D::Save(), ostream.good() == false.");
+          throw std::invalid_argument("cnn::engine::convolution::Size2D::Save(), ostream.good() == false.");
         }
         ostream.write(reinterpret_cast<const char*const>(&Width), sizeof(Width));
         ostream.write(reinterpret_cast<const char* const>(&Height), sizeof(Height));
         if (ostream.good() == false)
         {
-          throw std::runtime_error("cnn::engine::common::Size2D::Save(), ostream.good() == false.");
+          throw std::runtime_error("cnn::engine::convolution::Size2D::Save(), ostream.good() == false.");
         }
       }
 
@@ -135,7 +135,7 @@ namespace cnn
       {
         if (istream.good() == false)
         {
-          throw std::invalid_argument("cnn::engine::common::Size2D::Load(), istream.good() == false.");
+          throw std::invalid_argument("cnn::engine::convolution::Size2D::Load(), istream.good() == false.");
         }
 
         decltype(Width) width{};
@@ -146,7 +146,7 @@ namespace cnn
 
         if (istream.good() == false)
         {
-          throw std::runtime_error("cnn::engine::common::Size2D::Load(), istream.good() == false.");
+          throw std::runtime_error("cnn::engine::convolution::Size2D::Load(), istream.good() == false.");
         }
 
         SetWidth(width);
@@ -164,7 +164,7 @@ namespace cnn
         const T area = Width * Height;
         if ((area / Width) != Height)
         {
-          throw std::overflow_error("cnn::engine::common::Size2D::GetArea(), area has been overflowed.");
+          throw std::overflow_error("cnn::engine::convolution::Size2D::GetArea(), area has been overflowed.");
         }
 
         return area;

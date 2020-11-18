@@ -25,5 +25,6 @@
     <ClInclude Include="perceptron\Layer.hpp" />
     <ClInclude Include="common\ProxyNeuron.hpp" />
     <ClInclude Include="common\ProxyMap.hpp" />
+    <ClInclude Include="convolution\ProxyCore2D.hpp" />
   </ItemGroup>
 </Project>

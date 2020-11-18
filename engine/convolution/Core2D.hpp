@@ -5,7 +5,7 @@
 #include <ostream>
 
 #include "../common/Neuron.hpp"
-#include "../common/Size2D.hpp"
+#include "Size2D.hpp"
 
 namespace cnn
 {
@@ -21,7 +21,7 @@ namespace cnn
 
       public:
 
-        Core2D(const common::Size2D<size_t> size = {});
+        Core2D(const Size2D<size_t> size = {});
 
         Core2D(const Core2D& core) = default;
 
@@ -31,10 +31,10 @@ namespace cnn
 
         Core2D& operator=(Core2D&& core) noexcept;
 
-        common::Size2D<size_t> GetSize() const noexcept;
+        Size2D<size_t> GetSize() const noexcept;
 
         // Exception guarantee: strong for this.
-        void SetSize(const common::Size2D<size_t> size);
+        void SetSize(const Size2D<size_t> size);
 
         T GetInput(const size_t x, const size_t y) const;
 
@@ -81,7 +81,7 @@ namespace cnn
 
       private:
 
-        common::Size2D<size_t> Size;
+        Size2D<size_t> Size;
 
         common::Neuron<T> Neuron;
 
@@ -90,7 +90,7 @@ namespace cnn
       };
 
       template <typename T>
-      Core2D<T>::Core2D(const common::Size2D<size_t> size)
+      Core2D<T>::Core2D(const Size2D<size_t> size)
         :
         Size{ size }, 
         Neuron{ Size.GetArea() }
@@ -118,13 +118,13 @@ namespace cnn
       }
 
       template <typename T>
-      common::Size2D<size_t> Core2D<T>::GetSize() const noexcept
+      Size2D<size_t> Core2D<T>::GetSize() const noexcept
       {
         return Size;
       }
 
       template <typename T>
-      void Core2D<T>::SetSize(const common::Size2D<size_t> size)
+      void Core2D<T>::SetSize(const Size2D<size_t> size)
       {
         Core2D<T> core{ size };
         std::swap(core, *this);
