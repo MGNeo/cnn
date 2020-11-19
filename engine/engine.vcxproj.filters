@@ -27,5 +27,6 @@
     <ClInclude Include="convolution\ProxyCore2D.hpp" />
     <ClInclude Include="convolution\Map2D.hpp" />
     <ClInclude Include="convolution\Size2D.hpp" />
+    <ClInclude Include="convolution\ProxyMap2D.hpp" />
   </ItemGroup>
 </Project>
