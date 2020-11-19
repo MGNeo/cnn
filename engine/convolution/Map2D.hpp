@@ -70,9 +70,9 @@ namespace cnn
       Map2D<T>::Map2D(const Size2D<size_t> size)
         :
         Size{ size },
-        Mep{ Size.GetArea() }
+        Map{ Size.GetArea() }
       {
-        Map.Clear();
+        Clear();
       }
 
       template <typename T>
@@ -130,15 +130,38 @@ namespace cnn
       template <typename T>
       void Map2D<T>::Save(std::ostream& ostream) const
       {
-        // TODO:
-        // ...
+        if (ostream.good() == false)
+        {
+          throw std::invalid_argument("cnn::engine::convolution::Map2D::Save(), ostream.good() == false.");
+        }
+        Size.Save(ostream);
+        Map.Save(ostream);
+        if (ostream.good() == false)
+        {
+          throw std::runtime_error("cnn::engine::convolution::Map2D::save(), ostream.good() == false.");
+        }
       }
 
       template <typename T>
       void Map2D<T>::Load(std::istream& istream)
       {
-        // TODO:
-        // ...
+        if (istream.good() == false)
+        {
+          throw std::invalid_argument("cnn::engine::convolution::Map2D::Load(), istream.good() == false.");
+        }
+        decltype(Size) size;
+        decltype(Map) map;
+
+        size.Load(istream);
+        map.Load(istream);
+
+        if (istream.good() == false)
+        {
+          throw std::runtime_error("cnn::engine::convolution::Map2D::Load(), istream.good() == false.");
+        }
+
+        Size = std::move(size);
+        Map = std::move(map);
       }
 
       template <typename T>
