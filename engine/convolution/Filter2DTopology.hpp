@@ -7,6 +7,8 @@
 #include <ostream>
 #include <stdexcept>
 
+#include "Size2D.hpp"
+
 namespace cnn
 {
   namespace engine
@@ -23,21 +25,17 @@ namespace cnn
 
         Filter2DTopology() noexcept;
 
-        Filter2DTopology(const Filter2DTopology& topology) = default;
+        Filter2DTopology(const Filter2DTopology& topology) noexcept = default;
 
         Filter2DTopology(Filter2DTopology&& topology) noexcept;
 
-        Filter2DTopology& operator=(const Filter2DTopology& topology) = default;
+        Filter2DTopology& operator=(const Filter2DTopology& topology) noexcept = default;
         
         Filter2DTopology& operator=(Filter2DTopology&& topology) noexcept;
 
-        T GetWidth() const noexcept;
+        Size2D<T> GetSize() const noexcept;
 
-        void SetWidth(const T width) noexcept;
-
-        T GetHeight() const noexcept;
-
-        void SetHeight(const T height) noexcept;
+        void SetSize(const Size2D<size_t>& size) noexcept;
 
         T GetCoreCount() const noexcept;
 
@@ -53,8 +51,7 @@ namespace cnn
 
       private:
 
-        T Width;
-        T Height;
+        Size2D<T> Size;
         T CoreCount;
 
       };
@@ -68,10 +65,10 @@ namespace cnn
       template <typename T>
       Filter2DTopology<T>::Filter2DTopology(Filter2DTopology&& topology) noexcept
         :
-        Width{ topology.Width },
-        Height{ topology.Height },
+        Size{ std::move(topology.Size()) },
         CoreCount{ topology.CoreCount }
       {
+        topology.Clear();
       }
 
       template <typename T>
@@ -79,8 +76,7 @@ namespace cnn
       {
         if (this != &topology)
         {
-          Width = topology.Width;
-          Height = topology.Height;
+          Size = std::move(topology.Size);
           CoreCount = topology.CoreCount;
 
           topology.Clear();
@@ -89,27 +85,15 @@ namespace cnn
       }
 
       template <typename T>
-      T Filter2DTopology<T>::GetWidth() const noexcept
+      Size2D<T> Filter2DTopology<T>::GetSize() const noexcept
       {
-        return Width;
+        return Size;
       }
 
       template <typename T>
-      void Filter2DTopology<T>::SetWidth(const T width) noexcept
+      void Filter2DTopology<T>::SetSize(const Size2D<size_t>& size) noexcept
       {
-        Width = width;
-      }
-
-      template <typename T>
-      T Filter2DTopology<T>::GetHeight() const noexcept
-      {
-        return Height;
-      }
-
-      template <typename T>
-      void Filter2DTopology<T>::SetHeight(const T height) noexcept
-      {
-        Height = height;
+        Size = size;
       }
 
       template <typename T>
@@ -127,8 +111,7 @@ namespace cnn
       template <typename T>
       void Filter2DTopology<T>::Clear() noexcept
       {
-        Width = 0;
-        Height = 0;
+        Size.Clear();
         CoreCount = 0;
       }
 
@@ -139,8 +122,7 @@ namespace cnn
         {
           throw std::invalid_argument("cnn::engine::convolution::Filter2DTopology::Save(), ostream.good() == false.");
         }
-        ostream.write(reinterpret_cast<const char*const>(&Width), sizeof(Width));
-        ostream.write(reinterpret_cast<const char*const>(&Height), sizeof(Height));
+        Size.Save(ostream);
         ostream.write(reinterpret_cast<const char*const>(&CoreCount), sizeof(CoreCount));
         if (ostream.good() == false)
         {
@@ -156,12 +138,10 @@ namespace cnn
           throw std::invalid_argument("cnn::engine::convolution::Filter2DTopology::Load(), istream.good() == false.");
         }
 
-        decltype(Width) width{};
-        decltype(Height) height{};
+        decltype(Size) size;
         decltype(CoreCount) coreCount{};
 
-        istream.read(reinterpret_cast<char* const>(&width), sizeof(width));
-        istream.read(reinterpret_cast<char* const>(&height), sizeof(height));
+        Size.Load(istream);
         istream.read(reinterpret_cast<char* const>(&coreCount), sizeof(coreCount));
 
         if (istream.good() == false)
@@ -169,9 +149,8 @@ namespace cnn
           throw std::runtime_error("cnn::engine::convolution::Filter2DTopology::Load(), istream.good() == false.");
         }
 
-        SetWidth(width);
-        SetHeight(height);
-        SetCoreCount(coreCount);
+        Size = size;
+        CoreCount = coreCount;
       }
     }
   }

@@ -11,12 +11,15 @@
 #include "convolution/ProxyCore2D.hpp"
 
 #include "convolution/Filter2DTopology.hpp"
+#include "convolution/Filter2D.hpp"
 
 #include "common/Mutagen.hpp"
 
 #include <sstream>
 #include <iostream>
 #include <fstream>
+
+// TODO: Check that any move-assignment operators reset "from".
 
 int main(int argc, char** argv)
 {
@@ -32,7 +35,11 @@ int main(int argc, char** argv)
   cnn::engine::convolution::Core2D<float> core;
   cnn::engine::convolution::ProxyCore2D<float> proxyCore{ core };
 
-  cnn::engine::convolution::Filter2DTopology<size_t> filter2DTopology;
+  cnn::engine::convolution::Filter2DTopology<size_t> filterTopology;
+  cnn::engine::convolution::Filter2D<float> filter{ filterTopology };
+
+  std::fstream ifile("C:/Users/MGNeo/Desktop/123.file", std::ios_base::binary | std::ios_base::in);
+  filter.Load(ifile);
 
   cnn::engine::common::Mutagen<float> mutagen;
   cnn::engine::convolution::Size2D<size_t> size;

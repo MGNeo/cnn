@@ -23,13 +23,17 @@ namespace cnn
         
         Size2D() noexcept;
 
-        Size2D(const Size2D& size) = default;
+        Size2D(const Size2D& size) noexcept = default;
 
         Size2D(Size2D&& size) noexcept;
 
-        Size2D& operator=(const Size2D& size) = default;
+        Size2D& operator=(const Size2D& size) noexcept = default;
 
         Size2D& operator=(Size2D&& size) noexcept;
+
+        bool operator==(const Size2D<T>& size) const noexcept;
+
+        bool operator!=(const Size2D<T>& size) const noexcept;
 
         T GetWidth() const noexcept;
 
@@ -82,6 +86,28 @@ namespace cnn
           size.Clear() ;
         }
         return *this;
+      }
+
+      template <typename T>
+      bool Size2D<T>::operator==(const Size2D<T>& size) const noexcept
+      {
+        if ((Width == size.Width) && (Height == size.Height))
+        {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      template <typename T>
+      bool Size2D<T>::operator!=(const Size2D<T>& size) const noexcept
+      {
+        if (*this == size)
+        {
+          return false;
+        } else {
+          return true;
+        }
       }
 
       template <typename T>

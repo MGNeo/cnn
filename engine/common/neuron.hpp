@@ -344,7 +344,6 @@ namespace cnn
           }
         }
 
-        decltype(Output) output{};
         istream.read(reinterpret_cast<char* const>(&output), sizeof(output));
 
         if (istream.good() == false)

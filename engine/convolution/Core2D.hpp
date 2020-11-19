@@ -250,7 +250,7 @@ namespace cnn
 
         if (neuron.GetInputCount() != size.GetArea())
         {
-          throw std::logic_error("cnn::engine::convolution::Core2D::Load(), neuron != size.GetArea().");
+          throw std::logic_error("cnn::engine::convolution::Core2D::Load(), neuron.GetInputCount() != size.GetArea().");
         }
 
         Size = std::move(size);

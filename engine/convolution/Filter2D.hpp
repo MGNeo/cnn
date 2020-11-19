@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include "Core2D.hpp"
+#include "Filter2DTopology.hpp"
 
 namespace cnn
 {
@@ -12,7 +13,6 @@ namespace cnn
   {
     namespace convolution
     {
-      /*
       template <typename T>
       class Filter2D
       {
@@ -21,196 +21,178 @@ namespace cnn
 
       public:
 
-        Filter2D(const size_t width, const size_t height, const size_t coreCount);
+        Filter2D(const Filter2DTopology<size_t>& topology = {});
 
-        size_t GetWidth() const override;
-        size_t GetHeight() const override;
+        Filter2D(const Filter2D& filter) = default;
 
-        size_t GetCoreCount() const override;
+        Filter2D(Filter2D&& filter) noexcept = default;
 
-        ICore2D<T>& GetCore(const size_t index) override;
-        const ICore2D<T>& GetCore(const size_t index) const override;
+        // Exception guarantee: strong for this.
+        Filter2D& operator=(const Filter2D& filter);
 
-        void Clear() override;
-        void ClearInputs() override;
-        void ClearWeight() override;
-        void ClearOutput() override;
+        Filter2D& operator=(Filter2D&& filter) noexcept = default;
 
-        // The result must not be nullptr.
-        typename IFilter2D<T>::Uptr Clone(const bool cloneState) const override;
+        Filter2DTopology<size_t> GetTopology() const noexcept;
 
-        Filter2D(const Filter2D<T>& filter2D, const bool cloneState);
+        // Exception guarantee: strong for this.
+        void SetTopology(const Filter2DTopology<size_t>& topology);
 
-        void FillWeights(common::IValueGenerator<T>& valueGenerator) override;
+        // It clears the state without changing of the topology.
+        void Clear() noexcept;
 
-        void Mutate(common::IMutagen<T>& mutagen) override;
+        // It resets the state to zero including the topology.
+        void Reset() noexcept;
 
-        void SetActivationFunctions(const common::IActivationFunction<T>& activationFunction) override;
+        // Exception guarantee: base for ostream.
+        // It saves full state.
+        void Save(std::ostream& ostream) const;
+
+        // Exception guarantee: strong for this and base for istream.
+        // It loads full state.
+        void Load(std::istream& istream);
+
+        // We expect that the method never throws any exception.
+        void FillWeights(common::ValueGenerator<T>& valueGenerator) noexcept;
+
+        // We expect that the method never throws any exception.
+        void Mutate(common::Mutagen<T>& mutagen) noexcept;
 
       private:
 
-        size_t Width;
-        size_t Height;
-        size_t CoreCount;
-        std::unique_ptr<typename ICore2D<T>::Uptr[]> Cores;
+        Filter2DTopology<size_t> Topology;
+        std::unique_ptr<Core2D<T>[]> Cores;
 
       };
 
       template <typename T>
-      Filter2D<T>::Filter2D(const size_t width, const size_t height, const size_t coreCount)
+      Filter2D<T>::Filter2D(const Filter2DTopology<size_t>& topology)
         :
-        Width{ width },
-        Height{ height },
-        CoreCount{ coreCount }
+        Topology{ topology }
       {
-        if (Width == 0)
+        if (Topology.GetCoreCount() != 0)
         {
-          throw std::invalid_argument("cnn::engine::convolution::Filter2D::Filter2D(), Width == 0.");
-        }
-        if (Height == 0)
-        {
-          throw std::invalid_argument("cnn::engine::convolution::Filter2D::Filter2D(), Height == 0.");
-        }
-        if (CoreCount == 0)
-        {
-          throw std::invalid_argument("cnn::engine::convolution::Filter2D::Filter2D(), CoreCount == 0.");
-        }
-        Cores = std::make_unique<typename ICore2D<T>::Uptr[]>(CoreCount);
-        for (size_t i = 0; i < CoreCount; ++i)
-        {
-          Cores[i] = std::make_unique<Core2D<T>>(Width, Height);
-        }
-        Clear();
-      }
-
-      template <typename T>
-      size_t Filter2D<T>::GetWidth() const
-      {
-        return Width;
-      }
-
-      template <typename T>
-      size_t Filter2D<T>::GetHeight() const
-      {
-        return Height;
-      }
-
-      template <typename T>
-      size_t Filter2D<T>::GetCoreCount() const
-      {
-        return CoreCount;
-      }
-
-      template <typename T>
-      ICore2D<T>& Filter2D<T>::GetCore(const size_t index)
-      {
-#ifndef CNN_DISABLE_RANGE_CHECKS
-        if (index >= CoreCount)
-        {
-          throw std::range_error("cnn::engine::convolution::Filter2D::GetCore(), index >= CoreCount.");
-        }
-#endif
-        return *(Cores[index]);
-      }
-
-      template <typename T>
-      const ICore2D<T>& Filter2D<T>::GetCore(const size_t index) const
-      {
-#ifndef CNN_DISABLE_RANGE_CHECKS
-        if (index >= CoreCount)
-        {
-          throw std::range_error("cnn::engine::convolution::Filter2D::GetCore() const, index >= CoreCount.");
-        }
-#endif
-        return *(Cores[index]);
-      }
-
-      template <typename T>
-      void Filter2D<T>::Clear()
-      {
-        for (size_t c = 0; c < CoreCount; ++c)
-        {
-          Cores[c]->ClearInputs();
-          Cores[c]->ClearWeights();
-          Cores[c]->ClearOutput();
+          Cores = std::make_unique<Core2D<T>[]>(Topology.GetCoreCount());
+          if (Topology.GetSize().GetArea() != 0)
+          {
+            for (size_t i = 0; i < Topology.GetCoreCount(); ++i)
+            {
+              Cores[i].SetSize(Topology.GetSize());
+            }
+          }
         }
       }
 
       template <typename T>
-      void Filter2D<T>::ClearInputs()
+      Filter2D<T>& Filter2D<T>::operator=(const Filter2D& filter)
       {
-        for (size_t c = 0; c < CoreCount; ++c)
+        if (this != &filter)
         {
-          Cores[c]->ClearInputs();
+          Filter2D<T> tmpFilter{ filter };
+          // Beware, it is very intimate place for strong exception guarantee.
+          std::swap(*this, tmpFilter);
+        }
+        return *this;
+      }
+
+      template <typename T>
+      Filter2DTopology<size_t> Filter2D<T>::GetTopology() const noexcept
+      {
+        return Topology;
+      }
+
+      template <typename T>
+      void Filter2D<T>::SetTopology(const Filter2DTopology<size_t>& topology)
+      {
+        Filter2D<T> tmpFilter{ topology };
+        // Beware, it is very intimate place for strong exception guarantee.
+        std::swap(*this, tmpFilter);
+      }
+
+      template <typename T>
+      void Filter2D<T>::Clear() noexcept
+      {
+        Topology.Clear();
+      }
+
+      template <typename T>
+      void Filter2D<T>::Reset() noexcept
+      {
+        Topology.Clear();
+        Cores.reset(nullptr);
+      }
+
+      template <typename T>
+      void Filter2D<T>::Save(std::ostream& ostream) const
+      {
+        if (ostream.good() == false)
+        {
+          throw std::invalid_argument("cnn::engine::convolution::Filter2D::Save(), ostream.good() == false.");
+        }
+        Topology.Save(ostream);
+        for (size_t i = 0; i < Topology.GetCoreCount(); ++i)
+        {
+          Cores[i].Save(ostream);
+        }
+        if (ostream.good() == false)
+        {
+          throw std::runtime_error("cnn::engine::convolution::Filter2D::Save(), ostream.good() == false.");
         }
       }
 
       template <typename T>
-      void Filter2D<T>::ClearWeight()
+      void Filter2D<T>::Load(std::istream& istream)
       {
-        for (size_t c = 0; c < CoreCount; ++c)
+        if (istream.good() == false)
         {
-          Cores[c]->ClearWeights();
+          throw std::invalid_argument("cnn::engine::convolution::Filter2D::Load(), istream.good() == false.");
+        }
+
+        decltype(Topology) topology;
+        decltype(Cores) cores;
+
+        topology.Load(istream);
+        
+        if (topology.GetCoreCount() != 0)
+        {
+          // TODO: How can we change Core2D<T>[] on decltype()?
+          cores = std::make_unique<Core2D<T>[]>(topology.GetCoreCount());
+          for (size_t i = 0; i < topology.GetCoreCount(); ++i)
+          {
+            Cores[i].Load(istream);
+            if (Cores[i].GetSize() != topology.GetSize())
+            {
+              throw std::logic_error("cnn::engine::convolution::Filter2D::Load(), Cores[i].GetSize() != topology.GetSize().");
+            }
+          }
+        }
+
+        if (istream.good() == false)
+        {
+          throw std::runtime_error("cnn::engine::convolution::Filter2D::Load(), istream.good() == false.");
+        }
+
+        Topology = std::move(topology);
+        Cores = std::move(cores);
+
+      }
+
+      template <typename T>
+      void Filter2D<T>::FillWeights(common::ValueGenerator<T>& valueGenerator) noexcept
+      {
+        for (size_t i = 0; i < Topology.GetCoreCount(); ++i)
+        {
+          Cores[i].FillWeights(valueGenerator);
         }
       }
 
       template <typename T>
-      void Filter2D<T>::ClearOutput()
+      void Filter2D<T>::Mutate(common::Mutagen<T>& mutagen) noexcept
       {
-        for (size_t c = 0; c < CoreCount; ++c)
+        for (size_t i = 0; i < Topology.GetCoreCount(); ++i)
         {
-          Cores[c]->ClearOutput();
+          Cores[i].Mutate(mutagen);
         }
       }
-
-      // The result must not be nullptr.
-      template <typename T>
-      typename IFilter2D<T>::Uptr Filter2D<T>::Clone(const bool cloneState) const
-      {
-        return std::make_unique<Filter2D<T>>(*this, cloneState);
-      }
-
-      template <typename T>
-      Filter2D<T>::Filter2D(const Filter2D<T>& filter2D, const bool cloneState)
-        :
-        Width{ filter2D.GetWidth() },
-        Height{ filter2D.GetHeight() },
-        CoreCount{ filter2D.GetCoreCount() },
-        Cores{ std::make_unique<typename ICore2D<T>::Uptr[]>(CoreCount) }
-      {
-        for (size_t c = 0; c < CoreCount; ++c)
-        {
-          Cores[c] = filter2D.GetCore(c).Clone(cloneState);
-        }
-      }
-
-      template <typename T>
-      void Filter2D<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
-      {
-        for (size_t c = 0; c < CoreCount; ++c)
-        {
-          Cores[c]->FillWeights(valueGenerator);
-        }
-      }
-
-      template <typename T>
-      void Filter2D<T>::Mutate(common::IMutagen<T>& mutagen)
-      {
-        for (size_t c = 0; c < GetCoreCount(); ++c)
-        {
-          Cores[c]->Mutate(mutagen);
-        }
-      }
-
-      template <typename T>
-      void Filter2D<T>::SetActivationFunctions(const common::IActivationFunction<T>& activationFunction)
-      {
-        for (size_t c = 0; c < GetCoreCount(); ++c)
-        {
-          Cores[c]->SetActivationFunctions(activationFunction);
-        }
-      }
-      */
     }
   }
 }
