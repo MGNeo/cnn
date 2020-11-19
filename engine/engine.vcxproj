@@ -29,6 +29,8 @@
     <ClInclude Include="common\ProxyNeuron.hpp" />
     <ClInclude Include="common\ValueGenerator.hpp" />
     <ClInclude Include="convolution\Core2D.hpp" />
+    <ClInclude Include="convolution\Filter2D.hpp" />
+    <ClInclude Include="convolution\Filter2DTopology.hpp" />
     <ClInclude Include="convolution\Map2D.hpp" />
     <ClInclude Include="convolution\ProxyCore2D.hpp" />
     <ClInclude Include="convolution\ProxyMap2D.hpp" />

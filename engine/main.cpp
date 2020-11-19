@@ -10,6 +10,8 @@
 #include "convolution/Core2D.hpp"
 #include "convolution/ProxyCore2D.hpp"
 
+#include "convolution/Filter2DTopology.hpp"
+
 #include "common/Mutagen.hpp"
 
 #include <sstream>
@@ -29,6 +31,8 @@ int main(int argc, char** argv)
 
   cnn::engine::convolution::Core2D<float> core;
   cnn::engine::convolution::ProxyCore2D<float> proxyCore{ core };
+
+  cnn::engine::convolution::Filter2DTopology<size_t> filter2DTopology;
 
   cnn::engine::common::Mutagen<float> mutagen;
   cnn::engine::convolution::Size2D<size_t> size;
