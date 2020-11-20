@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="convolution\Filter2DTopology.cpp" />
+    <ClCompile Include="convolution\Size2D.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +33,8 @@
     <ClInclude Include="convolution\Core2D.hpp" />
     <ClInclude Include="convolution\Filter2D.hpp" />
     <ClInclude Include="convolution\Filter2DTopology.hpp" />
+    <ClInclude Include="convolution\Layer2D.hpp" />
+    <ClInclude Include="convolution\Layer2DTopology.hpp" />
     <ClInclude Include="convolution\Map2D.hpp" />
     <ClInclude Include="convolution\ProxyCore2D.hpp" />
     <ClInclude Include="convolution\ProxyFilter2D.hpp" />

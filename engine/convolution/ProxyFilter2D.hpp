@@ -29,7 +29,7 @@ namespace cnn
 
         ProxyFilter2D& operator=(ProxyFilter2D&& proxyFilter) = delete;
 
-        Filter2DTopology<size_t> GetTopology() const noexcept;
+        Filter2DTopology GetTopology() const noexcept;
 
         // Exception guarantee: strong for this.
         const ProxyCore2D<T> GetCore(const size_t index) const;
@@ -60,7 +60,7 @@ namespace cnn
       }
 
       template <typename T>
-      Filter2DTopology<size_t> ProxyFilter2D<T>::GetTopology() const noexcept
+      Filter2DTopology ProxyFilter2D<T>::GetTopology() const noexcept
       {
         return Filter.GetTopology();
       }

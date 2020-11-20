@@ -22,7 +22,7 @@ namespace cnn
 
       public:
 
-        Filter2D(const Filter2DTopology<size_t>& topology = {});
+        Filter2D(const Filter2DTopology& topology = {});
 
         Filter2D(const Filter2D& filter) = default;
 
@@ -33,10 +33,10 @@ namespace cnn
 
         Filter2D& operator=(Filter2D&& filter) noexcept = default;
 
-        Filter2DTopology<size_t> GetTopology() const noexcept;
+        Filter2DTopology GetTopology() const noexcept;
 
         // Exception guarantee: strong for this.
-        void SetTopology(const Filter2DTopology<size_t>& topology);
+        void SetTopology(const Filter2DTopology& topology);
 
         // Exception guarantee: strong for this.
         const ProxyCore2D<T> GetCore(const size_t index) const;
@@ -66,13 +66,13 @@ namespace cnn
 
       private:
 
-        Filter2DTopology<size_t> Topology;
+        Filter2DTopology Topology;
         std::unique_ptr<Core2D<T>[]> Cores;
 
       };
 
       template <typename T>
-      Filter2D<T>::Filter2D(const Filter2DTopology<size_t>& topology)
+      Filter2D<T>::Filter2D(const Filter2DTopology& topology)
         :
         Topology{ topology }
       {
@@ -102,13 +102,13 @@ namespace cnn
       }
 
       template <typename T>
-      Filter2DTopology<size_t> Filter2D<T>::GetTopology() const noexcept
+      Filter2DTopology Filter2D<T>::GetTopology() const noexcept
       {
         return Topology;
       }
 
       template <typename T>
-      void Filter2D<T>::SetTopology(const Filter2DTopology<size_t>& topology)
+      void Filter2D<T>::SetTopology(const Filter2DTopology& topology)
       {
         Filter2D<T> tmpFilter{ topology };
         // Beware, it is very intimate place for strong exception guarantee.

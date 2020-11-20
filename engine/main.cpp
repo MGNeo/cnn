@@ -35,11 +35,11 @@ int main(int argc, char** argv)
   cnn::engine::convolution::Core2D<float> core;
   cnn::engine::convolution::ProxyCore2D<float> proxyCore{ core };
 
-  cnn::engine::convolution::Filter2DTopology<size_t> filterTopology{ {10, 10}, 10 };
+  cnn::engine::convolution::Filter2DTopology filterTopology{ {10, 10}, 10 };
   cnn::engine::convolution::Filter2D<float> filter{ filterTopology };
 
   cnn::engine::common::Mutagen<float> mutagen;
-  cnn::engine::convolution::Size2D<size_t> size;
+  cnn::engine::convolution::Size2D size;
 
   return 0;
 }

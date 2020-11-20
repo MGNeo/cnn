@@ -14,6 +14,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="convolution\Filter2DTopology.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="convolution\Size2D.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\Neuron.hpp" />
@@ -31,5 +37,7 @@
     <ClInclude Include="convolution\Filter2D.hpp" />
     <ClInclude Include="convolution\Filter2DTopology.hpp" />
     <ClInclude Include="convolution\ProxyFilter2D.hpp" />
+    <ClInclude Include="convolution\Layer2D.hpp" />
+    <ClInclude Include="convolution\Layer2DTopology.hpp" />
   </ItemGroup>
 </Project>

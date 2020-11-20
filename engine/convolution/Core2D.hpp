@@ -21,7 +21,7 @@ namespace cnn
 
       public:
 
-        Core2D(const Size2D<size_t> size = {});
+        Core2D(const Size2D size = {});
 
         Core2D(const Core2D& core) = default;
 
@@ -32,10 +32,10 @@ namespace cnn
 
         Core2D& operator=(Core2D&& core) noexcept = default;
 
-        Size2D<size_t> GetSize() const noexcept;
+        Size2D GetSize() const noexcept;
 
         // Exception guarantee: strong for this.
-        void SetSize(const Size2D<size_t> size);
+        void SetSize(const Size2D size);
 
         T GetInput(const size_t x, const size_t y) const;
 
@@ -82,7 +82,7 @@ namespace cnn
 
       private:
 
-        Size2D<size_t> Size;
+        Size2D Size;
 
         common::Neuron<T> Neuron;
 
@@ -91,7 +91,7 @@ namespace cnn
       };
 
       template <typename T>
-      Core2D<T>::Core2D(const Size2D<size_t> size)
+      Core2D<T>::Core2D(const Size2D size)
         :
         Size{ size }, 
         Neuron{ Size.GetArea() }
@@ -112,13 +112,13 @@ namespace cnn
       }
 
       template <typename T>
-      Size2D<size_t> Core2D<T>::GetSize() const noexcept
+      Size2D Core2D<T>::GetSize() const noexcept
       {
         return Size;
       }
 
       template <typename T>
-      void Core2D<T>::SetSize(const Size2D<size_t> size)
+      void Core2D<T>::SetSize(const Size2D size)
       {
         Core2D<T> core{ size };
         // Beware, it is very intimate place for strong exception guarantee.

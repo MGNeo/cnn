@@ -29,7 +29,7 @@ namespace cnn
 
         ProxyMap2D& operator=(ProxyMap2D&& proxyMap) = delete;
 
-        Size2D<size_t> GetSize() const noexcept;
+        Size2D GetSize() const noexcept;
 
         T GetValue(const size_t x, const size_t y) const;
 
@@ -53,7 +53,7 @@ namespace cnn
       }
 
       template <typename T>
-      Size2D<size_t> ProxyMap2D<T>::GetSize() const noexcept
+      Size2D ProxyMap2D<T>::GetSize() const noexcept
       {
         return Map.GetSize();
       }

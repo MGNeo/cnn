@@ -21,7 +21,7 @@ namespace cnn
 
       public:
 
-        Map2D(const Size2D<size_t> size = {});
+        Map2D(const Size2D size = {});
 
         Map2D(const Map2D& map) = default;
 
@@ -32,10 +32,10 @@ namespace cnn
 
         Map2D& operator=(Map2D&& map) noexcept = default;
 
-        Size2D<size_t> GetSize() const noexcept;
+        Size2D GetSize() const noexcept;
 
         // Exception guarantee: strong for this.
-        void SetSize(const Size2D<size_t> size);
+        void SetSize(const Size2D size);
 
         T GetValue(const size_t x, const size_t y) const;
 
@@ -58,7 +58,7 @@ namespace cnn
 
       private:
 
-        Size2D<size_t> Size;
+        Size2D Size;
 
         common::Map<T> Map;
 
@@ -67,7 +67,7 @@ namespace cnn
       };
 
       template <typename T>
-      Map2D<T>::Map2D(const Size2D<size_t> size)
+      Map2D<T>::Map2D(const Size2D size)
         :
         Size{ size },
         Map{ Size.GetArea() }
@@ -88,13 +88,13 @@ namespace cnn
       }
 
       template <typename T>
-      Size2D<size_t> Map2D<T>::GetSize() const noexcept
+      Size2D Map2D<T>::GetSize() const noexcept
       {
         return Size;
       }
 
       template <typename T>
-      void Map2D<T>::SetSize(const Size2D<size_t> size)
+      void Map2D<T>::SetSize(const Size2D size)
       {
         Map2D<T> tmpMap{ size };
         // Beware, it is very intimate place for strong exception guarantee.

@@ -31,7 +31,7 @@ namespace cnn
 
         ProxyCore2D& operator=(ProxyCore2D&& proxyCore) = delete;
 
-        Size2D<size_t> GetSize() const noexcept;
+        Size2D GetSize() const noexcept;
 
         T GetInput(const size_t x, const size_t y) const;
 
@@ -79,7 +79,7 @@ namespace cnn
       }
 
       template <typename T>
-      Size2D<size_t> ProxyCore2D<T>::GetSize() const noexcept
+      Size2D ProxyCore2D<T>::GetSize() const noexcept
       {
         return Core.GetSize();
       }
