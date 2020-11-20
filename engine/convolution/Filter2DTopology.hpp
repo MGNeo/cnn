@@ -23,7 +23,7 @@ namespace cnn
 
       public:
 
-        Filter2DTopology() noexcept;
+        Filter2DTopology(const Size2D<size_t>& size = {}, const size_t coreCount = 0) noexcept;
 
         Filter2DTopology(const Filter2DTopology& topology) noexcept = default;
 
@@ -57,9 +57,11 @@ namespace cnn
       };
 
       template <typename T>
-      Filter2DTopology<T>::Filter2DTopology() noexcept
+      Filter2DTopology<T>::Filter2DTopology(const Size2D<size_t>& size, const size_t coreCount) noexcept
+        :
+        Size{ size },
+        CoreCount{ coreCount }
       {
-        Clear();
       }
 
       template <typename T>

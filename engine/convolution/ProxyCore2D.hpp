@@ -20,7 +20,10 @@ namespace cnn
 
         ProxyCore2D(Core2D<T>& core);
 
-        ProxyCore2D(const ProxyCore2D& proxyCore);
+        // We delete copy-constructor too for saving of const-transitivity.
+        // Now we can't build non-const object using const object.
+        // What will you say about it, Elon Musk? ;-)
+        ProxyCore2D(const ProxyCore2D& proxyCore) = delete;
 
         ProxyCore2D(ProxyCore2D&& proxyCore) = delete;
 
@@ -72,13 +75,6 @@ namespace cnn
       ProxyCore2D<T>::ProxyCore2D(Core2D<T>& core)
         :
         Core{ core }
-      {
-      }
-
-      template <typename T>
-      ProxyCore2D<T>::ProxyCore2D(const ProxyCore2D<T>& proxyCore)
-        :
-        Core{ proxyCore.Core }
       {
       }
 

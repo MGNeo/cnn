@@ -33,6 +33,7 @@
     <ClInclude Include="convolution\Filter2DTopology.hpp" />
     <ClInclude Include="convolution\Map2D.hpp" />
     <ClInclude Include="convolution\ProxyCore2D.hpp" />
+    <ClInclude Include="convolution\ProxyFilter2D.hpp" />
     <ClInclude Include="convolution\ProxyMap2D.hpp" />
     <ClInclude Include="convolution\Size2D.hpp" />
     <ClInclude Include="perceptron\Layer.hpp" />

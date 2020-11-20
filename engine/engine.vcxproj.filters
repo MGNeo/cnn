@@ -30,5 +30,6 @@
     <ClInclude Include="convolution\ProxyMap2D.hpp" />
     <ClInclude Include="convolution\Filter2D.hpp" />
     <ClInclude Include="convolution\Filter2DTopology.hpp" />
+    <ClInclude Include="convolution\ProxyFilter2D.hpp" />
   </ItemGroup>
 </Project>

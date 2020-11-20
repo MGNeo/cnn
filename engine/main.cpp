@@ -35,11 +35,8 @@ int main(int argc, char** argv)
   cnn::engine::convolution::Core2D<float> core;
   cnn::engine::convolution::ProxyCore2D<float> proxyCore{ core };
 
-  cnn::engine::convolution::Filter2DTopology<size_t> filterTopology;
+  cnn::engine::convolution::Filter2DTopology<size_t> filterTopology{ {10, 10}, 10 };
   cnn::engine::convolution::Filter2D<float> filter{ filterTopology };
-
-  std::fstream ifile("C:/Users/MGNeo/Desktop/123.file", std::ios_base::binary | std::ios_base::in);
-  filter.Load(ifile);
 
   cnn::engine::common::Mutagen<float> mutagen;
   cnn::engine::convolution::Size2D<size_t> size;

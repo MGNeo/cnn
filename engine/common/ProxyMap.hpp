@@ -20,7 +20,10 @@ namespace cnn
 
         ProxyMap(Map<T>& map);
 
-        ProxyMap(const ProxyMap<T>& proxyMap);
+        // We delete copy-constructor too for saving of const-transitivity.
+        // Now we can't build non-const object using const object.
+        // What will you say about it, Elon Musk? ;-)
+        ProxyMap(const ProxyMap<T>& proxyMap) = delete;
 
         ProxyMap(ProxyMap&& proxyMap) = delete;
 
@@ -49,13 +52,6 @@ namespace cnn
       ProxyMap<T>::ProxyMap(Map<T>& map)
         :
         Map_{ map }
-      {
-      }
-
-      template <typename T>
-      ProxyMap<T>::ProxyMap(const ProxyMap<T>& proxyMap)
-        :
-        Map_{ proxyMap.Map_ }
       {
       }
 

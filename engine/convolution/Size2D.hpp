@@ -21,7 +21,7 @@ namespace cnn
 
       public:
         
-        Size2D() noexcept;
+        Size2D(const T width = 0, const size_t height = 0) noexcept;
 
         Size2D(const Size2D& size) noexcept = default;
 
@@ -61,9 +61,11 @@ namespace cnn
       };
 
       template <typename T>
-      Size2D<T>::Size2D() noexcept
+      Size2D<T>::Size2D(const T width, const size_t height) noexcept
+        :
+        Width{ width },
+        Height{ height }
       {
-        Clear();
       }
 
       template <typename T>
