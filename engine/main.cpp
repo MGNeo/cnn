@@ -13,6 +13,9 @@
 #include "convolution/Filter2DTopology.hpp"
 #include "convolution/Filter2D.hpp"
 
+#include "convolution/Layer2DTopology.hpp"
+//#include "convolution/Layer2D.hpp"
+
 #include "common/Mutagen.hpp"
 
 #include <sstream>
@@ -37,6 +40,8 @@ int main(int argc, char** argv)
 
   cnn::engine::convolution::Filter2DTopology filterTopology{ {10, 10}, 10 };
   cnn::engine::convolution::Filter2D<float> filter{ filterTopology };
+
+  cnn::engine::convolution::Layer2DTopology layer2DTopology{ {10, 10}, 10, {3, 3}, 3, {10, 10}, 10 };
 
   cnn::engine::common::Mutagen<float> mutagen;
   cnn::engine::convolution::Size2D size;

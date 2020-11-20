@@ -20,6 +20,9 @@
     <ClCompile Include="convolution\Size2D.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="convolution\Layer2DTopology.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\Neuron.hpp" />

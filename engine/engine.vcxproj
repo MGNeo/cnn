@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="convolution\Filter2DTopology.cpp" />
+    <ClCompile Include="convolution\Layer2DTopology.cpp" />
     <ClCompile Include="convolution\Size2D.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

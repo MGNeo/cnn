@@ -1,11 +1,7 @@
 #pragma once
 
 #include "Size2D.hpp"
-
-#include <cstdint>
-#include <cstddef>
-#include <stdexcept>
-#include <type_traits>
+#include "Filter2DTopology.hpp"
 
 namespace cnn
 {
@@ -13,27 +9,61 @@ namespace cnn
   {
     namespace convolution
     {
-      /*
-      template <typename T>
       class Layer2DTopology
       {
-
-        static_assert(std::is_integral<T>::value&& std::is_unsigned<T>::value);
-
       public:
+
+        Layer2DTopology(const Size2D inputSize = {},
+                        const size_t inputCount = 0,
+                        const Filter2DTopology filterTopology = {},
+                        const size_t filterCount = 0,
+                        const Size2D outputSize = {},
+                        const size_t outputCount = 0);
+
+        Layer2DTopology(const Layer2DTopology& topology) noexcept = default;
+
+        Layer2DTopology(Layer2DTopology&& topology) noexcept;
+
+        Layer2DTopology& operator=(const Layer2DTopology& topology) noexcept = default;
+
+        Layer2DTopology& operator=(Layer2DTopology&& topology) noexcept;
+
+        Size2D GetInputSize() const noexcept;
+
+        void SetInputSize(const Size2D& inputSize);
+
+        size_t GetInputCount() const noexcept;
+
+        void SetInput(const size_t inputCount);
+
+        Filter2DTopology GetFilterTopology() const noexcept;
+
+        void SetFilterTopology(const Filter2DTopology& filterTopology) noexcept;
+
+        Size2D GetOutputSize() const noexcept;
+
+        void SetOutputSize(const Size2D& outputSize) noexcept;
+
+        void Clear() noexcept;
+
+        // Exception guarantee: base for ostream.
+        void Save(std::ostream& ostream) const;
+
+        // Exception guarantee: strong for this and base for istream.
+        void Load(std::istream& istream);
 
       private:
 
-        Size2D<T> InputSize;
+        Size2D InputSize;
+        size_t InputCount;
 
-        Size2D<T> FilterSize;
+        Filter2DTopology FilterTopology;
+        size_t FilterCount;
 
-        T FilterCount;
-
-        Size2D<T> OutputSize;
+        Size2D OutputSize;
+        size_t OutputCount;
 
       };
-      */
     }
   }
 }
