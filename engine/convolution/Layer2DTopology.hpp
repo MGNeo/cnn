@@ -34,15 +34,23 @@ namespace cnn
 
         size_t GetInputCount() const noexcept;
 
-        void SetInput(const size_t inputCount);
+        void SetInputCount(const size_t inputCount);
 
         Filter2DTopology GetFilterTopology() const noexcept;
 
         void SetFilterTopology(const Filter2DTopology& filterTopology) noexcept;
 
+        size_t GetFilterCount() const noexcept;
+
+        void SetFilterCount(const size_t filterCount) noexcept;
+
         Size2D GetOutputSize() const noexcept;
 
         void SetOutputSize(const Size2D& outputSize) noexcept;
+
+        size_t GetOutputCount() const noexcept;
+
+        void SetOutputCount(const size_t outputCount) noexcept;
 
         void Clear() noexcept;
 

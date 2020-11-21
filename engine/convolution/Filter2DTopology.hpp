@@ -22,6 +22,10 @@ namespace cnn
 
         Filter2DTopology& operator=(Filter2DTopology&& topology) noexcept;
 
+        bool operator==(const Filter2DTopology& topology) const noexcept;
+
+        bool operator!=(const Filter2DTopology& topology) const noexcept;
+
         Size2D GetSize() const noexcept;
 
         void SetSize(const Size2D& size) noexcept;

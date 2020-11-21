@@ -39,10 +39,7 @@ namespace cnn
         void SetTopology(const Filter2DTopology& topology);
 
         // Exception guarantee: strong for this.
-        const ProxyCore2D<T> GetCore(const size_t index) const;
-
-        // Exception guarantee: strong for this.
-        ProxyCore2D<T> GetCore(const size_t index);
+        ProxyCore2D<T> GetCore(const size_t index) const;
 
         // It clears the state without changing of the topology.
         void Clear() noexcept;
@@ -116,17 +113,7 @@ namespace cnn
       }
 
       template <typename T>
-      const ProxyCore2D<T> Filter2D<T>::GetCore(const size_t index) const
-      {
-        if (index >= Topology.GetCoreCount())
-        {
-          throw std::range_error("cnn::engine::convolution::Filter2D::SetTopology() const, index >= Topology.GetCoreCount().");
-        }
-        return Cores[index];
-      }
-
-      template <typename T>
-      ProxyCore2D<T> Filter2D<T>::GetCore(const size_t index)
+      ProxyCore2D<T> Filter2D<T>::GetCore(const size_t index) const
       {
         if (index >= Topology.GetCoreCount())
         {

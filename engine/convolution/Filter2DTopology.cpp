@@ -35,6 +35,26 @@ namespace cnn
         return *this;
       }
 
+      bool Filter2DTopology::operator==(const Filter2DTopology& topology) const noexcept
+      {
+        if ((Size == topology.Size) && (CoreCount == topology.CoreCount))
+        {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      bool Filter2DTopology::operator!=(const Filter2DTopology& topology) const noexcept
+      {
+        if (*this == topology)
+        {
+          return false;
+        } else {
+          return true;
+        }
+      }
+
       Size2D Filter2DTopology::GetSize() const noexcept
       {
         return Size;

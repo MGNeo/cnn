@@ -65,7 +65,7 @@ namespace cnn
         return InputCount;
       }
 
-      void Layer2DTopology::SetInput(const size_t inputCount)
+      void Layer2DTopology::SetInputCount(const size_t inputCount)
       {
         InputCount = inputCount;
       }
@@ -80,6 +80,16 @@ namespace cnn
         FilterTopology = filterTopology;
       }
 
+      size_t Layer2DTopology::GetFilterCount() const noexcept
+      {
+        return FilterCount;
+      }
+
+      void Layer2DTopology::SetFilterCount(const size_t filterCount) noexcept
+      {
+        FilterCount = filterCount;
+      }
+
       Size2D Layer2DTopology::GetOutputSize() const noexcept
       {
         return OutputSize;
@@ -88,6 +98,16 @@ namespace cnn
       void Layer2DTopology::SetOutputSize(const Size2D& outputSize) noexcept
       {
         OutputSize = outputSize;
+      }
+
+      size_t Layer2DTopology::GetOutputCount() const noexcept
+      {
+        return OutputCount;
+      }
+
+      void Layer2DTopology::SetOutputCount(const size_t outputCount) noexcept
+      {
+        OutputCount = outputCount;
       }
 
       void Layer2DTopology::Clear() noexcept
