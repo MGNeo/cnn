@@ -105,7 +105,7 @@ namespace cnn
         decltype(Size) size;
         decltype(CoreCount) coreCount{};
 
-        Size.Load(istream);
+        size.Load(istream);
         istream.read(reinterpret_cast<char* const>(&coreCount), sizeof(coreCount));
 
         if (istream.good() == false)
@@ -113,7 +113,7 @@ namespace cnn
           throw std::runtime_error("cnn::engine::convolution::Filter2DTopology::Load(), istream.good() == false.");
         }
 
-        Size = size;
+        Size = std::move(size);
         CoreCount = coreCount;
       }
     }

@@ -114,8 +114,8 @@ namespace cnn
           throw std::runtime_error("cnn::engine::convolution::Size2D::Load(), istream.good() == false.");
         }
 
-        SetWidth(width);
-        SetHeight(height);
+        Width = width;
+        Height = height;
       }
 
       size_t Size2D::GetArea() const

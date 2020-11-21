@@ -53,11 +53,11 @@ namespace cnn
 
         // Exception guarantee: base for ostream.
         // It saves full state.
-        void Save(std::ostream ostream) const;
+        void Save(std::ostream& ostream) const;
 
         // Exception guarantee: strong for this and base for istream.
         // It loads full state.
-        void Load(std::istream istream);
+        void Load(std::istream& istream);
 
         // We expect that the method never throws any exception.
         void FillWeights(common::ValueGenerator<T>& valueGenerator) noexcept;
@@ -287,7 +287,7 @@ namespace cnn
       }
 
       template <typename T>
-      void Layer2D<T>::Save(std::ostream ostream) const
+      void Layer2D<T>::Save(std::ostream& ostream) const
       {
         if (ostream.good() == false)
         {
@@ -318,7 +318,7 @@ namespace cnn
       }
 
       template <typename T>
-      void Layer2D<T>::Load(std::istream istream)
+      void Layer2D<T>::Load(std::istream& istream)
       {
         if (istream.good() == false)
         {
@@ -335,7 +335,7 @@ namespace cnn
 
         if (topology.GetInputCount() != 0)
         {
-          inputs = std::make_unique<Map2D<T>[]>(topology.GetInputCount);
+          inputs = std::make_unique<Map2D<T>[]>(topology.GetInputCount());
           for (size_t i = 0; i < topology.GetInputCount(); ++i)
           {
             inputs[i].Load(istream);
@@ -346,7 +346,7 @@ namespace cnn
           }
         }
 
-        if (topology.FilterCount() != 0)
+        if (topology.GetFilterCount() != 0)
         {
           filters = std::make_unique<Filter2D<T>[]>(topology.GetFilterCount());
           for (size_t i = 0; i < topology.GetFilterCount(); ++i)
@@ -359,9 +359,9 @@ namespace cnn
           }
         }
 
-        if (topology.OutputCount() != 0)
+        if (topology.GetOutputCount() != 0)
         {
-          outputs = std::make_unique<Filter2D<T>[]>(topology.GetOutputCount());
+          outputs = std::make_unique<Map2D<T>[]>(topology.GetOutputCount());
           for (size_t i = 0; i < topology.GetOutputCount(); ++i)
           {
             outputs[i].Load(istream);

@@ -172,10 +172,10 @@ namespace cnn
           cores = std::make_unique<Core2D<T>[]>(topology.GetCoreCount());
           for (size_t i = 0; i < topology.GetCoreCount(); ++i)
           {
-            Cores[i].Load(istream);
-            if (Cores[i].GetSize() != topology.GetSize())
+            cores[i].Load(istream);
+            if (cores[i].GetSize() != topology.GetSize())
             {
-              throw std::logic_error("cnn::engine::convolution::Filter2D::Load(), Cores[i].GetSize() != topology.GetSize().");
+              throw std::logic_error("cnn::engine::convolution::Filter2D::Load(), cores[i].GetSize() != topology.GetSize().");
             }
           }
         }

@@ -166,11 +166,11 @@ namespace cnn
           throw std::runtime_error("cnn::engine::convolution::Layer2DTopology::Load(), istream.good() == false.");
         }
 
-        InputSize = inputSize;
+        InputSize = std::move(inputSize);
         InputCount = inputCount;
-        FilterTopology = filterTopology;
+        FilterTopology = std::move(filterTopology);
         FilterCount = filterCount;
-        OutputSize = outputSize;
+        OutputSize = std::move(outputSize);
         OutputCount = outputCount;
       }
     }
