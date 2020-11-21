@@ -18,10 +18,7 @@ namespace cnn
 
         ProxyFilter2D(Filter2D<T>& filter);
 
-        // We delete copy-constructor too for saving of const-transitivity.
-        // Now we can't build non-const object using const object.
-        // What will you say about it, Elon Musk? ;-)
-        ProxyFilter2D(const ProxyFilter2D& proxyFilter) = delete;
+        ProxyFilter2D(const ProxyFilter2D& proxyFilter) noexcept;
 
         ProxyFilter2D(ProxyFilter2D&& proxyFilter) = delete;
 
@@ -56,6 +53,13 @@ namespace cnn
       ProxyFilter2D<T>::ProxyFilter2D(Filter2D<T>& filter)
         :
         Filter{ filter }
+      {
+      }
+
+      template <typename T>
+      ProxyFilter2D<T>::ProxyFilter2D(const ProxyFilter2D& proxyFilter) noexcept
+        :
+        Filter{ proxyFilter.Filter }
       {
       }
 
