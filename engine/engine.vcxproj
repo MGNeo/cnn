@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="convolution\Filter2DTopology.cpp" />
     <ClCompile Include="convolution\Layer2DTopology.cpp" />
+    <ClCompile Include="convolution\Network2DTopology.cpp" />
     <ClCompile Include="convolution\Size2D.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -37,6 +38,8 @@
     <ClInclude Include="convolution\Layer2D.hpp" />
     <ClInclude Include="convolution\Layer2DTopology.hpp" />
     <ClInclude Include="convolution\Map2D.hpp" />
+    <ClInclude Include="convolution\Network2D.hpp" />
+    <ClInclude Include="convolution\Network2DTopology.hpp" />
     <ClInclude Include="convolution\ProxyCore2D.hpp" />
     <ClInclude Include="convolution\ProxyFilter2D.hpp" />
     <ClInclude Include="convolution\ProxyLayer2D.hpp" />

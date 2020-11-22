@@ -23,6 +23,9 @@
     <ClCompile Include="convolution\Layer2DTopology.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="convolution\Network2DTopology.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\Neuron.hpp" />
@@ -43,5 +46,7 @@
     <ClInclude Include="convolution\Layer2D.hpp" />
     <ClInclude Include="convolution\Layer2DTopology.hpp" />
     <ClInclude Include="convolution\ProxyLayer2D.hpp" />
+    <ClInclude Include="convolution\Network2D.hpp" />
+    <ClInclude Include="convolution\Network2DTopology.hpp" />
   </ItemGroup>
 </Project>
