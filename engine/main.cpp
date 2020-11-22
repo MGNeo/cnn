@@ -19,6 +19,7 @@
 #include "convolution/ProxyLayer2D.hpp"
 
 #include "convolution/Network2DTopology.hpp"
+#include "convolution/Network2D.hpp"
 
 #include "common/Mutagen.hpp"
 
@@ -56,6 +57,8 @@ int main(int argc, char** argv)
   network2DTopology.PushBack(layer2DTopology);
   network2DTopology.PushBack(layer2DTopology);
   network2DTopology.Reset();
+
+  convolution::Network2D<float> network2D{ network2DTopology };
 
   common::Mutagen<float> mutagen;
   convolution::Size2D size;

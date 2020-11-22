@@ -13,6 +13,34 @@ namespace cnn
         Topologies.reserve(16);
       }
 
+      bool Network2DTopology::operator==(const Network2DTopology& topology) const
+      {
+        if (Topologies.size() != topology.Topologies.size())
+        {
+          return false;
+        }
+
+        for (size_t i = 0; i < Topologies.size(); ++i)
+        {
+          if (Topologies[i] != topology.Topologies[i])
+          {
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      bool Network2DTopology::operator!=(const Network2DTopology& topology) const
+      {
+        if (*this == topology)
+        {
+          return false;
+        } else {
+          return true;
+        }
+      }
+
       void Network2DTopology::PushBack(const Layer2DTopology& topology)
       {
         Topologies.push_back(topology);

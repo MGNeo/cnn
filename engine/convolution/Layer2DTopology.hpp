@@ -28,6 +28,10 @@ namespace cnn
 
         Layer2DTopology& operator=(Layer2DTopology&& topology) noexcept;
 
+        bool operator==(const Layer2DTopology& topology) const;
+
+        bool operator!=(const Layer2DTopology& topology) const;
+
         Size2D GetInputSize() const noexcept;
 
         void SetInputSize(const Size2D& inputSize);

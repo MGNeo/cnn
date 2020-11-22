@@ -50,6 +50,31 @@ namespace cnn
         return *this;
       }
 
+      bool Layer2DTopology::operator==(const Layer2DTopology& topology) const
+      {
+        if ((InputSize == topology.InputSize) &&
+            (InputCount == topology.InputCount) &&
+            (FilterTopology == topology.FilterTopology) &&
+            (FilterCount == topology.FilterCount) &&
+            (OutputSize == topology.OutputSize) &&
+            (OutputCount == topology.OutputCount))
+        {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      bool Layer2DTopology::operator!=(const Layer2DTopology& topology) const
+      {
+        if (*this == topology)
+        {
+          return false;
+        } else {
+          return true;
+        }
+      }
+
       Size2D Layer2DTopology::GetInputSize() const noexcept
       {
         return InputSize;
