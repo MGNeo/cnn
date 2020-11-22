@@ -42,5 +42,6 @@
     <ClInclude Include="convolution\ProxyFilter2D.hpp" />
     <ClInclude Include="convolution\Layer2D.hpp" />
     <ClInclude Include="convolution\Layer2DTopology.hpp" />
+    <ClInclude Include="convolution\ProxyLayer2D.hpp" />
   </ItemGroup>
 </Project>

@@ -12,9 +12,11 @@
 
 #include "convolution/Filter2DTopology.hpp"
 #include "convolution/Filter2D.hpp"
+#include "convolution/ProxyFilter2D.hpp"
 
 #include "convolution/Layer2DTopology.hpp"
 #include "convolution/Layer2D.hpp"
+#include "convolution/ProxyLayer2D.hpp"
 
 #include "common/Mutagen.hpp"
 
@@ -24,28 +26,32 @@
 
 // TODO: Check that any move-assignment operators reset "from".
 
+using namespace cnn::engine;
+
 int main(int argc, char** argv)
 {
-  cnn::engine::common::Neuron<float> neuron;
-  cnn::engine::common::ProxyNeuron<float> proxyNeuron{ neuron };
+  common::Neuron<float> neuron;
+  common::ProxyNeuron<float> proxyNeuron{ neuron };
 
-  cnn::engine::common::Map<float> map;
-  cnn::engine::common::ProxyMap<float> proxyMap{ map };
+  common::Map<float> map;
+  common::ProxyMap<float> proxyMap{ map };
 
-  cnn::engine::convolution::Map2D<float> map2D;
-  cnn::engine::convolution::ProxyMap2D<float> proxyMap2D{ map2D };
+  convolution::Map2D<float> map2D;
+  convolution::ProxyMap2D<float> proxyMap2D{ map2D };
 
-  cnn::engine::convolution::Core2D<float> core;
-  cnn::engine::convolution::ProxyCore2D<float> proxyCore{ core };
+  convolution::Core2D<float> core;
+  convolution::ProxyCore2D<float> proxyCore{ core };
 
-  cnn::engine::convolution::Filter2DTopology filterTopology{ {10, 10}, 10 };
-  cnn::engine::convolution::Filter2D<float> filter{ filterTopology };
+  convolution::Filter2DTopology filterTopology{ {10, 10}, 10 };
+  convolution::Filter2D<float> filter{ filterTopology };
+  convolution::ProxyFilter2D<float> proxyFilter{ filter };
 
-  cnn::engine::convolution::Layer2DTopology layer2DTopology{ {10, 10}, 10, { {3, 3}, 10 }, 5, {8, 8}, 5 };
-  cnn::engine::convolution::Layer2D<float> layer2D{ layer2DTopology };
+  convolution::Layer2DTopology layer2DTopology{ {10, 10}, 10, { {3, 3}, 10 }, 5, {8, 8}, 5 };
+  convolution::Layer2D<float> layer2D{ layer2DTopology };
+  convolution::ProxyLayer2D<float> proxyLayer2D{ layer2D };
 
-  cnn::engine::common::Mutagen<float> mutagen;
-  cnn::engine::convolution::Size2D size;
+  common::Mutagen<float> mutagen;
+  convolution::Size2D size;
 
   return 0;
 }
