@@ -138,7 +138,17 @@ namespace cnn
       template <typename T>
       void Network2D<T>::GenerateOputput()
       {
-        // ...
+        for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
+        {
+          if (i != 0)
+          {
+            const auto previousLayer = Layers[i - 1];
+            const auto currentLayer = Layers[i];
+            // ...
+            // currentLayer.GetInput[i].FillFrom(previousLayer.GetOutput[i]);
+          }
+          Layers[i].GenerateOutput();
+        }
       }
 
       template <typename T>
@@ -160,13 +170,55 @@ namespace cnn
       template <typename T>
       void Network2D<T>::Save(std::ostream& ostream) const
       {
-        // ...
+        if (ostream.good() == false)
+        {
+          throw std::invalid_argument("cnn::engine::convolution::Network2D::Save(), ostream.good() == false.");
+        }
+        Topology.Save(ostream);
+        for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
+        {
+          Layers[i].Save(ostream);
+        }
+        if (ostream.good() == false)
+        {
+          throw std::runtime_error("cnn::engine::convolution::Network2D::Save(), ostream.good() == false.");
+        }
       }
 
       template <typename T>
       void Network2D<T>::Load(std::istream& istream)
       {
-        // ..
+        if (istream.good() == false)
+        {
+          throw std::invalid_argument("cnn::engine::convolution::Network2D::Load(), istream.good() == false.");
+        }
+
+        decltype(Topology) topology;
+        decltype(Layers) layers;
+
+        topology.Load(istream);
+        CheckTopology(topology);
+
+        if (topology.GetLayerCount() != 0)
+        {
+          layers = std::make_unique<Layer2D<T>[]>(topology.GetLayerCount());
+          for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
+          {
+            layers[i].Load(istream);
+            if (layers[i].GetTopology() != topology.GetLayerTopology(i))
+            {
+              throw std::logic_error("cnn::engine::convolution::Network2D::Load(), layers[i].GetTopology() != topology.GetLayerTopology(i).");
+            }
+          }
+        }
+
+        if (istream.good() == false)
+        {
+          throw std::runtime_error("cnn::engine::convolution::Network2D::Load(), istream.good() == false.");
+        }
+
+        Topology = std::move(topology);
+        Layers = std::move(layers);
       }
 
       template <typename T>
@@ -191,7 +243,27 @@ namespace cnn
       void Network2D<T>::CheckTopology(const Network2DTopology& topology)
       {
         // Zero topology is allowed.
-        // ...
+        if (topology.GetLayerCount() == 0)
+        {
+          return;
+        }
+
+        if (topology.GetLayerCount() > 1)
+        {
+          for (size_t i = 1; i < topology.GetLayerCount(); ++i)
+          {
+            const auto previousTopology = topology.GetLayerTopology(i - 1);
+            const auto currentTopology = topology.GetLayerTopology(i);
+            if (previousTopology.GetOutputSize() != currentTopology.GetInputSize())
+            {
+              throw std::invalid_argument("cnn::engine::convolution::Network2D::CheckTopology(), previousTopology.GetOutputSize() != currentTopology.GetInputSize().");
+            }
+            if (previousTopology.GetOutputCount() != currentTopology.GetInputCount())
+            {
+              throw std::invalid_argument("cnn::engine::convolution::Network2D::CheckTopology(), previousTopology.GetOutputCount() != currentTopology.GetInputCount().");
+            }
+          }
+        }
       }
     }
   }
