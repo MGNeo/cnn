@@ -30,9 +30,11 @@ namespace cnn
 
         Network2DTopology GetTopology() const;
 
+        // Exception guarantee: base for the network.
         void SetTopology(const Network2DTopology& topology);
 
-        ProxyLayer2D<T> GetLayer(const size_t index);
+        // Exception guarantee: base for the network.
+        ProxyLayer2D<T> GetLayer(const size_t index) const;
 
         // Exception guarantee: base for this.
         void GenerateOputput();
@@ -126,7 +128,7 @@ namespace cnn
       }
 
       template <typename T>
-      ProxyLayer2D<T> Network2D<T>::GetLayer(const size_t index)
+      ProxyLayer2D<T> Network2D<T>::GetLayer(const size_t index) const
       {
         if (index >= Topology.GetLayerCount())
         {
