@@ -43,7 +43,7 @@ namespace cnn
         ProxyMap2D<T> GetOutput(const size_t index) const;
 
         // Exception guarantee: base for this.
-        void GenerateOputput();// TODO: noexcept?
+        void GenerateOutput();
 
         // It clears the state without changing of the topology.
         void Clear() noexcept;
@@ -226,7 +226,7 @@ namespace cnn
       }
 
       template <typename T>
-      void Layer2D<T>::GenerateOputput()
+      void Layer2D<T>::GenerateOutput()
       {
         for (size_t f = 0; f < Topology.GetFilterCount(); ++f)
         {
@@ -237,7 +237,7 @@ namespace cnn
           for (size_t c = 0; c < Topology.GetFilterTopology().GetCoreCount(); ++c)
           {
             const auto& input = Inputs[c];
-            auto& core = filter.GetCore(c);
+            auto core = filter.GetCore(c);
 
             for (size_t ox = 0; ox < Topology.GetOutputSize().GetWidth(); ++ox)
             {

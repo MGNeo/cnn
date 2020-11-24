@@ -59,6 +59,10 @@ namespace cnn
         // It loads full state.
         void Load(std::istream& istream);
 
+        // Exception guarantee: strong for this.
+        // Topologies of this and map must be equal.
+        void FillFrom(const Map& map);
+
       private:
 
         size_t ValueCount;
@@ -228,6 +232,19 @@ namespace cnn
 
         ValueCount = valueCount;
         Values = std::move(values);
+      }
+
+      template <typename T>
+      void Map<T>::FillFrom(const Map& map)
+      {
+        if (this != &map)
+        {
+          if (ValueCount != map.ValueCount)
+          {
+            throw std::invalid_argument("cnn::engine::common::Map::FillFrom(), ValueCount != map.ValueCount.");
+          }
+          std::memcpy(Values.get(), map.Values.get(), sizeof(T) * ValueCount);
+        }
       }
     }
   }

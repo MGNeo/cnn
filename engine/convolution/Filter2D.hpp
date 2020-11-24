@@ -24,7 +24,7 @@ namespace cnn
 
         Filter2D(const Filter2DTopology& topology = {});
 
-        Filter2D(const Filter2D& filter) = default;
+        Filter2D(const Filter2D& filter);
 
         Filter2D(Filter2D&& filter) noexcept = default;
 
@@ -81,6 +81,24 @@ namespace cnn
             for (size_t i = 0; i < Topology.GetCoreCount(); ++i)
             {
               Cores[i].SetSize(Topology.GetSize());
+            }
+          }
+        }
+      }
+
+      template <typename T>
+      Filter2D<T>::Filter2D(const Filter2D& filter)
+        :
+        Topology{ filter.Topology }
+      {
+        if (Topology.GetCoreCount() != 0)
+        {
+          Cores = std::make_unique<Core2D<T>[]>(Topology.GetCoreCount());
+          if (Topology.GetSize().GetArea() != 0)
+          {
+            for (size_t i = 0; i < Topology.GetCoreCount(); ++i)
+            {
+              Cores[i] = filter.Cores[i];
             }
           }
         }

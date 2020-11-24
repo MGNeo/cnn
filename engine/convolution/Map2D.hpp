@@ -56,6 +56,10 @@ namespace cnn
         // It loads full state.
         void Load(std::istream& istream);
 
+        // Exception guarantee: strong for this.
+        // Topologies of this and map must be equal.
+        void FillFrom(const Map2D& map);
+
       private:
 
         Size2D Size;
@@ -178,6 +182,19 @@ namespace cnn
         }
 #endif
         return x + y * Size.GetWidth();
+      }
+
+      template <typename T>
+      void Map2D<T>::FillFrom(const Map2D& map)
+      {
+        if (this != &map)
+        {
+          if (Size != map.Size)
+          {
+            throw std::invalid_argument("cnn::engine::convolution::Map2D::FillFromm(), Size != map.Size.");
+          }
+          Map.FillFrom(map.Map);
+        }
       }
     }
   }

@@ -30,36 +30,36 @@ namespace cnn
 
         size_t GetInputCount() const noexcept;
 
-        // Exception guarantee: strong for this.
+        // Exception guarantee: strong for the neuron.
         T GetInput(const size_t index) const;
 
-        // Exception guarantee: strong for this.
-        void SetInput(const size_t index, const T value);
+        // Exception guarantee: strong for the neuron.
+        void SetInput(const size_t index, const T value) const;
 
-        // Exception guarantee: strong for this.
+        // Exception guarantee: strong for the neuron.
         T GetWeight(const size_t index) const;
 
-        // Exception guarantee: strong for this.
-        void SetWeight(const size_t index, const T value);
+        // Exception guarantee: strong for the neuron.
+        void SetWeight(const size_t index, const T value) const;
 
         T GetOutput() const noexcept;
 
-        // Exception guarantee: strong for this.
-        void SetOutput(const T value);
+        // Exception guarantee: strong for the neuron.
+        void SetOutput(const T value) const;
 
-        void GenerateOutput() noexcept;
+        void GenerateOutput() const;
 
-        void Clear() noexcept;
+        void Clear() const noexcept;
 
-        void ClearInputs() noexcept;
+        void ClearInputs() const noexcept;
 
-        void ClearWeights() noexcept;
-
-        // We expect that the method never throws any exception.
-        void FillWeights(ValueGenerator<T>& valueGenerator) noexcept;
+        void ClearWeights() const noexcept;
 
         // We expect that the method never throws any exception.
-        void Mutate(Mutagen<T>& mutagen) noexcept;
+        void FillWeights(ValueGenerator<T>& valueGenerator) const noexcept;
+
+        // We expect that the method never throws any exception.
+        void Mutate(Mutagen<T>& mutagen) const noexcept;
 
       private:
 
@@ -68,7 +68,7 @@ namespace cnn
       };
 
       template <typename T>
-      ProxyNeuron<T>::ProxyNeuron(Neuron<T>& neuron)
+      ProxyNeuron<T>::ProxyNeuron(Neuron<T>& neuron) 
         :
         Neuron_{ neuron }
       {
@@ -94,7 +94,7 @@ namespace cnn
       }
 
       template <typename T>
-      void ProxyNeuron<T>::SetInput(const size_t index, const T value)
+      void ProxyNeuron<T>::SetInput(const size_t index, const T value) const
       {
         Neuron_.SetInput(index, value);
       }
@@ -106,7 +106,7 @@ namespace cnn
       }
 
       template <typename T>
-      void ProxyNeuron<T>::SetWeight(const size_t index, const T value)
+      void ProxyNeuron<T>::SetWeight(const size_t index, const T value) const
       {
         Neuron_.SetWeight(index, value);
       }
@@ -118,43 +118,43 @@ namespace cnn
       }
 
       template <typename T>
-      void ProxyNeuron<T>::SetOutput(const T value)
+      void ProxyNeuron<T>::SetOutput(const T value) const
       {
         Neuron_.SetOutput(value);
       }
 
       template <typename T>
-      void ProxyNeuron<T>::GenerateOutput() noexcept
+      void ProxyNeuron<T>::GenerateOutput() const
       {
         Neuron_.GenerateOutput();
       }
 
       template <typename T>
-      void ProxyNeuron<T>::Clear() noexcept
+      void ProxyNeuron<T>::Clear() const noexcept
       {
         Neuron_.Clear();
       }
 
       template <typename T>
-      void ProxyNeuron<T>::ClearInputs() noexcept
+      void ProxyNeuron<T>::ClearInputs() const noexcept
       {
         Neuron_.ClearInputs();
       }
 
       template <typename T>
-      void ProxyNeuron<T>::ClearWeights() noexcept
+      void ProxyNeuron<T>::ClearWeights() const noexcept
       {
         Neuron_.ClearWeights();
       }
 
       template <typename T>
-      void ProxyNeuron<T>::FillWeights(ValueGenerator<T>& valueGenerator) noexcept
+      void ProxyNeuron<T>::FillWeights(ValueGenerator<T>& valueGenerator) const noexcept
       {
         Neuron_.FillWeights(valueGenerator);
       }
 
       template <typename T>
-      void ProxyNeuron<T>::Mutate(Mutagen<T>& mutagen) noexcept
+      void ProxyNeuron<T>::Mutate(Mutagen<T>& mutagen) const noexcept
       {
         Neuron_.Mutate(mutagen);
       }

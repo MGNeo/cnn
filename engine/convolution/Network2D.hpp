@@ -35,7 +35,7 @@ namespace cnn
         ProxyLayer2D<T> GetLayer(const size_t index);
 
         // Exception guarantee: base for this.
-        void GenerateOputput();// TODO: noexcept?
+        void GenerateOputput();
 
         // It clears the state without changing of the topology.
         void Clear() noexcept;
@@ -144,8 +144,7 @@ namespace cnn
           {
             const auto previousLayer = Layers[i - 1];
             const auto currentLayer = Layers[i];
-            // ...
-            // currentLayer.GetInput[i].FillFrom(previousLayer.GetOutput[i]);
+            currentLayer.GetInput(i).FillFrom(previousLayer.GetOutput(i));
           }
           Layers[i].GenerateOutput();
         }
@@ -226,7 +225,7 @@ namespace cnn
       {
         for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
         {
-          Layers[i].FilLWeights(valueGenerator);
+          Layers[i].FillWeights(valueGenerator);
         }
       }
 

@@ -32,35 +32,35 @@ namespace cnn
 
         T GetInput(const size_t x, const size_t y) const;
 
-        // Exception guarantee: strong for this.
-        void SetInput(const size_t x, const size_t y, const T value);
+        // Exception guarantee: strong for the core.
+        void SetInput(const size_t x, const size_t y, const T value) const;
 
         T GetWeight(const size_t x, const size_t y) const;
 
-        // Exception guarantee: strong for this.
-        void SetWeight(const size_t x, const size_t y, const T value);
+        // Exception guarantee: strong for the core.
+        void SetWeight(const size_t x, const size_t y, const T value) const;
 
-        void GenerateOutput() noexcept;
+        void GenerateOutput() const;
 
         T GetOutput() const noexcept;
 
         // It clears the state without changing of the topology.
-        void ClearInputs() noexcept;
+        void ClearInputs() const noexcept;
 
         // It clears the state without changing of the topology.
-        void ClearWeights() noexcept;
+        void ClearWeights() const noexcept;
 
         // It clears the state without changing of the topology.
-        void ClearOutput() noexcept;
+        void ClearOutput() const noexcept;
 
         // It clears the state without changing of the topology.
-        void Clear() noexcept;
+        void Clear() const noexcept;
 
         // We expect that the method never throws any exception.
-        void FillWeights(common::ValueGenerator<T>& valueGenerator) noexcept;
+        void FillWeights(common::ValueGenerator<T>& valueGenerator) const noexcept;
 
         // We expect that the method never throws any exception.
-        void Mutate(common::Mutagen<T>& mutagen) noexcept;
+        void Mutate(common::Mutagen<T>& mutagen) const noexcept;
 
       private:
 
@@ -95,7 +95,7 @@ namespace cnn
       }
 
       template <typename T>
-      void ProxyCore2D<T>::SetInput(const size_t x, const size_t y, const T value)
+      void ProxyCore2D<T>::SetInput(const size_t x, const size_t y, const T value) const
       {
         Core.SetInput(x, y, value);
       }
@@ -107,13 +107,13 @@ namespace cnn
       }
 
       template <typename T>
-      void ProxyCore2D<T>::SetWeight(const size_t x, const size_t y, const T value)
+      void ProxyCore2D<T>::SetWeight(const size_t x, const size_t y, const T value) const
       {
         Core.SetWeight(x, y, value);
       }
 
       template <typename T>
-      void ProxyCore2D<T>::GenerateOutput() noexcept
+      void ProxyCore2D<T>::GenerateOutput() const
       {
         Core.GenerateOutput();
       }
@@ -125,37 +125,37 @@ namespace cnn
       }
 
       template <typename T>
-      void ProxyCore2D<T>::ClearInputs() noexcept
+      void ProxyCore2D<T>::ClearInputs() const noexcept
       {
         Core.ClearInputs();
       }
 
       template <typename T>
-      void ProxyCore2D<T>::ClearWeights() noexcept
+      void ProxyCore2D<T>::ClearWeights() const noexcept
       {
         Core.ClearWeights();
       }
 
       template <typename T>
-      void ProxyCore2D<T>::ClearOutput() noexcept
+      void ProxyCore2D<T>::ClearOutput() const noexcept
       {
         Core.ClearOutput();
       }
 
       template <typename T>
-      void ProxyCore2D<T>::Clear() noexcept
+      void ProxyCore2D<T>::Clear() const noexcept
       {
         Core.Clear();
       }
 
       template <typename T>
-      void ProxyCore2D<T>::FillWeights(common::ValueGenerator<T>& valueGenerator) noexcept
+      void ProxyCore2D<T>::FillWeights(common::ValueGenerator<T>& valueGenerator) const noexcept
       {
         Core.FillWeights(valueGenerator);
       }
 
       template <typename T>
-      void ProxyCore2D<T>::Mutate(common::Mutagen<T>& mutagen) noexcept
+      void ProxyCore2D<T>::Mutate(common::Mutagen<T>& mutagen) const noexcept
       {
         Core.Mutate(mutagen);
       }

@@ -28,23 +28,26 @@ namespace cnn
 
         Layer2DTopology GetTopology() const noexcept;
 
+        // Exception guarantee: base for the layer.
         ProxyMap2D<T> GetInput(const size_t index) const;
 
+        // Exception guarantee: base for the layer.
         ProxyFilter2D<T> GetFilter(const size_t index) const;
 
+        // Exception guarantee: base for the layer.
         ProxyMap2D<T> GetOutput(const size_t index) const;
 
-        // Exception guarantee: base for this.
-        void GenerateOputput();// TODO: noexcept?
+        // Exception guarantee: base for the layer.
+        void GenerateOputput() const;
 
         // It clears the state without changing of the topology.
-        void Clear() noexcept;
+        void Clear() const noexcept;
 
         // We expect that the method never throws any exception.
-        void FillWeights(common::ValueGenerator<T>& valueGenerator) noexcept;
+        void FillWeights(common::ValueGenerator<T>& valueGenerator) const noexcept;
 
         // We expect that the method never throws any exception.
-        void Mutate(common::Mutagen<T>& mutagen) noexcept;
+        void Mutate(common::Mutagen<T>& mutagen) const noexcept;
 
       private:
 
@@ -91,25 +94,25 @@ namespace cnn
       }
 
       template <typename T>
-      void ProxyLayer2D<T>::GenerateOputput()
+      void ProxyLayer2D<T>::GenerateOputput() const
       {
         Layer.GenerateOputput();
       }
 
       template <typename T>
-      void ProxyLayer2D<T>::Clear() noexcept
+      void ProxyLayer2D<T>::Clear() const noexcept
       {
         Layer.Clear();
       }
 
       template <typename T>
-      void ProxyLayer2D<T>::FillWeights(common::ValueGenerator<T>& valueGenerator) noexcept
+      void ProxyLayer2D<T>::FillWeights(common::ValueGenerator<T>& valueGenerator) const noexcept
       {
         Layer.FillWeights(valueGenerator);
       }
 
       template <typename T>
-      void ProxyLayer2D<T>::Mutate(common::Mutagen<T>& mutagen) noexcept
+      void ProxyLayer2D<T>::Mutate(common::Mutagen<T>& mutagen) const noexcept
       {
         Layer.Mutate(mutagen);
       }

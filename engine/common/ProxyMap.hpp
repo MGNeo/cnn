@@ -28,16 +28,21 @@ namespace cnn
 
         ProxyMap& operator=(ProxyMap<T>&& proxyMap) = delete;
 
-        // Exception guarantee: strong for this.
+        // Exception guarantee: strong for the map.
         size_t GetValueCount() const noexcept;
 
-        // Exception guarantee: strong for this.
+        // Exception guarantee: strong for the map.
         T GetValue(const size_t index) const;
 
-        void SetValue(const size_t index, const T value);
+        // Exception guarantee: strong for the map.
+        void SetValue(const size_t index, const T value) const;
 
         // It clears the state without changing of the topology.
-        void Clear() noexcept;
+        void Clear() const noexcept;
+
+        // Exception guarantee: strong for this.
+        // Topologies of this and map must be equal.
+        void FillFrom(const ProxyMap& proxyMap) const;
 
       private:
 
@@ -72,15 +77,21 @@ namespace cnn
       }
 
       template <typename T>
-      void ProxyMap<T>::SetValue(const size_t index, const T value)
+      void ProxyMap<T>::SetValue(const size_t index, const T value) const
       {
         Map_.SetValue(index, value);
       }
 
       template <typename T>
-      void ProxyMap<T>::Clear() noexcept
+      void ProxyMap<T>::Clear() const noexcept
       {
         Map_.Clear();
+      }
+
+      template <typename T>
+      void ProxyMap<T>::FillFrom(const ProxyMap<T>& proxyMap) const
+      {
+        Map_.FillFrom(proxyMap.Map_);
       }
     }
   }

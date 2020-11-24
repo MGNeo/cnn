@@ -27,6 +27,7 @@
 #include <iostream>
 #include <fstream>
 
+// TODO: All methods of proxies must be const.
 // TODO: Check that any move-assignment operators reset "from".
 
 using namespace cnn::engine;
@@ -59,6 +60,8 @@ int main(int argc, char** argv)
   network2DTopology.Reset();
 
   convolution::Network2D<float> network2D{ network2DTopology };
+
+  network2D.GenerateOputput();
 
   common::Mutagen<float> mutagen;
   convolution::Size2D size;
