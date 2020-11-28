@@ -26,9 +26,9 @@ namespace cnn
 
         Network2DTopology& operator=(Network2DTopology&& topology) noexcept = default;
 
-        bool operator==(const Network2DTopology& topology) const;
+        bool operator==(const Network2DTopology& topology) const noexcept;
 
-        bool operator!=(const Network2DTopology& topology) const;
+        bool operator!=(const Network2DTopology& topology) const noexcept;
 
         // Exception guarantee: strong for this.
         void PushBack(const Layer2DTopology& topology);

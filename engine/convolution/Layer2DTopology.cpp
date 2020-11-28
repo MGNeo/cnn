@@ -50,7 +50,7 @@ namespace cnn
         return *this;
       }
 
-      bool Layer2DTopology::operator==(const Layer2DTopology& topology) const
+      bool Layer2DTopology::operator==(const Layer2DTopology& topology) const noexcept
       {
         if ((InputSize == topology.InputSize) &&
             (InputCount == topology.InputCount) &&
@@ -65,7 +65,7 @@ namespace cnn
         }
       }
 
-      bool Layer2DTopology::operator!=(const Layer2DTopology& topology) const
+      bool Layer2DTopology::operator!=(const Layer2DTopology& topology) const noexcept
       {
         if (*this == topology)
         {

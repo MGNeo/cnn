@@ -25,6 +25,7 @@
     <ClCompile Include="convolution\Size2D.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="perceptron\LayerTopology.cpp" />
+    <ClCompile Include="perceptron\NetworkTopology.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\ProxyMap.hpp" />
@@ -47,8 +48,10 @@
     <ClInclude Include="convolution\ProxyMap2D.hpp" />
     <ClInclude Include="convolution\ProxyNetwork2D.hpp" />
     <ClInclude Include="convolution\Size2D.hpp" />
+    <ClInclude Include="perceptron\Network.hpp" />
     <ClInclude Include="perceptron\Layer.hpp" />
     <ClInclude Include="perceptron\LayerTopology.hpp" />
+    <ClInclude Include="perceptron\NetworkTopology.hpp" />
     <ClInclude Include="perceptron\ProxyLayer.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

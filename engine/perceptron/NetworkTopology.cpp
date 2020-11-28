@@ -1,19 +1,17 @@
-#include "Network2DTopology.hpp"
-
-#include <stdexcept>
+#include "NetworkTopology.hpp"
 
 namespace cnn
 {
   namespace engine
   {
-    namespace convolution
+    namespace perceptron
     {
-      Network2DTopology::Network2DTopology()
+      NetworkTopology::NetworkTopology()
       {
         Topologies.reserve(16);
       }
 
-      bool Network2DTopology::operator==(const Network2DTopology& topology) const noexcept
+      bool NetworkTopology::operator==(const NetworkTopology& topology) const noexcept
       {
         if (Topologies.size() != topology.Topologies.size())
         {
@@ -31,7 +29,7 @@ namespace cnn
         return true;
       }
 
-      bool Network2DTopology::operator!=(const Network2DTopology& topology) const noexcept
+      bool NetworkTopology::operator!=(const NetworkTopology& topology) const noexcept
       {
         if (*this == topology)
         {
@@ -41,35 +39,35 @@ namespace cnn
         }
       }
 
-      void Network2DTopology::PushBack(const Layer2DTopology& topology)
+      void NetworkTopology::PushBack(const LayerTopology& topology)
       {
         Topologies.push_back(topology);
       }
 
-      size_t Network2DTopology::GetLayerCount() const noexcept
+      size_t NetworkTopology::GetLayerCount() const noexcept
       {
         return Topologies.size();
       }
 
-      Layer2DTopology Network2DTopology::GetLayerTopology(const size_t index) const
+      LayerTopology NetworkTopology::GetLayerTopology(const size_t index) const
       {
         if (index >= Topologies.size())
         {
-          throw std::range_error("cnn::engine::convolution::Network2DTopology::GetLayerTopology(), index >= Topologies.size().");
+          throw std::range_error("cnn::engine::perceptron::NetworkTopology::GetLayerTopology(), index >= Topologies.size().");
         }
         return Topologies[index];
       }
 
-      void Network2DTopology::Reset() noexcept
+      void NetworkTopology::Reset() noexcept
       {
         Topologies.clear();
       }
 
-      void Network2DTopology::Save(std::ostream& ostream) const
+      void NetworkTopology::Save(std::ostream& ostream) const
       {
         if (ostream.good() == false)
         {
-          throw std::invalid_argument("cnn::engine::convolution::Network2DTopology::Save(), ostream.good() == false.");
+          throw std::invalid_argument("cnn::engine::perceptron::NetworkTopology::Save(), ostream.good() == false.");
         }
 
         const size_t count = Topologies.size();
@@ -82,39 +80,36 @@ namespace cnn
 
         if (ostream.good() == false)
         {
-          throw std::runtime_error("cnn::engine::convolution::Network2DTopology::Save(), ostream.good() == false.");
+          throw std::runtime_error("cnn::engine::perceptron::NetworkTopology::Save(), ostream.good() == false.");
         }
       }
 
-      void Network2DTopology::Load(std::istream& istream)
+      void NetworkTopology::Load(std::istream& istream)
       {
         if (istream.good() == false)
         {
-          throw std::invalid_argument("cnn::engine::convolution::Network2DTopology::Load(), istream.good() == false.");
+          throw std::invalid_argument("cnn::engine::perceptron::NetworkTopology::Load(), istream.good() == false.");
         }
 
         size_t count{};
-
         decltype(Topologies) topologies;
-        topologies.reserve(16);
-        
+
         istream.read(reinterpret_cast<char* const>(&count), sizeof(count));
 
         topologies.resize(count);
-
-        for (size_t i = 0; i < count; ++i)
+        for (size_t i = 0; i < topologies.size(); ++i)
         {
           topologies[i].Load(istream);
         }
 
         if (istream.good() == false)
         {
-          throw std::runtime_error("cnn::engine::convolution::Network2DTopology::Load(), istream.good() == false.");
+          throw std::runtime_error("cnn::engine::perceptron::NetworkTopology::Load(), istream.good() == false.");
         }
 
         Topologies = std::move(topologies);
-      }
 
+      }
     }
   }
 }
