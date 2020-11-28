@@ -1,7 +1,12 @@
 #pragma once
 
-#include "../common/Neuron.hpp"
+#include "LayerTopology.hpp"
+
 #include "../common/Map.hpp"
+#include "../common/ProxyMap.hpp"
+
+#include "../common/Neuron.hpp"
+#include "../common/ProxyNeuron.hpp"
 
 #include <stdexcept>
 
@@ -11,7 +16,6 @@ namespace cnn
   {
     namespace perceptron
     {
-      /*
       template <typename T>
       class Layer
       {
@@ -20,225 +24,283 @@ namespace cnn
 
       public:
 
-        Layer(const size_t inputCount = 0, const size_t neuronCount = 0);
+        Layer(const LayerTopology& topology = {});
 
-        Layer(const Layer& layer) = default;
+        Layer(const Layer& layer);
 
-        Layer(Layer&& layer) noexcept;
+        Layer(Layer&& layer) noexcept = default;
 
-        Layer& operator=(const Layer& layer) = default;
+        Layer& operator=(const Layer& layer);
 
-        Layer& operator=(Layer&& layer) noexcept;
+        Layer& operator=(Layer&& layer) noexcept = default;
 
-        size_t GetInputSize() const noexcept;
+        LayerTopology GetTopology() const noexcept;
 
-        void SetInputSize(const size_t inputSize);
+        void SetTopology(const LayerTopology& topology);
 
-        T GetInputValue(const size_t index);
+        common::ProxyMap<T> GetInput() const;
 
-        void SetInputValue(const size_t index, const T value);
+        common::ProxyNeuron<T> GetNeuron(const size_t index) const;
 
-        size_t GetOutputSize() const noexcept;
+        common::ProxyMap<T> GetOutput() const;
 
-        void SetOutputSize(const size_t outputSize);
-
-        T GetOutputValue(const size_t index);
-
-        void SetOutputValue(const size_t index, const T value);
-
-        size_t GetNeuronCount() const noexcept;
-
-        void SetNeuronCount(const size_t neuronCount);
-
-        // ...
-
+        // Exception guarantee: base for this.
         void GenerateOutput();
 
-        void FillWeights(common::ValueGenerator<T>& valueGenerator);
+        // It clears the state without changing of the topology.
+        void Clear() noexcept;
 
-        void Mutate(common::Mutagen<T>& mutagen);
+        // It resets the state to zero including the topology.
+        void Reset() noexcept;
+
+        // Exception guarantee: base for ostream.
+        // It saves full state.
+        void Save(std::ostream& ostream) const;
+
+        // Exception guarantee: strong for this and base for istream.
+        // It loads full state.
+        void Load(std::istream& istream);
+
+        // We expect that the method never throws any exception.
+        void FillWeights(common::ValueGenerator<T>& valueGenerator) noexcept;
+
+        // We expect that the method never throws any exception.
+        void Mutate(common::Mutagen<T>& mutagen) noexcept;
 
       private:
 
+        LayerTopology Topology;
+
         common::Map<T> Input;
-
-        size_t NeuronCount;
         std::unique_ptr<common::Neuron<T>[]> Neurons;
-
         common::Map<T> Output;
 
-        // TODO: Clear() family functions.
+        void CheckTopology(const LayerTopology& topology) const;
 
       };
 
       template <typename T>
-      Layer<T>::Layer(const size_t inputSize,
-        const size_t outputSize)
-        :
-        InputSize{ inputSize },
-        NeuronCount{ outputSize },
-        OutputSize{ outputSize }
+      Layer<T>::Layer(const LayerTopology& topology)
       {
-        if (InputSize == 0)
+        CheckTopology(topology);
+
+        Topology = topology;
+
+        if (Topology.GetInputCount() != 0)
         {
-          throw std::invalid_argument("cnn::engine::perceptron::Layer::Layer(const size_t, const size_t), InputSize == 0.");
-        }
-        if (NeuronCount == 0)
-        {
-          throw std::invalid_argument("cnn::engine::perceptron::Layer::Layer(const size_t, const size_t), NeuronCount == 0.");
-        }
-        if (OutputSize == 0)
-        {
-          throw std::invalid_argument("cnn::engine::perceptron::Layer::Layer(const size_t, const size_t), OutputSize == 0.");
+          Input.SetValueCount(Topology.GetInputCount());
         }
 
-        Input = std::make_unique<common::Map<T>>(InputSize);
-
-        Neurons = std::make_unique<typename common::Neuron<T>::Uptr[]>(NeuronCount);
-        for (size_t n = 0; n < NeuronCount; ++n)
+        if (Topology.GetNeuronCount() != 0)
         {
-          Neurons[n] = std::make_unique<common::Neuron<T>>(InputSize);
-        }
-
-        Output = std::make_unique<common::Map<T>>(OutputSize);
-      }
-
-      template <typename T>
-      size_t Layer<T>::GetInputSize() const
-      {
-        return InputSize;
-      }
-
-      template <typename T>
-      const common::IMap<T>& Layer<T>::GetInput() const
-      {
-        return *(Input);
-      }
-
-      template <typename T>
-      common::IMap<T>& Layer<T>::GetInput()
-      {
-        return *(Input);
-      }
-
-      template <typename T>
-      size_t Layer<T>::GetNeuronCount() const
-      {
-        return NeuronCount;
-      }
-
-      template <typename T>
-      const common::INeuron<T>& Layer<T>::GetNeuron(const size_t index) const
-      {
-#ifndef CNN_DISABLE_RANGE_CHECKS
-        if (index >= NeuronCount)
-        {
-          throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron() const, index >= NeuronCount.");
-        }
-#endif
-        return *(Neurons[index]);
-      }
-
-      template <typename T>
-      common::INeuron<T>& Layer<T>::GetNeuron(const size_t index)
-      {
-#ifndef CNN_DISABLE_RANGE_CHECKS
-        if (index >= NeuronCount)
-        {
-          throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron(), index >= NeuronCount.");
-        }
-#endif
-        return *(Neurons[index]);
-      }
-
-      template <typename T>
-      size_t Layer<T>::GetOutputSize() const
-      {
-        return OutputSize;
-      }
-
-      template <typename T>
-      const common::IMap<T>& Layer<T>::GetOutput() const
-      {
-        return *(Output);
-      }
-
-      template <typename T>
-      common::IMap<T>& Layer<T>::GetOutput()
-      {
-        return *(Output);
-      }
-
-      template <typename T>
-      void Layer<T>::Process()
-      {
-        // TODO: Think about exception safety.
-        for (size_t n = 0; n < NeuronCount; ++n)
-        {
-          auto& neuron = *(Neurons[n]);
-          for (size_t i = 0; i < InputSize; ++i)
+          Neurons = std::make_unique<common::Neuron<T>[]>(Topology.GetNeuronCount());
+          for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
           {
-            const T value = Input->GetValue(i);
-            neuron.SetInput(i, value);
+            Neurons[i].SetInputCount(Topology.GetInputCount());
           }
-          neuron.Process();
-          const T value = neuron.GetOutput();
-          Output->SetValue(n, value);
-
+          Output.SetValueCount(Topology.GetNeuronCount());
         }
       }
 
-      // The result must not be nullptr.
       template <typename T>
-      typename ILayer<T>::Uptr Layer<T>::Clone(const bool cloneState) const
-      {
-        return std::make_unique<Layer<T>>(*this, cloneState);
-      }
-
-      template <typename T>
-      Layer<T>::Layer(const Layer<T>& layer, const bool cloneState)
+      Layer<T>::Layer(const Layer& layer)
         :
-        InputSize{ layer.GetInputSize() },
-        Input{ layer.GetInput().Clone(cloneState) },
-        NeuronCount{ layer.GetNeuronCount() },
-        Neurons{ std::make_unique<typename common::INeuron<T>::Uptr[]>(NeuronCount) },
-        OutputSize{ layer.GetOutputSize() },
-        Output{ layer.GetOutput().Clone(cloneState) }
+        Topology{ layer.Topology },
+        Input{ layer.Input },
+        Output{ layer.Output }
       {
-        for (size_t n = 0; n < NeuronCount; ++n)
+        if (Topology.GetNeuronCount() != 0)
         {
-          Neurons[n] = layer.GetNeuron(n).Clone(cloneState);
+          Neurons = std::make_unique<common::Neuron<T>[]>(Topology.GetNeuronCount());
+          for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
+          {
+            Neurons[i] = layer.Neurons[i];
+          }
         }
       }
 
       template <typename T>
-      void Layer<T>::FillWeights(common::IValueGenerator<T>& valueGenerator)
+      Layer<T>& Layer<T>::operator=(const Layer& layer)
       {
-        for (size_t n = 0; n < NeuronCount; ++n)
+        if (this != &layer)
         {
-          Neurons[n]->FillWeights(valueGenerator);
+          Layer<T> tmpLayer{ layer };
+          // Beware, it is very intimate place for strong exception guarantee.
+          std::swap(*this, tmpLayer);
+        }
+        return *this;
+      }
+
+
+      template <typename T>
+      LayerTopology Layer<T>::GetTopology() const noexcept
+      {
+        return Topology;
+      }
+
+      template <typename T>
+      void Layer<T>::SetTopology(const LayerTopology& topology)
+      {
+        CheckTopology(topology);
+        Layer<T> tmpLayer{ topology };
+        // Beware, it is very intimate place for strong exception guarantee.
+        std::swap(*this, tmpLayer);
+      }
+
+      template <typename T>
+      common::ProxyMap<T> Layer<T>::GetInput() const
+      {
+        return Input;
+      }
+
+      template <typename T>
+      common::ProxyNeuron<T> Layer<T>::GetNeuron(const size_t index) const
+      {
+        if (index >= Topology.GetNeuronCount())
+        {
+          throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron(), index >= Topology.GetNeuronCount().");
+        }
+        return Neurons[index];
+      }
+
+      template <typename T>
+      common::ProxyMap<T> Layer<T>::GetOutput() const
+      {
+        return Output;
+      }
+
+      template <typename T>
+      void Layer<T>::GenerateOutput()
+      {
+        // ...
+      }
+
+      template <typename T>
+      void Layer<T>::Clear() noexcept
+      {
+        Input.Clear();
+        for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
+        {
+          Neurons[i].Clear();
+        }
+        Output.Clear();
+      }
+
+      template <typename T>
+      void Layer<T>::Reset() noexcept
+      {
+        Topology.Clear();
+        Input.Reset();
+        Neurons.reset(nullptr);
+        Output.Reset();
+      }
+
+      template <typename T>
+      void Layer<T>::Save(std::ostream& ostream) const
+      {
+        if (ostream.good() == false)
+        {
+          throw std::invalid_argument("cnn::engine::perceptron::Layer::Save(), ostream.good() == false.");
+        }
+
+        Topology.Save(ostream);
+        Input.Save(ostream);
+        for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
+        {
+          Neurons[i].Save(ostream);
+        }
+        Output.Save(ostream);
+
+        if (ostream.good() == false)
+        {
+          throw std::runtime_error("cnn::engine::perceptron::Layer::Save(), ostream.good() == false.");
         }
       }
 
       template <typename T>
-      void Layer<T>::Mutate(common::IMutagen<T>& mutagen)
+      void Layer<T>::Load(std::istream& istream)
       {
-        for (size_t n = 0; n < GetNeuronCount(); ++n)
+        if (istream.good() == false)
         {
-          Neurons[n]->Mutate(mutagen);
+          throw std::invalid_argument("cnn::engine::perceptron::Layer::Load(), istream.good() == false.");
+        }
+
+        decltype(Topology) topology;
+        decltype(Input) input;
+        decltype(Neurons) neurons;
+        decltype(Output) output;
+
+        topology.Load(istream);
+        CheckTopology(topology);
+
+        input.Load(istream);
+        if (input.GetValueCount() != topology.GetInputCount())
+        {
+          throw std::logic_error("cnn::engine::perceptron::Layer::Load(), input.GetValueCount() != topology.GetInputCount().");
+        }
+
+        if (topology.GetNeuronCount() != 0)
+        {
+          neurons = std::make_unique<common::Neuron<T>[]>(topology.GetNeuronCount());
+          for (size_t i = 0; i < topology.GetNeuronCount(); ++i)
+          {
+            neurons[i].Load(istream);
+            if (neurons[i].GetInputCount() != topology.GetInputCount())
+            {
+              throw std::logic_error("cnn::engine::perceptron::Layer::Load(), neurons[i].GetInputCount() != topology.GetInputCount().");
+            }
+          }
+        }
+
+        output.Load(istream);
+        if (output.GetValueCount() != topology.GetNeuronCount())
+        {
+          throw std::logic_error("cnn::engine::perceptron::Layer::Load(), output.GetValueCount() != topology.GetNeuronCount().");
+        }
+
+        if (istream.good() == false)
+        {
+          throw std::runtime_error("cnn::engine::perceptron::Layer::Load(), istream.good() == false.");
+        }
+
+        Topology = std::move(topology);
+        Input = std::move(input);
+        Neurons = std::move(neurons);
+        Output = std::move(output);
+      }
+
+      template <typename T>
+      void Layer<T>::FillWeights(common::ValueGenerator<T>& valueGenerator) noexcept
+      {
+        for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
+        {
+          Neurons[i].FillWeights(valueGenerator);
         }
       }
 
       template <typename T>
-      void Layer<T>::SetActivationFunctions(const common::IActivationFunction<T>& activationFunction)
+      void Layer<T>::Mutate(common::Mutagen<T>& mutagen) noexcept
       {
-        for (size_t n = 0; n < GetNeuronCount(); ++n)
+        for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
         {
-          Neurons[n]->SetActivationFunction(activationFunction);
+          Neurons[i].Mutate(mutagen);
         }
       }
 
-      */
+      template <typename T>
+      void Layer<T>::CheckTopology(const LayerTopology& topology) const
+      {
+        // Zero topology is allowed.
+        if ((topology.GetInputCount() == 0) && (topology.GetNeuronCount() == 0))
+        {
+          return;
+        }
+
+        if ((topology.GetInputCount() == 0) || (topology.GetNeuronCount() == 0))
+        {
+          throw std::invalid_argument("cnn::engine::perceptron::Layer::CheckTopology(), (topology.GetInputCount() == 0) || (topology.GetNeuronCount() == 0).");
+        }
+      }
     }
   }
 }

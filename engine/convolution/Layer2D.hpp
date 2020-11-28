@@ -26,11 +26,11 @@ namespace cnn
 
         Layer2D(const Layer2D& layer);
 
-        Layer2D(Layer2D&& layer) noexcept;
+        Layer2D(Layer2D&& layer) noexcept = default;
 
         Layer2D& operator=(const Layer2D& layer);
 
-        Layer2D& operator=(Layer2D&& layer) noexcept;
+        Layer2D& operator=(Layer2D&& layer) noexcept = default;
 
         Layer2DTopology GetTopology() const noexcept;
 
@@ -73,7 +73,7 @@ namespace cnn
         std::unique_ptr<Filter2D<T>[]> Filters;
         std::unique_ptr<Map2D<T>[]> Outputs;
 
-        void CheckTopology(const Layer2DTopology& topology);
+        void CheckTopology(const Layer2DTopology& topology) const;
 
       };
 
@@ -146,16 +146,6 @@ namespace cnn
       }
 
       template <typename T>
-      Layer2D<T>::Layer2D(Layer2D&& layer) noexcept
-        :
-        Topology{ std::move(layer.Topology) },
-        Inputs{ std::move(layer.Inputs) },
-        Filters{ std::move(layer.Filters) },
-        Outputs{ std::move(layer.Outputs) }
-      {
-      }
-
-      template <typename T>
       Layer2D<T>& Layer2D<T>::operator=(const Layer2D<T>& layer)
       {
         if (this != &layer)
@@ -163,19 +153,6 @@ namespace cnn
           Layer2D<T> tmpLayer{ layer };
           // Beware, it is very intimate place for strong exception guarantee.
           std::swap(*this, tmpLayer);
-        }
-        return *this;
-      }
-
-      template <typename T>
-      Layer2D<T>& Layer2D<T>::operator=(Layer2D<T>&& layer) noexcept
-      {
-        if (this != &layer)
-        {
-          Topology = std::move(layer.Topology);
-          Inputs = std::move(layer.Inputs);
-          Filters = std::move(layer.Filters);
-          Outputs = std::move(layer.Outputs);
         }
         return *this;
       }
@@ -325,6 +302,7 @@ namespace cnn
         {
           throw std::invalid_argument("cnn::engine::convolution::Layer2D::Load(), istream.good() == false.");
         }
+
         decltype(Topology) topology;
         decltype(Inputs) inputs;
         decltype(Filters) filters;
@@ -403,7 +381,7 @@ namespace cnn
       }
 
       template <typename T>
-      void Layer2D<T>::CheckTopology(const Layer2DTopology& topology)
+      void Layer2D<T>::CheckTopology(const Layer2DTopology& topology) const
       {
         // Zero topology is allowed.
         if ((topology.GetInputCount() == 0) && (topology.GetFilterCount() == 0) && (topology.GetOutputCount() == 0))

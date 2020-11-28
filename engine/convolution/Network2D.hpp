@@ -64,7 +64,7 @@ namespace cnn
         Network2DTopology Topology;
         std::unique_ptr<Layer2D<T>[]> Layers;
 
-        void CheckTopology(const Network2DTopology& topology);
+        void CheckTopology(const Network2DTopology& topology) const;
 
       };
 
@@ -241,7 +241,7 @@ namespace cnn
       }
 
       template <typename T>
-      void Network2D<T>::CheckTopology(const Network2DTopology& topology)
+      void Network2D<T>::CheckTopology(const Network2DTopology& topology) const
       {
         // Zero topology is allowed.
         if (topology.GetLayerCount() == 0)
