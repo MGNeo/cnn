@@ -22,6 +22,8 @@
 #include "convolution/Network2D.hpp"
 #include "convolution/ProxyNetwork2D.hpp"
 
+#include "perceptron/LayerTopology.hpp"
+
 #include "common/Mutagen.hpp"
 
 #include <sstream>
@@ -62,8 +64,9 @@ int main(int argc, char** argv)
   convolution::Network2D<float> network2D{ network2DTopology };
   convolution::ProxyNetwork2D<float> proxyNetwork2D{ network2D };
   proxyNetwork2D.GenerateOputput();
-
   network2D.GenerateOputput();
+
+  perceptron::LayerTopology layerTopology{ 10, 100 };
 
   common::Mutagen<float> mutagen;
   convolution::Size2D size;
