@@ -16,7 +16,7 @@ namespace cnn
 
       public:
 
-        ProxyLayer2D(Layer2D<T>& layer);
+        ProxyLayer2D(Layer2D<T>& layer) noexcept;
 
         ProxyLayer2D(const ProxyLayer2D& proxyLayer) noexcept;
 
@@ -56,7 +56,7 @@ namespace cnn
       };
 
       template <typename T>
-      ProxyLayer2D<T>::ProxyLayer2D(Layer2D<T>& layer)
+      ProxyLayer2D<T>::ProxyLayer2D(Layer2D<T>& layer) noexcept
         :
         Layer{ layer }
       {

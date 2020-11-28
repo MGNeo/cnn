@@ -18,7 +18,7 @@ namespace cnn
 
       public:
 
-        ProxyCore2D(Core2D<T>& core);
+        ProxyCore2D(Core2D<T>& core) noexcept;
 
         ProxyCore2D(const ProxyCore2D& proxyCore) noexcept;
 
@@ -69,7 +69,7 @@ namespace cnn
       };
 
       template <typename T>
-      ProxyCore2D<T>::ProxyCore2D(Core2D<T>& core)
+      ProxyCore2D<T>::ProxyCore2D(Core2D<T>& core) noexcept
         :
         Core{ core }
       {

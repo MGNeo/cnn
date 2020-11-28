@@ -18,7 +18,7 @@ namespace cnn
 
       public:
 
-        ProxyNeuron(Neuron<T>& neuron);
+        ProxyNeuron(Neuron<T>& neuron) noexcept;
 
         ProxyNeuron(const ProxyNeuron<T>& proxyNeuron) noexcept;
 
@@ -68,7 +68,7 @@ namespace cnn
       };
 
       template <typename T>
-      ProxyNeuron<T>::ProxyNeuron(Neuron<T>& neuron) 
+      ProxyNeuron<T>::ProxyNeuron(Neuron<T>& neuron) noexcept
         :
         Neuron_{ neuron }
       {

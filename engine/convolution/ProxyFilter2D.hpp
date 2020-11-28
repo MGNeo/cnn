@@ -8,6 +8,8 @@ namespace cnn
   {
     namespace convolution
     {
+      // ProxyFilter2D is a protecting proxy, which protects a Filter2D from changing of topology and other dangerous
+      // operations, which can break consistency of complex object, which contains a Filter2D as its part.
       template <typename T>
       class ProxyFilter2D
       {

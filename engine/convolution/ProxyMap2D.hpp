@@ -16,7 +16,7 @@ namespace cnn
 
       public:
 
-        ProxyMap2D(Map2D<T>& map);
+        ProxyMap2D(Map2D<T>& map) noexcept;
 
         ProxyMap2D(const ProxyMap2D& proxyMap) noexcept;
 
@@ -48,7 +48,7 @@ namespace cnn
       };
 
       template <typename T>
-      ProxyMap2D<T>::ProxyMap2D(Map2D<T>& map)
+      ProxyMap2D<T>::ProxyMap2D(Map2D<T>& map) noexcept
         :
         Map{ map }
       {

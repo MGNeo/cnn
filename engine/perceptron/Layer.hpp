@@ -38,11 +38,11 @@ namespace cnn
 
         void SetTopology(const LayerTopology& topology);
 
-        common::ProxyMap<T> GetInput() const;
+        common::ProxyMap<T> GetInput() const noexcept;
 
         common::ProxyNeuron<T> GetNeuron(const size_t index) const;
 
-        common::ProxyMap<T> GetOutput() const;
+        common::ProxyMap<T> GetOutput() const noexcept;
 
         // Exception guarantee: base for this.
         void GenerateOutput();
@@ -148,7 +148,7 @@ namespace cnn
       }
 
       template <typename T>
-      common::ProxyMap<T> Layer<T>::GetInput() const
+      common::ProxyMap<T> Layer<T>::GetInput() const noexcept
       {
         return Input;
       }
@@ -164,7 +164,7 @@ namespace cnn
       }
 
       template <typename T>
-      common::ProxyMap<T> Layer<T>::GetOutput() const
+      common::ProxyMap<T> Layer<T>::GetOutput() const noexcept
       {
         return Output;
       }
@@ -172,7 +172,16 @@ namespace cnn
       template <typename T>
       void Layer<T>::GenerateOutput()
       {
-        // ...
+        for (size_t n = 0; n < Topology.GetNeuronCount(); ++n)
+        {
+          auto& neuron = Neurons[n];
+          for (size_t i = 0; i < Topology.GetInputCount(); ++i)
+          {
+            neuron.SetInput(i, Input.GetValue(i));
+          }
+          neuron.GenerateOutput();
+          Output.SetValue(n, neuron.GetOutput());
+        }
       }
 
       template <typename T>

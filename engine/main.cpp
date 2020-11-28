@@ -24,6 +24,7 @@
 
 #include "perceptron/LayerTopology.hpp"
 #include "perceptron/Layer.hpp"
+#include "perceptron/ProxyLayer.hpp"
 
 #include "common/Mutagen.hpp"
 
@@ -31,6 +32,7 @@
 #include <iostream>
 #include <fstream>
 
+// TODO: Perhaps, Neuron must use Map instead of [] for Inputs and Weights.
 // TODO: Check that any move-assignment operators reset "from".
 
 using namespace cnn::engine;
@@ -69,6 +71,7 @@ int main(int argc, char** argv)
 
   perceptron::LayerTopology layerTopology;
   perceptron::Layer<float> layer{ layerTopology };
+  perceptron::ProxyLayer<float> proxyLayer{ layer };
 
   common::Mutagen<float> mutagen;
   convolution::Size2D size;

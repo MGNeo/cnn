@@ -53,5 +53,6 @@
     <ClInclude Include="convolution\Network2DTopology.hpp" />
     <ClInclude Include="convolution\ProxyNetwork2D.hpp" />
     <ClInclude Include="perceptron\LayerTopology.hpp" />
+    <ClInclude Include="perceptron\ProxyLayer.hpp" />
   </ItemGroup>
 </Project>

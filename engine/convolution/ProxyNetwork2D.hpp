@@ -18,9 +18,9 @@ namespace cnn
 
       public:
 
-        ProxyNetwork2D(Network2D<T>& network);
+        ProxyNetwork2D(Network2D<T>& network) noexcept;
 
-        ProxyNetwork2D(const ProxyNetwork2D& proxyNetwork);
+        ProxyNetwork2D(const ProxyNetwork2D& proxyNetwork) noexcept;
 
         ProxyNetwork2D(ProxyNetwork2D&& proxyNetwork) = delete;
 
@@ -58,14 +58,14 @@ namespace cnn
       };
 
       template <typename T>
-      ProxyNetwork2D<T>::ProxyNetwork2D(Network2D<T>& network)
+      ProxyNetwork2D<T>::ProxyNetwork2D(Network2D<T>& network) noexcept
         :
         Network{ network }
       {
       }
 
       template <typename T>
-      ProxyNetwork2D<T>::ProxyNetwork2D(const ProxyNetwork2D& proxyNetwork)
+      ProxyNetwork2D<T>::ProxyNetwork2D(const ProxyNetwork2D& proxyNetwork) noexcept
         :
         Network{ proxyNetwork.Network }
       {

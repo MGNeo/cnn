@@ -18,7 +18,7 @@ namespace cnn
 
       public:
 
-        ProxyMap(Map<T>& map);
+        ProxyMap(Map<T>& map) noexcept;
 
         ProxyMap(const ProxyMap<T>& proxyMap) noexcept;
 
@@ -51,7 +51,7 @@ namespace cnn
       };
 
       template <typename T>
-      ProxyMap<T>::ProxyMap(Map<T>& map)
+      ProxyMap<T>::ProxyMap(Map<T>& map) noexcept
         :
         Map_{ map }
       {
