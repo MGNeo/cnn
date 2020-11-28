@@ -33,7 +33,6 @@ namespace cnn
         // Exception guarantee: base for the network.
         void SetTopology(const Network2DTopology& topology);
 
-        // Exception guarantee: base for the network.
         ProxyLayer2D<T> GetLayer(const size_t index) const;
 
         // Exception guarantee: base for this.
@@ -121,7 +120,6 @@ namespace cnn
       template <typename T>
       void Network2D<T>::SetTopology(const Network2DTopology& topology)
       {
-        CheckTopology(topology);
         Network2D<T> tmpNetwork{ topology };
         // Beware, it is very intimate place for strong exception guarantee.
         std::swap(*this, tmpNetwork);
@@ -140,15 +138,19 @@ namespace cnn
       template <typename T>
       void Network2D<T>::GenerateOputput()
       {
-        for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
+        for (size_t l = 0; l < Topology.GetLayerCount(); ++l)
         {
-          if (i != 0)
+          auto& currentLayer = Layers[l];
+          if (l != 0)
           {
-            const auto previousLayer = Layers[i - 1];
-            const auto currentLayer = Layers[i];
-            currentLayer.GetInput(i).FillFrom(previousLayer.GetOutput(i));
+            const auto& topology = Topology.GetLayerTopology(l);
+            const auto& previousLayer = Layers[l - 1];
+            for (size_t i = 0; i < topology.GetInputCount(); ++i)
+            {
+              currentLayer.GetInput(i).FillFrom(previousLayer.GetOutput(i));
+            }
           }
-          Layers[i].GenerateOutput();
+          currentLayer.GenerateOutput();
         }
       }
 
@@ -203,7 +205,7 @@ namespace cnn
         if (topology.GetLayerCount() != 0)
         {
           layers = std::make_unique<Layer2D<T>[]>(topology.GetLayerCount());
-          for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
+          for (size_t i = 0; i < topology.GetLayerCount(); ++i)
           {
             layers[i].Load(istream);
             if (layers[i].GetTopology() != topology.GetLayerTopology(i))
@@ -255,10 +257,12 @@ namespace cnn
           {
             const auto previousTopology = topology.GetLayerTopology(i - 1);
             const auto currentTopology = topology.GetLayerTopology(i);
+            
             if (previousTopology.GetOutputSize() != currentTopology.GetInputSize())
             {
               throw std::invalid_argument("cnn::engine::convolution::Network2D::CheckTopology(), previousTopology.GetOutputSize() != currentTopology.GetInputSize().");
             }
+
             if (previousTopology.GetOutputCount() != currentTopology.GetInputCount())
             {
               throw std::invalid_argument("cnn::engine::convolution::Network2D::CheckTopology(), previousTopology.GetOutputCount() != currentTopology.GetInputCount().");

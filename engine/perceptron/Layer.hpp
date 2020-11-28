@@ -141,7 +141,6 @@ namespace cnn
       template <typename T>
       void Layer<T>::SetTopology(const LayerTopology& topology)
       {
-        CheckTopology(topology);
         Layer<T> tmpLayer{ topology };
         // Beware, it is very intimate place for strong exception guarantee.
         std::swap(*this, tmpLayer);
