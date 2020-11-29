@@ -8,8 +8,7 @@ namespace cnn
   {
     namespace common
     {
-      // ProxyConstMap is a protecting proxy, which protects a Map from changing of topology and other dangerous
-      // operations, which can break consistency of complex object, which contains a Map as its part.
+      // ProxyConstMap is a protecting proxy, which protects a Map from changing.
       template <typename T>
       class ProxyConstMap
       {
@@ -45,6 +44,7 @@ namespace cnn
         Map_{ map }
       {
       }
+
 
       template <typename T>
       ProxyConstMap<T>::ProxyConstMap(const ProxyConstMap& proxyConstMap) noexcept

@@ -42,8 +42,8 @@ namespace cnn
         // It clears the state without changing of the topology.
         void Clear() const noexcept;
 
-        // Exception guarantee: strong for this.
-        // Topologies of this and map must be equal.
+        // Exception guarantee: strong for the map.
+        // The topologies must be equal.
         void FillFrom(const ProxyMap& proxyMap) const;
 
       private:

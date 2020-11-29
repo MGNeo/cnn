@@ -6,7 +6,8 @@
 #include "common/ProxyConstMap.hpp"
 
 #include "convolution/Map2D.hpp"
-//#include "convolution/ProxyMap2D.hpp"
+#include "convolution/ProxyMap2D.hpp"
+#include "convolution/ProxyConstMap2D.hpp"
 
 #include "convolution/Core2D.hpp"
 //#include "convolution/ProxyCore2D.hpp"
@@ -54,7 +55,8 @@ int main(int argc, char** argv)
   common::ProxyConstMap<float> proxyConstMap{ map };
 
   convolution::Map2D<float> map2D;
-  //convolution::ProxyMap2D<float> proxyMap2D{ map2D };
+  convolution::ProxyMap2D<float> proxyMap2D{ map2D };
+  convolution::ProxyConstMap2D<float> proxyConstMap2D{ map2D };
 
   convolution::Core2D<float> core;
   //convolution::ProxyCore2D<float> proxyCore{ core };

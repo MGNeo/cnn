@@ -53,5 +53,7 @@
     <ClInclude Include="perceptron\NetworkTopology.hpp" />
     <ClInclude Include="common\ProxyMap.hpp" />
     <ClInclude Include="common\ProxyConstMap.hpp" />
+    <ClInclude Include="convolution\ProxyMap2D.hpp" />
+    <ClInclude Include="convolution\ProxyConstMap2D.hpp" />
   </ItemGroup>
 </Project>
