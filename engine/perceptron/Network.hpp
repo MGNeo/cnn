@@ -3,7 +3,7 @@
 #include "NetworkTopology.hpp"
 
 #include "Layer.hpp"
-#include "ProxyLayer.hpp"
+//#include "ProxyLayer.hpp"
 
 namespace cnn
 {
@@ -34,7 +34,7 @@ namespace cnn
         // Exception guarantee: base for the network.
         void SetTopology(const NetworkTopology& topology);
 
-        ProxyLayer<T> GetLayer(const size_t index) const;
+        //ProxyLayer<T> GetLayer(const size_t index);
 
         // Exception guarantee: base for this.
         void GenerateOutput();
@@ -124,8 +124,9 @@ namespace cnn
         std::swap(*this, tmpNetwork);
       }
 
+      /*
       template <typename T>
-      ProxyLayer<T> Network<T>::GetLayer(const size_t index) const
+      ProxyLayer<T> Network<T>::GetLayer(const size_t index)
       {
         if (index >= Topology.GetLayerCount())
         {
@@ -133,6 +134,7 @@ namespace cnn
         }
         return Layers[index];
       }
+      */
 
       template <typename T>
       void Network<T>::GenerateOutput()

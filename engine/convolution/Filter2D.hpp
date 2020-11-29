@@ -5,7 +5,7 @@
 #include <stdexcept>
 
 #include "Core2D.hpp"
-#include "ProxyCore2D.hpp"
+//#include "ProxyCore2D.hpp"
 #include "Filter2DTopology.hpp"
 
 namespace cnn
@@ -39,7 +39,7 @@ namespace cnn
         void SetTopology(const Filter2DTopology& topology);
 
         // Exception guarantee: strong for this.
-        ProxyCore2D<T> GetCore(const size_t index) const;
+        //ProxyCore2D<T> GetCore(const size_t index);
 
         // It clears the state without changing of the topology.
         void Clear() noexcept;
@@ -130,8 +130,9 @@ namespace cnn
         std::swap(*this, tmpFilter);
       }
 
+      /*
       template <typename T>
-      ProxyCore2D<T> Filter2D<T>::GetCore(const size_t index) const
+      ProxyCore2D<T> Filter2D<T>::GetCore(const size_t index)
       {
         if (index >= Topology.GetCoreCount())
         {
@@ -139,6 +140,7 @@ namespace cnn
         }
         return Cores[index];
       }
+      */
 
       template <typename T>
       void Filter2D<T>::Clear() noexcept

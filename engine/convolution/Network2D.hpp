@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Layer2D.hpp"
-#include "ProxyLayer2D.hpp"
+//#include "ProxyLayer2D.hpp"
 #include "Network2DTopology.hpp"
 
 namespace cnn
@@ -33,7 +33,7 @@ namespace cnn
         // Exception guarantee: base for the network.
         void SetTopology(const Network2DTopology& topology);
 
-        ProxyLayer2D<T> GetLayer(const size_t index) const;
+        //ProxyLayer2D<T> GetLayer(const size_t index);
 
         // Exception guarantee: base for this.
         void GenerateOputput();
@@ -125,8 +125,9 @@ namespace cnn
         std::swap(*this, tmpNetwork);
       }
 
+      /*
       template <typename T>
-      ProxyLayer2D<T> Network2D<T>::GetLayer(const size_t index) const
+      ProxyLayer2D<T> Network2D<T>::GetLayer(const size_t index)
       {
         if (index >= Topology.GetLayerCount())
         {
@@ -134,6 +135,7 @@ namespace cnn
         }
         return Layers[index];
       }
+      */
 
       template <typename T>
       void Network2D<T>::GenerateOputput()
@@ -147,7 +149,7 @@ namespace cnn
             const auto& previousLayer = Layers[l - 1];
             for (size_t i = 0; i < topology.GetInputCount(); ++i)
             {
-              currentLayer.GetInput(i).FillFrom(previousLayer.GetOutput(i));
+              //currentLayer.GetInput(i).FillFrom(previousLayer.GetOutput(i));
             }
           }
           currentLayer.GenerateOutput();

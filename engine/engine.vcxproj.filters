@@ -40,25 +40,18 @@
     <ClInclude Include="common\ValueGenerator.hpp" />
     <ClInclude Include="common\Map.hpp" />
     <ClInclude Include="perceptron\Layer.hpp" />
-    <ClInclude Include="common\ProxyNeuron.hpp" />
-    <ClInclude Include="common\ProxyMap.hpp" />
-    <ClInclude Include="convolution\ProxyCore2D.hpp" />
     <ClInclude Include="convolution\Map2D.hpp" />
     <ClInclude Include="convolution\Size2D.hpp" />
-    <ClInclude Include="convolution\ProxyMap2D.hpp" />
     <ClInclude Include="convolution\Filter2D.hpp" />
     <ClInclude Include="convolution\Filter2DTopology.hpp" />
-    <ClInclude Include="convolution\ProxyFilter2D.hpp" />
     <ClInclude Include="convolution\Layer2D.hpp" />
     <ClInclude Include="convolution\Layer2DTopology.hpp" />
-    <ClInclude Include="convolution\ProxyLayer2D.hpp" />
     <ClInclude Include="convolution\Network2D.hpp" />
     <ClInclude Include="convolution\Network2DTopology.hpp" />
-    <ClInclude Include="convolution\ProxyNetwork2D.hpp" />
     <ClInclude Include="perceptron\LayerTopology.hpp" />
-    <ClInclude Include="perceptron\ProxyLayer.hpp" />
     <ClInclude Include="perceptron\Network.hpp" />
     <ClInclude Include="perceptron\NetworkTopology.hpp" />
-    <ClInclude Include="perceptron\ProxyNetwork.hpp" />
+    <ClInclude Include="common\ProxyMap.hpp" />
+    <ClInclude Include="common\ProxyConstMap.hpp" />
   </ItemGroup>
 </Project>

@@ -20,16 +20,18 @@ namespace cnn
 
         ProxyMap(Map<T>& map) noexcept;
 
-        ProxyMap(const ProxyMap<T>& proxyMap) noexcept;
+        ProxyMap(const ProxyMap& proxyMap) noexcept;
 
-        ProxyMap(ProxyMap&& proxyMap) = delete;
+        ProxyMap(ProxyMap&& proxyMap) noexcept = delete;
 
-        ProxyMap& operator=(const ProxyMap<T>& proxyMap) = delete;
+        ProxyMap& operator=(const ProxyMap& proxyMap) noexcept = delete;
 
-        ProxyMap& operator=(ProxyMap<T>&& proxyMap) = delete;
+        ProxyMap& operator=(ProxyMap&& proxMap) noexcept = delete;
+
+        size_t GetValueCount() const noexcept;
 
         // Exception guarantee: strong for the map.
-        size_t GetValueCount() const noexcept;
+        void SetValueCount(const size_t valueCount) const;
 
         // Exception guarantee: strong for the map.
         T GetValue(const size_t index) const;
@@ -58,7 +60,7 @@ namespace cnn
       }
 
       template <typename T>
-      ProxyMap<T>::ProxyMap(const ProxyMap<T>& proxyMap) noexcept
+      ProxyMap<T>::ProxyMap(const ProxyMap& proxyMap) noexcept
         :
         Map_{ proxyMap.Map_ }
       {
@@ -68,6 +70,12 @@ namespace cnn
       size_t ProxyMap<T>::GetValueCount() const noexcept
       {
         return Map_.GetValueCount();
+      }
+
+      template <typename T>
+      void ProxyMap<T>::SetValueCount(const size_t valueCount) const
+      {
+        Map_.GetValueCount(valueCount);
       }
 
       template <typename T>
