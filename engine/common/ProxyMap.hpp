@@ -42,6 +42,10 @@ namespace cnn
         // It clears the state without changing of the topology.
         void Clear() const noexcept;
 
+        // Exception guarantee: base for ostream.
+        // It saves full state.
+        void Save(std::ostream& ostream) const;
+
         // Exception guarantee: strong for the map.
         // The topologies must be equal.
         void FillFrom(const ProxyMap& proxyMap) const;
@@ -94,6 +98,12 @@ namespace cnn
       void ProxyMap<T>::Clear() const noexcept
       {
         Map_.Clear();
+      }
+
+      template <typename T>
+      void ProxyMap<T>::Save(std::ostream& ostream) const
+      {
+        Map_.Save(ostream);
       }
 
       template <typename T>
