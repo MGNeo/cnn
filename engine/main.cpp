@@ -28,6 +28,7 @@
 
 #include "perceptron/NetworkTopology.hpp"
 #include "perceptron/Network.hpp"
+#include "perceptron/ProxyNetwork.hpp"
 
 #include "common/Mutagen.hpp"
 
@@ -81,6 +82,9 @@ int main(int argc, char** argv)
   networkTopology.PushBack(layerTopology);
 
   perceptron::Network<float> network { networkTopology };
+  perceptron::ProxyNetwork<float> proxyNetwork{ network };
+  proxyNetwork.GenerateOutput();
+  proxyNetwork.Clear();
 
   common::Mutagen<float> mutagen;
   convolution::Size2D size;

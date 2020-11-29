@@ -59,5 +59,6 @@
     <ClInclude Include="perceptron\ProxyLayer.hpp" />
     <ClInclude Include="perceptron\Network.hpp" />
     <ClInclude Include="perceptron\NetworkTopology.hpp" />
+    <ClInclude Include="perceptron\ProxyNetwork.hpp" />
   </ItemGroup>
 </Project>

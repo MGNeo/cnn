@@ -71,9 +71,9 @@ namespace cnn
 
         LayerTopology Topology;
 
-        common::Map<T> Input;
+        std::unique_ptr<common::Map<T>> Input;
         std::unique_ptr<common::Neuron<T>[]> Neurons;
-        common::Map<T> Output;
+        std::unique_ptr<common::Map<T>> Output;
 
         void CheckTopology(const LayerTopology& topology) const;
 
@@ -86,10 +86,7 @@ namespace cnn
 
         Topology = topology;
 
-        if (Topology.GetInputCount() != 0)
-        {
-          Input.SetValueCount(Topology.GetInputCount());
-        }
+        Input = std::make_unique<common::Map<T>>(Topology.GetInputCount());
 
         if (Topology.GetNeuronCount() != 0)
         {
@@ -98,17 +95,18 @@ namespace cnn
           {
             Neurons[i].SetInputCount(Topology.GetInputCount());
           }
-          Output.SetValueCount(Topology.GetNeuronCount());
         }
+        
+        Output = std::make_unique<common::Map<T>>(Topology.GetNeuronCount());
       }
 
       template <typename T>
       Layer<T>::Layer(const Layer& layer)
         :
-        Topology{ layer.Topology },
-        Input{ layer.Input },
-        Output{ layer.Output }
+        Topology{ layer.Topology }
       {
+        Input = std::make_unique<common::Map<T>>(*(layer.Input));
+
         if (Topology.GetNeuronCount() != 0)
         {
           Neurons = std::make_unique<common::Neuron<T>[]>(Topology.GetNeuronCount());
@@ -117,6 +115,8 @@ namespace cnn
             Neurons[i] = layer.Neurons[i];
           }
         }
+        
+        Output = std::make_unique<common::Map<T>>(*(layer.Output));
       }
 
       template <typename T>
@@ -149,7 +149,7 @@ namespace cnn
       template <typename T>
       common::ProxyMap<T> Layer<T>::GetInput() const noexcept
       {
-        return Input;
+        return *Input;
       }
 
       template <typename T>
@@ -165,7 +165,7 @@ namespace cnn
       template <typename T>
       common::ProxyMap<T> Layer<T>::GetOutput() const noexcept
       {
-        return Output;
+        return *Output;
       }
 
       template <typename T>
@@ -176,31 +176,31 @@ namespace cnn
           auto& neuron = Neurons[n];
           for (size_t i = 0; i < Topology.GetInputCount(); ++i)
           {
-            neuron.SetInput(i, Input.GetValue(i));
+            neuron.SetInput(i, Input->GetValue(i));
           }
           neuron.GenerateOutput();
-          Output.SetValue(n, neuron.GetOutput());
+          Output->SetValue(n, neuron.GetOutput());
         }
       }
 
       template <typename T>
       void Layer<T>::Clear() noexcept
       {
-        Input.Clear();
+        Input->Clear();
         for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
         {
           Neurons[i].Clear();
         }
-        Output.Clear();
+        Output->Clear();
       }
 
       template <typename T>
       void Layer<T>::Reset() noexcept
       {
         Topology.Clear();
-        Input.Reset();
+        Input->Reset();
         Neurons.reset(nullptr);
-        Output.Reset();
+        Output->Reset();
       }
 
       template <typename T>
@@ -212,12 +212,12 @@ namespace cnn
         }
 
         Topology.Save(ostream);
-        Input.Save(ostream);
+        Input->Save(ostream);
         for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
         {
           Neurons[i].Save(ostream);
         }
-        Output.Save(ostream);
+        Output->Save(ostream);
 
         if (ostream.good() == false)
         {
@@ -234,17 +234,17 @@ namespace cnn
         }
 
         decltype(Topology) topology;
-        decltype(Input) input;
+        decltype(Input) input = std::make_unique<common::Map<T>>();
         decltype(Neurons) neurons;
-        decltype(Output) output;
+        decltype(Output) output = std::make_unique<common::Map<T>>();
 
         topology.Load(istream);
         CheckTopology(topology);
 
-        input.Load(istream);
-        if (input.GetValueCount() != topology.GetInputCount())
+        input->Load(istream);
+        if (input->GetValueCount() != topology.GetInputCount())
         {
-          throw std::logic_error("cnn::engine::perceptron::Layer::Load(), input.GetValueCount() != topology.GetInputCount().");
+          throw std::logic_error("cnn::engine::perceptron::Layer::Load(), input->GetValueCount() != topology.GetInputCount().");
         }
 
         if (topology.GetNeuronCount() != 0)
@@ -260,10 +260,10 @@ namespace cnn
           }
         }
 
-        output.Load(istream);
-        if (output.GetValueCount() != topology.GetNeuronCount())
+        output->Load(istream);
+        if (output->GetValueCount() != topology.GetNeuronCount())
         {
-          throw std::logic_error("cnn::engine::perceptron::Layer::Load(), output.GetValueCount() != topology.GetNeuronCount().");
+          throw std::logic_error("cnn::engine::perceptron::Layer::Load(), output->GetValueCount() != topology.GetNeuronCount().");
         }
 
         if (istream.good() == false)

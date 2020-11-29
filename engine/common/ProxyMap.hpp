@@ -89,7 +89,7 @@ namespace cnn
       }
 
       template <typename T>
-      void ProxyMap<T>::FillFrom(const ProxyMap<T>& proxyMap) const
+      void ProxyMap<T>::FillFrom(const ProxyMap& proxyMap) const
       {
         Map_.FillFrom(proxyMap.Map_);
       }

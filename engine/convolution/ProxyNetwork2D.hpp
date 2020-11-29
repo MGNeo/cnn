@@ -36,6 +36,8 @@ namespace cnn
         // Exception guarantee: base for the network.
         ProxyLayer2D<T> GetLayer(const size_t index) const;
 
+        // TODO: Add GetFirstLayer() and GetLastLayer().
+
         // Exception guarantee: base for the network.
         void GenerateOputput() const;
 

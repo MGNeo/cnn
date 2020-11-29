@@ -53,6 +53,7 @@
     <ClInclude Include="perceptron\LayerTopology.hpp" />
     <ClInclude Include="perceptron\NetworkTopology.hpp" />
     <ClInclude Include="perceptron\ProxyLayer.hpp" />
+    <ClInclude Include="perceptron\ProxyNetwork.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
