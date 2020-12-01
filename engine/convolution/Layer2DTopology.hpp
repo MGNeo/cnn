@@ -34,7 +34,7 @@ namespace cnn
 
         Size2D GetInputSize() const noexcept;
 
-        void SetInputSize(const Size2D& inputSize);
+        void SetInputSize(const Size2D& inputSize) noexcept;
 
         size_t GetInputCount() const noexcept;
 

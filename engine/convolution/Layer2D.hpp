@@ -1,12 +1,8 @@
 #pragma once
 
 #include "Layer2DTopology.hpp"
-
 #include "Map2D.hpp"
-//#include "ProxyMap2D.hpp"
-
 #include "Filter2D.hpp"
-//#include "ProxyFilter2D.hpp"
 
 namespace cnn
 {
@@ -34,13 +30,26 @@ namespace cnn
 
         Layer2DTopology GetTopology() const noexcept;
 
+        // Exception guarantee: strong for this.
         void SetTopology(const Layer2DTopology& topology);
 
-        //ProxyMap2D<T> GetInput(const size_t index);
+        // Exception guarantee: strong for this.
+        const Map2D<T>& GetInput(const size_t index) const;
         
-        //ProxyFilter2D<T> GetFilter(const size_t index);
+        // Exception guarantee: strong for this.
+        Map2D<T>& GetInput(const size_t index);
 
-        //ProxyMap2D<T> GetOutput(const size_t index);
+        // Exception guarantee: strong for this.
+        const Filter2D<T>& GetFilter(const size_t index) const;
+
+        // Exception guarantee: strong for this.
+        Filter2D<T>& GetFilter(const size_t index);
+
+        // Exception guarantee: strong for this.
+        const Map2D<T>& GetOutput(const size_t index) const;
+
+        // Exception guarantee: strong for this.
+        Map2D<T>& GetOutput(const size_t index);
 
         // Exception guarantee: base for this.
         void GenerateOutput();
@@ -171,9 +180,18 @@ namespace cnn
         std::swap(*this, tmpLayer);
       }
 
-      /*
       template <typename T>
-      ProxyMap2D<T> Layer2D<T>::GetInput(const size_t index)
+      const Map2D<T>& Layer2D<T>::GetInput(const size_t index) const
+      {
+        if (index >= Topology.GetInputCount())
+        {
+          throw std::range_error("cnn::engine::convolution::Layer2D::GetInput() const, index >= Topology.GetInputCount().");
+        }
+        return Inputs[index];
+      }
+
+      template <typename T>
+      Map2D<T>& Layer2D<T>::GetInput(const size_t index)
       {
         if (index >= Topology.GetInputCount())
         {
@@ -183,7 +201,17 @@ namespace cnn
       }
 
       template <typename T>
-      ProxyFilter2D<T> Layer2D<T>::GetFilter(const size_t index)
+      const Filter2D<T>& Layer2D<T>::GetFilter(const size_t index) const
+      {
+        if (index >= Topology.GetFilterCount())
+        {
+          throw std::range_error("cnn::engine::convolution::Layer2D::GetFilter() const, index >= Topology.GetFilterCount().");
+        }
+        return Filters[index];
+      }
+
+      template <typename T>
+      Filter2D<T>& Layer2D<T>::GetFilter(const size_t index) 
       {
         if (index >= Topology.GetFilterCount())
         {
@@ -193,7 +221,17 @@ namespace cnn
       }
 
       template <typename T>
-      ProxyMap2D<T> Layer2D<T>::GetOutput(const size_t index)
+      const Map2D<T>& Layer2D<T>::GetOutput(const size_t index) const
+      {
+        if (index >= Topology.GetOutputCount())
+        {
+          throw std::range_error("cnn::engine::convolution::Layer2D::GetOutput() const, index >= Topology.GetOutputCount().");
+        }
+        return Outputs[index];
+      }
+
+      template <typename T>
+      Map2D<T>& Layer2D<T>::GetOutput(const size_t index)
       {
         if (index >= Topology.GetOutputCount())
         {
@@ -201,12 +239,10 @@ namespace cnn
         }
         return Outputs[index];
       }
-      */
 
       template <typename T>
       void Layer2D<T>::GenerateOutput()
       {
-        /*
         for (size_t f = 0; f < Topology.GetFilterCount(); ++f)
         {
           auto& output = Outputs[f];
@@ -236,7 +272,6 @@ namespace cnn
             }
           }
         }
-        */
       }
 
       template <typename T>

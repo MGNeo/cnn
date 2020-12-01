@@ -40,13 +40,11 @@ namespace cnn
         // Exception guarantee: strong for this.
         void SetInputCount(const size_t inputCount);
 
-        // Exception guarantee: strong for this.
         T GetInput(const size_t index) const;
 
         // Exception guarantee: strong for this.
         void SetInput(const size_t index, const T value);
 
-        // Exception guarantee: strong for this.
         T GetWeight(const size_t index) const;
 
         // Exception guarantee: strong for this.

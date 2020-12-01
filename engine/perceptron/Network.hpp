@@ -3,7 +3,6 @@
 #include "NetworkTopology.hpp"
 
 #include "Layer.hpp"
-//#include "ProxyLayer.hpp"
 
 namespace cnn
 {
@@ -34,7 +33,10 @@ namespace cnn
         // Exception guarantee: base for the network.
         void SetTopology(const NetworkTopology& topology);
 
-        //ProxyLayer<T> GetLayer(const size_t index);
+        const Layer<T>& GetLayer(const size_t index) const;
+
+        // Exception guarantee: strong for this.
+        Layer<T>& GetLayer(const size_t index);
 
         // Exception guarantee: base for this.
         void GenerateOutput();
@@ -124,9 +126,18 @@ namespace cnn
         std::swap(*this, tmpNetwork);
       }
 
-      /*
       template <typename T>
-      ProxyLayer<T> Network<T>::GetLayer(const size_t index)
+      const Layer<T>& Network<T>::GetLayer(const size_t index) const
+      {
+        if (index >= Topology.GetLayerCount())
+        {
+          throw std::range_error("cnn::engine::perceptron::Network::GetLayer() const, index >= Topology.GetLayerCount().");
+        }
+        return Layers[index];
+      }
+
+      template <typename T>
+      Layer<T>& Network<T>::GetLayer(const size_t index)
       {
         if (index >= Topology.GetLayerCount())
         {
@@ -134,7 +145,6 @@ namespace cnn
         }
         return Layers[index];
       }
-      */
 
       template <typename T>
       void Network<T>::GenerateOutput()

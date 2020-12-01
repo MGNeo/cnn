@@ -80,7 +80,7 @@ namespace cnn
         return InputSize;
       }
 
-      void Layer2DTopology::SetInputSize(const Size2D& inputSize)
+      void Layer2DTopology::SetInputSize(const Size2D& inputSize) noexcept
       {
         InputSize = inputSize;
       }

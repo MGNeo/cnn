@@ -1,12 +1,8 @@
 #pragma once
 
 #include "LayerTopology.hpp"
-
 #include "../common/Map.hpp"
-//#include "../common/ProxyMap.hpp"
-
 #include "../common/Neuron.hpp"
-//#include "../common/ProxyNeuron.hpp"
 
 #include <stdexcept>
 
@@ -36,13 +32,21 @@ namespace cnn
 
         LayerTopology GetTopology() const noexcept;
 
+        // Exception guarantee: strong for this.
         void SetTopology(const LayerTopology& topology);
 
-        //common::ProxyMap<T> GetInput() noexcept;
+        const common::Map<T>& GetInput() const noexcept;
 
-        //common::ProxyNeuron<T> GetNeuron(const size_t index);
+        common::Map<T>& GetInput() noexcept;
 
-        //common::ProxyMap<T> GetOutput() noexcept;
+        const common::Neuron<T>& GetNeuron(const size_t index) const;
+
+        // Exception guarantee: strong for this.
+        common::Neuron<T>& GetNeuron(const size_t index);
+
+        const common::Map<T>& GetOutput() const noexcept;
+
+        common::Map<T>& GetOutput() noexcept;
 
         // Exception guarantee: base for this.
         void GenerateOutput();
@@ -144,16 +148,30 @@ namespace cnn
         std::swap(*this, tmpLayer);
       }
 
-      /*
       template <typename T>
-      common::ProxyMap<T> Layer<T>::GetInput() noexcept
+      const common::Map<T>& Layer<T>::GetInput() const noexcept
+      {
+        return Input;
+      }
+
+      template <typename T>
+      common::Map<T>& Layer<T>::GetInput() noexcept
       {
         return Input;
       }
       
+      template <typename T>
+      const common::Neuron<T>& Layer<T>::GetNeuron(const size_t index) const
+      {
+        if (index >= Topology.GetNeuronCount())
+        {
+          throw std::range_error("cnn::engine::perceptron::Layer::GetNeuron() const, index >= Topology.GetNeuronCount().");
+        }
+        return Neurons[index];
+      }
 
       template <typename T>
-      common::ProxyNeuron<T> Layer<T>::GetNeuron(const size_t index)
+      common::Neuron<T>& Layer<T>::GetNeuron(const size_t index)
       {
         if (index >= Topology.GetNeuronCount())
         {
@@ -163,11 +181,16 @@ namespace cnn
       }
 
       template <typename T>
-      common::ProxyMap<T> Layer<T>::GetOutput() noexcept
+      const common::Map<T>& Layer<T>::GetOutput() const noexcept
       {
         return Output;
       }
-      */
+
+      template <typename T>
+      common::Map<T>& Layer<T>::GetOutput() noexcept
+      {
+        return Output;
+      }
 
       template <typename T>
       void Layer<T>::GenerateOutput()
