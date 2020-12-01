@@ -8,7 +8,7 @@
 #include "convolution/ProxyMap2D.hpp"
 
 #include "convolution/Core2D.hpp"
-//#include "convolution/ProxyCore2D.hpp"
+#include "convolution/ProxyCore2D.hpp"
 
 #include "convolution/Filter2DTopology.hpp"
 #include "convolution/Filter2D.hpp"
@@ -55,7 +55,7 @@ int main(int argc, char** argv)
   convolution::ProxyMap2D<float> proxyMap2D{ map2D };
 
   convolution::Core2D<float> core;
-  //convolution::ProxyCore2D<float> proxyCore{ core };
+  convolution::ProxyCore2D<float> proxyCore{ core };
 
   convolution::Filter2DTopology filterTopology{ {10, 10}, 10 };
   convolution::Filter2D<float> filter{ filterTopology };
