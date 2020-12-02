@@ -1,4 +1,6 @@
 #include "common/Neuron.hpp"
+#include "common/RefNeuron.hpp"
+#include "common/ConstRefNeuron.hpp"
 
 #include "common/Map.hpp"
 
@@ -35,6 +37,8 @@ using namespace cnn::engine;
 int main(int argc, char** argv)
 {
   common::Neuron<float> neuron;
+  common::RefNeuron<float> refNeuron{ neuron };
+  common::ConstRefNeuron<float> constRefNeuron{ neuron };
 
   common::Map<float> map;
 

@@ -28,9 +28,11 @@
     <ClCompile Include="perceptron\NetworkTopology.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\ConstRefNeuron.hpp" />
     <ClInclude Include="common\Map.hpp" />
     <ClInclude Include="common\Mutagen.hpp" />
     <ClInclude Include="common\Neuron.hpp" />
+    <ClInclude Include="common\RefNeuron.hpp" />
     <ClInclude Include="common\ValueGenerator.hpp" />
     <ClInclude Include="convolution\Core2D.hpp" />
     <ClInclude Include="convolution\Filter2D.hpp" />
