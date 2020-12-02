@@ -74,6 +74,12 @@ namespace cnn
       }
 
       template <typename T>
+      T RefNeuron<T>::GetWeight(const size_t index) const
+      {
+        return Neuron_.GetWeight(index);
+      }
+
+      template <typename T>
       T ConstRefNeuron<T>::GetOutput() const noexcept
       {
         return Neuron_.GetOutput();
