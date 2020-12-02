@@ -3,6 +3,8 @@
 #include "common/ConstRefNeuron.hpp"
 
 #include "common/Map.hpp"
+#include "common/RefMap.hpp"
+#include "common/ConstRefMap.hpp"
 
 #include "convolution/Map2D.hpp"
 
@@ -41,6 +43,8 @@ int main(int argc, char** argv)
   common::ConstRefNeuron<float> constRefNeuron{ neuron };
 
   common::Map<float> map;
+  common::RefMap<float> refMap{ map };
+  common::ConstRefMap<float> constRefMap{ map };
 
   convolution::Map2D<float> map2D;
 

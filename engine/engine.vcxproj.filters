@@ -53,5 +53,7 @@
     <ClInclude Include="perceptron\NetworkTopology.hpp" />
     <ClInclude Include="common\RefNeuron.hpp" />
     <ClInclude Include="common\ConstRefNeuron.hpp" />
+    <ClInclude Include="common\RefMap.hpp" />
+    <ClInclude Include="common\ConstRefMap.hpp" />
   </ItemGroup>
 </Project>

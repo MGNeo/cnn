@@ -11,7 +11,7 @@ namespace cnn
       // RefNeuron is a wrapper which implements semantics of a safe reference on Neuron.
       // The safe reference allows to use methods of the target object, but doesn't allow methods which can change
       // the topology of the target object.
-      // This is necessary to protect structure of a complex object which contain the target object as its part.
+      // This is necessary to protect structure of a complex object which contains the target object as its part.
       template <typename T>
       class RefNeuron
       {
