@@ -36,6 +36,7 @@
     <ClInclude Include="common\RefMap.hpp" />
     <ClInclude Include="common\RefNeuron.hpp" />
     <ClInclude Include="common\ValueGenerator.hpp" />
+    <ClInclude Include="convolution\ConstRefMap2D.hpp" />
     <ClInclude Include="convolution\Core2D.hpp" />
     <ClInclude Include="convolution\Filter2D.hpp" />
     <ClInclude Include="convolution\Filter2DTopology.hpp" />
@@ -44,6 +45,7 @@
     <ClInclude Include="convolution\Map2D.hpp" />
     <ClInclude Include="convolution\Network2D.hpp" />
     <ClInclude Include="convolution\Network2DTopology.hpp" />
+    <ClInclude Include="convolution\RefMap2D.hpp" />
     <ClInclude Include="convolution\Size2D.hpp" />
     <ClInclude Include="perceptron\ConstRefLayer.hpp" />
     <ClInclude Include="perceptron\ConstRefNetwork.hpp" />

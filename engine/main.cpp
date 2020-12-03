@@ -7,6 +7,8 @@
 #include "common/ConstRefMap.hpp"
 
 #include "convolution/Map2D.hpp"
+#include "convolution/RefMap2D.hpp"
+#include "convolution/ConstRefMap2D.hpp"
 
 #include "convolution/Core2D.hpp"
 
@@ -51,6 +53,8 @@ int main(int argc, char** argv)
   common::ConstRefMap<float> constRefMap{ map };
 
   convolution::Map2D<float> map2D;
+  convolution::RefMap2D<float> refMap2D{ map2D };
+  convolution::ConstRefMap2D<float> constRefMap2D{ map2D };
 
   convolution::Core2D<float> core;
 

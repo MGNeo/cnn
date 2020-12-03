@@ -46,12 +46,12 @@ namespace cnn
         void Save(std::ostream& ostream) const;
 
         // Exception guarantee: strong for the map.
-        // Topologies of this and map must be equal.
+        // Topologies of Map_ and map must be equal.
         void FillFrom(const Map<T>& map) const;
 
         // Exception guarantee: strong for the map.
-        // Topologies of this and map must be equal.
-        void FillFrom(const RefMap& refMap) const;
+        // Topologies of this and refMap must be equal.
+        void FillFrom(RefMap& refMap) const;
 
       private:
 
@@ -110,7 +110,7 @@ namespace cnn
       }
 
       template <typename T>
-      void RefMap<T>::FillFrom(const RefMap<T>& refMap) const
+      void RefMap<T>::FillFrom(RefMap<T>& refMap) const
       {
         Map_.FillFrom(refMap.Map_);
       }

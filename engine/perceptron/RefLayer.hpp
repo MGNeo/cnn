@@ -50,7 +50,7 @@ namespace cnn
         void Save(std::ostream& ostream) const;
 
         // We expect that the method never throws any exception.
-        void FillWeights(common::ValueGenerator<T>& valueGenerator) noexcept;
+        void FillWeights(common::ValueGenerator<T>& valueGenerator) const noexcept;
 
         // We expect that the method never throws any exception.
         void Mutate(common::Mutagen<T>& mutagen) const noexcept;
@@ -118,7 +118,7 @@ namespace cnn
       }
 
       template <typename T>
-      void RefLayer<T>::FillWeights(common::ValueGenerator<T>& valueGenerator) noexcept
+      void RefLayer<T>::FillWeights(common::ValueGenerator<T>& valueGenerator) const noexcept
       {
         Layer_.FillWeights(valueGenerator);
       }

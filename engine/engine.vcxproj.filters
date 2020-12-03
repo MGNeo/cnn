@@ -59,5 +59,7 @@
     <ClInclude Include="perceptron\ConstRefLayer.hpp" />
     <ClInclude Include="perceptron\RefNetwork.hpp" />
     <ClInclude Include="perceptron\ConstRefNetwork.hpp" />
+    <ClInclude Include="convolution\RefMap2D.hpp" />
+    <ClInclude Include="convolution\ConstRefMap2D.hpp" />
   </ItemGroup>
 </Project>
