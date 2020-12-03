@@ -20,7 +20,7 @@ namespace cnn
 
       public:
 
-        ConstRefMap(Map<T>& map) noexcept;
+        ConstRefMap(const Map<T>& map) noexcept;
 
         ConstRefMap(const ConstRefMap<T>& constRefMap) noexcept;
 
@@ -46,7 +46,7 @@ namespace cnn
       };
 
       template <typename T>
-      ConstRefMap<T>::ConstRefMap(Map<T>& map) noexcept
+      ConstRefMap<T>::ConstRefMap(const Map<T>& map) noexcept
         :
         Map_{ map }
       {

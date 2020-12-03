@@ -21,6 +21,8 @@
 
 #include "perceptron/LayerTopology.hpp"
 #include "perceptron/Layer.hpp"
+#include "perceptron/RefLayer.hpp"
+#include "perceptron/ConstRefLayer.hpp"
 
 #include "perceptron/NetworkTopology.hpp"
 #include "perceptron/Network.hpp"
@@ -66,6 +68,8 @@ int main(int argc, char** argv)
 
   perceptron::LayerTopology layerTopology{ 10, 10 };
   perceptron::Layer<float> layer{ layerTopology };
+  perceptron::RefLayer<float> refLayer{ layer };
+  perceptron::ConstRefLayer<float> constRefLayer{ layer };
 
   perceptron::NetworkTopology networkTopology;
   networkTopology.PushBack(layerTopology);

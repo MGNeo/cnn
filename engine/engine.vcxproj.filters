@@ -55,5 +55,7 @@
     <ClInclude Include="common\ConstRefNeuron.hpp" />
     <ClInclude Include="common\RefMap.hpp" />
     <ClInclude Include="common\ConstRefMap.hpp" />
+    <ClInclude Include="perceptron\RefLayer.hpp" />
+    <ClInclude Include="perceptron\ConstRefLayer.hpp" />
   </ItemGroup>
 </Project>

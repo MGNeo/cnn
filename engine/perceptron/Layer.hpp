@@ -1,8 +1,14 @@
 #pragma once
 
 #include "LayerTopology.hpp"
+
 #include "../common/Map.hpp"
+#include "../common/RefMap.hpp"
+#include "../common/ConstRefMap.hpp"
+
 #include "../common/Neuron.hpp"
+#include "../common/RefNeuron.hpp"
+#include "../common/ConstRefNeuron.hpp"
 
 #include <stdexcept>
 
@@ -35,18 +41,18 @@ namespace cnn
         // Exception guarantee: strong for this.
         void SetTopology(const LayerTopology& topology);
 
-        const common::Map<T>& GetInput() const noexcept;
+        const common::ConstRefMap<T>& GetInput() const noexcept;
 
-        common::Map<T>& GetInput() noexcept;
+        common::RefMap<T>& GetInput() noexcept;
 
-        const common::Neuron<T>& GetNeuron(const size_t index) const;
+        const common::ConstRefNeuron<T>& GetNeuron(const size_t index) const;
 
         // Exception guarantee: strong for this.
-        common::Neuron<T>& GetNeuron(const size_t index);
+        common::RefNeuron<T>& GetNeuron(const size_t index);
 
-        const common::Map<T>& GetOutput() const noexcept;
+        const common::ConstRefMap<T>& GetOutput() const noexcept;
 
-        common::Map<T>& GetOutput() noexcept;
+        common::RefMap<T>& GetOutput() noexcept;
 
         // Exception guarantee: base for this.
         void GenerateOutput();
@@ -149,19 +155,19 @@ namespace cnn
       }
 
       template <typename T>
-      const common::Map<T>& Layer<T>::GetInput() const noexcept
+      const common::ConstRefMap<T>& Layer<T>::GetInput() const noexcept
       {
         return Input;
       }
 
       template <typename T>
-      common::Map<T>& Layer<T>::GetInput() noexcept
+      common::RefMap<T>& Layer<T>::GetInput() noexcept
       {
         return Input;
       }
       
       template <typename T>
-      const common::Neuron<T>& Layer<T>::GetNeuron(const size_t index) const
+      const common::ConstRefNeuron<T>& Layer<T>::GetNeuron(const size_t index) const
       {
         if (index >= Topology.GetNeuronCount())
         {
@@ -171,7 +177,7 @@ namespace cnn
       }
 
       template <typename T>
-      common::Neuron<T>& Layer<T>::GetNeuron(const size_t index)
+      common::RefNeuron<T>& Layer<T>::GetNeuron(const size_t index)
       {
         if (index >= Topology.GetNeuronCount())
         {
@@ -181,13 +187,13 @@ namespace cnn
       }
 
       template <typename T>
-      const common::Map<T>& Layer<T>::GetOutput() const noexcept
+      const common::ConstRefMap<T>& Layer<T>::GetOutput() const noexcept
       {
         return Output;
       }
 
       template <typename T>
-      common::Map<T>& Layer<T>::GetOutput() noexcept
+      common::RefMap<T>& Layer<T>::GetOutput() noexcept
       {
         return Output;
       }

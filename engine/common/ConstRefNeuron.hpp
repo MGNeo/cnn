@@ -74,7 +74,7 @@ namespace cnn
       }
 
       template <typename T>
-      T RefNeuron<T>::GetWeight(const size_t index) const
+      T ConstRefNeuron<T>::GetWeight(const size_t index) const
       {
         return Neuron_.GetWeight(index);
       }
