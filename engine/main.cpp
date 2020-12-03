@@ -26,6 +26,8 @@
 
 #include "perceptron/NetworkTopology.hpp"
 #include "perceptron/Network.hpp"
+#include "perceptron/RefNetwork.hpp"
+#include "perceptron/ConstRefNetwork.hpp"
 
 #include "common/Mutagen.hpp"
 
@@ -76,6 +78,8 @@ int main(int argc, char** argv)
   networkTopology.PushBack(layerTopology);
 
   perceptron::Network<float> network { networkTopology };
+  perceptron::RefNetwork<float> refNetwork{ network };
+  perceptron::ConstRefNetwork<float> constRefNetwork{ network };
 
   common::Mutagen<float> mutagen;
   convolution::Size2D size;

@@ -3,6 +3,8 @@
 #include "NetworkTopology.hpp"
 
 #include "Layer.hpp"
+#include "RefLayer.hpp"
+#include "ConstRefLayer.hpp"
 
 namespace cnn
 {
@@ -33,10 +35,10 @@ namespace cnn
         // Exception guarantee: base for the network.
         void SetTopology(const NetworkTopology& topology);
 
-        const Layer<T>& GetLayer(const size_t index) const;
+        const ConstRefLayer<T>& GetLayer(const size_t index) const;
 
         // Exception guarantee: strong for this.
-        Layer<T>& GetLayer(const size_t index);
+        RefLayer<T>& GetLayer(const size_t index);
 
         // Exception guarantee: base for this.
         void GenerateOutput();
@@ -127,7 +129,7 @@ namespace cnn
       }
 
       template <typename T>
-      const Layer<T>& Network<T>::GetLayer(const size_t index) const
+      const ConstRefLayer<T>& Network<T>::GetLayer(const size_t index) const
       {
         if (index >= Topology.GetLayerCount())
         {
@@ -137,7 +139,7 @@ namespace cnn
       }
 
       template <typename T>
-      Layer<T>& Network<T>::GetLayer(const size_t index)
+      RefLayer<T>& Network<T>::GetLayer(const size_t index)
       {
         if (index >= Topology.GetLayerCount())
         {
