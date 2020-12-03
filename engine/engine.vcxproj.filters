@@ -51,15 +51,5 @@
     <ClInclude Include="perceptron\LayerTopology.hpp" />
     <ClInclude Include="perceptron\Network.hpp" />
     <ClInclude Include="perceptron\NetworkTopology.hpp" />
-    <ClInclude Include="common\RefNeuron.hpp" />
-    <ClInclude Include="common\ConstRefNeuron.hpp" />
-    <ClInclude Include="common\RefMap.hpp" />
-    <ClInclude Include="common\ConstRefMap.hpp" />
-    <ClInclude Include="perceptron\RefLayer.hpp" />
-    <ClInclude Include="perceptron\ConstRefLayer.hpp" />
-    <ClInclude Include="perceptron\RefNetwork.hpp" />
-    <ClInclude Include="perceptron\ConstRefNetwork.hpp" />
-    <ClInclude Include="convolution\RefMap2D.hpp" />
-    <ClInclude Include="convolution\ConstRefMap2D.hpp" />
   </ItemGroup>
 </Project>

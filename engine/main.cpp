@@ -1,14 +1,8 @@
 #include "common/Neuron.hpp"
-#include "common/RefNeuron.hpp"
-#include "common/ConstRefNeuron.hpp"
 
 #include "common/Map.hpp"
-#include "common/RefMap.hpp"
-#include "common/ConstRefMap.hpp"
 
 #include "convolution/Map2D.hpp"
-#include "convolution/RefMap2D.hpp"
-#include "convolution/ConstRefMap2D.hpp"
 
 #include "convolution/Core2D.hpp"
 
@@ -23,13 +17,9 @@
 
 #include "perceptron/LayerTopology.hpp"
 #include "perceptron/Layer.hpp"
-#include "perceptron/RefLayer.hpp"
-#include "perceptron/ConstRefLayer.hpp"
 
 #include "perceptron/NetworkTopology.hpp"
 #include "perceptron/Network.hpp"
-#include "perceptron/RefNetwork.hpp"
-#include "perceptron/ConstRefNetwork.hpp"
 
 #include "common/Mutagen.hpp"
 
@@ -45,16 +35,10 @@ using namespace cnn::engine;
 int main(int argc, char** argv)
 {
   common::Neuron<float> neuron;
-  common::RefNeuron<float> refNeuron{ neuron };
-  common::ConstRefNeuron<float> constRefNeuron{ neuron };
 
   common::Map<float> map;
-  common::RefMap<float> refMap{ map };
-  common::ConstRefMap<float> constRefMap{ map };
 
   convolution::Map2D<float> map2D;
-  convolution::RefMap2D<float> refMap2D{ map2D };
-  convolution::ConstRefMap2D<float> constRefMap2D{ map2D };
 
   convolution::Core2D<float> core;
 
@@ -74,16 +58,12 @@ int main(int argc, char** argv)
 
   perceptron::LayerTopology layerTopology{ 10, 10 };
   perceptron::Layer<float> layer{ layerTopology };
-  perceptron::RefLayer<float> refLayer{ layer };
-  perceptron::ConstRefLayer<float> constRefLayer{ layer };
 
   perceptron::NetworkTopology networkTopology;
   networkTopology.PushBack(layerTopology);
   networkTopology.PushBack(layerTopology);
 
   perceptron::Network<float> network { networkTopology };
-  perceptron::RefNetwork<float> refNetwork{ network };
-  perceptron::ConstRefNetwork<float> constRefNetwork{ network };
 
   common::Mutagen<float> mutagen;
   convolution::Size2D size;

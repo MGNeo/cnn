@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Layer2DTopology.hpp"
+
 #include "Map2D.hpp"
+
 #include "Filter2D.hpp"
 
 namespace cnn
@@ -37,19 +39,19 @@ namespace cnn
         const Map2D<T>& GetInput(const size_t index) const;
         
         // Exception guarantee: strong for this.
-        Map2D<T>& GetInput(const size_t index);
+        Map2D<T> GetInput(const size_t index);
 
         // Exception guarantee: strong for this.
         const Filter2D<T>& GetFilter(const size_t index) const;
 
         // Exception guarantee: strong for this.
-        Filter2D<T>& GetFilter(const size_t index);
+        Filter2D<T> GetFilter(const size_t index);
 
         // Exception guarantee: strong for this.
         const Map2D<T>& GetOutput(const size_t index) const;
 
         // Exception guarantee: strong for this.
-        Map2D<T>& GetOutput(const size_t index);
+        Map2D<T> GetOutput(const size_t index);
 
         // Exception guarantee: base for this.
         void GenerateOutput();
@@ -191,7 +193,7 @@ namespace cnn
       }
 
       template <typename T>
-      Map2D<T>& Layer2D<T>::GetInput(const size_t index)
+      Map2D<T> Layer2D<T>::GetInput(const size_t index)
       {
         if (index >= Topology.GetInputCount())
         {
@@ -211,7 +213,7 @@ namespace cnn
       }
 
       template <typename T>
-      Filter2D<T>& Layer2D<T>::GetFilter(const size_t index) 
+      Filter2D<T> Layer2D<T>::GetFilter(const size_t index) 
       {
         if (index >= Topology.GetFilterCount())
         {
@@ -231,7 +233,7 @@ namespace cnn
       }
 
       template <typename T>
-      Map2D<T>& Layer2D<T>::GetOutput(const size_t index)
+      Map2D<T> Layer2D<T>::GetOutput(const size_t index)
       {
         if (index >= Topology.GetOutputCount())
         {
