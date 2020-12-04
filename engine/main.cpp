@@ -23,6 +23,8 @@
 
 #include "common/Mutagen.hpp"
 
+#include "complex/Network2DTopology.hpp"
+
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -64,6 +66,13 @@ int main(int argc, char** argv)
   networkTopology.PushBack(layerTopology);
 
   perceptron::Network<float> network { networkTopology };
+
+  complex::Network2DTopology complexNetwork2DTopology{ network2DTopology, networkTopology };
+
+  std::fstream file("C:/Users/MGNeo/Desktop/network2DTopology.raw", std::ios_base::out | std::ios_base::binary);
+  complexNetwork2DTopology.Save(file);
+
+  // TODO: Check save/load correctness.
 
   common::Mutagen<float> mutagen;
   convolution::Size2D size;

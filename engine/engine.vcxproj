@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="complex\Network2DTopology.cpp" />
     <ClCompile Include="convolution\Filter2DTopology.cpp" />
     <ClCompile Include="convolution\Layer2DTopology.cpp" />
     <ClCompile Include="convolution\Network2DTopology.cpp" />
@@ -32,6 +33,8 @@
     <ClInclude Include="common\Mutagen.hpp" />
     <ClInclude Include="common\Neuron.hpp" />
     <ClInclude Include="common\ValueGenerator.hpp" />
+    <ClInclude Include="complex\Network2D.hpp" />
+    <ClInclude Include="complex\Network2DTopology.hpp" />
     <ClInclude Include="convolution\Core2D.hpp" />
     <ClInclude Include="convolution\Filter2D.hpp" />
     <ClInclude Include="convolution\Filter2DTopology.hpp" />
@@ -117,6 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,6 +153,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\MGNeo\Desktop\cnn\engine\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

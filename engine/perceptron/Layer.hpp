@@ -28,6 +28,7 @@ namespace cnn
 
         Layer(Layer&& layer) noexcept = default;
 
+        // Exception guarantee: strong for this.
         Layer& operator=(const Layer& layer);
 
         Layer& operator=(Layer&& layer) noexcept = default;

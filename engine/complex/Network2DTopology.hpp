@@ -1,25 +1,25 @@
 #pragma once
 
-#include <cstdint>
-#include <cstddef>
-#include <vector>
-
-#include "Layer2DTopology.hpp"
+#include "../convolution/Network2DTopology.hpp"
+#include "../perceptron/NetworkTopology.hpp"
+#include "../common/ValueGenerator.hpp"
+#include "../common/Mutagen.hpp"
 
 namespace cnn
 {
   namespace engine
   {
-    namespace convolution
+    namespace complex
     {
       class Network2DTopology
       {
       public:
 
-        Network2DTopology();
+        Network2DTopology(const convolution::Network2DTopology& convolutionTopology = {},
+                          const perceptron::NetworkTopology& perceptronTopology = {});
 
         Network2DTopology(const Network2DTopology& topology) = default;
-
+        
         Network2DTopology(Network2DTopology&& topology) noexcept = default;
 
         // Exception guarantee: strong for this.
@@ -27,16 +27,13 @@ namespace cnn
 
         Network2DTopology& operator=(Network2DTopology&& topology) noexcept = default;
 
-        bool operator==(const Network2DTopology& topology) const noexcept;
+        convolution::Network2DTopology GetConvolutionTopology() const;
 
-        bool operator!=(const Network2DTopology& topology) const noexcept;
+        void SetConvolutionTopology(const convolution::Network2DTopology& convolutionTopology);
 
-        // Exception guarantee: strong for this.
-        void PushBack(const Layer2DTopology& topology);
+        perceptron::NetworkTopology GetPerceptronTopology() const;
 
-        size_t GetLayerCount() const noexcept;
-
-        Layer2DTopology GetLayerTopology(const size_t index) const;
+        void SetPerceptronTopology(const perceptron::NetworkTopology& perceptronTopology);
 
         // It resets the state to zero including the topology.
         void Reset() noexcept;
@@ -51,10 +48,10 @@ namespace cnn
 
       private:
 
-        std::vector<Layer2DTopology> Topologies;
+        convolution::Network2DTopology ConvolutionTopology;
+        perceptron::NetworkTopology PerceptronTopology;
 
       };
     }
   }
 }
-

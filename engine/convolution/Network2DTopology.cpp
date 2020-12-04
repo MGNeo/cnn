@@ -13,6 +13,17 @@ namespace cnn
         Topologies.reserve(16);
       }
 
+      Network2DTopology& Network2DTopology::operator=(const Network2DTopology& topology)
+      {
+        if (this != &topology)
+        {
+          Network2DTopology tmpTopology{ topology };
+          // Beware, it is very intimate place for strong exception guarantee.
+          std::swap(*this, tmpTopology);
+        }
+        return *this;
+      }
+
       bool Network2DTopology::operator==(const Network2DTopology& topology) const noexcept
       {
         if (Topologies.size() != topology.Topologies.size())

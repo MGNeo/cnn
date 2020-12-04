@@ -32,6 +32,9 @@
     <ClCompile Include="perceptron\NetworkTopology.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="complex\Network2DTopology.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\Neuron.hpp" />
@@ -51,5 +54,7 @@
     <ClInclude Include="perceptron\LayerTopology.hpp" />
     <ClInclude Include="perceptron\Network.hpp" />
     <ClInclude Include="perceptron\NetworkTopology.hpp" />
+    <ClInclude Include="complex\Network2D.hpp" />
+    <ClInclude Include="complex\Network2DTopology.hpp" />
   </ItemGroup>
 </Project>

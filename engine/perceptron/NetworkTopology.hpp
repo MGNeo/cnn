@@ -22,7 +22,8 @@ namespace cnn
 
         NetworkTopology(NetworkTopology&& topology) noexcept = default;
 
-        NetworkTopology& operator=(const NetworkTopology& topology) = default;
+        // Exception guarantee: strong for this.
+        NetworkTopology& operator=(const NetworkTopology& topology);
 
         NetworkTopology& operator=(NetworkTopology&& topology) noexcept = default;
 
