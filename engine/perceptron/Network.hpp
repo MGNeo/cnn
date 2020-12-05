@@ -259,7 +259,7 @@ namespace cnn
       void Network<T>::CheckTopology(const NetworkTopology& topology) const
       {
         // Zero topology is allowed.
-        if (Topology.GetLayerCount() == 0)
+        if (topology.GetLayerCount() == 0)
         {
           return;
         }

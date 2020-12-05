@@ -52,27 +52,19 @@ int main(int argc, char** argv)
 
   convolution::Network2DTopology network2DTopology;
   network2DTopology.PushBack(layer2DTopology);
-  network2DTopology.PushBack(layer2DTopology);
-  network2DTopology.Reset();
 
   convolution::Network2D<float> network2D{ network2DTopology };
   network2D.GenerateOputput();
 
-  perceptron::LayerTopology layerTopology{ 10, 10 };
+  perceptron::LayerTopology layerTopology{ 64, 10 };
   perceptron::Layer<float> layer{ layerTopology };
 
   perceptron::NetworkTopology networkTopology;
-  networkTopology.PushBack(layerTopology);
   networkTopology.PushBack(layerTopology);
 
   perceptron::Network<float> network { networkTopology };
 
   complex::Network2DTopology complexNetwork2DTopology{ network2DTopology, networkTopology };
-
-  std::fstream file("C:/Users/MGNeo/Desktop/network2DTopology.raw", std::ios_base::out | std::ios_base::binary);
-  complexNetwork2DTopology.Save(file);
-
-  // TODO: Check save/load correctness.
 
   common::Mutagen<float> mutagen;
   convolution::Size2D size;
