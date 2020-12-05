@@ -38,6 +38,10 @@ namespace cnn
 
         LayerTopology GetLayerTopology(const size_t index) const;
 
+        LayerTopology GetFirstLayerTopology() const;
+
+        LayerTopology GetLastLayerTopology() const;
+
         // It resets the state to zero including the topology.
         void Reset() noexcept;
 

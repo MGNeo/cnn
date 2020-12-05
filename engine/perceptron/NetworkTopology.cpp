@@ -69,6 +69,24 @@ namespace cnn
         return Topologies[index];
       }
 
+      LayerTopology NetworkTopology::GetFirstLayerTopology() const
+      {
+        if (Topologies.size() == 0)
+        {
+          throw std::logic_error("cnn::engine::perceptron::NetworkTopology::GetFirstLayerTopology(), Topologies.size() == 0.");
+        }
+        return Topologies.front();
+      }
+
+      LayerTopology NetworkTopology::GetLastLayerTopology() const
+      {
+        if (Topologies.size() == 0)
+        {
+          throw std::logic_error("cnn::engine::perceptron::NetworkTopology::GetLastLayerTopology(), Topologies.size() == 0.");
+        }
+        return Topologies.back();
+      }
+
       void NetworkTopology::Reset() noexcept
       {
         Topologies.clear();

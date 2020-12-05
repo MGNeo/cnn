@@ -71,6 +71,24 @@ namespace cnn
         return Topologies[index];
       }
 
+      Layer2DTopology Network2DTopology::GetFirstLayerTopology() const
+      {
+        if (Topologies.size() == 0)
+        {
+          throw std::logic_error("cnn::engine::convolution::Network2DTopology::GetFirstLayerTopology(), Topologies.size() == 0.");
+        }
+        return Topologies.front();
+      }
+
+      Layer2DTopology Network2DTopology::GetLastLayerTopology() const
+      {
+        if (Topologies.size() == 0)
+        {
+          throw std::logic_error("cnn::engine::convolution::Network2DTopology::GetLastLayerTopology(), Topologies.size() == 0.");
+        }
+        return Topologies.back();
+      }
+
       void Network2DTopology::Reset() noexcept
       {
         Topologies.clear();

@@ -135,6 +135,22 @@ namespace cnn
         OutputCount = outputCount;
       }
 
+      size_t Layer2DTopology::GetOutputValueCount() const
+      {
+        if ((OutputSize.GetArea() == 0) || (OutputCount == 0))
+        {
+          return 0;
+        }
+
+        const size_t m = OutputSize.GetArea() * OutputCount;
+        if ((m / OutputSize.GetArea()) != OutputCount)
+        {
+          throw std::overflow_error("cnn::engine::convolution::Layer2DTopology::SetOutputCount(), (m / OutputSize.GetArea()) != OutputCount.");
+        }
+
+        return m;
+      }
+
       void Layer2DTopology::Clear() noexcept
       {
         InputSize.Clear();

@@ -56,6 +56,8 @@ namespace cnn
 
         void SetOutputCount(const size_t outputCount) noexcept;
 
+        size_t GetOutputValueCount() const;
+
         void Clear() noexcept;
 
         // Exception guarantee: base for ostream.
