@@ -56,5 +56,6 @@
     <ClInclude Include="perceptron\NetworkTopology.hpp" />
     <ClInclude Include="complex\Network2D.hpp" />
     <ClInclude Include="complex\Network2DTopology.hpp" />
+    <ClInclude Include="common\NeuronReference.hpp" />
   </ItemGroup>
 </Project>

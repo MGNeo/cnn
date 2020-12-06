@@ -30,16 +30,16 @@
 #include <iostream>
 #include <fstream>
 
-// TODO: Perhaps, Neuron must use Map instead of [] for Inputs and Weights.
-// TODO: Check that any move-assignment operators reset "from".
-// TODO: Think about helpers for building of topologies.
-
 // VERY IMPORTANT TODO: In order to protect complex object from breaking their consistency, we must add
 // RefX and ConstRefX types (where X is name, like Neuron or Map) for every type, which has such characteristic as topology.
 // RefX and ConstRefX are wrapper-types, which implement semantics of references, which forbid any methods,
 // which can change topology of their target object.
 // Complex objects will protect themselves by returning RefX and ConstRefX instead of raw references to their subobjects.
 // We need about 20 types for implement this idea.
+
+// TODO: Perhaps, Neuron must use Map instead of [] for Inputs and Weights.
+// TODO: Check that any move-assignment operators reset "from".
+// TODO: Think about helpers for building of topologies.
 
 // TODO: Add pooling handler in layers, which will reduce output size.
 // For example 32 x 32 -> 16 x 16.
