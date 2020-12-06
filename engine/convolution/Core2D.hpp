@@ -32,10 +32,10 @@ namespace cnn
 
         Core2D& operator=(Core2D&& core) noexcept = default;
 
-        Size2D GetSize() const noexcept;
+        const Size2D& GetSize() const noexcept;
 
         // Exception guarantee: strong for this.
-        void SetSize(const Size2D size);
+        void SetSize(const Size2D& size);
 
         T GetInput(const size_t x, const size_t y) const;
 
@@ -112,13 +112,13 @@ namespace cnn
       }
 
       template <typename T>
-      Size2D Core2D<T>::GetSize() const noexcept
+      const Size2D& Core2D<T>::GetSize() const noexcept
       {
         return Size;
       }
 
       template <typename T>
-      void Core2D<T>::SetSize(const Size2D size)
+      void Core2D<T>::SetSize(const Size2D& size)
       {
         Core2D<T> core{ size };
         // Beware, it is very intimate place for strong exception guarantee.

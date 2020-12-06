@@ -28,15 +28,20 @@ namespace cnn
 
         Network& operator=(Network&& network) noexcept = default;
 
-        NetworkTopology GetTopology() const;
+        const NetworkTopology& GetTopology() const;
 
-        // Exception guarantee: base for the network.
+        // Exception guarantee: strong for the network.
         void SetTopology(const NetworkTopology& topology);
 
         const Layer<T>& GetLayer(const size_t index) const;
 
         // Exception guarantee: strong for this.
-        Layer<T> GetLayer(const size_t index);
+        Layer<T>& GetLayer(const size_t index);
+
+        const Layer<T>& GetFirstLayer() const;
+
+        // Exception guarantee: strong for this.
+        Layer<T>& GetFirstLayer();
 
         // Exception guarantee: base for this.
         void GenerateOutput();
@@ -113,7 +118,7 @@ namespace cnn
       }
 
       template <typename T>
-      NetworkTopology Network<T>::GetTopology() const
+      const NetworkTopology& Network<T>::GetTopology() const
       {
         return Topology;
       }
@@ -137,13 +142,33 @@ namespace cnn
       }
 
       template <typename T>
-      Layer<T> Network<T>::GetLayer(const size_t index)
+      Layer<T>& Network<T>::GetLayer(const size_t index)
       {
         if (index >= Topology.GetLayerCount())
         {
           throw std::range_error("cnn::engine::perceptron::Network::GetLayer(), index >= Topology.GetLayerCount().");
         }
         return Layers[index];
+      }
+
+      template <typename T>
+      const Layer<T>& Network<T>::GetFirstLayer() const
+      {
+        if (Topology.GetLayerCount() == 0)
+        {
+          throw std::logic_error("cnn::engine::perceptron::Network::GetFirstLayer() const, Topology.GetLayerCount() == 0.");
+        }
+        return Layers[Topology.GetLayerCount() - 1];
+      }
+
+      template <typename T>
+      Layer<T>& Network<T>::GetFirstLayer()
+      {
+        if (Topology.GetLayerCount() == 0)
+        {
+          throw std::logic_error("cnn::engine::perceptron::Network::GetFirstLayer(), Topology.GetLayerCount() == 0.");
+        }
+        return Layers[Topology.GetLayerCount() - 1];
       }
 
       template <typename T>

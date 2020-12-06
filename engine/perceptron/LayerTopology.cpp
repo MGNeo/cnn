@@ -8,7 +8,7 @@ namespace cnn
     {
 
       LayerTopology::LayerTopology(const size_t inputCount,
-        const size_t neuronCount)
+                                   const size_t neuronCount)
         :
         InputCount{ inputCount },
         NeuronCount{ neuronCount }

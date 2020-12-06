@@ -9,7 +9,8 @@ namespace cnn
     namespace convolution
     {
       
-      Size2D::Size2D(const size_t width, const size_t height) noexcept
+      Size2D::Size2D(const size_t width,
+                     const size_t height) noexcept
         :
         Width{ width },
         Height{ height }

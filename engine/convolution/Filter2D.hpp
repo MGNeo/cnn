@@ -32,7 +32,7 @@ namespace cnn
 
         Filter2D& operator=(Filter2D&& filter) noexcept = default;
 
-        Filter2DTopology GetTopology() const noexcept;
+        const Filter2DTopology& GetTopology() const noexcept;
 
         // Exception guarantee: strong for this.
         void SetTopology(const Filter2DTopology& topology);
@@ -118,7 +118,7 @@ namespace cnn
       }
 
       template <typename T>
-      Filter2DTopology Filter2D<T>::GetTopology() const noexcept
+      const Filter2DTopology& Filter2D<T>::GetTopology() const noexcept
       {
         return Topology;
       }

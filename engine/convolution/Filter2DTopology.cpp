@@ -55,7 +55,7 @@ namespace cnn
         }
       }
 
-      Size2D Filter2DTopology::GetSize() const noexcept
+      const Size2D& Filter2DTopology::GetSize() const noexcept
       {
         return Size;
       }

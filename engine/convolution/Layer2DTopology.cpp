@@ -75,7 +75,7 @@ namespace cnn
         }
       }
 
-      Size2D Layer2DTopology::GetInputSize() const noexcept
+      const Size2D& Layer2DTopology::GetInputSize() const noexcept
       {
         return InputSize;
       }
@@ -95,7 +95,7 @@ namespace cnn
         InputCount = inputCount;
       }
 
-      Filter2DTopology Layer2DTopology::GetFilterTopology() const noexcept
+      const Filter2DTopology& Layer2DTopology::GetFilterTopology() const noexcept
       {
         return FilterTopology;
       }
@@ -115,7 +115,7 @@ namespace cnn
         FilterCount = filterCount;
       }
 
-      Size2D Layer2DTopology::GetOutputSize() const noexcept
+      const Size2D& Layer2DTopology::GetOutputSize() const noexcept
       {
         return OutputSize;
       }

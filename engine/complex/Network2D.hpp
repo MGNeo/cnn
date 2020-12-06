@@ -26,7 +26,7 @@ namespace cnn
 
         Network2D& operator=(Network2D&& network) noexcept = default;
 
-        Network2DTopology GetTopology() const;
+        const Network2DTopology& GetTopology() const;
 
         void SetTopology(const Network2DTopology& topology);
 
@@ -41,7 +41,7 @@ namespace cnn
         // ...
 
         // Exception guarantee: base for this.
-        void GenerateOputput();
+        void GenerateOutput();
 
         // It clears the state without changing of the topology.
         void Clear() noexcept;
@@ -97,7 +97,7 @@ namespace cnn
       }
 
       template <typename T>
-      Network2DTopology Network2D<T>::GetTopology() const
+      const Network2DTopology& Network2D<T>::GetTopology() const
       {
         return Topology;
       }
@@ -137,9 +137,12 @@ namespace cnn
       // ...
 
       template <typename T>
-      void Network2D<T>::GenerateOputput()
+      void Network2D<T>::GenerateOutput()
       {
-        // ...
+        ConvolutionNetwork.GenerateOputput();
+        const auto& lastLayer = ConvolutionNetwork.GetLastLayer();
+
+        //for (size_t o = 0; o < C)
       }
 
       template <typename T>

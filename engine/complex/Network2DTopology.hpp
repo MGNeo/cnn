@@ -27,11 +27,11 @@ namespace cnn
 
         Network2DTopology& operator=(Network2DTopology&& topology) noexcept = default;
 
-        convolution::Network2DTopology GetConvolutionTopology() const;
+        const convolution::Network2DTopology& GetConvolutionTopology() const;
 
         void SetConvolutionTopology(const convolution::Network2DTopology& convolutionTopology);
 
-        perceptron::NetworkTopology GetPerceptronTopology() const;
+        const perceptron::NetworkTopology& GetPerceptronTopology() const;
 
         void SetPerceptronTopology(const perceptron::NetworkTopology& perceptronTopology);
 

@@ -27,18 +27,23 @@ namespace cnn
 
         Network2D& operator=(Network2D&& network) noexcept = default;
 
-        Network2DTopology GetTopology() const;
+        const Network2DTopology& GetTopology() const;
 
-        // Exception guarantee: base for this.
+        // Exception guarantee: strong for this.
         void SetTopology(const Network2DTopology& topology);
 
         const Layer2D<T>& GetLayer(const size_t index) const;
 
-        // Exception guarantee: base for this.
+        // Exception guarantee: strong for this.
         Layer2D<T>& GetLayer(const size_t index);
 
+        const Layer2D<T>& GetLastLayer() const;
+
+        // Exception guarantee: strong for this.
+        Layer2D<T>& GetLastLayer();
+
         // Exception guarantee: base for this.
-        void GenerateOputput();
+        void GenerateOutput();
 
         // It clears the state without changing of the topology.
         void Clear() noexcept;
@@ -114,7 +119,7 @@ namespace cnn
       }
 
       template <typename T>
-      Network2DTopology Network2D<T>::GetTopology() const
+      const Network2DTopology& Network2D<T>::GetTopology() const
       {
         return Topology;
       }
@@ -148,7 +153,27 @@ namespace cnn
       }
 
       template <typename T>
-      void Network2D<T>::GenerateOputput()
+      const Layer2D<T>& Network2D<T>::GetLastLayer() const
+      {
+        if (Topology.GetLayerCount() == 0)
+        {
+          throw std::logic_error("cnn::engine::convolution::Network2D::GetLastLayer() const, Topology.GetLayerCount() == 0.");
+        }
+        return Layers[Topology.GetLayerCount() - 1];
+      }
+
+      template <typename T>
+      Layer2D<T>& Network2D<T>::GetLastLayer()
+      {
+        if (Topology.GetLayerCount() == 0)
+        {
+          throw std::logic_error("cnn::engine::convolution::Network2D::GetLastLayer(), Topology.GetLayerCount() == 0.");
+        }
+        return Layers[Topology.GetLayerCount() - 1];
+      }
+
+      template <typename T>
+      void Network2D<T>::GenerateOutput()
       {
         for (size_t l = 0; l < Topology.GetLayerCount(); ++l)
         {

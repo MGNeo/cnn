@@ -60,7 +60,7 @@ namespace cnn
         return Topologies.size();
       }
 
-      LayerTopology NetworkTopology::GetLayerTopology(const size_t index) const
+      const LayerTopology& NetworkTopology::GetLayerTopology(const size_t index) const
       {
         if (index >= Topologies.size())
         {
@@ -69,7 +69,7 @@ namespace cnn
         return Topologies[index];
       }
 
-      LayerTopology NetworkTopology::GetFirstLayerTopology() const
+      const LayerTopology& NetworkTopology::GetFirstLayerTopology() const
       {
         if (Topologies.size() == 0)
         {
@@ -78,7 +78,7 @@ namespace cnn
         return Topologies.front();
       }
 
-      LayerTopology NetworkTopology::GetLastLayerTopology() const
+      const LayerTopology& NetworkTopology::GetLastLayerTopology() const
       {
         if (Topologies.size() == 0)
         {

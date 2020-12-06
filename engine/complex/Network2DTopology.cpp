@@ -25,7 +25,7 @@ namespace cnn
         return *this;
       }
 
-      convolution::Network2DTopology Network2DTopology::GetConvolutionTopology() const
+      const convolution::Network2DTopology& Network2DTopology::GetConvolutionTopology() const
       {
         return ConvolutionTopology;
       }
@@ -35,7 +35,7 @@ namespace cnn
         ConvolutionTopology = convolutionTopology;
       }
 
-      perceptron::NetworkTopology Network2DTopology::GetPerceptronTopology() const
+      const perceptron::NetworkTopology& Network2DTopology::GetPerceptronTopology() const
       {
         return PerceptronTopology;
       }

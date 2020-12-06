@@ -32,7 +32,7 @@ namespace cnn
 
         bool operator!=(const Layer2DTopology& topology) const noexcept;
 
-        Size2D GetInputSize() const noexcept;
+        const Size2D& GetInputSize() const noexcept;
 
         void SetInputSize(const Size2D& inputSize) noexcept;
 
@@ -40,7 +40,7 @@ namespace cnn
 
         void SetInputCount(const size_t inputCount);
 
-        Filter2DTopology GetFilterTopology() const noexcept;
+        const Filter2DTopology& GetFilterTopology() const noexcept;
 
         void SetFilterTopology(const Filter2DTopology& filterTopology) noexcept;
 
@@ -48,7 +48,7 @@ namespace cnn
 
         void SetFilterCount(const size_t filterCount) noexcept;
 
-        Size2D GetOutputSize() const noexcept;
+        const Size2D& GetOutputSize() const noexcept;
 
         void SetOutputSize(const Size2D& outputSize) noexcept;
 

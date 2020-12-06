@@ -63,7 +63,7 @@ int main(int argc, char** argv)
   network2DTopology.PushBack(layer2DTopology);
 
   convolution::Network2D<float> network2D{ network2DTopology };
-  network2D.GenerateOputput();
+  network2D.GenerateOutput();
 
   perceptron::LayerTopology layerTopology{ 64, 10 };
   perceptron::Layer<float> layer{ layerTopology };

@@ -30,7 +30,7 @@ namespace cnn
 
         Layer2D& operator=(Layer2D&& layer) noexcept = default;
 
-        Layer2DTopology GetTopology() const noexcept;
+        const Layer2DTopology& GetTopology() const noexcept;
 
         // Exception guarantee: strong for this.
         void SetTopology(const Layer2DTopology& topology);
@@ -39,19 +39,19 @@ namespace cnn
         const Map2D<T>& GetInput(const size_t index) const;
         
         // Exception guarantee: strong for this.
-        Map2D<T> GetInput(const size_t index);
+        Map2D<T>& GetInput(const size_t index);
 
         // Exception guarantee: strong for this.
         const Filter2D<T>& GetFilter(const size_t index) const;
 
         // Exception guarantee: strong for this.
-        Filter2D<T> GetFilter(const size_t index);
+        Filter2D<T>& GetFilter(const size_t index);
 
         // Exception guarantee: strong for this.
         const Map2D<T>& GetOutput(const size_t index) const;
 
         // Exception guarantee: strong for this.
-        Map2D<T> GetOutput(const size_t index);
+        Map2D<T>& GetOutput(const size_t index);
 
         // Exception guarantee: base for this.
         void GenerateOutput();
@@ -169,7 +169,7 @@ namespace cnn
       }
 
       template <typename T>
-      Layer2DTopology Layer2D<T>::GetTopology() const noexcept
+      const Layer2DTopology& Layer2D<T>::GetTopology() const noexcept
       {
         return Topology;
       }
@@ -193,7 +193,7 @@ namespace cnn
       }
 
       template <typename T>
-      Map2D<T> Layer2D<T>::GetInput(const size_t index)
+      Map2D<T>& Layer2D<T>::GetInput(const size_t index)
       {
         if (index >= Topology.GetInputCount())
         {
@@ -213,7 +213,7 @@ namespace cnn
       }
 
       template <typename T>
-      Filter2D<T> Layer2D<T>::GetFilter(const size_t index) 
+      Filter2D<T>& Layer2D<T>::GetFilter(const size_t index) 
       {
         if (index >= Topology.GetFilterCount())
         {
@@ -233,7 +233,7 @@ namespace cnn
       }
 
       template <typename T>
-      Map2D<T> Layer2D<T>::GetOutput(const size_t index)
+      Map2D<T>& Layer2D<T>::GetOutput(const size_t index)
       {
         if (index >= Topology.GetOutputCount())
         {

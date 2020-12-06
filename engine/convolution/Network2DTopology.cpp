@@ -62,7 +62,7 @@ namespace cnn
         return Topologies.size();
       }
 
-      Layer2DTopology Network2DTopology::GetLayerTopology(const size_t index) const
+      const Layer2DTopology& Network2DTopology::GetLayerTopology(const size_t index) const
       {
         if (index >= Topologies.size())
         {
@@ -71,7 +71,7 @@ namespace cnn
         return Topologies[index];
       }
 
-      Layer2DTopology Network2DTopology::GetFirstLayerTopology() const
+      const Layer2DTopology& Network2DTopology::GetFirstLayerTopology() const
       {
         if (Topologies.size() == 0)
         {
@@ -80,7 +80,7 @@ namespace cnn
         return Topologies.front();
       }
 
-      Layer2DTopology Network2DTopology::GetLastLayerTopology() const
+      const Layer2DTopology& Network2DTopology::GetLastLayerTopology() const
       {
         if (Topologies.size() == 0)
         {
