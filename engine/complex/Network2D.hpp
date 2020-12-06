@@ -139,10 +139,24 @@ namespace cnn
       template <typename T>
       void Network2D<T>::GenerateOutput()
       {
-        ConvolutionNetwork.GenerateOputput();
+        ConvolutionNetwork.GenerateOutput();
         const auto& lastLayer = ConvolutionNetwork.GetLastLayer();
+        auto& input = PerceptronNetwork.GetFirstLayer().GetInput();
 
-        //for (size_t o = 0; o < C)
+        size_t i{};
+        for (size_t o = 0; o < lastLayer.GetOutputCount(); ++o)
+        {
+          const auto& output = lastLayer.GetOutput(o);
+          for (size_t x = 0; x < output.GetSize().GetWidth(); ++x)
+          {
+            for (size_t y = 0; y < output.GetSize().GetHeight(); ++y)
+            {
+              input.SetValue(i, output.GetValue(x, y));
+            }
+          }
+        }
+
+        PerceptronNetwork.GenerateOutput();
       }
 
       template <typename T>
@@ -238,9 +252,9 @@ namespace cnn
           return;
         }
 
-        if ((topology.GetConvolutionTopology().GetLayerCount() != 0) || (topology.GetPerceptronTopology().GetLayerCount() != 0))
+        if ((topology.GetConvolutionTopology().GetLayerCount() == 0) || (topology.GetPerceptronTopology().GetLayerCount() == 0))
         {
-          throw std::invalid_argument("cnn::engine::complex::Network2D::CheckTopology(), (topology.GetConvolutionTopology().GetLayerCount() != 0) || (topology.GetPerceptronTopology().GetLayerCount() != 0).");
+          throw std::invalid_argument("cnn::engine::complex::Network2D::CheckTopology(), (topology.GetConvolutionTopology().GetLayerCount() == 0) || (topology.GetPerceptronTopology().GetLayerCount() == 0).");
         }
 
         if (topology.GetConvolutionTopology().GetLastLayerTopology().GetOutputValueCount() != topology.GetPerceptronTopology().GetFirstLayerTopology().GetInputCount())

@@ -32,7 +32,7 @@
 
 // TODO: Perhaps, Neuron must use Map instead of [] for Inputs and Weights.
 // TODO: Check that any move-assignment operators reset "from".
-// TODO: Topology getters must return const X& instead of X.
+// TODO: Think about helpers for building of topologies.
 
 // VERY IMPORTANT TODO: In order to protect complex object from breaking their consistency, we must add
 // RefX and ConstRefX types (where X is name, like Neuron or Map) for every type, which has such characteristic as topology.
@@ -45,41 +45,85 @@ using namespace cnn::engine;
 
 int main(int argc, char** argv)
 {
-  common::Neuron<float> neuron;
+  try
+  {
+    convolution::Network2DTopology convolutionNetwork2DTopology;
+    {
+      {
+        convolution::Layer2DTopology convolutionLayer2DTopology;
+        convolutionLayer2DTopology.SetInputSize({ 32, 32 });
+        convolutionLayer2DTopology.SetInputCount(3);
+        convolutionLayer2DTopology.SetFilterTopology({ { 3, 3 }, 3 });
+        convolutionLayer2DTopology.SetFilterCount(15);
+        convolutionLayer2DTopology.SetOutputSize({ 30, 30 });
+        convolutionLayer2DTopology.SetOutputCount(15);
+        convolutionNetwork2DTopology.PushBack(convolutionLayer2DTopology);
+      }
+      {
+        convolution::Layer2DTopology convolutionLayer2DTopology;
+        convolutionLayer2DTopology.SetInputSize({ 30, 30 });
+        convolutionLayer2DTopology.SetInputCount(15);
+        convolutionLayer2DTopology.SetFilterTopology({ { 3, 3 }, 15 });
+        convolutionLayer2DTopology.SetFilterCount(5);
+        convolutionLayer2DTopology.SetOutputSize({ 28, 28 });
+        convolutionLayer2DTopology.SetOutputCount(5);
+        convolutionNetwork2DTopology.PushBack(convolutionLayer2DTopology);
+      }
+      {
+        convolution::Layer2DTopology convolutionLayer2DTopology;
+        convolutionLayer2DTopology.SetInputSize({ 28, 28 });
+        convolutionLayer2DTopology.SetInputCount(5);
+        convolutionLayer2DTopology.SetFilterTopology({ { 3, 3 }, 5 });
+        convolutionLayer2DTopology.SetFilterCount(6);
+        convolutionLayer2DTopology.SetOutputSize({ 26, 26 });
+        convolutionLayer2DTopology.SetOutputCount(6);
+        convolutionNetwork2DTopology.PushBack(convolutionLayer2DTopology);
+      }
+    }
 
-  common::Map<float> map;
+    perceptron::NetworkTopology perceptronNetworkTopology;
+    {
+      {
+        perceptron::LayerTopology perceptronLayerTopology;
+        perceptronLayerTopology.SetInputCount(convolutionNetwork2DTopology.GetLastLayerTopology().GetOutputValueCount());
+        perceptronLayerTopology.SetNeuronCount(15);
+        perceptronNetworkTopology.PushBack(perceptronLayerTopology);
+      }
+      {
+        perceptron::LayerTopology perceptronLayerTopology;
+        perceptronLayerTopology.SetInputCount(perceptronNetworkTopology.GetLastLayerTopology().GetNeuronCount());
+        perceptronLayerTopology.SetNeuronCount(8);
+        perceptronNetworkTopology.PushBack(perceptronLayerTopology);
+      }
+      {
+        perceptron::LayerTopology perceptronLayerTopology;
+        perceptronLayerTopology.SetInputCount(perceptronNetworkTopology.GetLastLayerTopology().GetNeuronCount());
+        perceptronLayerTopology.SetNeuronCount(3);
+        perceptronNetworkTopology.PushBack(perceptronLayerTopology);
+      }
+    }
 
-  convolution::Map2D<float> map2D;
+    complex::Network2DTopology complexNetwork2DTopology;
+    complexNetwork2DTopology.SetConvolutionTopology(convolutionNetwork2DTopology);
+    complexNetwork2DTopology.SetPerceptronTopology(perceptronNetworkTopology);
 
-  convolution::Core2D<float> core;
+    complex::Network2D<float> complexNetwork2D;
+    complexNetwork2D.SetTopology(complexNetwork2DTopology);
 
-  convolution::Filter2DTopology filterTopology{ {10, 10}, 10 };
-  convolution::Filter2D<float> filter{ filterTopology };
+    {
+      std::fstream file("C:/Users/MGNeo/Desktop/ComplexNetwork2D.float", std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
+      complexNetwork2D.Save(file);
+    }
 
-  convolution::Layer2DTopology layer2DTopology{ {10, 10}, 10, { {3, 3}, 10 }, 5, {8, 8}, 5 };
-  convolution::Layer2D<float> layer2D{ layer2DTopology };
-
-  convolution::Network2DTopology network2DTopology;
-  network2DTopology.PushBack(layer2DTopology);
-
-  convolution::Network2D<float> network2D{ network2DTopology };
-  network2D.GenerateOutput();
-
-  perceptron::LayerTopology layerTopology{ 64, 10 };
-  perceptron::Layer<float> layer{ layerTopology };
-
-  perceptron::NetworkTopology networkTopology;
-  networkTopology.PushBack(layerTopology);
-
-  perceptron::Network<float> network { networkTopology };
-
-  complex::Network2DTopology complexNetwork2DTopology{ network2DTopology, networkTopology };
-
-  complex::Network2D<float> complexNetwork2D{};
-  // TODO: Check loading and saving of complexNetwork2D.
-
-  common::Mutagen<float> mutagen;
-  convolution::Size2D size;
+    {
+      std::fstream file("C:/Users/MGNeo/Desktop/ComplexNetwork2D.float", std::ios_base::in | std::ios_base::binary);
+      complexNetwork2D.Load(file);
+    }
+  }
+  catch (const std::exception& e)
+  {
+    std::cout << e.what() << std::endl;
+  }
 
   return 0;
 }

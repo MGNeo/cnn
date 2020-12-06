@@ -12,7 +12,8 @@ namespace cnn
       {
       public:
 
-        Filter2DTopology(const Size2D& size = {}, const size_t coreCount = 0) noexcept;
+        Filter2DTopology(const Size2D& size = {},
+                         const size_t coreCount = 0) noexcept;
 
         Filter2DTopology(const Filter2DTopology& topology) noexcept = default;
 
