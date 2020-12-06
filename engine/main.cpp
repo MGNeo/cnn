@@ -41,6 +41,10 @@
 // Complex objects will protect themselves by returning RefX and ConstRefX instead of raw references to their subobjects.
 // We need about 20 types for implement this idea.
 
+// TODO: Add pooling handler in layers, which will reduce output size.
+// For example 32 x 32 -> 16 x 16.
+// It will allow to increase speed of processing very much (from seconds to milliseconds).
+
 using namespace cnn::engine;
 
 int main(int argc, char** argv)
@@ -119,6 +123,8 @@ int main(int argc, char** argv)
       std::fstream file("C:/Users/MGNeo/Desktop/ComplexNetwork2D.float", std::ios_base::in | std::ios_base::binary);
       complexNetwork2D.Load(file);
     }
+
+    complexNetwork2D.GenerateOutput();
   }
   catch (const std::exception& e)
   {

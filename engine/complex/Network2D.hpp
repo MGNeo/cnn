@@ -144,7 +144,7 @@ namespace cnn
         auto& input = PerceptronNetwork.GetFirstLayer().GetInput();
 
         size_t i{};
-        for (size_t o = 0; o < lastLayer.GetOutputCount(); ++o)
+        for (size_t o = 0; o < lastLayer.GetTopology().GetOutputCount(); ++o)
         {
           const auto& output = lastLayer.GetOutput(o);
           for (size_t x = 0; x < output.GetSize().GetWidth(); ++x)
