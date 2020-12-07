@@ -56,8 +56,8 @@
     <ClInclude Include="perceptron\NetworkTopology.hpp" />
     <ClInclude Include="complex\Network2D.hpp" />
     <ClInclude Include="complex\Network2DTopology.hpp" />
-    <ClInclude Include="common\NeuronReference.hpp" />
-    <ClInclude Include="convolution\Core2DReference.hpp" />
-    <ClInclude Include="convolution\Filter2DReference.hpp" />
+    <ClInclude Include="common\NeuronProtectingReference.hpp" />
+    <ClInclude Include="convolution\Filter2DProtectingReference.hpp" />
+    <ClInclude Include="convolution\Core2DProtectingReference.hpp" />
   </ItemGroup>
 </Project>

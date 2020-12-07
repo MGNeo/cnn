@@ -6,12 +6,12 @@
 
 // DEBUG
 #include "convolution/Core2D.hpp"
-#include "convolution/Core2DReference.hpp"
+#include "convolution/Core2DProtectingReference.hpp"
 
 // DEBUG
 #include "convolution/Filter2DTopology.hpp"
 #include "convolution/Filter2D.hpp"
-#include "convolution/Filter2DReference.hpp"
+#include "convolution/Filter2DProtectingReference.hpp"
 
 #include "convolution/Layer2DTopology.hpp"
 #include "convolution/Layer2D.hpp"
@@ -30,7 +30,7 @@
 // DEBUG
 #include "complex/Network2DTopology.hpp"
 #include "complex/Network2D.hpp"
-#include "common/NeuronReference.hpp"
+#include "common/NeuronProtectingReference.hpp"
 
 #include <sstream>
 #include <iostream>
@@ -59,15 +59,15 @@ int main(int argc, char** argv)
   // DEBUG
   {
     common::Neuron<float> neuron;
-    common::NeuronReference<float> neuronReference{ neuron };
-    neuronReference.GenerateOutput();
+    common::NeuronProtectingReference<float> neuronProtectingReference{ neuron };
+    neuronProtectingReference.GenerateOutput();
 
     convolution::Core2D<float> core2D;
-    convolution::Core2DReference<float> core2DReference{ core2D };
-    core2DReference.GenerateOutput();
+    convolution::Core2DProtectingReference<float> core2DProtectingReference{ core2D };
+    core2DProtectingReference.GenerateOutput();
 
     convolution::Filter2D<float> filter2D;
-    convolution::Filter2DReference filter2DReference{ filter2D };
+    convolution::Filter2DProtectingReference filter2DProtectingReference{ filter2D };
   }
 
   try

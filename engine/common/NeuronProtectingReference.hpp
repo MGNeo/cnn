@@ -8,27 +8,27 @@ namespace cnn
   {
     namespace common
     {
-      // NeuronReference is a type which implements semantics of smart reference to Neuron.
-      // The smart reference proxies all methods of Neuron and doesn't allow to use methods, which change
+      // NeuronProtectingReference is a type which implements semantics of protecting reference to Neuron.
+      // The protecting reference proxies all methods of Neuron and doesn't allow to use methods, which change
       // the topology of the target neuron.
       // It allow to protect consistency of complex objects, which contain the target neuron as its part.
       template <typename T>
-      class NeuronReference
+      class NeuronProtectingReference
       {
 
         static_assert(std::is_floating_point<T>::value);
 
       public:
 
-        NeuronReference(Neuron<T>& neuron);
+        NeuronProtectingReference(Neuron<T>& neuron);
 
-        NeuronReference(const NeuronReference& neuronReference) noexcept;
+        NeuronProtectingReference(const NeuronProtectingReference& NeuronProtectingReference) noexcept;
 
-        NeuronReference(NeuronReference&& neuronReference) noexcept = delete;
+        NeuronProtectingReference(NeuronProtectingReference&& NeuronProtectingReference) noexcept = delete;
 
-        NeuronReference& operator=(const NeuronReference& meuronReference) noexcept = delete;
+        NeuronProtectingReference& operator=(const NeuronProtectingReference& meuronReference) noexcept = delete;
 
-        NeuronReference& operator=(NeuronReference&& neuronReference) noexcept = delete;
+        NeuronProtectingReference& operator=(NeuronProtectingReference&& NeuronProtectingReference) noexcept = delete;
 
         size_t GetInputCount() const noexcept;
 
@@ -78,105 +78,105 @@ namespace cnn
       };
 
       template <typename T>
-      NeuronReference<T>::NeuronReference(Neuron<T>& neuron)
+      NeuronProtectingReference<T>::NeuronProtectingReference(Neuron<T>& neuron)
         :
         Neuron_{ neuron }
       {
       }
 
       template <typename T>
-      NeuronReference<T>::NeuronReference(const NeuronReference& neuronReference) noexcept
+      NeuronProtectingReference<T>::NeuronProtectingReference(const NeuronProtectingReference& NeuronProtectingReference) noexcept
         :
-        Neuron_{ neuronReference.Neuron_ }
+        Neuron_{ NeuronProtectingReference.Neuron_ }
       {
       }
 
       template <typename T>
-      size_t NeuronReference<T>::GetInputCount() const noexcept
+      size_t NeuronProtectingReference<T>::GetInputCount() const noexcept
       {
         return Neuron_.GetInputCount();
       }
 
       template <typename T>
-      T NeuronReference<T>::GetInput(const size_t index) const
+      T NeuronProtectingReference<T>::GetInput(const size_t index) const
       {
         return Neuron_.GetInput(index);
       }
 
       template <typename T>
-      void NeuronReference<T>::SetInput(const size_t index, const T value) const
+      void NeuronProtectingReference<T>::SetInput(const size_t index, const T value) const
       {
         Neuron_.SetInput(index, value);
       }
 
       template <typename T>
-      T NeuronReference<T>::GetWeight(const size_t index) const
+      T NeuronProtectingReference<T>::GetWeight(const size_t index) const
       {
         return Neuron_.GetWeight(index);
       }
 
       template <typename T>
-      void NeuronReference<T>::SetWeight(const size_t index, const T value) const
+      void NeuronProtectingReference<T>::SetWeight(const size_t index, const T value) const
       {
         Neuron_.SetWeight(index, value);
       }
 
       template <typename T>
-      T NeuronReference<T>::GetOutput() const noexcept
+      T NeuronProtectingReference<T>::GetOutput() const noexcept
       {
         return Neuron_.GetOutput();
       }
 
       template <typename T>
-      void NeuronReference<T>::SetOutput(const T value) const
+      void NeuronProtectingReference<T>::SetOutput(const T value) const
       {
         Neuron_.SetOutput(value);
       }
 
       template <typename T>
-      void NeuronReference<T>::GenerateOutput() const noexcept
+      void NeuronProtectingReference<T>::GenerateOutput() const noexcept
       {
         Neuron_.GenerateOutput();
       }
 
       template <typename T>
-      void NeuronReference<T>::Clear() const noexcept
+      void NeuronProtectingReference<T>::Clear() const noexcept
       {
         Neuron_.Clear();
       }
 
       template <typename T>
-      void NeuronReference<T>::ClearInputs() const noexcept
+      void NeuronProtectingReference<T>::ClearInputs() const noexcept
       {
         Neuron_.ClearInputs();
       }
 
       template <typename T>
-      void NeuronReference<T>::ClearWeights() const noexcept
+      void NeuronProtectingReference<T>::ClearWeights() const noexcept
       {
         Neuron_.ClearWeights();
       }
 
       template <typename T>
-      void NeuronReference<T>::ClearOutput() const noexcept
+      void NeuronProtectingReference<T>::ClearOutput() const noexcept
       {
         Neuron_.ClearOutput();
       }
 
       template <typename T>
-      void NeuronReference<T>::Save(std::ostream& ostream) const
+      void NeuronProtectingReference<T>::Save(std::ostream& ostream) const
       {
         Neuron_.Save(ostream);
       }
 
       template <typename T>
-      void NeuronReference<T>::FillWeights(ValueGenerator<T>& valueGenerator) const noexcept
+      void NeuronProtectingReference<T>::FillWeights(ValueGenerator<T>& valueGenerator) const noexcept
       {
         Neuron_.FillWeights(valueGenerator);
       }
 
       template <typename T>
-      void NeuronReference<T>::Mutate(Mutagen<T>& mutagen) const noexcept
+      void NeuronProtectingReference<T>::Mutate(Mutagen<T>& mutagen) const noexcept
       {
         Neuron_.Mutate(mutagen);
       }

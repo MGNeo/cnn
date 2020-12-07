@@ -8,27 +8,27 @@ namespace cnn
   {
     namespace convolution
     {
-      // Core2DReference is a type which implements semantics of smart reference to Core2D.
-      // The smart reference proxies all methods of Core2D and doesn't allow to use methods, which change
+      // Core2DProtectingReference is a type which implements semantics of protecting reference to Core2D.
+      // The protecting reference proxies all methods of Core2D and doesn't allow to use methods, which change
       // the topology of the target core.
       // It allow to protect consistency of complex objects, which contain the target core as its part.
       template <typename T>
-      class Core2DReference
+      class Core2DProtectingReference
       {
 
         static_assert(std::is_floating_point<T>::value);
 
       public:
 
-        Core2DReference(Core2D<T>& core) noexcept;
+        Core2DProtectingReference(Core2D<T>& core) noexcept;
 
-        Core2DReference(const Core2DReference& coreReference) noexcept;
+        Core2DProtectingReference(const Core2DProtectingReference& coreReference) noexcept;
 
-        Core2DReference(Core2DReference&& coreReference) noexcept = delete;
+        Core2DProtectingReference(Core2DProtectingReference&& coreReference) noexcept = delete;
         
-        Core2DReference& operator=(const Core2DReference& coreReference) noexcept = delete;
+        Core2DProtectingReference& operator=(const Core2DProtectingReference& coreReference) noexcept = delete;
 
-        Core2DReference& operator=(Core2DReference&& coreReference) noexcept = delete;
+        Core2DProtectingReference& operator=(Core2DProtectingReference&& coreReference) noexcept = delete;
 
         const Size2D& GetSize() const noexcept;
 
@@ -75,99 +75,99 @@ namespace cnn
       };
 
       template <typename T>
-      Core2DReference<T>::Core2DReference(Core2D<T>& core) noexcept
+      Core2DProtectingReference<T>::Core2DProtectingReference(Core2D<T>& core) noexcept
         :
         Core{ core }
       {
       }
 
       template <typename T>
-      Core2DReference<T>::Core2DReference(const Core2DReference& coreReference) noexcept
+      Core2DProtectingReference<T>::Core2DProtectingReference(const Core2DProtectingReference& coreReference) noexcept
         :
         Core{ coreReference.Core }
       {
       }
 
       template <typename T>
-      const Size2D& Core2DReference<T>::GetSize() const noexcept
+      const Size2D& Core2DProtectingReference<T>::GetSize() const noexcept
       {
         return Core.GetSize();
       }
 
       template <typename T>
-      T Core2DReference<T>::GetInput(const size_t x, const size_t y) const
+      T Core2DProtectingReference<T>::GetInput(const size_t x, const size_t y) const
       {
         return Core.GetInput(x, y);
       }
 
       template <typename T>
-      void Core2DReference<T>::SetInput(const size_t x, const size_t y, const T value) const
+      void Core2DProtectingReference<T>::SetInput(const size_t x, const size_t y, const T value) const
       {
         Core.SetInput(x, y, value);
       }
 
       template <typename T>
-      T Core2DReference<T>::GetWeight(const size_t x, const size_t y) const
+      T Core2DProtectingReference<T>::GetWeight(const size_t x, const size_t y) const
       {
         return Core.GetWeight(x, y);
       }
 
       template <typename T>
-      void Core2DReference<T>::SetWeight(const size_t x, const size_t y, const T value) const
+      void Core2DProtectingReference<T>::SetWeight(const size_t x, const size_t y, const T value) const
       {
         Core.SetWeight(x, y, value);
       }
 
       template <typename T>
-      void Core2DReference<T>::GenerateOutput() const noexcept
+      void Core2DProtectingReference<T>::GenerateOutput() const noexcept
       {
         Core.GenerateOutput();
       }
 
       template <typename T>
-      T Core2DReference<T>::GetOutput() const noexcept
+      T Core2DProtectingReference<T>::GetOutput() const noexcept
       {
         return Core.GetOutput();
       }
 
       template <typename T>
-      void Core2DReference<T>::ClearInputs() const noexcept
+      void Core2DProtectingReference<T>::ClearInputs() const noexcept
       {
         Core.ClearInputs();
       }
 
       template <typename T>
-      void Core2DReference<T>::ClearWeights() const noexcept
+      void Core2DProtectingReference<T>::ClearWeights() const noexcept
       {
         Core.ClearWeights();
       }
 
       template <typename T>
-      void Core2DReference<T>::ClearOutput() const noexcept
+      void Core2DProtectingReference<T>::ClearOutput() const noexcept
       {
         Core.ClearOutput();
       }
 
       template <typename T>
-      void Core2DReference<T>::Clear() const noexcept
+      void Core2DProtectingReference<T>::Clear() const noexcept
       {
         Core.Clear();
       }
 
       template <typename T>
-      void Core2DReference<T>::Save(std::ostream& ostream) const
+      void Core2DProtectingReference<T>::Save(std::ostream& ostream) const
       {
         Core.Save(ostream);
       }
 
       template <typename T>
-      void Core2DReference<T>::FillWeights(common::ValueGenerator<T>& valueGenerator) const noexcept
+      void Core2DProtectingReference<T>::FillWeights(common::ValueGenerator<T>& valueGenerator) const noexcept
       {
         Core.FillWeights(valueGenerator);
       }
 
       template <typename T>
-      void Core2DReference<T>::Mutate(common::Mutagen<T>& mutagen) const noexcept
+      void Core2DProtectingReference<T>::Mutate(common::Mutagen<T>& mutagen) const noexcept
       {
         Core.Mutate(mutagen);
       }

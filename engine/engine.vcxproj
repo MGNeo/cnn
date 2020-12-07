@@ -32,14 +32,14 @@
     <ClInclude Include="common\Map.hpp" />
     <ClInclude Include="common\Mutagen.hpp" />
     <ClInclude Include="common\Neuron.hpp" />
-    <ClInclude Include="common\NeuronReference.hpp" />
+    <ClInclude Include="common\NeuronProtectingReference.hpp" />
     <ClInclude Include="common\ValueGenerator.hpp" />
     <ClInclude Include="complex\Network2D.hpp" />
     <ClInclude Include="complex\Network2DTopology.hpp" />
     <ClInclude Include="convolution\Core2D.hpp" />
-    <ClInclude Include="convolution\Core2DReference.hpp" />
+    <ClInclude Include="convolution\Core2DProtectingReference.hpp" />
     <ClInclude Include="convolution\Filter2D.hpp" />
-    <ClInclude Include="convolution\Filter2DReference.hpp" />
+    <ClInclude Include="convolution\Filter2DProtectingReference.hpp" />
     <ClInclude Include="convolution\Filter2DTopology.hpp" />
     <ClInclude Include="convolution\Layer2D.hpp" />
     <ClInclude Include="convolution\Layer2DTopology.hpp" />

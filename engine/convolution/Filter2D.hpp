@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include "Core2D.hpp"
+#include "Core2DProtectingReference.hpp"
 #include "Filter2DTopology.hpp"
 
 namespace cnn
@@ -37,10 +38,10 @@ namespace cnn
         // Exception guarantee: strong for this.
         void SetTopology(const Filter2DTopology& topology);
 
-        const Core2D<T>& GetCore(const size_t index) const;
+        const Core2D<T>& GetConstCore(const size_t index) const;
 
         // Exception guarantee: strong for this.
-        Core2D<T>& GetCore(const size_t index);
+        Core2DProtectingReference<T> GetCore(const size_t index);
 
         // It clears the state without changing of the topology.
         void Clear() noexcept;
@@ -132,17 +133,17 @@ namespace cnn
       }
 
       template <typename T>
-      const Core2D<T>& Filter2D<T>::GetCore(const size_t index) const
+      const Core2D<T>& Filter2D<T>::GetConstCore(const size_t index) const
       {
         if (index >= Topology.GetCoreCount())
         {
-          throw std::range_error("cnn::engine::convolution::Filter2D::GetCore() const, index >= Topology.GetCoreCount().");
+          throw std::range_error("cnn::engine::convolution::Filter2D::GetConstCore() const, index >= Topology.GetCoreCount().");
         }
         return Cores[index];
       }
 
       template <typename T>
-      Core2D<T>& Filter2D<T>::GetCore(const size_t index)
+      Core2DProtectingReference<T> Filter2D<T>::GetCore(const size_t index)
       {
         if (index >= Topology.GetCoreCount())
         {
