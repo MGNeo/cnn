@@ -36,7 +36,7 @@ namespace cnn
         const Core2D<T>& GetConstCore(const size_t index) const;
 
         // Exception guarantee: strong for the filter.
-        Core2DProtectingReference<T>& GetCore(const size_t index) const;
+        Core2DProtectingReference<T> GetCore(const size_t index) const;
 
         // It clears the state without changing of the topology of the filter.
         void Clear() const noexcept;
@@ -84,7 +84,7 @@ namespace cnn
       }
 
       template <typename T>
-      Core2DProtectingReference<T>& Filter2DProtectingReference<T>::GetCore(const size_t index) const
+      Core2DProtectingReference<T> Filter2DProtectingReference<T>::GetCore(const size_t index) const
       {
         return Filter.GetCore(index);
       }
