@@ -4,10 +4,14 @@
 
 #include "convolution/Map2D.hpp"
 
+// DEBUG
 #include "convolution/Core2D.hpp"
+#include "convolution/Core2DReference.hpp"
 
+// DEBUG
 #include "convolution/Filter2DTopology.hpp"
 #include "convolution/Filter2D.hpp"
+#include "convolution/Filter2DReference.hpp"
 
 #include "convolution/Layer2DTopology.hpp"
 #include "convolution/Layer2D.hpp"
@@ -23,12 +27,15 @@
 
 #include "common/Mutagen.hpp"
 
+// DEBUG
 #include "complex/Network2DTopology.hpp"
 #include "complex/Network2D.hpp"
+#include "common/NeuronReference.hpp"
 
 #include <sstream>
 #include <iostream>
 #include <fstream>
+
 
 // VERY IMPORTANT TODO: In order to protect complex object from breaking their consistency, we must add
 // RefX and ConstRefX types (where X is name, like Neuron or Map) for every type, which has such characteristic as topology.
@@ -49,6 +56,20 @@ using namespace cnn::engine;
 
 int main(int argc, char** argv)
 {
+  // DEBUG
+  {
+    common::Neuron<float> neuron;
+    common::NeuronReference<float> neuronReference{ neuron };
+    neuronReference.GenerateOutput();
+
+    convolution::Core2D<float> core2D;
+    convolution::Core2DReference<float> core2DReference{ core2D };
+    core2DReference.GenerateOutput();
+
+    convolution::Filter2D<float> filter2D;
+    convolution::Filter2DReference filter2DReference{ filter2D };
+  }
+
   try
   {
     convolution::Network2DTopology convolutionNetwork2DTopology;

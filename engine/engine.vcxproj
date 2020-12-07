@@ -37,7 +37,9 @@
     <ClInclude Include="complex\Network2D.hpp" />
     <ClInclude Include="complex\Network2DTopology.hpp" />
     <ClInclude Include="convolution\Core2D.hpp" />
+    <ClInclude Include="convolution\Core2DReference.hpp" />
     <ClInclude Include="convolution\Filter2D.hpp" />
+    <ClInclude Include="convolution\Filter2DReference.hpp" />
     <ClInclude Include="convolution\Filter2DTopology.hpp" />
     <ClInclude Include="convolution\Layer2D.hpp" />
     <ClInclude Include="convolution\Layer2DTopology.hpp" />
