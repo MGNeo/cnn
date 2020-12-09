@@ -1,6 +1,8 @@
 #include "common/Neuron.hpp"
 
+// DEBUG
 #include "common/Map.hpp"
+#include "common/MapProtectingReference.hpp"
 
 // DEBUG
 #include "convolution/Map2D.hpp"
@@ -73,6 +75,9 @@ int main(int argc, char** argv)
 
     convolution::Map2D<float> map2D;
     convolution::Map2DProtectingReference<float> map2DProtectingReference{ map2D };
+
+    common::Map<float> map;
+    common::MapProtectingReference<float> mapProtectingReference{ map };
   }
 
   try

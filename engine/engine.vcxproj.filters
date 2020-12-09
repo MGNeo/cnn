@@ -60,5 +60,6 @@
     <ClInclude Include="convolution\Filter2DProtectingReference.hpp" />
     <ClInclude Include="convolution\Core2DProtectingReference.hpp" />
     <ClInclude Include="convolution\Map2DProtectingReference.hpp" />
+    <ClInclude Include="common\MapProtectingReference.hpp" />
   </ItemGroup>
 </Project>

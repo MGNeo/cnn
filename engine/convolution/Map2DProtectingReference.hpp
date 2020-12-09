@@ -26,7 +26,7 @@ namespace cnn
 
         Map2DProtectingReference(Map2DProtectingReference&& mapReference) noexcept = delete;
 
-        Map2DProtectingReference& operator=(const Map2DProtectingReference& mapReference) = delete;
+        Map2DProtectingReference& operator=(const Map2DProtectingReference& mapReference) noexcept = delete;
 
         Map2DProtectingReference& operator=(Map2DProtectingReference&& mapReference) noexcept = delete;
 
