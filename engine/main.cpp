@@ -23,8 +23,10 @@
 #include "convolution/Network2DTopology.hpp"
 #include "convolution/Network2D.hpp"
 
+// DEBUG
 #include "perceptron/LayerTopology.hpp"
 #include "perceptron/Layer.hpp"
+#include "perceptron/LayerProtectingReference.hpp"
 
 #include "perceptron/NetworkTopology.hpp"
 #include "perceptron/Network.hpp"
@@ -39,7 +41,6 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-
 
 // VERY IMPORTANT TODO: In order to protect complex object from breaking their consistency, we must add
 // RefX and ConstRefX types (where X is name, like Neuron or Map) for every type, which has such characteristic as topology.
@@ -78,6 +79,9 @@ int main(int argc, char** argv)
 
     common::Map<float> map;
     common::MapProtectingReference<float> mapProtectingReference{ map };
+
+    perceptron::Layer<float> layer;
+    perceptron::LayerProtectingReference<float> layerProtectingReference{ layer };
   }
 
   try

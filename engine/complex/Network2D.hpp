@@ -141,7 +141,7 @@ namespace cnn
       {
         ConvolutionNetwork.GenerateOutput();
         const auto& lastLayer = ConvolutionNetwork.GetLastLayer();
-        auto& input = PerceptronNetwork.GetFirstLayer().GetInput();
+        auto input = PerceptronNetwork.GetFirstLayer().GetInput();
 
         size_t i{};
         for (size_t o = 0; o < lastLayer.GetTopology().GetOutputCount(); ++o)
