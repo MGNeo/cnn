@@ -59,5 +59,6 @@
     <ClInclude Include="common\NeuronProtectingReference.hpp" />
     <ClInclude Include="convolution\Filter2DProtectingReference.hpp" />
     <ClInclude Include="convolution\Core2DProtectingReference.hpp" />
+    <ClInclude Include="convolution\Map2DProtectingReference.hpp" />
   </ItemGroup>
 </Project>

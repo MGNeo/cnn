@@ -2,7 +2,9 @@
 
 #include "common/Map.hpp"
 
+// DEBUG
 #include "convolution/Map2D.hpp"
+#include "convolution/Map2DProtectingReference.hpp"
 
 // DEBUG
 #include "convolution/Core2D.hpp"
@@ -68,6 +70,9 @@ int main(int argc, char** argv)
 
     convolution::Filter2D<float> filter2D;
     convolution::Filter2DProtectingReference filter2DProtectingReference{ filter2D };
+
+    convolution::Map2D<float> map2D;
+    convolution::Map2DProtectingReference<float> map2DProtectingReference{ map2D };
   }
 
   try

@@ -44,6 +44,7 @@
     <ClInclude Include="convolution\Layer2D.hpp" />
     <ClInclude Include="convolution\Layer2DTopology.hpp" />
     <ClInclude Include="convolution\Map2D.hpp" />
+    <ClInclude Include="convolution\Map2DProtectingReference.hpp" />
     <ClInclude Include="convolution\Network2D.hpp" />
     <ClInclude Include="convolution\Network2DTopology.hpp" />
     <ClInclude Include="convolution\Size2D.hpp" />
