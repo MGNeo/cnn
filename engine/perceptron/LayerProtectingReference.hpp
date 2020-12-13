@@ -8,6 +8,10 @@ namespace cnn
   {
     namespace perceptron
     {
+      // LayerProtectingReference is a type which implements semantics of protecting reference to Layer.
+      // The smart reference proxies all methods of Layer and doesn't allow to use methods, which change
+      // the topology of the target layer.
+      // It allow to protect consistency of complex objects, which contain the target layer as its part.
       template <typename T>
       class LayerProtectingReference
       {

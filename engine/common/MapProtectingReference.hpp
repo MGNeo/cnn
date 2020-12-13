@@ -8,6 +8,10 @@ namespace cnn
   {
     namespace common
     {
+      // MapProtectingReference is a type which implements semantics of protecting reference to Map.
+      // The protecting reference proxies all methods of Map and doesn't allow to use methods, which change
+      // the topology of the target map.
+      // It allow to protect consistency of complex objects, which contain the target map as its part.
       template <typename T>
       class MapProtectingReference
       {

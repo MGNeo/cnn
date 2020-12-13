@@ -30,8 +30,10 @@
 #include "perceptron/Layer.hpp"
 #include "perceptron/LayerProtectingReference.hpp"
 
+// DEBUG
 #include "perceptron/NetworkTopology.hpp"
 #include "perceptron/Network.hpp"
+#include "perceptron/NetworkProtectingReference.hpp"
 
 #include "common/Mutagen.hpp"
 
@@ -87,6 +89,9 @@ int main(int argc, char** argv)
 
     convolution::Layer2D<float> layer2D;
     convolution::Layer2DProtectingReference<float> layer2DProtectingReference{ layer2D };
+
+    perceptron::Network<float> network;
+    perceptron::NetworkProtectingReference<float> networkProtectingReference{ network };
   }
 
   try

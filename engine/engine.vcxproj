@@ -54,6 +54,7 @@
     <ClInclude Include="perceptron\Network.hpp" />
     <ClInclude Include="perceptron\Layer.hpp" />
     <ClInclude Include="perceptron\LayerTopology.hpp" />
+    <ClInclude Include="perceptron\NetworkProtectingReference.hpp" />
     <ClInclude Include="perceptron\NetworkTopology.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

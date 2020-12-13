@@ -8,6 +8,10 @@ namespace cnn
   {
     namespace convolution
     {
+      // Layer2DProtectingReference is a type which implements semantics of protecting reference to Layer2D.
+      // The smart reference proxies all methods of Layer2D and doesn't allow to use methods, which change
+      // the topology of the target layer.
+      // It allow to protect consistency of complex objects, which contain the target layer as its part.
       template <typename T>
       class Layer2DProtectingReference
       {

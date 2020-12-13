@@ -3,6 +3,7 @@
 #include "NetworkTopology.hpp"
 
 #include "Layer.hpp"
+#include "LayerProtectingReference.hpp"
 
 namespace cnn
 {
@@ -36,12 +37,12 @@ namespace cnn
         const Layer<T>& GetLayer(const size_t index) const;
 
         // Exception guarantee: strong for this.
-        Layer<T>& GetLayer(const size_t index);
+        LayerProtectingReference<T> GetLayer(const size_t index);
 
         const Layer<T>& GetFirstLayer() const;
 
         // Exception guarantee: strong for this.
-        Layer<T>& GetFirstLayer();
+        LayerProtectingReference<T> GetFirstLayer();
 
         // Exception guarantee: base for this.
         void GenerateOutput();
@@ -142,7 +143,7 @@ namespace cnn
       }
 
       template <typename T>
-      Layer<T>& Network<T>::GetLayer(const size_t index)
+      LayerProtectingReference<T> Network<T>::GetLayer(const size_t index)
       {
         if (index >= Topology.GetLayerCount())
         {
@@ -162,7 +163,7 @@ namespace cnn
       }
 
       template <typename T>
-      Layer<T>& Network<T>::GetFirstLayer()
+      LayerProtectingReference<T> Network<T>::GetFirstLayer()
       {
         if (Topology.GetLayerCount() == 0)
         {
