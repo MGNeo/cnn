@@ -62,5 +62,6 @@
     <ClInclude Include="convolution\Map2DProtectingReference.hpp" />
     <ClInclude Include="common\MapProtectingReference.hpp" />
     <ClInclude Include="perceptron\LayerProtectingReference.hpp" />
+    <ClInclude Include="convolution\Layer2DProtectingReference.hpp" />
   </ItemGroup>
 </Project>
