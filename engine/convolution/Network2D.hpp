@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Layer2D.hpp"
+#include "Layer2DProtectingReference.hpp"
+
 #include "Network2DTopology.hpp"
 
 namespace cnn
@@ -35,12 +37,12 @@ namespace cnn
         const Layer2D<T>& GetLayer(const size_t index) const;
 
         // Exception guarantee: strong for this.
-        Layer2D<T>& GetLayer(const size_t index);
+        Layer2DProtectingReference<T> GetLayer(const size_t index);
 
         const Layer2D<T>& GetLastLayer() const;
 
         // Exception guarantee: strong for this.
-        Layer2D<T>& GetLastLayer();
+        Layer2DProtectingReference<T> GetLastLayer();
 
         // Exception guarantee: base for this.
         void GenerateOutput();
@@ -143,7 +145,7 @@ namespace cnn
       }
 
       template <typename T>
-      Layer2D<T>& Network2D<T>::GetLayer(const size_t index)
+      Layer2DProtectingReference<T> Network2D<T>::GetLayer(const size_t index)
       {
         if (index >= Topology.GetLayerCount())
         {
@@ -163,7 +165,7 @@ namespace cnn
       }
 
       template <typename T>
-      Layer2D<T>& Network2D<T>::GetLastLayer()
+      Layer2DProtectingReference<T> Network2D<T>::GetLastLayer()
       {
         if (Topology.GetLayerCount() == 0)
         {

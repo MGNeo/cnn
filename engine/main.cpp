@@ -22,8 +22,10 @@
 #include "convolution/Layer2D.hpp"
 #include "convolution/Layer2DProtectingReference.hpp"
 
+// DEBUG
 #include "convolution/Network2DTopology.hpp"
 #include "convolution/Network2D.hpp"
+#include "convolution/Network2DProtectingReference.hpp"
 
 // DEBUG
 #include "perceptron/LayerTopology.hpp"
@@ -92,6 +94,9 @@ int main(int argc, char** argv)
 
     perceptron::Network<float> network;
     perceptron::NetworkProtectingReference<float> networkProtectingReference{ network };
+
+    convolution::Network2D<float> network2D;
+    convolution::Network2DProtectingReference<float> network2DProtectingReference{ network2D };
   }
 
   try
