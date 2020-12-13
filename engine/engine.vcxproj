@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="complex\Lesson2DTopology.cpp" />
     <ClCompile Include="complex\Network2DTopology.cpp" />
     <ClCompile Include="convolution\Filter2DTopology.cpp" />
     <ClCompile Include="convolution\Layer2DTopology.cpp" />
@@ -35,6 +36,8 @@
     <ClInclude Include="common\Neuron.hpp" />
     <ClInclude Include="common\NeuronProtectingReference.hpp" />
     <ClInclude Include="common\ValueGenerator.hpp" />
+    <ClInclude Include="complex\Lesson2D.hpp" />
+    <ClInclude Include="complex\Lesson2DTopology.hpp" />
     <ClInclude Include="complex\Network2D.hpp" />
     <ClInclude Include="complex\Network2DTopology.hpp" />
     <ClInclude Include="convolution\Core2D.hpp" />

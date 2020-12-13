@@ -43,7 +43,7 @@ namespace cnn
 
         void SetHeight(const size_t height) noexcept;
 
-        void Clear() noexcept;
+        void Reset() noexcept;
 
         // Exception guarantee: base for ostream.
         void Save(std::ostream& ostream) const;

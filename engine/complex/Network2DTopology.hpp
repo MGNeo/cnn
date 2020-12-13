@@ -39,7 +39,7 @@ namespace cnn
 
         void SetPerceptronTopology(const perceptron::NetworkTopology& perceptronTopology);
 
-        // It resets the state to zero including the topology.
+        // It resets the state to zero.
         void Reset() noexcept;
 
         // Exception guarantee: base for ostream.

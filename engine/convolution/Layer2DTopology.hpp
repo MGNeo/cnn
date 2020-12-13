@@ -62,7 +62,7 @@ namespace cnn
 
         size_t GetOutputValueCount() const;
 
-        void Clear() noexcept;
+        void Reset() noexcept;
 
         // Exception guarantee: base for ostream.
         void Save(std::ostream& ostream) const;

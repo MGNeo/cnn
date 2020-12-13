@@ -42,7 +42,7 @@ namespace cnn
 
         void SetNeuronCount(const size_t neuronCount) noexcept;
 
-        void Clear() noexcept;
+        void Reset() noexcept;
 
         // Exception guarantee: base for ostream.
         void Save(std::ostream& ostream) const;

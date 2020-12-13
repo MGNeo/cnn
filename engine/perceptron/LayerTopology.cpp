@@ -20,7 +20,7 @@ namespace cnn
         InputCount{ topology.InputCount },
         NeuronCount{ topology.NeuronCount }
       {
-        topology.Clear();
+        topology.Reset();
       }
 
       LayerTopology& LayerTopology::operator=(LayerTopology&& topology) noexcept
@@ -30,7 +30,7 @@ namespace cnn
           InputCount = topology.InputCount;
           NeuronCount = topology.NeuronCount;
 
-          topology.Clear();
+          topology.Reset();
         }
         return *this;
       }
@@ -75,7 +75,7 @@ namespace cnn
         NeuronCount = neuronCount;
       }
 
-      void LayerTopology::Clear() noexcept
+      void LayerTopology::Reset() noexcept
       {
         InputCount = 0;
         NeuronCount = 0;

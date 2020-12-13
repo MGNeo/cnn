@@ -44,6 +44,8 @@
 #include "complex/Network2D.hpp"
 #include "common/NeuronProtectingReference.hpp"
 
+#include "complex/Lesson2DTopology.hpp"
+
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -97,6 +99,8 @@ int main(int argc, char** argv)
 
     convolution::Network2D<float> network2D;
     convolution::Network2DProtectingReference<float> network2DProtectingReference{ network2D };
+
+    complex::Lesson2DTopology lesson2DTopology;
   }
 
   try

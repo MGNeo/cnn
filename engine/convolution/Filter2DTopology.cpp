@@ -20,7 +20,7 @@ namespace cnn
         Size{ std::move(topology.GetSize()) },
         CoreCount{ topology.CoreCount }
       {
-        topology.Clear();
+        topology.Reset();
       }
 
       Filter2DTopology& Filter2DTopology::operator=(Filter2DTopology&& topology) noexcept
@@ -30,7 +30,7 @@ namespace cnn
           Size = std::move(topology.Size);
           CoreCount = topology.CoreCount;
 
-          topology.Clear();
+          topology.Reset();
         }
         return *this;
       }
@@ -75,9 +75,9 @@ namespace cnn
         CoreCount = coreCount;
       }
 
-      void Filter2DTopology::Clear() noexcept
+      void Filter2DTopology::Reset() noexcept
       {
-        Size.Clear();
+        Size.Reset();
         CoreCount = 0;
       }
 

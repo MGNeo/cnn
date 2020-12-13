@@ -46,7 +46,7 @@ namespace cnn
 
         const Layer2DTopology& GetLastLayerTopology() const;
 
-        // It resets the state to zero including the topology.
+        // It resets the state to zero.
         void Reset() noexcept;
 
         // Exception guarantee: base for ostream.

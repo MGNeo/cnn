@@ -22,7 +22,7 @@ namespace cnn
         Width{ size.Width },
         Height{ size.Height }
       {
-        size.Clear() ;
+        size.Reset() ;
       }
 
       Size2D& Size2D::operator=(Size2D&& size) noexcept
@@ -32,7 +32,7 @@ namespace cnn
           Width = size.Width;
           Height = size.Height;
 
-          size.Clear() ;
+          size.Reset() ;
         }
         return *this;
       }
@@ -77,7 +77,7 @@ namespace cnn
         Height = height;
       }
 
-      void Size2D::Clear() noexcept
+      void Size2D::Reset() noexcept
       {
         Width = 0;
         Height = 0;

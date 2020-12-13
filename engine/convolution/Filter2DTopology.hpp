@@ -35,7 +35,7 @@ namespace cnn
 
         void SetCoreCount(const size_t coreCount) noexcept;
 
-        void Clear() noexcept;
+        void Reset() noexcept;
 
         // Exception guarantee: base for ostream.
         void Save(std::ostream& ostream) const;

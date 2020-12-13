@@ -31,7 +31,7 @@ namespace cnn
         OutputSize{ topology.OutputSize },
         OutputCount{ topology.OutputCount }
       {
-        topology.Clear();
+        topology.Reset();
       }
 
       Layer2DTopology& Layer2DTopology::operator=(Layer2DTopology&& topology) noexcept
@@ -45,7 +45,7 @@ namespace cnn
           OutputSize = topology.OutputSize;
           OutputCount = topology.OutputCount;
 
-          topology.Clear();
+          topology.Reset();
         }
         return *this;
       }
@@ -151,13 +151,13 @@ namespace cnn
         return m;
       }
 
-      void Layer2DTopology::Clear() noexcept
+      void Layer2DTopology::Reset() noexcept
       {
-        InputSize.Clear();
+        InputSize.Reset();
         InputCount = 0;
-        FilterTopology.Clear();
+        FilterTopology.Reset();
         FilterCount = 0;
-        OutputSize.Clear();
+        OutputSize.Reset();
         OutputCount = 0;
       }
 
