@@ -50,12 +50,7 @@
 #include <iostream>
 #include <fstream>
 
-// VERY IMPORTANT TODO: In order to protect complex object from breaking their consistency, we must add
-// RefX and ConstRefX types (where X is name, like Neuron or Map) for every type, which has such characteristic as topology.
-// RefX and ConstRefX are wrapper-types, which implement semantics of references, which forbid any methods,
-// which can change topology of their target object.
-// Complex objects will protect themselves by returning RefX and ConstRefX instead of raw references to their subobjects.
-// We need about 20 types for implement this idea.
+// TODO: GenethicAlgorithm2D.
 
 // TODO: Perhaps, Neuron must use Map instead of [] for Inputs and Weights.
 // TODO: Check that any move-assignment operators reset "from".
