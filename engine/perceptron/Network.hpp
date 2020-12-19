@@ -100,9 +100,11 @@ namespace cnn
       {
         if (Topology.GetLayerCount() != 0)
         {
-          Network<T> tmpNetwork{ network };
-          // Beware, it is very intimate place for strong exception guarantee.
-          std::swap(*this, tmpNetwork);
+          Layers = std::make_unique<Layer<T>[]>(Topology.GetLayerCount());
+          for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
+          {
+            Layers[i] = network.Layers[i];
+          }
         }
       }
 

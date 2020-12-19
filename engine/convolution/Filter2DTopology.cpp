@@ -17,7 +17,7 @@ namespace cnn
 
       Filter2DTopology::Filter2DTopology(Filter2DTopology&& topology) noexcept
         :
-        Size{ std::move(topology.GetSize()) },
+        Size{ topology.GetSize() },
         CoreCount{ topology.CoreCount }
       {
         topology.Reset();

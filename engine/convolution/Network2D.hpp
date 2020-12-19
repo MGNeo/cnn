@@ -96,7 +96,7 @@ namespace cnn
       template <typename T>
       Network2D<T>::Network2D(const Network2D& network)
         :
-        Topology{ network.Topology() }
+        Topology{ network.Topology }
       {
         if (Topology.GetLayerCount() != 0)
         {

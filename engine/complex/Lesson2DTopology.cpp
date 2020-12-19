@@ -7,24 +7,24 @@ namespace cnn
     namespace complex
     {
       Lesson2DTopology::Lesson2DTopology(const convolution::Size2D& inputSize,
-                                         const size_t neuronCount) noexcept
+                                         const size_t outputCount) noexcept
         :
         InputSize{ inputSize },
-        NeuronCount{ neuronCount }
+        OutputCount{ outputCount }
       {
       }
 
       Lesson2DTopology::Lesson2DTopology(const Lesson2DTopology& topology) noexcept
         :
         InputSize{ topology.InputSize },
-        NeuronCount{ topology.NeuronCount }
+        OutputCount{ topology.OutputCount }
       {
       }
 
       Lesson2DTopology::Lesson2DTopology(Lesson2DTopology&& topology) noexcept
         :
         InputSize{ std::move(topology.InputSize) },
-        NeuronCount{ topology.NeuronCount }
+        OutputCount{ topology.OutputCount }
       {
         topology.Reset();
       }
@@ -34,7 +34,7 @@ namespace cnn
         if (this != &topology)
         {
           InputSize = topology.InputSize;
-          NeuronCount = topology.NeuronCount;
+          OutputCount = topology.OutputCount;
         }
         return *this;
       }
@@ -44,7 +44,7 @@ namespace cnn
         if (this != &topology)
         {
           InputSize = std::move(topology.InputSize);
-          NeuronCount = std::move(topology.NeuronCount);
+          OutputCount = std::move(topology.OutputCount);
 
           topology.Reset();
         }
@@ -53,7 +53,7 @@ namespace cnn
 
       bool Lesson2DTopology::operator==(const Lesson2DTopology& topology) const noexcept
       {
-        if ((InputSize == topology.InputSize) && (NeuronCount == topology.NeuronCount))
+        if ((InputSize == topology.InputSize) && (OutputCount == topology.OutputCount))
         {
           return true;
         } else {
@@ -81,20 +81,20 @@ namespace cnn
         InputSize = inputSize;
       }
 
-      size_t Lesson2DTopology::GetNeuronCount() const noexcept
+      size_t Lesson2DTopology::GetOutputCount() const noexcept
       {
-        return NeuronCount;
+        return OutputCount;
       }
 
-      void Lesson2DTopology::SetNeuronCount(const size_t neuronCount) noexcept
+      void Lesson2DTopology::SetOutputCount(const size_t outputCount) noexcept
       {
-        NeuronCount = neuronCount;
+        OutputCount = outputCount;
       }
 
       void Lesson2DTopology::Reset() noexcept
       {
         InputSize.Reset();
-        NeuronCount = 0;
+        OutputCount = 0;
       }
 
       void Lesson2DTopology::Save(std::ostream& ostream) const
@@ -105,7 +105,7 @@ namespace cnn
         }
 
         InputSize.Save(ostream);
-        ostream.write(reinterpret_cast<const char* const>(&NeuronCount), sizeof(NeuronCount));
+        ostream.write(reinterpret_cast<const char* const>(&OutputCount), sizeof(OutputCount));
 
         if (ostream.good() == false)
         {
@@ -121,10 +121,10 @@ namespace cnn
         }
 
         decltype(InputSize) inputSize{};
-        decltype(NeuronCount) neuronCount{};
+        decltype(OutputCount) outputCount{};
 
         istream.read(reinterpret_cast<char* const>(&inputSize), sizeof(inputSize));
-        istream.read(reinterpret_cast<char*const>(&neuronCount), sizeof(neuronCount));
+        istream.read(reinterpret_cast<char*const>(&outputCount), sizeof(outputCount));
 
         if (istream.good() == false)
         {
@@ -132,7 +132,7 @@ namespace cnn
         }
 
         InputSize = inputSize;
-        NeuronCount = neuronCount;
+        OutputCount = outputCount;
 
       }
     }

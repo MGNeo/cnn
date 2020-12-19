@@ -28,19 +28,25 @@ namespace cnn
         GeneticAlgorithm2D& operator=(const GeneticAlgorithm2D& algorithm) = default;
         GeneticAlgorithm2D& operator=(GeneticAlgorithm2D&& algorithm) noexcept;
 
-        size_t GetThreadCount() const;
+        size_t GetThreadCount() const noexcept;
         void SetThreadCount(const size_t threadCount);
 
-        size_t GetIterationCount() const;
+        size_t GetIterationCount() const noexcept;
         void SetIterationCount(const size_t iterationCount);
 
-        const common::ValueGenerator<T>& GetValueGenerator() const;
+        const common::ValueGenerator<T>& GetValueGenerator() const noexcept;
         void SetValueGenerator(const common::ValueGenerator<T>& valueGenerator);
 
-        const common::Mutagen<T>& GetMutagen() const;
+        const common::Mutagen<T>& GetMutagen() const noexcept;
         void SetMutagen(const common::Mutagen<T>& mutagen);
 
+        //void Reset() noexcept;
+
         //Network2D<T> Run(const Lesson2DLibrary<T>& lessonLibrary, const Network2D<T>& sourceNetwork);
+
+        //void Save(std::ostream& ostream);
+
+        //void Load(std::istream& istream);
 
       private:
 

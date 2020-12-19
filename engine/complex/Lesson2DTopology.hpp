@@ -13,7 +13,7 @@ namespace cnn
       public:
 
         Lesson2DTopology(const convolution::Size2D& inputSize = {},
-                         const size_t neuronCount = {}) noexcept;
+                         const size_t outputSize = {}) noexcept;
 
         Lesson2DTopology(const Lesson2DTopology& topology) noexcept;
 
@@ -31,9 +31,9 @@ namespace cnn
 
         void SetInputSize(const convolution::Size2D& inputSize) noexcept;
 
-        size_t GetNeuronCount() const noexcept;
+        size_t GetOutputCount() const noexcept;
 
-        void SetNeuronCount(const size_t neuronCount) noexcept;
+        void SetOutputCount(const size_t outputCount) noexcept;
 
         // It resets the state to zero.
         void Reset() noexcept;
@@ -49,7 +49,7 @@ namespace cnn
       private:
 
         convolution::Size2D InputSize;
-        size_t NeuronCount;
+        size_t OutputCount;
 
       };
     }

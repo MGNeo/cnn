@@ -21,7 +21,7 @@ namespace cnn
 
       public:
 
-        Core2D(const Size2D size = {});
+        Core2D(const Size2D& size = {});
 
         Core2D(const Core2D& core) = default;
 
@@ -91,7 +91,7 @@ namespace cnn
       };
 
       template <typename T>
-      Core2D<T>::Core2D(const Size2D size)
+      Core2D<T>::Core2D(const Size2D& size)
         :
         Size{ size }, 
         Neuron{ Size.GetArea() }
