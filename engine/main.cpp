@@ -50,7 +50,8 @@
 #include <iostream>
 #include <fstream>
 
-// TODO: GenethicAlgorithm2D.
+// TODO: Add GeneticAlgorithm2D.
+// TODO: Add filters for common, convolution, complex and perceptron namespaces.
 
 // TODO: Perhaps, Neuron must use Map instead of [] for Inputs and Weights.
 // TODO: Check that any move-assignment operators reset "from".

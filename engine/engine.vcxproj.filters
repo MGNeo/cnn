@@ -70,5 +70,6 @@
     <ClInclude Include="convolution\Network2DProtectingReference.hpp" />
     <ClInclude Include="complex\Lesson2D.hpp" />
     <ClInclude Include="complex\Lesson2DTopology.hpp" />
+    <ClInclude Include="complex\GeneticAlgorithm2D.hpp" />
   </ItemGroup>
 </Project>
