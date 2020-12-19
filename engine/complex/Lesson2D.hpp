@@ -18,7 +18,7 @@ namespace cnn
       class Lesson2D
       {
 
-        static_assert(std::is_floating_point<T>::value)
+        static_assert(std::is_floating_point<T>::value);
 
       public:
 
@@ -74,7 +74,7 @@ namespace cnn
 
         Topology = topology;
         Input.SetSize(Topology.GetInputSize());
-        Output.SetValueCount(Topology.GetOutputSize());
+        Output.SetValueCount(Topology.GetOutputCount());
       }
 
       template <typename T>
@@ -176,7 +176,7 @@ namespace cnn
         decltype(Input) input;
         decltype(Output) output;
 
-        Topology.Load(istream);
+        topology.Load(istream);
         CheckTopology(topology);
 
         if ((topology.GetInputSize().GetArea() != 0) && (topology.GetOutputCount() != 0))
@@ -207,14 +207,14 @@ namespace cnn
       void Lesson2D<T>::CheckTopology(const Lesson2DTopology& topology) const
       {
         // Zero topology is allowed.
-        if ((topology.GetInputSize().GetArea() == 0) && (topology.GetNeuronCount() == 0))
+        if ((topology.GetInputSize().GetArea() == 0) && (topology.GetOutputCount() == 0))
         {
           return;
         }
 
-        if ((topology.GetInputSize().GetArea() == 0) || (topology.GetNeuronCount() == 0))
+        if ((topology.GetInputSize().GetArea() == 0) || (topology.GetOutputCount() == 0))
         {
-          throw std::invalid_argument("cnn::engine::complex::Lesson2D::CheckTopology(), (topology.GetInputSize().GetArea() == 0) || (topology.GetNeuronCount() == 0).");
+          throw std::invalid_argument("cnn::engine::complex::Lesson2D::CheckTopology(), (topology.GetInputSize().GetArea() == 0) || (topology.GetOutputCount() == 0).");
         }
       }
     }

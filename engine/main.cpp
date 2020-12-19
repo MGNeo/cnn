@@ -44,12 +44,15 @@
 #include "complex/Network2D.hpp"
 #include "common/NeuronProtectingReference.hpp"
 
+// DEBUG
 #include "complex/Lesson2DTopology.hpp"
+#include "complex/Lesson2D.hpp"
 
 #include <sstream>
 #include <iostream>
 #include <fstream>
 
+// TODO: Add Lesson2DLibrary
 // TODO: Add GeneticAlgorithm2D.
 // TODO: Add filters for common, convolution, complex and perceptron namespaces.
 
@@ -96,7 +99,8 @@ int main(int argc, char** argv)
     convolution::Network2D<float> network2D;
     convolution::Network2DProtectingReference<float> network2DProtectingReference{ network2D };
 
-    complex::Lesson2DTopology lesson2DTopology;
+    complex::Lesson2DTopology lesson2DTopology{ {1,1}, 1 };
+    complex::Lesson2D<float> lesson2D{ lesson2DTopology };
   }
 
   try
