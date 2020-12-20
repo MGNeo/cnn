@@ -71,5 +71,7 @@
     <ClInclude Include="complex\Lesson2D.hpp" />
     <ClInclude Include="complex\Lesson2DTopology.hpp" />
     <ClInclude Include="complex\GeneticAlgorithm2D.hpp" />
+    <ClInclude Include="complex\Lesson2DLibrary.hpp" />
+    <ClInclude Include="complex\Lesson2DProtectingReference.hpp" />
   </ItemGroup>
 </Project>

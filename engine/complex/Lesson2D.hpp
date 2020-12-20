@@ -33,7 +33,7 @@ namespace cnn
 
         Lesson2D& operator=(Lesson2D&& lesson) noexcept = default;
 
-        const Lesson2DTopology& GetTopology() const;
+        const Lesson2DTopology& GetTopology() const noexcept;
 
         // Exception guarantee: strong for this.
         void SetTopology(const Lesson2DTopology& topology);
@@ -46,7 +46,10 @@ namespace cnn
 
         common::MapProtectingReference<T> GetOutput() noexcept;
 
-        // It resets the state to zero.
+        // It clears the state without changing of the topology.
+        void Clear() noexcept;
+
+        // It resets the state to zero including the topology.
         void Reset() noexcept;
 
         // Exception guarantee: base for ostream.
@@ -99,7 +102,7 @@ namespace cnn
       }
 
       template <typename T>
-      const Lesson2DTopology& Lesson2D<T>::GetTopology() const
+      const Lesson2DTopology& Lesson2D<T>::GetTopology() const noexcept
       {
         return Topology;
       }
@@ -136,6 +139,13 @@ namespace cnn
       common::MapProtectingReference<T> Lesson2D<T>::GetOutput() noexcept
       {
         return Output;
+      }
+
+      template <typename T>
+      void Lesson2D<T>::Clear() noexcept
+      {
+        Input.Clear();
+        Output.Clear();
       }
 
       template <typename T>

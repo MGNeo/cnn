@@ -47,6 +47,7 @@
 // DEBUG
 #include "complex/Lesson2DTopology.hpp"
 #include "complex/Lesson2D.hpp"
+#include "complex/Lesson2DProtectingReference.hpp"
 
 #include <sstream>
 #include <iostream>
@@ -99,8 +100,9 @@ int main(int argc, char** argv)
     convolution::Network2D<float> network2D;
     convolution::Network2DProtectingReference<float> network2DProtectingReference{ network2D };
 
-    complex::Lesson2DTopology lesson2DTopology{ {1,1}, 1 };
+    complex::Lesson2DTopology lesson2DTopology{ {1, 1}, 1 };
     complex::Lesson2D<float> lesson2D{ lesson2DTopology };
+    complex::Lesson2DProtectingReference<float> lesson2DProtectingReference{ lesson2D };
   }
 
   try
