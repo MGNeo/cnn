@@ -8,6 +8,10 @@ namespace cnn
   {
     namespace complex
     {
+      // It is only a container type for parameters, so it doesn't validate contained values.
+      // Contained values are checked by a type, which takes this type as parameter.
+      // For example, complex::Lesson2D validates correctness of complex::Lesson2DTopology.
+      // It is that, because only consumer knows the rules of the validating.
       class Lesson2DTopology
       {
       public:

@@ -48,6 +48,7 @@
 #include "complex/Lesson2DTopology.hpp"
 #include "complex/Lesson2D.hpp"
 #include "complex/Lesson2DProtectingReference.hpp"
+#include "complex/Lesson2DLibrary.hpp"
 
 #include <sstream>
 #include <iostream>
@@ -103,6 +104,10 @@ int main(int argc, char** argv)
     complex::Lesson2DTopology lesson2DTopology{ {1, 1}, 1 };
     complex::Lesson2D<float> lesson2D{ lesson2DTopology };
     complex::Lesson2DProtectingReference<float> lesson2DProtectingReference{ lesson2D };
+
+    complex::Lesson2DLibrary<float> lesson2DLibrary;
+    lesson2DLibrary.PushBack(lesson2D);
+    lesson2DLibrary.PushBack(lesson2D);
   }
 
   try

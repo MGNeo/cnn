@@ -1,77 +1,145 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Исходные файлы">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="common">
+      <UniqueIdentifier>{1a626d8b-8c2b-4746-a9ad-8d383deb98eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы ресурсов">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="perceptron">
+      <UniqueIdentifier>{8b39d19c-7aac-45a4-b4b2-7c5bedffdf0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="complex">
+      <UniqueIdentifier>{2e328e2b-6105-43e1-a473-c7fd1643871e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="convolution">
+      <UniqueIdentifier>{ebb870ff-7d0a-4f10-881a-2ca2d831b3c9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="convolution\Filter2DTopology.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="convolution\Size2D.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="convolution\Layer2DTopology.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="convolution\Network2DTopology.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="perceptron\LayerTopology.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="perceptron\NetworkTopology.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="complex\Network2DTopology.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>complex</Filter>
     </ClCompile>
     <ClCompile Include="complex\Lesson2DTopology.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>complex</Filter>
     </ClCompile>
+    <ClCompile Include="convolution\Size2D.cpp">
+      <Filter>convolution</Filter>
+    </ClCompile>
+    <ClCompile Include="convolution\Network2DTopology.cpp">
+      <Filter>convolution</Filter>
+    </ClCompile>
+    <ClCompile Include="convolution\Layer2DTopology.cpp">
+      <Filter>convolution</Filter>
+    </ClCompile>
+    <ClCompile Include="convolution\Filter2DTopology.cpp">
+      <Filter>convolution</Filter>
+    </ClCompile>
+    <ClCompile Include="perceptron\LayerTopology.cpp">
+      <Filter>perceptron</Filter>
+    </ClCompile>
+    <ClCompile Include="perceptron\NetworkTopology.cpp">
+      <Filter>perceptron</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common\Neuron.hpp" />
-    <ClInclude Include="convolution\Core2D.hpp" />
-    <ClInclude Include="common\Mutagen.hpp" />
-    <ClInclude Include="common\ValueGenerator.hpp" />
-    <ClInclude Include="common\Map.hpp" />
-    <ClInclude Include="perceptron\Layer.hpp" />
-    <ClInclude Include="convolution\Map2D.hpp" />
-    <ClInclude Include="convolution\Size2D.hpp" />
-    <ClInclude Include="convolution\Filter2D.hpp" />
-    <ClInclude Include="convolution\Filter2DTopology.hpp" />
-    <ClInclude Include="convolution\Layer2D.hpp" />
-    <ClInclude Include="convolution\Layer2DTopology.hpp" />
-    <ClInclude Include="convolution\Network2D.hpp" />
-    <ClInclude Include="convolution\Network2DTopology.hpp" />
-    <ClInclude Include="perceptron\LayerTopology.hpp" />
-    <ClInclude Include="perceptron\Network.hpp" />
-    <ClInclude Include="perceptron\NetworkTopology.hpp" />
-    <ClInclude Include="complex\Network2D.hpp" />
-    <ClInclude Include="complex\Network2DTopology.hpp" />
-    <ClInclude Include="common\NeuronProtectingReference.hpp" />
-    <ClInclude Include="convolution\Filter2DProtectingReference.hpp" />
-    <ClInclude Include="convolution\Core2DProtectingReference.hpp" />
-    <ClInclude Include="convolution\Map2DProtectingReference.hpp" />
-    <ClInclude Include="common\MapProtectingReference.hpp" />
-    <ClInclude Include="perceptron\LayerProtectingReference.hpp" />
-    <ClInclude Include="convolution\Layer2DProtectingReference.hpp" />
-    <ClInclude Include="perceptron\NetworkProtectingReference.hpp" />
-    <ClInclude Include="convolution\Network2DProtectingReference.hpp" />
-    <ClInclude Include="complex\Lesson2D.hpp" />
-    <ClInclude Include="complex\Lesson2DTopology.hpp" />
-    <ClInclude Include="complex\GeneticAlgorithm2D.hpp" />
-    <ClInclude Include="complex\Lesson2DLibrary.hpp" />
-    <ClInclude Include="complex\Lesson2DProtectingReference.hpp" />
+    <ClInclude Include="common\Map.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\MapProtectingReference.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Mutagen.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Neuron.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\NeuronProtectingReference.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\ValueGenerator.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="complex\GeneticAlgorithm2D.hpp">
+      <Filter>complex</Filter>
+    </ClInclude>
+    <ClInclude Include="complex\Lesson2D.hpp">
+      <Filter>complex</Filter>
+    </ClInclude>
+    <ClInclude Include="complex\Lesson2DLibrary.hpp">
+      <Filter>complex</Filter>
+    </ClInclude>
+    <ClInclude Include="complex\Lesson2DProtectingReference.hpp">
+      <Filter>complex</Filter>
+    </ClInclude>
+    <ClInclude Include="complex\Lesson2DTopology.hpp">
+      <Filter>complex</Filter>
+    </ClInclude>
+    <ClInclude Include="complex\Network2DTopology.hpp">
+      <Filter>complex</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Core2D.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Core2DProtectingReference.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Filter2D.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Filter2DProtectingReference.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Filter2DTopology.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Layer2D.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Layer2DProtectingReference.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Layer2DTopology.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Map2D.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Map2DProtectingReference.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Size2D.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Network2DTopology.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Network2D.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="convolution\Network2DProtectingReference.hpp">
+      <Filter>convolution</Filter>
+    </ClInclude>
+    <ClInclude Include="perceptron\Layer.hpp">
+      <Filter>perceptron</Filter>
+    </ClInclude>
+    <ClInclude Include="perceptron\LayerProtectingReference.hpp">
+      <Filter>perceptron</Filter>
+    </ClInclude>
+    <ClInclude Include="perceptron\LayerTopology.hpp">
+      <Filter>perceptron</Filter>
+    </ClInclude>
+    <ClInclude Include="perceptron\Network.hpp">
+      <Filter>perceptron</Filter>
+    </ClInclude>
+    <ClInclude Include="complex\Network2D.hpp">
+      <Filter>perceptron</Filter>
+    </ClInclude>
+    <ClInclude Include="perceptron\NetworkProtectingReference.hpp">
+      <Filter>perceptron</Filter>
+    </ClInclude>
+    <ClInclude Include="perceptron\NetworkTopology.hpp">
+      <Filter>perceptron</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
