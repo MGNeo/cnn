@@ -83,13 +83,10 @@ namespace cnn
 
         Topology = topology;
 
-        if (Topology.GetLayerCount() != 0)
+        Layers = std::make_unique<Layer<T>[]>(Topology.GetLayerCount());
+        for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
         {
-          Layers = std::make_unique<Layer<T>[]>(Topology.GetLayerCount());
-          for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
-          {
-            Layers[i].SetTopology(Topology.GetLayerTopology(i));
-          }
+          Layers[i].SetTopology(Topology.GetLayerTopology(i));
         }
       }
 
@@ -98,13 +95,10 @@ namespace cnn
         :
         Topology{ network.Topology }
       {
-        if (Topology.GetLayerCount() != 0)
+        Layers = std::make_unique<Layer<T>[]>(Topology.GetLayerCount());
+        for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
         {
-          Layers = std::make_unique<Layer<T>[]>(Topology.GetLayerCount());
-          for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
-          {
-            Layers[i] = network.Layers[i];
-          }
+          Layers[i] = network.Layers[i];
         }
       }
 
@@ -215,12 +209,9 @@ namespace cnn
 
         Topology.Save(ostream);
 
-        if (Topology.GetLayerCount() != 0)
+        for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
         {
-          for (size_t i = 0; i < Topology.GetLayerCount(); ++i)
-          {
-            Layers[i].Save(ostream);
-          }
+          Layers[i].Save(ostream);
         }
 
         if (ostream.good() == false)
@@ -243,16 +234,13 @@ namespace cnn
         topology.Load(istream);
         CheckTopology(topology);
 
-        if (topology.GetLayerCount() != 0)
+        layers = std::make_unique<Layer<T>[]>(topology.GetLayerCount());
+        for (size_t i = 0; i < topology.GetLayerCount(); ++i)
         {
-          layers = std::make_unique<Layer<T>[]>(topology.GetLayerCount());
-          for (size_t i = 0; i < topology.GetLayerCount(); ++i)
+          layers[i].Load(istream);
+          if (layers[i].GetTopology() != topology.GetLayerTopology(i))
           {
-            layers[i].Load(istream);
-            if (layers[i].GetTopology() != topology.GetLayerTopology(i))
-            {
-              throw std::logic_error("cnn::engine::perceptron::Network::Load(), layers[i].GetTopology() != topology.GetLayerTopology(i).");
-            }
+            throw std::logic_error("cnn::engine::perceptron::Network::Load(), layers[i].GetTopology() != topology.GetLayerTopology(i).");
           }
         }
 

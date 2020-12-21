@@ -97,31 +97,22 @@ namespace cnn
 
         Topology = topology;
 
-        if (Topology.GetInputCount() != 0)
+        Inputs = std::make_unique<Map2D<T>[]>(Topology.GetInputCount());
+        for (size_t i = 0; i < Topology.GetInputCount(); ++i)
         {
-          Inputs = std::make_unique<Map2D<T>[]>(Topology.GetInputCount());
-          for (size_t i = 0; i < Topology.GetInputCount(); ++i)
-          {
-            Inputs[i].SetSize(Topology.GetInputSize());
-          }
+          Inputs[i].SetSize(Topology.GetInputSize());
         }
 
-        if (Topology.GetFilterCount() != 0)
+        Filters = std::make_unique<Filter2D<T>[]>(Topology.GetFilterCount());
+        for (size_t i = 0; i < Topology.GetFilterCount(); ++i)
         {
-          Filters = std::make_unique<Filter2D<T>[]>(Topology.GetFilterCount());
-          for (size_t i = 0; i < Topology.GetFilterCount(); ++i)
-          {
-            Filters[i].SetTopology(Topology.GetFilterTopology());
-          }
+          Filters[i].SetTopology(Topology.GetFilterTopology());
         }
 
-        if (Topology.GetOutputCount() != 0)
+        Outputs = std::make_unique<Map2D<T>[]>(Topology.GetOutputCount());
+        for (size_t i = 0; i < Topology.GetOutputCount(); ++i)
         {
-          Outputs = std::make_unique<Map2D<T>[]>(Topology.GetOutputCount());
-          for (size_t i = 0; i < Topology.GetOutputCount(); ++i)
-          {
-            Outputs[i].SetSize(Topology.GetOutputSize());
-          }
+          Outputs[i].SetSize(Topology.GetOutputSize());
         }
       }
 
@@ -130,31 +121,22 @@ namespace cnn
         :
         Topology{ layer.Topology }
       {
-        if (Topology.GetInputCount() != 0)
+        Inputs = std::make_unique<Map2D<T>[]>(Topology.GetInputCount());
+        for (size_t i = 0; i < Topology.GetInputCount(); ++i)
         {
-          Inputs = std::make_unique<Map2D<T>[]>(Topology.GetInputCount());
-          for (size_t i = 0; i < Topology.GetInputCount(); ++i)
-          {
-            Inputs[i] = layer.Inputs[i];
-          }
+          Inputs[i] = layer.Inputs[i];
         }
 
-        if (Topology.GetFilterCount() != 0)
+        Filters = std::make_unique<Filter2D<T>[]>(Topology.GetFilterCount());
+        for (size_t i = 0; i < Topology.GetFilterCount(); ++i)
         {
-          Filters = std::make_unique<Filter2D<T>[]>(Topology.GetFilterCount());
-          for (size_t i = 0; i < Topology.GetFilterCount(); ++i)
-          {
-            Filters[i] = layer.Filters[i];
-          }
+          Filters[i] = layer.Filters[i];
         }
 
-        if (Topology.GetOutputCount() != 0)
+        Outputs = std::make_unique<Map2D<T>[]>(Topology.GetOutputCount());
+        for (size_t i = 0; i < Topology.GetOutputCount(); ++i)
         {
-          Outputs = std::make_unique<Map2D<T>[]>(Topology.GetOutputCount());
-          for (size_t i = 0; i < Topology.GetOutputCount(); ++i)
-          {
-            Outputs[i] = layer.Outputs[i];
-          }
+          Outputs[i] = layer.Outputs[i];
         }
       }
 
@@ -354,42 +336,33 @@ namespace cnn
 
         CheckTopology(topology);
 
-        if (topology.GetInputCount() != 0)
+        inputs = std::make_unique<Map2D<T>[]>(topology.GetInputCount());
+        for (size_t i = 0; i < topology.GetInputCount(); ++i)
         {
-          inputs = std::make_unique<Map2D<T>[]>(topology.GetInputCount());
-          for (size_t i = 0; i < topology.GetInputCount(); ++i)
+          inputs[i].Load(istream);
+          if (inputs[i].GetSize() != topology.GetInputSize())
           {
-            inputs[i].Load(istream);
-            if (inputs[i].GetSize() != topology.GetInputSize())
-            {
-              throw std::logic_error("cnn::engine::convolution::Layer2D::Load(), inputs[i].GetSize() != topology.GetInputSize().");
-            }
+            throw std::logic_error("cnn::engine::convolution::Layer2D::Load(), inputs[i].GetSize() != topology.GetInputSize().");
           }
         }
 
-        if (topology.GetFilterCount() != 0)
+        filters = std::make_unique<Filter2D<T>[]>(topology.GetFilterCount());
+        for (size_t i = 0; i < topology.GetFilterCount(); ++i)
         {
-          filters = std::make_unique<Filter2D<T>[]>(topology.GetFilterCount());
-          for (size_t i = 0; i < topology.GetFilterCount(); ++i)
+          filters[i].Load(istream);
+          if (filters[i].GetTopology() != topology.GetFilterTopology())
           {
-            filters[i].Load(istream);
-            if (filters[i].GetTopology() != topology.GetFilterTopology())
-            {
-              throw std::logic_error("cnn::engine::convolution::Layer2D::Load(), filters[i].GetTopology() != topology.GetFilterTopology().");
-            }
+            throw std::logic_error("cnn::engine::convolution::Layer2D::Load(), filters[i].GetTopology() != topology.GetFilterTopology().");
           }
         }
 
-        if (topology.GetOutputCount() != 0)
+        outputs = std::make_unique<Map2D<T>[]>(topology.GetOutputCount());
+        for (size_t i = 0; i < topology.GetOutputCount(); ++i)
         {
-          outputs = std::make_unique<Map2D<T>[]>(topology.GetOutputCount());
-          for (size_t i = 0; i < topology.GetOutputCount(); ++i)
+          outputs[i].Load(istream);
+          if (outputs[i].GetSize() != topology.GetOutputSize())
           {
-            outputs[i].Load(istream);
-            if (outputs[i].GetSize() != topology.GetOutputSize())
-            {
-              throw std::logic_error("cnn::engine::convolution::Layer2D::Load(), outputs[i].GetSize() != topology.GetOutputSize().");
-            }
+            throw std::logic_error("cnn::engine::convolution::Layer2D::Load(), outputs[i].GetSize() != topology.GetOutputSize().");
           }
         }
 

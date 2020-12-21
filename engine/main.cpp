@@ -54,7 +54,7 @@
 #include <iostream>
 #include <fstream>
 
-// TODO: Add Lesson2DLibrary
+// TODO: Check controling of all types like Neuron, Core2D, Lesson2D and etc.
 // TODO: Add GeneticAlgorithm2D.
 // TODO: Add filters for common, convolution, complex and perceptron namespaces.
 
@@ -101,7 +101,7 @@ int main(int argc, char** argv)
     convolution::Network2D<float> network2D;
     convolution::Network2DProtectingReference<float> network2DProtectingReference{ network2D };
 
-    complex::Lesson2DTopology lesson2DTopology{ {1, 1}, 1 };
+    complex::Lesson2DTopology lesson2DTopology{ {1, 1}, 1, 1 };
     complex::Lesson2D<float> lesson2D{ lesson2DTopology };
     complex::Lesson2DProtectingReference<float> lesson2DProtectingReference{ lesson2D };
 

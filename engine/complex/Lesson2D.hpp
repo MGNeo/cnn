@@ -38,9 +38,9 @@ namespace cnn
         // Exception guarantee: strong for this.
         void SetTopology(const Lesson2DTopology& topology);
 
-        const convolution::Map2D<T>& GetInput() const noexcept;
+        const convolution::Map2D<T>& GetInput(const size_t index) const noexcept;
 
-        convolution::Map2DProtectingReference<T> GetInput() noexcept;
+        convolution::Map2DProtectingReference<T> GetInput(const size_t index) noexcept;
 
         const common::Map<T>& GetOutput() const noexcept;
 
@@ -63,7 +63,7 @@ namespace cnn
       private:
 
         Lesson2DTopology Topology;
-        convolution::Map2D<T> Input;
+        std::unique_ptr<convolution::Map2D<T>[]> Inputs;
         common::Map<T> Output;
 
         void CheckTopology(const Lesson2DTopology& topology) const;
@@ -76,7 +76,13 @@ namespace cnn
         CheckTopology(topology);
 
         Topology = topology;
-        Input.SetSize(Topology.GetInputSize());
+
+        Inputs = std::make_unique<convolution::Map2D<T>[]>(Topology.GetInputCount());
+        for (size_t i = 0; i < Topology.GetInputCount(); ++i)
+        {
+          Inputs[i].SetSize(Topology.GetInputSize());
+        }
+
         Output.SetValueCount(Topology.GetOutputCount());
       }
 
@@ -85,7 +91,11 @@ namespace cnn
         :
         Topology{ lesson.Topology }
       {
-        Input.SetSize(Topology.GetInputSize());
+        Inputs = std::make_unique<convolution::Map2D<T>[]>(Topology.GetInputCount());
+        for (size_t i = 0; i < Topology.GetInputCount(); ++i)
+        {
+          Inputs[i] = lesson.Inputs[i];
+        }
         Output.SetValueCount(Topology.GetOutputCount());
       }
 
@@ -118,15 +128,23 @@ namespace cnn
       }
 
       template <typename T>
-      const convolution::Map2D<T>& Lesson2D<T>::GetInput() const noexcept
+      const convolution::Map2D<T>& Lesson2D<T>::GetInput(const size_t index) const noexcept
       {
-        return Input;
+        if (index >= Topology.GetInputCount())
+        {
+          throw std::range_error("cnn::engine::complex::Lesson2D::GetInput() const, index >= Topology.GetInputCount().");
+        }
+        return Inputs[index];
       }
 
       template <typename T>
-      convolution::Map2DProtectingReference<T> Lesson2D<T>::GetInput() noexcept
+      convolution::Map2DProtectingReference<T> Lesson2D<T>::GetInput(const size_t index) noexcept
       {
-        return Input;
+        if (index >= Topology.GetInputCount())
+        {
+          throw std::range_error("cnn::engine::complex::Lesson2D::GetInput(), index >= Topology.GetInputCount().");
+        }
+        return Inputs[index];
       }
 
       template <typename T>
@@ -144,7 +162,10 @@ namespace cnn
       template <typename T>
       void Lesson2D<T>::Clear() noexcept
       {
-        Input.Clear();
+        for (size_t i = 0; i < Topology.GetInputCount(); ++i)
+        {
+          Inputs[i].Clear();
+        }
         Output.Clear();
       }
 
@@ -152,7 +173,7 @@ namespace cnn
       void Lesson2D<T>::Reset() noexcept
       {
         Topology.Reset();
-        Input.Reset();
+        Inputs.reset(nullptr);
         Output.Reset();
       }
 
@@ -165,7 +186,10 @@ namespace cnn
         }
         
         Topology.Save(ostream);
-        Input.Save(ostream);
+        for (size_t i = 0; i < Topology.GetInputCount(); ++i)
+        {
+          Inputs[i].Save(ostream);
+        }
         Output.Save(ostream);
 
         if (ostream.good() == false)
@@ -183,24 +207,26 @@ namespace cnn
         }
 
         decltype(Topology) topology;
-        decltype(Input) input;
+        decltype(Inputs) inputs;
         decltype(Output) output;
 
         topology.Load(istream);
         CheckTopology(topology);
 
-        if ((topology.GetInputSize().GetArea() != 0) && (topology.GetOutputCount() != 0))
+        inputs = std::make_unique<convolution::Map2D<T>[]>(topology.GetInputCount());
+        for (size_t i = 0; i < topology.GetInputCount(); ++i)
         {
-          input.Load(istream);
-          if (input.GetSize() != topology.GetInputSize())
+          inputs[i].Load(istream);
+          if (inputs[i].GetSize() != topology.GetInputSize())
           {
-            throw std::logic_error("cnn::engine::complex::Lesson2D::Load(), input.GetSize() != topology.GetInputSize().");
+            throw std::logic_error("cnn::engine::complex::Lesson2D::Load(), inputs[i].GetSize() != topology.GetInputSize().");
           }
-          output.Load(istream);
-          if (output.GetValueCount() != topology.GetOutputCount())
-          {
-            throw std::logic_error("cnn::engine::complex::Lesson2D::Load(), output.GetValueCount() != topology.GetOutputCount().");
-          }
+        }
+
+        output.Load(istream);
+        if (output.GetValueCount() != topology.GetOutputCount())
+        {
+          throw std::logic_error("cnn::engine::complex::Lesson2D::Load(), output.GetValueCount() != topology.GetOutputCount().");
         }
 
         if (istream.good() == false)
@@ -209,7 +235,7 @@ namespace cnn
         }
 
         Topology = std::move(topology);
-        Input = std::move(input);
+        Inputs = std::move(inputs);
         Output = std::move(output);
       }
 
@@ -217,14 +243,14 @@ namespace cnn
       void Lesson2D<T>::CheckTopology(const Lesson2DTopology& topology) const
       {
         // Zero topology is allowed.
-        if ((topology.GetInputSize().GetArea() == 0) && (topology.GetOutputCount() == 0))
+        if ((topology.GetInputSize().GetArea() == 0) && (topology.GetInputCount() == 0) && (topology.GetOutputCount() == 0))
         {
           return;
         }
 
-        if ((topology.GetInputSize().GetArea() == 0) || (topology.GetOutputCount() == 0))
+        if ((topology.GetInputSize().GetArea() == 0) || (topology.GetInputCount() == 0) || (topology.GetOutputCount() == 0))
         {
-          throw std::invalid_argument("cnn::engine::complex::Lesson2D::CheckTopology(), (topology.GetInputSize().GetArea() == 0) || (topology.GetOutputCount() == 0).");
+          throw std::invalid_argument("cnn::engine::complex::Lesson2D::CheckTopology(), (topology.GetInputSize().GetArea() == 0) || (topology.GetInputCount() == 0) || (topology.GetOutputCount() == 0).");
         }
       }
     }

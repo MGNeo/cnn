@@ -75,15 +75,12 @@ namespace cnn
         :
         Topology{ topology }
       {
-        if (Topology.GetCoreCount() != 0)
+        Cores = std::make_unique<Core2D<T>[]>(Topology.GetCoreCount());
+        if (Topology.GetSize().GetArea() != 0)
         {
-          Cores = std::make_unique<Core2D<T>[]>(Topology.GetCoreCount());
-          if (Topology.GetSize().GetArea() != 0)
+          for (size_t i = 0; i < Topology.GetCoreCount(); ++i)
           {
-            for (size_t i = 0; i < Topology.GetCoreCount(); ++i)
-            {
-              Cores[i].SetSize(Topology.GetSize());
-            }
+            Cores[i].SetSize(Topology.GetSize());
           }
         }
       }
@@ -93,16 +90,10 @@ namespace cnn
         :
         Topology{ filter.Topology }
       {
-        if (Topology.GetCoreCount() != 0)
+        Cores = std::make_unique<Core2D<T>[]>(Topology.GetCoreCount());
+        for (size_t i = 0; i < Topology.GetCoreCount(); ++i)
         {
-          Cores = std::make_unique<Core2D<T>[]>(Topology.GetCoreCount());
-          if (Topology.GetSize().GetArea() != 0)
-          {
-            for (size_t i = 0; i < Topology.GetCoreCount(); ++i)
-            {
-              Cores[i] = filter.Cores[i];
-            }
-          }
+          Cores[i] = filter.Cores[i];
         }
       }
 
@@ -195,18 +186,15 @@ namespace cnn
         decltype(Cores) cores;
 
         topology.Load(istream);
-        
-        if (topology.GetCoreCount() != 0)
+
+        // TODO: How can we change Core2D<T>[] on decltype()?
+        cores = std::make_unique<Core2D<T>[]>(topology.GetCoreCount());
+        for (size_t i = 0; i < topology.GetCoreCount(); ++i)
         {
-          // TODO: How can we change Core2D<T>[] on decltype()?
-          cores = std::make_unique<Core2D<T>[]>(topology.GetCoreCount());
-          for (size_t i = 0; i < topology.GetCoreCount(); ++i)
+          cores[i].Load(istream);
+          if (cores[i].GetSize() != topology.GetSize())
           {
-            cores[i].Load(istream);
-            if (cores[i].GetSize() != topology.GetSize())
-            {
-              throw std::logic_error("cnn::engine::convolution::Filter2D::Load(), cores[i].GetSize() != topology.GetSize().");
-            }
+            throw std::logic_error("cnn::engine::convolution::Filter2D::Load(), cores[i].GetSize() != topology.GetSize().");
           }
         }
 
@@ -217,7 +205,6 @@ namespace cnn
 
         Topology = std::move(topology);
         Cores = std::move(cores);
-
       }
 
       template <typename T>

@@ -7,36 +7,22 @@ namespace cnn
     namespace complex
     {
       Lesson2DTopology::Lesson2DTopology(const convolution::Size2D& inputSize,
+                                         const size_t inputCount,
                                          const size_t outputCount) noexcept
         :
         InputSize{ inputSize },
+        InputCount{ inputCount },
         OutputCount{ outputCount }
-      {
-      }
-
-      Lesson2DTopology::Lesson2DTopology(const Lesson2DTopology& topology) noexcept
-        :
-        InputSize{ topology.InputSize },
-        OutputCount{ topology.OutputCount }
       {
       }
 
       Lesson2DTopology::Lesson2DTopology(Lesson2DTopology&& topology) noexcept
         :
         InputSize{ std::move(topology.InputSize) },
+        InputCount{ topology.InputCount },
         OutputCount{ topology.OutputCount }
       {
         topology.Reset();
-      }
-
-      Lesson2DTopology& Lesson2DTopology::operator=(const Lesson2DTopology& topology) noexcept
-      {
-        if (this != &topology)
-        {
-          InputSize = topology.InputSize;
-          OutputCount = topology.OutputCount;
-        }
-        return *this;
       }
 
       Lesson2DTopology& Lesson2DTopology::operator=(Lesson2DTopology&& topology) noexcept
@@ -44,6 +30,7 @@ namespace cnn
         if (this != &topology)
         {
           InputSize = std::move(topology.InputSize);
+          InputCount = topology.InputCount;
           OutputCount = std::move(topology.OutputCount);
 
           topology.Reset();
@@ -53,7 +40,7 @@ namespace cnn
 
       bool Lesson2DTopology::operator==(const Lesson2DTopology& topology) const noexcept
       {
-        if ((InputSize == topology.InputSize) && (OutputCount == topology.OutputCount))
+        if ((InputSize == topology.InputSize) && (InputCount == topology.InputCount) && (OutputCount == topology.OutputCount))
         {
           return true;
         } else {
@@ -81,6 +68,16 @@ namespace cnn
         InputSize = inputSize;
       }
 
+      size_t Lesson2DTopology::GetInputCount() const noexcept
+      {
+        return InputCount;
+      }
+
+      void Lesson2DTopology::SetInputCount(const size_t inputCount) noexcept
+      {
+        InputCount = inputCount;
+      }
+
       size_t Lesson2DTopology::GetOutputCount() const noexcept
       {
         return OutputCount;
@@ -94,6 +91,7 @@ namespace cnn
       void Lesson2DTopology::Reset() noexcept
       {
         InputSize.Reset();
+        InputCount = 0;
         OutputCount = 0;
       }
 
@@ -105,6 +103,7 @@ namespace cnn
         }
 
         InputSize.Save(ostream);
+        ostream.write(reinterpret_cast<const char* const>(&InputCount), sizeof(InputCount));
         ostream.write(reinterpret_cast<const char* const>(&OutputCount), sizeof(OutputCount));
 
         if (ostream.good() == false)
@@ -121,9 +120,11 @@ namespace cnn
         }
 
         decltype(InputSize) inputSize{};
+        decltype(InputCount) inputCount{};
         decltype(OutputCount) outputCount{};
 
         istream.read(reinterpret_cast<char* const>(&inputSize), sizeof(inputSize));
+        istream.read(reinterpret_cast<char* const>(&inputCount), sizeof(inputCount));
         istream.read(reinterpret_cast<char*const>(&outputCount), sizeof(outputCount));
 
         if (istream.good() == false)
@@ -132,6 +133,7 @@ namespace cnn
         }
 
         InputSize = inputSize;
+        InputCount = inputCount;
         OutputCount = outputCount;
 
       }

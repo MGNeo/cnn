@@ -97,15 +97,12 @@ namespace cnn
 
         Input.SetValueCount(Topology.GetInputCount());
 
-        if (Topology.GetNeuronCount() != 0)
+        Neurons = std::make_unique<common::Neuron<T>[]>(Topology.GetNeuronCount());
+        for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
         {
-          Neurons = std::make_unique<common::Neuron<T>[]>(Topology.GetNeuronCount());
-          for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
-          {
-            Neurons[i].SetInputCount(Topology.GetInputCount());
-          }
+          Neurons[i].SetInputCount(Topology.GetInputCount());
         }
-        
+
         Output.SetValueCount(Topology.GetNeuronCount());
       }
 
@@ -116,13 +113,10 @@ namespace cnn
         Input{ layer.Input },
         Output{ layer.Output }
       {
-        if (Topology.GetNeuronCount() != 0)
+        Neurons = std::make_unique<common::Neuron<T>[]>(Topology.GetNeuronCount());
+        for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
         {
-          Neurons = std::make_unique<common::Neuron<T>[]>(Topology.GetNeuronCount());
-          for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
-          {
-            Neurons[i] = layer.Neurons[i];
-          }
+          Neurons[i] = layer.Neurons[i];
         }
       }
 
@@ -276,16 +270,13 @@ namespace cnn
           throw std::logic_error("cnn::engine::perceptron::Layer::Load(), input.GetValueCount() != topology.GetInputCount().");
         }
 
-        if (topology.GetNeuronCount() != 0)
+        neurons = std::make_unique<common::Neuron<T>[]>(topology.GetNeuronCount());
+        for (size_t i = 0; i < topology.GetNeuronCount(); ++i)
         {
-          neurons = std::make_unique<common::Neuron<T>[]>(topology.GetNeuronCount());
-          for (size_t i = 0; i < topology.GetNeuronCount(); ++i)
+          neurons[i].Load(istream);
+          if (neurons[i].GetInputCount() != topology.GetInputCount())
           {
-            neurons[i].Load(istream);
-            if (neurons[i].GetInputCount() != topology.GetInputCount())
-            {
-              throw std::logic_error("cnn::engine::perceptron::Layer::Load(), neurons[i].GetInputCount() != topology.GetInputCount().");
-            }
+            throw std::logic_error("cnn::engine::perceptron::Layer::Load(), neurons[i].GetInputCount() != topology.GetInputCount().");
           }
         }
 

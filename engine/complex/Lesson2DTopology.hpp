@@ -17,13 +17,14 @@ namespace cnn
       public:
 
         Lesson2DTopology(const convolution::Size2D& inputSize = {},
+                         const size_t inputCount = {},
                          const size_t outputSize = {}) noexcept;
 
-        Lesson2DTopology(const Lesson2DTopology& topology) noexcept;
+        Lesson2DTopology(const Lesson2DTopology& topology) noexcept = default;
 
         Lesson2DTopology(Lesson2DTopology&& topology) noexcept;
 
-        Lesson2DTopology& operator=(const Lesson2DTopology& topology) noexcept;
+        Lesson2DTopology& operator=(const Lesson2DTopology& topology) noexcept = default;
 
         Lesson2DTopology& operator=(Lesson2DTopology&& topology) noexcept;
 
@@ -34,6 +35,10 @@ namespace cnn
         const convolution::Size2D& GetInputSize() const noexcept;
 
         void SetInputSize(const convolution::Size2D& inputSize) noexcept;
+
+        size_t GetInputCount() const noexcept;
+
+        void SetInputCount(const size_t inputCount) noexcept;
 
         size_t GetOutputCount() const noexcept;
 
@@ -53,6 +58,7 @@ namespace cnn
       private:
 
         convolution::Size2D InputSize;
+        size_t InputCount;
         size_t OutputCount;
 
       };
