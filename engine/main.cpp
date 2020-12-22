@@ -54,11 +54,8 @@
 #include <iostream>
 #include <fstream>
 
-// TODO: Check controling of all types like Neuron, Core2D, Lesson2D and etc.
 // TODO: Add GeneticAlgorithm2D.
-// TODO: Add filters for common, convolution, complex and perceptron namespaces.
 
-// TODO: Perhaps, Neuron must use Map instead of [] for Inputs and Weights.
 // TODO: Check that any move-assignment operators reset "from".
 // TODO: Think about helpers for building of topologies.
 

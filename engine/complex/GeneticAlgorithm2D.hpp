@@ -7,6 +7,7 @@
 #include "../complex/Lesson2DLibrary.hpp"
 #include "../common/ValueGenerator.hpp"
 #include "../common/Mutagen.hpp"
+#include <thread>
 
 namespace cnn
 {
@@ -56,6 +57,8 @@ namespace cnn
 
         common::ValueGenerator<T> ValueGenerator;
         common::Mutagen<T> Mutagen;
+
+        void CheckTopologies(const Lesson2DLibrary<T>& library, const Network2D<T>& network) const;
 
       };
 
@@ -166,11 +169,59 @@ namespace cnn
       template <typename T>
       Network2D<T> GeneticAlgorithm2D<T>::Run(const Lesson2DLibrary<T>& lessonLibrary, const Network2D<T>& sourceNetwork)
       {
+        CheckTopologies(lessonLibrary, sourceNetwork);
+
+        auto bestNetwork = sourceNetwork;
+
+        for (size_t i = 0; i < IterationCount; ++i)
+        {
+          const size_t threadCount = ThreadCount ? ThreadCount : std::thread::hardware_concurrency();
+          std::vector<Network2D<T>> newNetworks(threadCount, bestNetwork);
+
+          // I am sorry, I am very tired and want to finish more faster with this library and with this damn language, C++.
+          // Because of this I use functional style.
+          auto testLambda = [](const Lesson2DLibrary<T>& library, Network2D<T>& network)->T
+          {
+            T totalError{};
+            
+            network.Clear();
+
+            for (size_t i = 0; i < library.GetLessonCount(); ++i)
+            {
+              // Convolution.
+              {
+                auto& convolutionNetwork = network.GetConvolutionNetwork();
+                for (size_t i = 0; i < convolutionNetwork.GetTopology().GetFirstLayerTopology().GetInputCount(); ++i)
+                {
+                  auto& input = convolutionNetwork.GetInput(i);
+                  // TODO: ...
+                }
+              }
+              // Perceptron.
+            }
+          };
+        }
+      }
+
+      template <typename T>
+      void GeneticAlgorithm2D<T>::CheckTopologies(const Lesson2DLibrary<T>& library, const Network2D<T>& network) const
+      {
         if (lessonLibrary.GetLessonCount() == 0)
         {
-          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::Run(), lessonLibrary.GetLessonCount() == 0.");
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::CheckTopologies(), lessonLibrary.GetLessonCount() == 0.");
         }
-        // ...
+        if (lessonLibrary.GetLesson(0).GetTopology().GetInputSize() != sourceNetwork.GetConvolutionNetwork().GetTopology().GetFirstLayerTopology().GetInputSize())
+        {
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::CheckTopologies(), lessonLibrary.GetLesson(0).GetTopology().GetInputSize() != sourceNetwork.GetConvolutionNetwork().GetTopology().GetFirstLayerTopology().GetInputSize().");
+        }
+        if (lessonLibrary.GetLesson(0).GetTopology().GetInputCount() != sourceNetwork.GetConvolutionNetwork().GetTopology().GetFirstLayerTopology().GetInputCount())
+        {
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::CheckTopologies(), lessonLibrary.GetLesson(0).GetTopology().GetInputCount() != sourceNetwork.GetConvolutionNetwork().GetTopology().GetFirstLayerTopology().GetInputCount().");
+        }
+        if (lessonLibrary.GetLesson(0).GetTopology().GetOutputCount() != sourceNetwork.GetPerceptronNetwork().GetTopology().GetFirstLayerTopology().GetNeuronCount())
+        {
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::CheckTopologies(), lessonLibrary.GetLesson(0).GetTopology().GetOutputCount() != sourceNetwork.GetPerceptronNetwork().GetTopology().GetFirstLayerTopology().GetNeuronCount().");
+        }
       }
     }
   }
