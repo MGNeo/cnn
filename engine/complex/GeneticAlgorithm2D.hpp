@@ -175,31 +175,11 @@ namespace cnn
 
         for (size_t i = 0; i < IterationCount; ++i)
         {
-          const size_t threadCount = ThreadCount ? ThreadCount : std::thread::hardware_concurrency();
-          std::vector<Network2D<T>> newNetworks(threadCount, bestNetwork);
+          // Clone the best network.
+          
+          // Test the copied network.
 
-          // I am sorry, I am very tired and want to finish more faster with this library and with this damn language, C++.
-          // Because of this I use functional style.
-          auto testLambda = [](const Lesson2DLibrary<T>& library, Network2D<T>& network)->T
-          {
-            T totalError{};
-            
-            network.Clear();
-
-            for (size_t i = 0; i < library.GetLessonCount(); ++i)
-            {
-              // Convolution.
-              {
-                auto& convolutionNetwork = network.GetConvolutionNetwork();
-                for (size_t i = 0; i < convolutionNetwork.GetTopology().GetFirstLayerTopology().GetInputCount(); ++i)
-                {
-                  auto& input = convolutionNetwork.GetInput(i);
-                  // TODO: ...
-                }
-              }
-              // Perceptron.
-            }
-          };
+          // Perhaps, replace the best network with the copied network.
         }
       }
 

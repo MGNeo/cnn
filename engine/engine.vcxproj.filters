@@ -141,5 +141,6 @@
     <ClInclude Include="perceptron\NetworkTopology.hpp">
       <Filter>perceptron</Filter>
     </ClInclude>
+    <ClInclude Include="complex\GeneticTest2D.hpp" />
   </ItemGroup>
 </Project>
