@@ -2,8 +2,8 @@
 
 #include "Network2DTopology.hpp"
 
-#include "../convolution/Network2D.hpp"
-#include "../perceptron/Network.hpp"
+#include "../convolution/Network2DProtectingReference.hpp"
+#include "../perceptron/NetworkProtectingReference.hpp"
 
 namespace cnn
 {
@@ -32,11 +32,11 @@ namespace cnn
 
         const convolution::Network2D<T>& GetConvolutionNetwork() const;
 
-        convolution::Network2D<T>& GetConvolutionNetwork();
+        convolution::Network2DProtectingReference<T> GetConvolutionNetwork();
 
         const perceptron::Network<T>& GetPerceptronNetwork() const;
 
-        perceptron::Network<T>& GetPerceptronNetwork();
+        perceptron::NetworkProtectingReference<T> GetPerceptronNetwork();
 
         // ...
 
@@ -117,7 +117,7 @@ namespace cnn
       }
 
       template <typename T>
-      convolution::Network2D<T>& Network2D<T>::GetConvolutionNetwork()
+      convolution::Network2DProtectingReference<T> Network2D<T>::GetConvolutionNetwork()
       {
         return ConvolutionNetwork;
       }
@@ -129,7 +129,7 @@ namespace cnn
       }
 
       template <typename T>
-      perceptron::Network<T>& Network2D<T>::GetPerceptronNetwork()
+      perceptron::NetworkProtectingReference<T> Network2D<T>::GetPerceptronNetwork()
       {
         return PerceptronNetwork;
       }

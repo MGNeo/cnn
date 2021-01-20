@@ -50,6 +50,9 @@
 #include "complex/Lesson2DProtectingReference.hpp"
 #include "complex/Lesson2DLibrary.hpp"
 
+// DEBUG
+#include "complex/GeneticAlgorithm2D.hpp"
+
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -173,12 +176,12 @@ int main(int argc, char** argv)
     complexNetwork2D.SetTopology(complexNetwork2DTopology);
 
     {
-      std::fstream file("C:/Users/MGNeo/Desktop/ComplexNetwork2D.float", std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
+      std::fstream file("ComplexNetwork2D.float", std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
       complexNetwork2D.Save(file);
     }
 
     {
-      std::fstream file("C:/Users/MGNeo/Desktop/ComplexNetwork2D.float", std::ios_base::in | std::ios_base::binary);
+      std::fstream file("ComplexNetwork2D.float", std::ios_base::in | std::ios_base::binary);
       complexNetwork2D.Load(file);
     }
 

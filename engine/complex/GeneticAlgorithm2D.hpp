@@ -58,7 +58,7 @@ namespace cnn
         common::ValueGenerator<T> ValueGenerator;
         common::Mutagen<T> Mutagen;
 
-        void CheckTopologies(const Lesson2DLibrary<T>& library, const Network2D<T>& network) const;
+        void CheckTopologies(const Lesson2DLibrary<T>& lessonLibrary, const Network2D<T>& sourceNetwork) const;
 
       };
 
@@ -110,19 +110,19 @@ namespace cnn
       }
 
       template <typename T>
-      size_t GeneticAlgorithm2D<T>::GetThreadCount() const
+      size_t GeneticAlgorithm2D<T>::GetThreadCount() const noexcept
       {
         return ThreadCount;
       }
 
       template <typename T>
-      void GeneticAlgorithm2D<T>::SetThreadCount(const size_t threadCount)
+      void GeneticAlgorithm2D<T>::SetThreadCount(const size_t threadCount) 
       {
         ThreadCount = threadCount;
       }
 
       template <typename T>
-      size_t GeneticAlgorithm2D<T>::GetIterationCount() const
+      size_t GeneticAlgorithm2D<T>::GetIterationCount() const noexcept
       {
         return IterationCount;
       }
@@ -134,7 +134,7 @@ namespace cnn
       }
 
       template <typename T>
-      const common::ValueGenerator<T>& GeneticAlgorithm2D<T>::GetValueGenerator() const
+      const common::ValueGenerator<T>& GeneticAlgorithm2D<T>::GetValueGenerator() const noexcept
       {
         return ValueGenerator;
       }
@@ -146,7 +146,7 @@ namespace cnn
       }
 
       template <typename T>
-      const common::Mutagen<T>& GeneticAlgorithm2D<T>::GetMutagen() const
+      const common::Mutagen<T>& GeneticAlgorithm2D<T>::GetMutagen() const noexcept
       {
         return Mutagen;
       }
@@ -184,7 +184,7 @@ namespace cnn
       }
 
       template <typename T>
-      void GeneticAlgorithm2D<T>::CheckTopologies(const Lesson2DLibrary<T>& library, const Network2D<T>& network) const
+      void GeneticAlgorithm2D<T>::CheckTopologies(const Lesson2DLibrary<T>& lessonLibrary, const Network2D<T>& sourceNetwork) const
       {
         if (lessonLibrary.GetLessonCount() == 0)
         {
