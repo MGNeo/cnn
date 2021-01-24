@@ -44,6 +44,11 @@ namespace cnn
         // Exception guarantee: strong for this.
         LayerProtectingReference<T> GetFirstLayer();
 
+        const Layer<T>& GetLastLayer() const;
+
+        // Exception guarantee: strong for this.
+        LayerProtectingReference<T> GetLastLayer();
+
         // Exception guarantee: base for this.
         void GenerateOutput();
 
@@ -155,11 +160,31 @@ namespace cnn
         {
           throw std::logic_error("cnn::engine::perceptron::Network::GetFirstLayer() const, Topology.GetLayerCount() == 0.");
         }
-        return Layers[Topology.GetLayerCount() - 1];
+        return Layers[0];
       }
 
       template <typename T>
       LayerProtectingReference<T> Network<T>::GetFirstLayer()
+      {
+        if (Topology.GetLayerCount() == 0)
+        {
+          throw std::logic_error("cnn::engine::perceptron::Network::GetFirstLayer(), Topology.GetLayerCount() == 0.");
+        }
+        return Layers[0];
+      }
+
+      template <typename T>
+      const Layer<T>& Network<T>::GetLastLayer() const
+      {
+        if (Topology.GetLayerCount() == 0)
+        {
+          throw std::logic_error("cnn::engine::perceptron::Network::GetFirstLayer() const, Topology.GetLayerCount() == 0.");
+        }
+        return Layers[Topology.GetLayerCount() - 1];
+      }
+
+      template <typename T>
+      LayerProtectingReference<T> Network<T>::GetLastLayer()
       {
         if (Topology.GetLayerCount() == 0)
         {

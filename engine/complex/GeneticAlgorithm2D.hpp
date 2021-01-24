@@ -184,7 +184,8 @@ namespace cnn
       }
 
       template <typename T>
-      void GeneticAlgorithm2D<T>::CheckTopologies(const Lesson2DLibrary<T>& lessonLibrary, const Network2D<T>& sourceNetwork) const
+      void GeneticAlgorithm2D<T>::CheckTopologies(const Lesson2DLibrary<T>& lessonLibrary,
+                                                  const Network2D<T>& sourceNetwork) const
       {
         if (lessonLibrary.GetLessonCount() == 0)
         {
