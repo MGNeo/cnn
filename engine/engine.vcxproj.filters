@@ -39,7 +39,6 @@
     <ClCompile Include="perceptron\NetworkTopology.cpp">
       <Filter>perceptron</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="complex\GroupErrorFlag.cpp" />
   </ItemGroup>
   <ItemGroup>
