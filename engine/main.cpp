@@ -57,7 +57,7 @@
 #include <iostream>
 #include <fstream>
 
-// TODO: Add GeneticAlgorithm2D.
+// TODO: Add example for using of GeneticAlgorithm2D.
 
 // TODO: Check that any move-assignment operators reset "from".
 // TODO: Think about helpers for building of topologies.
