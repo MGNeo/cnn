@@ -39,7 +39,9 @@
     <ClCompile Include="perceptron\NetworkTopology.cpp">
       <Filter>perceptron</Filter>
     </ClCompile>
-    <ClCompile Include="complex\GroupErrorFlag.cpp" />
+    <ClCompile Include="complex\GroupErrorFlag.cpp">
+      <Filter>complex</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\Map.hpp">
@@ -135,13 +137,17 @@
     <ClInclude Include="perceptron\NetworkTopology.hpp">
       <Filter>perceptron</Filter>
     </ClInclude>
-    <ClInclude Include="complex\GeneticTest2D.hpp" />
     <ClInclude Include="complex\Network2D.hpp">
       <Filter>complex</Filter>
     </ClInclude>
     <ClInclude Include="convolution\Network2D.hpp">
       <Filter>convolution</Filter>
     </ClInclude>
-    <ClInclude Include="complex\GroupErrorFlag.hpp" />
+    <ClInclude Include="complex\GroupErrorFlag.hpp">
+      <Filter>complex</Filter>
+    </ClInclude>
+    <ClInclude Include="complex\GeneticTest2D.hpp">
+      <Filter>complex</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

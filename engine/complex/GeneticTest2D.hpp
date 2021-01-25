@@ -47,6 +47,8 @@ namespace cnn
       GeneticTest2D<T>::GeneticTest2D(const Lesson2DLibrary<T>& lessonLibrary,
                                       const Network2D<T>& network,
                                       const size_t threadCount)
+        :
+        TotalError{}
       {
         CheckTopologies(lessonLibrary, network);
 
@@ -69,13 +71,10 @@ namespace cnn
         }
 
         // If several errors are occurred, only the once exception is thrown (the first).
-        T totalError{};
         for (auto& future : futures)
         {
-          totalError += future.get();
+          TotalError += future.get();
         }
-
-        return totalError;
       }
 
       template <typename T>
