@@ -48,14 +48,14 @@ namespace cnn
                                       const Network2D<T>& network,
                                       const size_t threadCount)
       {
-        CheckTopologies(lessonLibrary, network)
+        CheckTopologies(lessonLibrary, network);
 
-        const size_t threafCount_ = threadCount ? threadCount : std::thread::hardware_concurrency();
+        const size_t threadCount_ = threadCount ? threadCount : std::thread::hardware_concurrency();
 
         // Run threads.
         GroupErrorFlag groupErrorFlag;
         std::list<std::future<T>> futures;
-        for (size_t threadId = 0; threadId < threafCount_; ++threadId)
+        for (size_t threadId = 0; threadId < threadCount_; ++threadId)
         {
           std::future<T> future = std::async(std::launch::async,
                                              TestThread,
@@ -91,6 +91,7 @@ namespace cnn
                                      const size_t threadId,
                                      GroupErrorFlag& groupErrorFlag)
       {
+        T totalError{};
         try
         {
           // If we use "auto", then code analiser of Visual Studio dies.
@@ -142,7 +143,6 @@ namespace cnn
             }
             // Total error.
             {
-              T totalError{};
               const common::Map<T>& perceptronOutput = perceptronNetwork.GetLastLayer().GetOutput();
               const common::Map<T>& lessonOutput = lesson.GetOutput();
               for (size_t o = 0; o < perceptronOutput.GetValueCount(); ++o)

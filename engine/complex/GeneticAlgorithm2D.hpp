@@ -2,12 +2,14 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <limits>
 
 #include "../complex/Network2D.hpp"
 #include "../complex/Lesson2DLibrary.hpp"
 #include "../common/ValueGenerator.hpp"
 #include "../common/Mutagen.hpp"
-#include <thread>
+
+#include "GeneticTest2D.hpp"
 
 namespace cnn
 {
@@ -167,20 +169,31 @@ namespace cnn
       }
 
       template <typename T>
-      Network2D<T> GeneticAlgorithm2D<T>::Run(const Lesson2DLibrary<T>& lessonLibrary, const Network2D<T>& sourceNetwork)
+      Network2D<T> GeneticAlgorithm2D<T>::Run(const Lesson2DLibrary<T>& lessonLibrary,
+                                              const Network2D<T>& sourceNetwork)
       {
         CheckTopologies(lessonLibrary, sourceNetwork);
 
-        auto bestNetwork = sourceNetwork;
+        T bestError = std::numeric_limits<T>::max();
+        Network2D<T> bestNetwork = sourceNetwork;
 
         for (size_t i = 0; i < IterationCount; ++i)
         {
-          // Clone the best network.
-          
-          // Test the copied network.
+          Network2D<T> newNetwork = bestNetwork;
+          newNetwork.Mutate(Mutagen);
 
-          // Perhaps, replace the best network with the copied network.
+          GeneticTest2D<T> test(lessonLibrary,
+                                newNetwork,
+                                ThreadCount);
+
+          if (test.GetTotalError() < bestError)
+          {
+            std::swap(bestNetwork, newNetwork);
+            bestError = test.GetTotalError();
+          }
         }
+
+        return std::move(bestNetwork);
       }
 
       template <typename T>
