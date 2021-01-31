@@ -1,7 +1,9 @@
-﻿#include <iostream>
+﻿#include "Builder.hpp"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+  auto library = cnn::learning_example::Builder<float>::GetLessonLibrary();
+
+  return 0;
 }
 

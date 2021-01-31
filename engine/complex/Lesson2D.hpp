@@ -38,9 +38,10 @@ namespace cnn
         // Exception guarantee: strong for this.
         void SetTopology(const Lesson2DTopology& topology);
 
-        const convolution::Map2D<T>& GetInput(const size_t index) const noexcept;
+        const convolution::Map2D<T>& GetInput(const size_t index) const;
 
-        convolution::Map2DProtectingReference<T> GetInput(const size_t index) noexcept;
+        // Exception guarantee: strong for this.
+        convolution::Map2DProtectingReference<T> GetInput(const size_t index);
 
         const common::Map<T>& GetOutput() const noexcept;
 
@@ -128,7 +129,7 @@ namespace cnn
       }
 
       template <typename T>
-      const convolution::Map2D<T>& Lesson2D<T>::GetInput(const size_t index) const noexcept
+      const convolution::Map2D<T>& Lesson2D<T>::GetInput(const size_t index) const
       {
         if (index >= Topology.GetInputCount())
         {
@@ -138,7 +139,7 @@ namespace cnn
       }
 
       template <typename T>
-      convolution::Map2DProtectingReference<T> Lesson2D<T>::GetInput(const size_t index) noexcept
+      convolution::Map2DProtectingReference<T> Lesson2D<T>::GetInput(const size_t index)
       {
         if (index >= Topology.GetInputCount())
         {
