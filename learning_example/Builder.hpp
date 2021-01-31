@@ -26,6 +26,11 @@ namespace cnn
 
     private:
 
+      constexpr static size_t InputWidth = 32;
+      constexpr static size_t InputHeight = 32;
+      constexpr static size_t InputCount = 1;
+      constexpr static size_t OutputCount = 10;
+
       ~Builder() = delete;
 
       static engine::complex::Lesson2DLibrary<T> LoadLessons();
@@ -42,14 +47,90 @@ namespace cnn
     template <typename T>
     typename engine::complex::Network2D<T> Builder<T>::GetNetwork()
     {
-      // ...
-      return {};
+      // Convolution network topology.
+      engine::convolution::Network2DTopology convolutionNetworkTopology;
+      {
+        // First layer topology.
+        {
+          engine::convolution::Layer2DTopology layerTopology;
+          layerTopology.SetInputSize({ InputWidth, InputHeight });
+          layerTopology.SetInputCount(1);
+          layerTopology.SetFilterTopology({ { 3, 3 }, 1 });
+          layerTopology.SetFilterCount(5);
+          layerTopology.SetOutputSize({ 30, 30 });
+          layerTopology.SetOutputCount(5);
+          convolutionNetworkTopology.PushBack(layerTopology);
+        }
+        // Second layer topology.
+        {
+          engine::convolution::Layer2DTopology layerTopology;
+          layerTopology.SetInputSize({ 30, 30 });
+          layerTopology.SetInputCount(5);
+          layerTopology.SetFilterTopology({ { 5, 5 }, 5 });
+          layerTopology.SetFilterCount(10);
+          layerTopology.SetOutputSize({ 26, 26 });
+          layerTopology.SetOutputCount(10);
+          convolutionNetworkTopology.PushBack(layerTopology);
+        }
+        // Third layer topology.
+        {
+          engine::convolution::Layer2DTopology layerTopology;
+          layerTopology.SetInputSize({ 26, 26 });
+          layerTopology.SetInputCount(10);
+          layerTopology.SetFilterTopology({ { 7, 7 }, 10 });
+          layerTopology.SetFilterCount(20);
+          layerTopology.SetOutputSize({ 20, 20 });
+          layerTopology.SetOutputCount(20);
+          convolutionNetworkTopology.PushBack(layerTopology);
+        }
+        // Fourth layer
+        {
+          engine::convolution::Layer2DTopology layerTopology;
+          layerTopology.SetInputSize({ 20, 20 });
+          layerTopology.SetInputCount(20);
+          layerTopology.SetFilterTopology({ { 5, 5 }, 20 });
+          layerTopology.SetFilterCount(10);
+          layerTopology.SetOutputSize({ 16, 16 });
+          layerTopology.SetOutputCount(10);
+          convolutionNetworkTopology.PushBack(layerTopology);
+        }
+      }
+
+      // Perceptron network topology.
+      engine::perceptron::NetworkTopology perceptronNetworkTopology;
+      {
+        // First layer topology.
+        {
+          engine::perceptron::LayerTopology layerTopology;
+          layerTopology.SetInputCount(convolutionNetworkTopology.GetLastLayerTopology().GetOutputValueCount());
+          layerTopology.SetNeuronCount(20);
+          perceptronNetworkTopology.PushBack(layerTopology);
+        }
+        // Second layer topology.
+        {
+          engine::perceptron::LayerTopology layerTopology;
+          layerTopology.SetInputCount(20);
+          layerTopology.SetNeuronCount(15);
+          perceptronNetworkTopology.PushBack(layerTopology);
+        }
+        // Third layer topology.
+        {
+          engine::perceptron::LayerTopology layerTopology;
+          layerTopology.SetInputCount(15);
+          layerTopology.SetNeuronCount(OutputCount);
+          perceptronNetworkTopology.PushBack(layerTopology);
+        }
+      }
+
+      // Complex network.
+      engine::complex::Network2D<T> complexNetwork{ { convolutionNetworkTopology, perceptronNetworkTopology } };
+
+      return complexNetwork;
     }
 
     template <typename T>
     typename engine::complex::GeneticAlgorithm2D<T> Builder<T>::GetGeneticAlgorithm()
     {
-      // ...
       return {};
     }
 
@@ -57,7 +138,7 @@ namespace cnn
     engine::complex::Lesson2DLibrary<T> Builder<T>::LoadLessons()
     {
       engine::complex::Lesson2DLibrary<T> lessonLibrary;
-      for (size_t number = 0; number <= 9; ++number)
+      for (size_t number = 0; number < OutputCount; ++number)
       {
         const std::string path = "../data/numbers/" + std::to_string(number);
         std::filesystem::directory_iterator di(path);
@@ -93,25 +174,22 @@ namespace cnn
         throw std::runtime_error("cnn::learning_example::Builder::LoadLesson(), imageWasLoaded == false.");
       }
 
-      const size_t expectedWidth = 32;
-      const size_t expectedHeight = 32;
-
-      if (image.getSize().x != expectedWidth)
+      if (image.getSize().x != InputWidth)
       {
-        throw std::runtime_error("cnn::learning_example::Builder::LoadLesson(), image.getSize().x != expectedWidth.");
+        throw std::runtime_error("cnn::learning_example::Builder::LoadLesson(), image.getSize().x != InputWidth.");
       }
 
-      if (image.getSize().y != expectedHeight)
+      if (image.getSize().y != InputHeight)
       {
-        throw std::runtime_error("cnn::learning_example::Builder::LoadLesson(), image.getSize().y != expectedHeight.");
+        throw std::runtime_error("cnn::learning_example::Builder::LoadLesson(), image.getSize().y != InputHeight.");
       }
 
-      engine::complex::Lesson2D<T> lesson{ {{32, 32}, 1, 10} };
+      engine::complex::Lesson2D<T> lesson{ {{InputWidth, InputHeight}, InputCount, OutputCount} };
       auto input = lesson.GetInput(0);
       auto output = lesson.GetOutput();
-      for (unsigned int x = 0; x < expectedWidth; ++x)
+      for (unsigned int x = 0; x < InputWidth; ++x)
       {
-        for (unsigned int y = 0; y < expectedHeight; ++y)
+        for (unsigned int y = 0; y < InputHeight; ++y)
         {
           T value{};
           if ((image.getPixel(x, y).r == 0) && (image.getPixel(x, y).g == 0) && (image.getPixel(x, y).b == 0))
