@@ -5,7 +5,7 @@
 #include "GroupErrorFlag.hpp"
 
 #include <thread>
-#include <utility>
+#include <functional>
 #include <future>
 
 namespace cnn
@@ -61,11 +61,11 @@ namespace cnn
         {
           std::future<T> future = std::async(std::launch::async,
                                              TestThread,
-                                             lessonLibrary,
-                                             network,
+                                             std::cref(lessonLibrary),
+                                             std::cref(network),
                                              threadCount_,
                                              threadId,
-                                             groupErrorFlag);
+                                             std::ref(groupErrorFlag));
 
           futures.push_back(std::move(future));
         }
@@ -102,16 +102,16 @@ namespace cnn
                lessonId += threadCount)
           {
             const complex::Lesson2D<T>& lesson = lessonLibrary.GetLesson(lessonId);
-            convolution::Layer2DProtectingReference<T> firstLayer = convolutionNetwork.GetLastLayer(0);
+            convolution::Layer2DProtectingReference<T> firstLayer = convolutionNetwork.GetFirstLayer();
             // Convolution.
             {
               convolutionNetwork.Clear();
               for (size_t inputIndex = 0; inputIndex < lesson.GetTopology().GetInputCount(); ++inputIndex)
               {
                 convolution::Map2DProtectingReference<T> input = firstLayer.GetInput(inputIndex);
-                for (size_t x = 0; x < lesson.GetSize().GetWidth(); ++x)
+                for (size_t x = 0; x < lesson.GetTopology().GetInputSize().GetWidth(); ++x)
                 {
-                  for (size_t y = 0; y < lesson.GetSize().GetHeight(); ++y)
+                  for (size_t y = 0; y < lesson.GetTopology().GetInputSize().GetHeight(); ++y)
                   {
                     input.FillFrom(lesson.GetInput(inputIndex));
                   }
@@ -142,13 +142,13 @@ namespace cnn
             }
             // Total error.
             {
-              const common::Map<T>& perceptronOutput = perceptronNetwork.GetLastLayer().GetOutput();
+              common::MapProtectingReference<T> perceptronOutput = perceptronNetwork.GetLastLayer().GetOutput();
               const common::Map<T>& lessonOutput = lesson.GetOutput();
               for (size_t o = 0; o < perceptronOutput.GetValueCount(); ++o)
               {
                 const T perceptronOutputValue = perceptronOutput.GetValue(o);
                 const T lessonOutputValue = lessonOutput.GetValue(o);
-                totalError += abs(perceptronOutput - lessonOutput);
+                totalError += abs(perceptronOutputValue - lessonOutputValue);
               }
             }
           }
@@ -177,9 +177,9 @@ namespace cnn
         {
           throw std::invalid_argument("cnn::engine::complex::GeneticTest2D::CheckTopologies(), lessonLibrary.GetLesson(0).GetTopology().GetInputCount() != network.GetConvolutionNetwork().GetTopology().GetFirstLayerTopology().GetInputCount().");
         }
-        if (lessonLibrary.GetLesson(0).GetTopology().GetOutputCount() != network.GetPerceptronNetwork().GetTopology().GetFirstLayerTopology().GetNeuronCount())
+        if (lessonLibrary.GetLesson(0).GetTopology().GetOutputCount() != network.GetPerceptronNetwork().GetTopology().GetLastLayerTopology().GetNeuronCount())
         {
-          throw std::invalid_argument("cnn::engine::complex::GeneticTest2D::CheckTopologies(), lessonLibrary.GetLesson(0).GetTopology().GetOutputCount() != network.GetPerceptronNetwork().GetTopology().GetFirstLayerTopology().GetNeuronCount().");
+          throw std::invalid_argument("cnn::engine::complex::GeneticTest2D::CheckTopologies(), lessonLibrary.GetLesson(0).GetTopology().GetOutputCount() != network.GetPerceptronNetwork().GetTopology().GetLastLayerTopology().GetNeuronCount().");
         }
       }
     }

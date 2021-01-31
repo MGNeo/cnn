@@ -37,6 +37,11 @@ namespace cnn
         // Exception guarantee: strong for the network.
         Layer2DProtectingReference<T> GetLayer(const size_t index) const;
 
+        const Layer2D<T>& GetConstFirstLayer() const;
+
+        // Exception guarantee: strong for the network.
+        Layer2DProtectingReference<T> GetFirstLayer() const;
+
         const Layer2D<T>& GetConstLastLayer() const;
 
         // Exception guarantee: strong for the network.
@@ -94,6 +99,18 @@ namespace cnn
       Layer2DProtectingReference<T> Network2DProtectingReference<T>::GetLayer(const size_t index) const
       {
         return Network.GetLayer(index);
+      }
+
+      template <typename T>
+      const Layer2D<T>& Network2DProtectingReference<T>::GetConstFirstLayer() const
+      {
+        return Network.GetFirstLayer();
+      }
+
+      template <typename T>
+      Layer2DProtectingReference<T> Network2DProtectingReference<T>::GetFirstLayer() const
+      {
+        return Network.GetFirstLayer();
       }
 
       template <typename T>

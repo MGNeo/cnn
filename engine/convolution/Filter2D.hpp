@@ -146,13 +146,16 @@ namespace cnn
       template <typename T>
       void Filter2D<T>::Clear() noexcept
       {
-        Topology.Clear();
+        for (size_t c = 0; c < Topology.GetCoreCount(); ++c)
+        {
+          Cores[c].Clear();
+        }
       }
 
       template <typename T>
       void Filter2D<T>::Reset() noexcept
       {
-        Topology.Clear();
+        Topology.Reset();
         Cores.reset(nullptr);
       }
 

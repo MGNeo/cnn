@@ -42,6 +42,11 @@ namespace cnn
         // Exception guarantee: strong for the network.
         LayerProtectingReference<T> GetFirstLayer() const;
 
+        const Layer<T>& GetConstLasttLayer() const;
+
+        // Exception guarantee: strong for the network.
+        LayerProtectingReference<T> GetLastLayer() const;
+
         // Exception guarantee: base for the network.
         void GenerateOutput() const;
 
@@ -106,6 +111,18 @@ namespace cnn
       LayerProtectingReference<T> NetworkProtectingReference<T>::GetFirstLayer() const
       {
         return Network_.GetFirstLayer();
+      }
+
+      template <typename T>
+      const Layer<T>& NetworkProtectingReference<T>::GetConstLasttLayer() const
+      {
+        return Network_.GetLastLayer();
+      }
+
+      template <typename T>
+      LayerProtectingReference<T> NetworkProtectingReference<T>::GetLastLayer() const
+      {
+        return Network_.GetLastLayer();
       }
 
       template <typename T>

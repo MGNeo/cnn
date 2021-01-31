@@ -75,11 +75,8 @@ namespace cnn
         :
         ValueCount{ valueCount }
       {
-        if (ValueCount != 0)
-        {
-          Values = std::make_unique<T[]>(ValueCount);
-          Clear();
-        }
+        Values = std::make_unique<T[]>(ValueCount);
+        Clear();
       }
 
       template <typename T>
@@ -87,11 +84,8 @@ namespace cnn
         :
         ValueCount{ map.ValueCount }
       {
-        if (ValueCount != 0)
-        {
-          Values = std::make_unique<T[]>(ValueCount);
-          std::memcpy(Values.get(), map.Values.get(), sizeof(T) * ValueCount);
-        }
+        Values = std::make_unique<T[]>(ValueCount);
+        std::memcpy(Values.get(), map.Values.get(), sizeof(T) * ValueCount);
       }
 
       template <typename T>
@@ -214,15 +208,12 @@ namespace cnn
         decltype(ValueCount) valueCount{};
         decltype(Values) values;
 
-        istream.read(reinterpret_cast<char*const>(&valueCount), sizeof(valueCount));
+        istream.read(reinterpret_cast<char* const>(&valueCount), sizeof(valueCount));
 
-        if (valueCount != 0)
+        values = std::make_unique<T[]>(valueCount);
+        for (size_t i = 0; i < valueCount; ++i)
         {
-          values = std::make_unique<T[]>(valueCount);
-          for (size_t i = 0; i < valueCount; ++i)
-          {
-            istream.read(reinterpret_cast<char* const>(&(values[i])), sizeof(values[i]));
-          }
+          istream.read(reinterpret_cast<char* const>(&(values[i])), sizeof(values[i]));
         }
 
         if (istream.good() == false)

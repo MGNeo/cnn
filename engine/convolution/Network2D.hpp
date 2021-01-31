@@ -39,6 +39,11 @@ namespace cnn
         // Exception guarantee: strong for this.
         Layer2DProtectingReference<T> GetLayer(const size_t index);
 
+        const Layer2D<T>& GetFirstLayer() const;
+
+        // Exception guarantee: strong for this.
+        Layer2DProtectingReference<T> GetFirstLayer();
+
         const Layer2D<T>& GetLastLayer() const;
 
         // Exception guarantee: strong for this.
@@ -146,6 +151,26 @@ namespace cnn
           throw std::range_error("cnn::engine::convolution::Network2D::GetLayer(), index >= Topology.GetLayerCount().");
         }
         return Layers[index];
+      }
+
+      template <typename T>
+      const Layer2D<T>& Network2D<T>::GetFirstLayer() const
+      {
+        if (Topology.GetLayerCount() == 0)
+        {
+          throw std::logic_error("cnn::engine::convolution::Network2D::GetFirstLayer() const, Topology.GetLayerCount() == 0.");
+        }
+        return Layers[0];
+      }
+
+      template <typename T>
+      Layer2DProtectingReference<T> Network2D<T>::GetFirstLayer()
+      {
+        if (Topology.GetLayerCount() == 0)
+        {
+          throw std::logic_error("cnn::engine::convolution::Network2D::GetFirstLayer(), Topology.GetLayerCount() == 0.");
+        }
+        return Layers[0];
       }
 
       template <typename T>

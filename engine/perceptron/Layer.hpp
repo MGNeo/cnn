@@ -209,7 +209,7 @@ namespace cnn
       template <typename T>
       void Layer<T>::Clear() noexcept
       {
-        Input->Clear();
+        Input.Clear();
         for (size_t i = 0; i < Topology.GetNeuronCount(); ++i)
         {
           Neurons[i].Clear();

@@ -212,9 +212,9 @@ namespace cnn
         {
           throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::CheckTopologies(), lessonLibrary.GetLesson(0).GetTopology().GetInputCount() != sourceNetwork.GetConvolutionNetwork().GetTopology().GetFirstLayerTopology().GetInputCount().");
         }
-        if (lessonLibrary.GetLesson(0).GetTopology().GetOutputCount() != sourceNetwork.GetPerceptronNetwork().GetTopology().GetFirstLayerTopology().GetNeuronCount())
+        if (lessonLibrary.GetLesson(0).GetTopology().GetOutputCount() != sourceNetwork.GetPerceptronNetwork().GetTopology().GetLastLayerTopology().GetNeuronCount())
         {
-          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::CheckTopologies(), lessonLibrary.GetLesson(0).GetTopology().GetOutputCount() != sourceNetwork.GetPerceptronNetwork().GetTopology().GetFirstLayerTopology().GetNeuronCount().");
+          throw std::invalid_argument("cnn::engine::complex::GeneticAlgorithm2D::CheckTopologies(), lessonLibrary.GetLesson(0).GetTopology().GetOutputCount() != sourceNetwork.GetPerceptronNetwork().GetTopology().GetLastLayerTopology().GetNeuronCount().");
         }
       }
     }

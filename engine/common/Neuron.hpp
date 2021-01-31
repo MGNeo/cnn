@@ -103,15 +103,9 @@ namespace cnn
       {
         InputCount = inputCount;
 
-        if (InputCount != 0)
-        {
-          Inputs = std::make_unique<T[]>(InputCount);
-          Weights = std::make_unique<T[]>(InputCount);
-          Clear();
-        } else {
-          ClearOutput();
-        }
-
+        Inputs = std::make_unique<T[]>(InputCount);
+        Weights = std::make_unique<T[]>(InputCount);
+        Clear();
       }
 
       template <typename T>
@@ -120,14 +114,11 @@ namespace cnn
         InputCount{ neuron.InputCount },
         Output{ neuron.Output }
       {
-        if (InputCount != 0)
-        {
-          Inputs = std::make_unique<T[]>(InputCount);
-          std::memcpy(Inputs.get(), neuron.Inputs.get(), sizeof(T) * InputCount);
+        Inputs = std::make_unique<T[]>(InputCount);
+        std::memcpy(Inputs.get(), neuron.Inputs.get(), sizeof(T)* InputCount);
 
-          Weights = std::make_unique<T[]>(InputCount);
-          std::memcpy(Weights.get(), neuron.Weights.get(), sizeof(T) * InputCount);
-        }
+        Weights = std::make_unique<T[]>(InputCount);
+        std::memcpy(Weights.get(), neuron.Weights.get(), sizeof(T)* InputCount);
       }
 
       template <typename T>
@@ -240,15 +231,12 @@ namespace cnn
       template <typename T>
       void Neuron<T>::GenerateOutput() noexcept
       {
-        if (InputCount != 0)
+        Output = static_cast<T>(0.L);
+        for (size_t i = 0; i < InputCount; ++i)
         {
-          Output = static_cast<T>(0.L);
-          for (size_t i = 0; i < InputCount; ++i)
-          {
-            Output += Inputs[i] * Weights[i];
-          }
-          Output = 1 / (1 + exp(-Output));
+          Output += Inputs[i] * Weights[i];
         }
+        Output = 1 / (1 + exp(-Output));
       }
 
       template <typename T>
@@ -325,21 +313,18 @@ namespace cnn
         }
 
         decltype(InputCount) inputCount{};
-        istream.read(reinterpret_cast<char*const>(&inputCount), sizeof(inputCount));
+        istream.read(reinterpret_cast<char* const>(&inputCount), sizeof(inputCount));
 
         decltype(Inputs) inputs;
         decltype(Weights) weights;
         decltype(Output) output{};
 
-        if (inputCount != 0)
+        inputs = std::make_unique<T[]>(inputCount);
+        weights = std::make_unique<T[]>(inputCount);
+        for (size_t i = 0; i < inputCount; ++i)
         {
-          inputs = std::make_unique<T[]>(inputCount);
-          weights = std::make_unique<T[]>(inputCount);
-          for (size_t i = 0; i < inputCount; ++i)
-          {
-            istream.read(reinterpret_cast<char* const>(&(inputs[i])), sizeof(inputs[i]));
-            istream.read(reinterpret_cast<char* const>(&(weights[i])), sizeof(weights[i]));
-          }
+          istream.read(reinterpret_cast<char* const>(&(inputs[i])), sizeof(inputs[i]));
+          istream.read(reinterpret_cast<char* const>(&(weights[i])), sizeof(weights[i]));
         }
 
         istream.read(reinterpret_cast<char* const>(&output), sizeof(output));

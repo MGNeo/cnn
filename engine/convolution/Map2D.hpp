@@ -191,7 +191,7 @@ namespace cnn
         {
           if (Size != map.Size)
           {
-            throw std::invalid_argument("cnn::engine::convolution::Map2D::FillFromm(), Size != map.Size.");
+            throw std::invalid_argument("cnn::engine::convolution::Map2D::FillFrom(), Size != map.Size.");
           }
           Map.FillFrom(map.Map);
         }
